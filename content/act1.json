@@ -1,0 +1,87 @@
+[
+  {
+    "id": "a1-01",
+    "type": "say",
+    "speaker": "旁白",
+    "scene": "chat",
+    "text": "晚上十点，班级群里弹出一张图。",
+    "next": "a1-02"
+  },
+  {
+    "id": "a1-02",
+    "type": "say",
+    "speaker": "米粒",
+    "scene": "chat",
+    "text": "“一份套餐承包一天营养，连吃七天免疫力拉满。”才 22 块，我明天就试。",
+    "next": "a1-03"
+  },
+  {
+    "id": "a1-03",
+    "type": "say",
+    "speaker": "周简",
+    "scene": "chat",
+    "text": "22 块够我吃两顿……它到底给了啥？",
+    "next": "a1-04"
+  },
+  {
+    "id": "a1-04",
+    "type": "say",
+    "speaker": "许知夏",
+    "scene": "chat",
+    "text": "先别急着信。把这句话拆开，哪几个地方是要证据的？",
+    "next": "a1-05"
+  },
+  {
+    "id": "a1-05",
+    "type": "evidence",
+    "prompt": "圈出需要核实的说法",
+    "need": 2,
+    "allowRetry": true,
+    "claims": [
+      {
+        "id": "c1",
+        "text": "免疫力拉满",
+        "suspect": true,
+        "reason": "“拉满”没有单位，也没有哪份资料这样描述免疫功能。"
+      },
+      {
+        "id": "c2",
+        "text": "承包一天营养",
+        "suspect": true,
+        "reason": "一天的营养来自多种食物，一个套餐很难全部覆盖。"
+      },
+      {
+        "id": "c3",
+        "text": "才 22 块",
+        "suspect": false,
+        "reason": "价格本身没问题，要问的是这 22 块换来了什么。"
+      }
+    ],
+    "next": "a1-06"
+  },
+  {
+    "id": "a1-06",
+    "type": "say",
+    "speaker": "许知夏",
+    "scene": "chat",
+    "text": "第一句最麻烦。“拉满”没有单位，也没有哪份资料这么写。",
+    "next": "a1-07"
+  },
+  {
+    "id": "a1-07",
+    "type": "choice",
+    "question": "接下来怎么办？",
+    "options": [
+      { "text": "先看看他到底吃什么", "next": "a2-01" },
+      { "text": "直接劝米粒别买", "next": "a1-08", "flag": "blunt" }
+    ]
+  },
+  {
+    "id": "a1-08",
+    "type": "say",
+    "speaker": "米粒",
+    "scene": "chat",
+    "text": "……那我饿着？",
+    "next": "a2-01"
+  }
+]

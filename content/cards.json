@@ -1,0 +1,12 @@
+[
+  { "id": "rice", "name": "米饭", "category": "主食", "portion": "一碗 150g", "price": 2, "note": "窗口固定供应" },
+  { "id": "noodle", "name": "汤面", "category": "主食", "portion": "一碗 200g", "price": 5, "note": "排队快，适合赶课" },
+  { "id": "potato", "name": "土豆丝", "category": "主食", "portion": "一份 100g", "price": 3, "note": "菜名叫菜，位置是主食" },
+  { "id": "greens", "name": "清炒时蔬", "category": "蔬菜", "portion": "一份 150g", "price": 3, "note": "当季最便宜的一档" },
+  { "id": "tomato_egg", "name": "番茄炒蛋", "category": "蛋白＋蔬菜", "portion": "一份", "price": 6, "note": "口味最受欢迎" },
+  { "id": "pork", "name": "肉菜", "category": "蛋白", "portion": "一份 80g", "price": 8, "note": "贵，但周简最爱这道" },
+  { "id": "tofu", "name": "家常豆腐", "category": "蛋白", "portion": "一份", "price": 4, "note": "便宜的蛋白来源" },
+  { "id": "egg", "name": "水煮蛋", "category": "蛋白", "portion": "一个", "price": 1.5, "note": "便利店也能买到" },
+  { "id": "milk", "name": "牛奶", "category": "奶类", "portion": "250ml", "price": 3, "note": "早餐常备" },
+  { "id": "drink", "name": "含糖饮料", "category": "饮品", "portion": "一瓶 500ml", "price": 6, "note": "第三幕标签题的对照物，不进餐盘" }
+]

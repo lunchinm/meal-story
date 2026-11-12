@@ -1,0 +1,34 @@
+[
+  {
+    "id": "a2-01",
+    "type": "say",
+    "speaker": "周简",
+    "scene": "canteen",
+    "text": "这几样我都喜欢，也在预算里。还能怎么调？",
+    "next": "a2-02"
+  },
+  {
+    "id": "a2-02",
+    "type": "plate",
+    "speaker": "周简",
+    "text": "午餐 15 块，四个位置，你帮我配一份。",
+    "budget": 15,
+    "slots": 4,
+    "cards": ["rice", "potato", "pork", "greens", "tofu", "egg", "tomato_egg", "noodle"],
+    "check": { "require": ["蔬菜"], "maxSame": 2 },
+    "hint": {
+      "overBudget": "超了 {n} 元，换掉一道同类的就行",
+      "missing": "还缺一份{category}，给他留个位置",
+      "other": "同类选得有点多，换一道别的类别试试"
+    },
+    "next": "a2-03"
+  },
+  {
+    "id": "a2-03",
+    "type": "say",
+    "speaker": "许知夏",
+    "scene": "canteen",
+    "text": "只看一顿不够。他晚上还有自习，得看看早晚餐再下结论。",
+    "next": "a3-01"
+  }
+]
