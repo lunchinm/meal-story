@@ -1,6 +1,6 @@
 import type { ChoiceNode, EndingNode, KnowledgeCard, SayNode } from '../engine/types';
 import { backgrounds, actors } from '../assets';
-import { play, startBgm } from '../audio';
+import { play, speak, startBgm, stopVoice } from '../audio';
 
 function h<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -127,12 +127,16 @@ export class Stage {
       box.append(h('div', 'next-tip', '点击继续 ▸'));
     }
 
+    if (node.hint) this.hintChip(node.hint, box);
+
     this.uiLayer.append(box);
+    speak(node.id);
 
     const handler = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       if (target.closest('button')) return;
       this.detachAdvance();
+      stopVoice();
       this.uiLayer.innerHTML = '';
       play('click');
       onNext();
@@ -142,6 +146,7 @@ export class Stage {
   }
 
   private detachAdvance(): void {
+    stopVoice();
     if (this.advanceHandler) {
       this.root.removeEventListener('click', this.advanceHandler);
       this.advanceHandler = null;
@@ -194,6 +199,7 @@ export class Stage {
       list.append(btn);
     });
     wrap.append(list);
+    if (node.hint) this.hintChip(node.hint, wrap);
     this.uiLayer.append(wrap);
   }
 
@@ -224,6 +230,49 @@ export class Stage {
     this.uiLayer.append(card);
   }
 
+
+  /* ---------- 章节卡 ---------- */
+
+  chapter(title: string, subtitle: string, onDone: () => void): void {
+    this.detachAdvance();
+    this.uiLayer.innerHTML = '';
+    this.overlayLayer.innerHTML = '';
+    const card = h('div', 'chapter-card');
+    card.append(h('div', 'chapter-kicker', '调查进行到'), h('div', 'chapter-title', title));
+    if (subtitle) card.append(h('div', 'chapter-sub', subtitle));
+    this.uiLayer.append(card);
+    play('page');
+
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      this.uiLayer.innerHTML = '';
+      this.detachAdvance();
+      onDone();
+    };
+    const handler = (event: MouseEvent) => {
+      event.stopPropagation();
+      finish();
+    };
+    // 挂在卡片自己身上：挂到舞台上的话，“开始调查”那一下会顺着冒泡把卡点掉
+    card.addEventListener('click', handler);
+    window.setTimeout(finish, 1800);
+  }
+
+  /* ---------- 提示 ---------- */
+
+  hintChip(text: string, host: HTMLElement): void {
+    const chip = h('button', 'hint-chip', '提示 ?');
+    const panel = h('div', 'hint-panel', text);
+    panel.hidden = true;
+    chip.addEventListener('click', (event) => {
+      event.stopPropagation();
+      panel.hidden = !panel.hidden;
+      chip.textContent = panel.hidden ? '提示 ?' : '收起提示';
+    });
+    host.append(chip, panel);
+  }
   /* ---------- 给互动模块用的画布 ---------- */
 
   board(className: string): HTMLDivElement {

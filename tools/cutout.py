@@ -162,6 +162,71 @@ def is_chroma(bg: np.ndarray) -> bool:
     return g > 120 and g - max(r, b) > 45
 
 
+def drop_bglike_holes(subject: np.ndarray, arr: np.ndarray, bg: np.ndarray,
+                      tol: float = 24.0, min_area: int = 400) -> np.ndarray:
+    """被角色围住的背景也算背景：洞里颜色和背景几乎一样就挖掉。
+
+    白色衣服比背景更亮，色差通常 30 以上，所以不会误伤。
+    """
+    h, w = subject.shape
+    free = ~subject
+    outside = np.zeros_like(free, dtype=bool)
+    queue: deque[tuple[int, int]] = deque()
+    for x in range(w):
+        for y in (0, h - 1):
+            if free[y, x] and not outside[y, x]:
+                outside[y, x] = True
+                queue.append((y, x))
+    for y in range(h):
+        for x in (0, w - 1):
+            if free[y, x] and not outside[y, x]:
+                outside[y, x] = True
+                queue.append((y, x))
+    while queue:
+        y, x = queue.popleft()
+        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < h and 0 <= nx < w and free[ny, nx] and not outside[ny, nx]:
+                outside[ny, nx] = True
+                queue.append((ny, nx))
+
+    holes = free & ~outside
+    if not holes.any():
+        return subject
+
+    # 逐块判断（1/3 缩略上找连通块）
+    small = holes[::3, ::3]
+    sh, sw = small.shape
+    seen = np.zeros_like(small, dtype=bool)
+    result = subject.copy()
+    for sy in range(sh):
+        for sx in range(sw):
+            if not small[sy, sx] or seen[sy, sx]:
+                continue
+            queue = deque([(sy, sx)])
+            seen[sy, sx] = True
+            blob: list[tuple[int, int]] = []
+            while queue:
+                y, x = queue.popleft()
+                blob.append((y, x))
+                for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    ny, nx = y + dy, x + dx
+                    if 0 <= ny < sh and 0 <= nx < sw and small[ny, nx] and not seen[ny, nx]:
+                        seen[ny, nx] = True
+                        queue.append((ny, nx))
+            area = len(blob) * 9
+            if area < min_area:
+                continue
+            ys = [p[0] * 3 for p in blob]
+            xs = [p[1] * 3 for p in blob]
+            patch = arr[min(ys):max(ys) + 1, min(xs):max(xs) + 1].reshape(-1, 3)
+            mean = patch.mean(axis=0)
+            if float(np.sqrt(((mean - bg) ** 2).sum())) < tol:
+                for y, x in blob:
+                    result[y * 3:y * 3 + 3, x * 3:x * 3 + 3] = False
+    return result
+
+
 def cutout(path: str, out_path: str | None = None, tol: int = 32, feather: float = 1.0) -> str:
     img = Image.open(path).convert("RGB")
     w, h = img.size
@@ -180,7 +245,7 @@ def cutout(path: str, out_path: str | None = None, tol: int = 32, feather: float
     else:
         near = dist < 38
         background = flood(arr, near, step_tol=10, seed_tol=52)
-        subject = largest_blob(~background)
+        subject = drop_bglike_holes(largest_blob(~background), arr, bg)
         background = ~subject
 
     alpha = np.where(background, 0, 255).astype(np.uint8)

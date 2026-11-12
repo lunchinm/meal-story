@@ -51,6 +51,8 @@ export function runPlate(node: PlateNode, allCards: FoodCard[], stage: Stage): P
     el('div', 'board-sub', `预算 ${node.budget} 元 ｜ ${node.slots} 个位置`),
   );
 
+  if (node.tip) stage.hintChip(node.tip, head);
+
   const body = el('div', 'board-body plate-wrap');
   const grid = el('div', 'card-grid');
   const side = el('div', 'plate-side');

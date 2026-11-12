@@ -1,23 +1,45 @@
 [
   {
+    "id": "a2-00",
+    "type": "chapter",
+    "title": "第二章《餐盘之外》",
+    "subtitle": "15 块、四个格子，怎么配",
+    "next": "a2-01"
+  },
+  {
     "id": "a2-01",
     "type": "say",
     "speaker": "周简",
     "scene": "canteen",
     "actor": "zhoujian",
     "expr": "normal",
-    "text": "中午的窗口就这几样。米饭、土豆丝、一份肉菜，我都喜欢，也在预算里。",
+    "text": "中午窗口就这几样。米饭、土豆丝、一份肉菜，我都喜欢，也在预算里。",
     "next": "a2-02"
   },
   {
     "id": "a2-02",
     "type": "plate",
     "speaker": "周简",
-    "text": "午餐 15 块，四个位置，你帮我配一份。",
+    "tip": "四个格子，15 块。别只看贵不贵，看看盘子里缺哪一类。",
+    "text": "你帮我配一份，能吃着走的那种。",
     "budget": 15,
     "slots": 4,
-    "cards": ["rice", "potato", "pork", "greens", "tofu", "egg", "tomato_egg", "noodle"],
-    "check": { "require": ["蔬菜"], "maxSame": 2 },
+    "cards": [
+      "rice",
+      "potato",
+      "pork",
+      "greens",
+      "tofu",
+      "egg",
+      "tomato_egg",
+      "noodle"
+    ],
+    "check": {
+      "require": [
+        "蔬菜"
+      ],
+      "maxSame": 2
+    },
     "hint": {
       "overBudget": "超了 {n} 元，换掉一道同类的就行",
       "missing": "还缺一份{category}，给它留个位置",
@@ -38,21 +60,27 @@
   },
   {
     "id": "a2-04",
-    "type": "say",
-    "speaker": "周简",
-    "scene": "canteen",
-    "actor": "zhoujian",
-    "expr": "happy",
-    "text": "这一盘 15 块，我吃得下去。钱的事我自己盯着。",
-    "next": "a2-05"
+    "type": "choice",
+    "question": "他这句话，记不记？",
+    "hint": "最后一章给方案时，会用到你今天记下的东西。",
+    "options": [
+      {
+        "text": "记下来：他的预算卡得很紧",
+        "next": "a2-05",
+        "flag": "budget"
+      },
+      {
+        "text": "先记搭配，钱的事以后再说",
+        "next": "a2-05"
+      }
+    ]
   },
   {
     "id": "a2-05",
-    "type": "choice",
-    "question": "他的话，记不记？",
-    "options": [
-      { "text": "记下来：他的预算卡得很紧", "next": "a3-01", "flag": "budget" },
-      { "text": "先记搭配，钱的事以后再说", "next": "a3-01" }
-    ]
+    "type": "say",
+    "speaker": "旁白",
+    "scene": "canteen",
+    "text": "窗口师傅说，米饭、豆腐、时蔬每天都有，肉菜看当天供应。",
+    "next": "a3-00"
   }
 ]

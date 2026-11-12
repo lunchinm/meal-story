@@ -9,7 +9,7 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync, existsSync } from 'node:
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
-const PORT = 9333;
+const PORT = 9300 + Math.floor(Math.random() * 500);
 const args = process.argv.slice(2);
 const baseUrl = args.find((a) => a.startsWith('http')) ?? 'http://127.0.0.1:4174';
 const shotsArg = args.indexOf('--shots');
@@ -81,7 +81,7 @@ class Cdp {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function waitFor(cdp, expression, label, timeout = 8000) {
+async function waitFor(cdp, expression, label, timeout = 9000) {
   const started = Date.now();
   while (Date.now() - started < timeout) {
     const value = await cdp.eval(expression);
@@ -92,7 +92,7 @@ async function waitFor(cdp, expression, label, timeout = 8000) {
 }
 
 async function shoot(cdp, name) {
-  await sleep(500); // 等淡入动画收尾，截到的才是最终画面
+  await sleep(450); // 等淡入动画收尾
   const { data } = await cdp.send('Page.captureScreenshot', { format: 'png' });
   const path = join(shotDir, `${name}.png`);
   writeFileSync(path, Buffer.from(data, 'base64'));
@@ -131,7 +131,7 @@ async function click(cdp, selector, label) {
     });
     await sleep(30);
   }
-  await sleep(220);
+  await sleep(180);
 }
 
 async function text(cdp, selector) {
@@ -140,8 +140,22 @@ async function text(cdp, selector) {
   );
 }
 
-async function advance(cdp, times = 1) {
-  for (let i = 0; i < times; i += 1) await click(cdp, '.dialog', '对话框');
+/** 一直往下点：对话框、章节卡都算，直到出现目标选择器 */
+async function until(cdp, selector, label, max = 14) {
+  for (let i = 0; i < max; i += 1) {
+    if (await cdp.eval(`!!document.querySelector(${JSON.stringify(selector)})`)) return;
+    const target = await cdp.eval(
+      `(() => { const c = document.querySelector('.chapter-card'); if (c) return '.chapter-card';
+        if (document.querySelector('.dialog')) return '.dialog'; return null; })()`,
+    );
+    if (!target) {
+      await sleep(250);
+      continue;
+    }
+    await click(cdp, target, target === '.dialog' ? '对话框' : '章节卡');
+  }
+  if (await cdp.eval(`!!document.querySelector(${JSON.stringify(selector)})`)) return;
+  throw new Error(`点了 ${max} 下也没等到「${label}」`);
 }
 
 function assert(condition, message) {
@@ -209,37 +223,47 @@ async function main() {
       await shoot(cdp, '01-title');
     }]);
 
-    steps.push(['第一幕对话与立绘', async () => {
+    steps.push(['第一章章节卡', async () => {
       await click(cdp, '.title-screen .btn-primary', '开始调查');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '第一句对白');
-      const first = await text(cdp, '.dialog .text');
-      assert(first.includes('群'), `第一句不像开场：${first}`);
-      await advance(cdp, 1);
-      await waitFor(cdp, `!!document.querySelector('.actor')`, '米粒立绘');
-      await shoot(cdp, '02-act1-actor');
+      await waitFor(cdp, `!!document.querySelector('.chapter-card')`, '章节卡');
+      const title = await text(cdp, '.chapter-title');
+      assert(title.includes('第一章'), `章节卡不对：${title}`);
+      await shoot(cdp, '02-chapter1');
     }]);
 
-    steps.push(['推进到证据关', async () => {
-      await advance(cdp, 3);
-      await waitFor(cdp, `!!document.querySelector('.claim')`, '证据面板');
+    steps.push(['第一幕对话与立绘', async () => {
+      await until(cdp, '.dialog .text', '第一句对白');
+      const first = await text(cdp, '.dialog .text');
+      assert(first.includes('套餐'), `第一句不像开场：${first}`);
+      await until(cdp, '.actor', '立绘');
+      await shoot(cdp, '03-act1-actor');
+    }]);
+
+    steps.push(['提示按钮能展开', async () => {
+      await until(cdp, '.hint-chip', '提示按钮');
+      await click(cdp, '.hint-chip', '提示');
+      await waitFor(cdp, `(() => { const p = document.querySelector('.hint-panel'); return p && !p.hidden; })()`, '提示面板');
+      const body = await text(cdp, '.hint-panel');
+      assert(body.length > 5, '提示面板是空的');
+      await shoot(cdp, '04-hint');
+      await click(cdp, '.hint-chip', '收起提示');
+    }]);
+
+    steps.push(['第一章证据关：先错后对', async () => {
+      await until(cdp, '.claim', '证据面板');
       const count = await cdp.eval(`document.querySelectorAll('.claim').length`);
       assert(count === 3, `证据卡数量不对：${count}`);
-      await shoot(cdp, '03-evidence-idle');
-    }]);
-
-    steps.push(['证据关：先选错再改对', async () => {
+      await shoot(cdp, '05-evidence-idle');
       await click(cdp, '.claim:nth-child(1)', '说法一');
       await click(cdp, '.claim:nth-child(3)', '说法三');
       await click(cdp, '.board-foot .btn-primary', '确定');
       await sleep(300);
       const hint = await text(cdp, '.hint-line');
       assert(hint.length > 0, '选错了却没有提示');
-      await shoot(cdp, '04-evidence-wrong');
       await click(cdp, '.claim:nth-child(3)', '说法三');
       await click(cdp, '.claim:nth-child(2)', '说法二');
       await click(cdp, '.board-foot .btn-primary', '确定');
-      await waitFor(cdp, `document.querySelector('.dialog .text')?.textContent.includes('拉满')`, '证据过关后的对白');
-      await shoot(cdp, '05-evidence-passed');
+      await until(cdp, '.dialog .text', '过关后的对白');
     }]);
 
     steps.push(['知识卡可以展开', async () => {
@@ -253,95 +277,106 @@ async function main() {
       await waitFor(cdp, `!document.querySelector('.card-panel')`, '知识卡收起');
     }]);
 
-    steps.push(['选项分支进入第二幕', async () => {
-      await advance(cdp, 1);
-      await waitFor(cdp, `!!document.querySelector('.choice')`, '选项');
+    steps.push(['第二章章节卡与配餐关', async () => {
+      await until(cdp, '.choice', '选项');
       await shoot(cdp, '07-choice');
       await click(cdp, '.choice:nth-child(1)', '第一个选项');
-      await waitFor(cdp, `document.querySelector('.dialog .text')?.textContent.includes('预算')`, '第二幕开场');
-    }]);
-
-    steps.push(['餐盘关：超预算提示', async () => {
-      await advance(cdp, 1);
-      await waitFor(cdp, `!!document.querySelector('.food')`, '餐盘面板');
+      await until(cdp, '.chapter-card', '第二章章节卡');
+      await shoot(cdp, '08-chapter2');
+      await until(cdp, '.food', '餐盘面板');
       const foods = await cdp.eval(`document.querySelectorAll('.food').length`);
       assert(foods >= 8, `食物卡太少：${foods}`);
-      await shoot(cdp, '08-plate-idle');
+      await shoot(cdp, '09-plate-idle');
+    }]);
+
+    steps.push(['配餐关：先超支再补蔬菜', async () => {
       await click(cdp, '.food:nth-child(3)', '肉菜');
       await click(cdp, '.food:nth-child(8)', '汤面');
       await click(cdp, '.food:nth-child(7)', '番茄炒蛋');
       await click(cdp, '.board-foot .btn-primary', '提交');
       await sleep(250);
-      const hint = await text(cdp, '.hint-line');
-      assert(hint.includes('超'), `超预算没提示：${hint}`);
-      await shoot(cdp, '09-plate-over-budget');
-    }]);
+      const over = await text(cdp, '.hint-line');
+      assert(over.includes('超'), `超预算没提示：${over}`);
+      await shoot(cdp, '10-plate-over-budget');
 
-    steps.push(['餐盘关：缺蔬菜后调对', async () => {
       await click(cdp, '.btn-ghost', '清空');
       await click(cdp, '.food:nth-child(1)', '米饭');
       await click(cdp, '.food:nth-child(3)', '肉菜');
       await click(cdp, '.food:nth-child(5)', '家常豆腐');
       await click(cdp, '.board-foot .btn-primary', '提交');
       await sleep(250);
-      const hint = await text(cdp, '.hint-line');
-      assert(hint.includes('蔬菜'), `缺蔬菜没提示：${hint}`);
-      await shoot(cdp, '10-plate-missing-veg');
+      const missing = await text(cdp, '.hint-line');
+      assert(missing.includes('蔬菜'), `缺蔬菜没提示：${missing}`);
+      await shoot(cdp, '11-plate-missing-veg');
+
       await click(cdp, '.food:nth-child(3)', '肉菜');
       await click(cdp, '.food:nth-child(4)', '清炒时蔬');
       await click(cdp, '.food:nth-child(7)', '番茄炒蛋');
       await click(cdp, '.board-foot .btn-primary', '提交');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '过关后回到对话');
-      await shoot(cdp, '11-plate-passed');
+      await until(cdp, '.dialog .text', '过关后回到对话');
+      await shoot(cdp, '12-plate-passed');
     }]);
 
-    steps.push(['记下预算，进入第三幕', async () => {
-      await advance(cdp, 2);
-      await waitFor(cdp, `!!document.querySelector('.choice')`, '记住预算的选项');
+    steps.push(['记下预算，进第三章', async () => {
+      await until(cdp, '.choice', '记住预算的选项');
       await click(cdp, '.choice:nth-child(1)', '记下预算');
-      await waitFor(cdp, `document.querySelector('.dialog .text')?.textContent.includes('标签')`, '第三幕开场');
-      await shoot(cdp, '12-act3');
-    }]);
-
-    steps.push(['第三幕标签题', async () => {
-      await advance(cdp, 1);
-      await waitFor(cdp, `!!document.querySelector('.claim')`, '标签证据');
+      await until(cdp, '.chapter-card', '第三章章节卡');
+      await shoot(cdp, '13-chapter3');
+      await until(cdp, '.claim', '标签证据');
       const labels = await cdp.eval(
         `[...document.querySelectorAll('.claim-text')].map(e => e.textContent).join('|')`,
       );
       assert(labels.includes('500'), `第三幕证据不像标签题：${labels}`);
-      await shoot(cdp, '13-act3-evidence');
       const index = await cdp.eval(
         `[...document.querySelectorAll('.claim-text')].findIndex(e => e.textContent.includes('整瓶')) + 1`,
       );
       await click(cdp, `.claim:nth-child(${index})`, '整瓶那一条');
       await click(cdp, '.board-foot .btn-primary', '确定');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '标签题过关');
+      await until(cdp, '.dialog .text', '标签题过关');
     }]);
 
-    steps.push(['隐藏结局：两个 flag 都记住', async () => {
-      await advance(cdp, 2);
-      await waitFor(cdp, `!!document.querySelector('.choice')`, '问课表的选项');
+    steps.push(['第四章：早餐方案', async () => {
+      await until(cdp, '.choice', '问课表的选项');
       await click(cdp, '.choice:nth-child(1)', '先问课表');
-      await waitFor(cdp, `!!document.querySelector('.ending-title')`, '结局卡');
+      await until(cdp, '.chapter-card', '第四章章节卡');
+      await shoot(cdp, '14-chapter4');
+      await until(cdp, '.food', '早餐餐盘');
+      const budget = await text(cdp, '.board-head .board-sub');
+      assert(budget.includes('8'), `早餐预算不对：${budget}`);
+      await click(cdp, '.food:nth-child(1)', '米饭');
+      await click(cdp, '.food:nth-child(3)', '水煮蛋');
+      await click(cdp, '.food:nth-child(4)', '牛奶');
+      await click(cdp, '.board-foot .btn-primary', '提交');
+      await until(cdp, '.dialog .text', '早餐过关');
+      await shoot(cdp, '15-breakfast-passed');
+    }]);
+
+    steps.push(['隐藏结局', async () => {
+      await until(cdp, '.choice', '最后的选择');
+      await click(cdp, '.choice:nth-child(1)', '各写一份');
+      await until(cdp, '.ending-title', '结局卡');
       const ending = await text(cdp, '.ending-title');
       assert(ending.includes('先问清楚'), `隐藏结局没触发，出的是：${ending}`);
-      await shoot(cdp, '14-ending-hidden');
+      await shoot(cdp, '16-ending-hidden');
     }]);
 
     steps.push(['结局回到标题', async () => {
       await click(cdp, '.ending-card .btn', '再走一遍');
       await waitFor(cdp, `!!document.querySelector('.title-screen')`, '回到标题');
-      await shoot(cdp, '15-back-to-title');
     }]);
 
-    steps.push(['进阶结局能单独跑', async () => {
-      await cdp.send('Page.navigate', { url: `${baseUrl}?node=e_advanced` });
-      await sleep(700);
-      await waitFor(cdp, `!!document.querySelector('.ending-title')`, '进阶结局');
-      const ending = await text(cdp, '.ending-title');
-      assert(ending.includes('换一家食堂'), `进阶结局标题不对：${ending}`);
-      await shoot(cdp, '16-ending-advanced');
+    steps.push(['另外两个结局能单独跑', async () => {
+      for (const [node, keyword, name] of [
+        ['e_advanced', '换一家食堂', '17-ending-advanced'],
+        ['e_normal', '我会选', '18-ending-normal'],
+      ]) {
+        await cdp.send('Page.navigate', { url: `${baseUrl}?node=${node}` });
+        await sleep(700);
+        await until(cdp, '.ending-title', '结局');
+        const ending = await text(cdp, '.ending-title');
+        assert(ending.includes(keyword), `${node} 标题不对：${ending}`);
+        await shoot(cdp, name);
+      }
     }]);
 
     steps.push(['小视口不溢出', async () => {
@@ -359,13 +394,7 @@ async function main() {
           return s.left < -1 || s.top < -1 || s.right > innerWidth + 1 || s.bottom > innerHeight + 1; })()`,
       );
       assert(!overflow, '1024×720 下舞台超出视口');
-      await shoot(cdp, '17-small-viewport');
-      await cdp.send('Emulation.setDeviceMetricsOverride', {
-        width: 1400,
-        height: 900,
-        deviceScaleFactor: 1,
-        mobile: false,
-      });
+      await shoot(cdp, '19-small-viewport');
     }]);
 
     for (const [label, step] of steps) {

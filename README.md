@@ -1,7 +1,7 @@
 # 今天吃什么？——校园膳食调查簿
 
 “合理膳食 · 免疫基石”创意宣传大赛初赛的交互作品。
-网页互动短篇：对话 + 餐盘搭配 + 看标签，单次 8—12 分钟。
+网页互动短篇：对话 + 餐盘搭配 + 看标签，四章、三种结局、单次 10—14 分钟。
 
 ## 跑起来
 
@@ -32,13 +32,14 @@ meal-story/
 │     ├─ plate.ts      餐盘关：预算、类别、同类过量
 │     └─ evidence.ts   证据关：点选需要核实的说法
 ├─ content/
-│  ├─ act1.json        第一幕《套餐的秘密》
-│  ├─ act2.json        第二幕《餐盘之外》
-│  ├─ act3.json        第三幕《翻到包装背面》+ 结局
+│  ├─ act1.json        第一章《套餐的秘密》
+│  ├─ act2.json        第二章《餐盘之外》
+│  ├─ act3.json        第三章《翻到包装背面》
+│  ├─ act4.json        第四章《你的方案，能坚持吗》+ 三个结局
 │  ├─ cards.json       10 张食物卡（名称、类别、份量、模拟价格）
 │  └─ knowledge.json   知识卡与来源
-├─ assets/             背景 bg/、立绘 ch/、食物卡 food/、音效 sfx/
-└─ tools/              gen.py 出图、cutout.py 抠底、pack.py 收图、sfx.py 音效、e2e.mjs 测试
+├─ assets/             背景 bg/、立绘 ch/、食物卡 food/、音效 sfx/、语音 voice/
+└─ tools/              gen.py 出图、cutout.py 抠底、pack.py 收图、tts.py 语音、e2e.mjs 测试
 ```
 
 ## 改剧情（写手看这段）
@@ -49,20 +50,22 @@ meal-story/
 { "id": "a1-01", "type": "say", "speaker": "旁白", "text": "一句话。", "next": "a1-02" }
 ```
 
-节点类型（六种，其中 branch 负责结局分流）：
+节点类型（七种，branch 分流结局、chapter 是章节卡）：
 
 | type | 用途 | 关键字段 |
 | --- | --- | --- |
-| `say` | 一句对白／旁白 | `speaker`、`text`、`scene`、`next` |
-| `choice` | 选项 | `options[{ text, next, flag }]` |
-| `plate` | 餐盘关 | `budget`、`slots`、`cards`、`check`、`hint`、`next` |
-| `evidence` | 证据判断 | `claims[{ text, suspect, reason }]`、`need`、`next` |
+| `say` | 一句对白／旁白 | `speaker`、`text`、`scene`、`actor`、`expr`、`card`、`hint`、`next` |
+| `choice` | 三选一左右的分支 | `question`、`hint`、`options[{ text, next, flag }]` |
+| `plate` | 餐盘关 | `budget`、`slots`、`cards`、`check`、`hint`、`tip`、`next` |
+| `evidence` | 证据判断 | `claims[{ text, suspect, reason }]`、`need`、`hint`、`next` |
+| `chapter` | 章节卡 | `title`、`subtitle`、`next` |
 | `branch` | 按 flag 分流结局 | `rules[{ flags, all, next }]`、`fallback` |
 | `ending` | 结局 | `title`、`body[]`、`action` |
 
 规则：
 
 - `next` 指向下一个节点的 `id`，写完必须存在，否则会弹出“找不到节点”。
+- 选择别给默认项：每个 option 都得是学生真会考虑的做法，加一句 `hint` 说明看什么。
 - 科普结论写在对白里一句话，依据写进 `knowledge.json`，来源别省。
 - 不写“免疫力＋20”“吃一顿就生病”这类因果。
 

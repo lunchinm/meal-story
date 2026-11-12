@@ -1,6 +1,7 @@
 import type {
   AnyNode,
   BranchNode,
+  ChapterNode,
   ChoiceNode,
   Content,
   EndingNode,
@@ -59,6 +60,9 @@ export class Runner {
       case 'branch':
         this.playBranch(node);
         break;
+      case 'chapter':
+        this.playChapter(node);
+        break;
       case 'ending':
         this.playEnding(node);
         break;
@@ -101,6 +105,11 @@ export class Runner {
       state.save();
       this.goto(node.next);
     });
+  }
+
+  private playChapter(node: ChapterNode): void {
+    this.stage.setActor(undefined);
+    this.stage.chapter(node.title, node.subtitle ?? '', () => this.goto(node.next));
   }
 
   private playBranch(node: BranchNode): void {

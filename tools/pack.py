@@ -19,6 +19,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BG_DIR = os.path.join(ROOT, "assets", "bg")
 CH_DIR = os.path.join(ROOT, "assets", "ch")
 FOOD_DIR = os.path.join(ROOT, "assets", "food")
+VOICE_DIR = os.path.join(ROOT, "assets", "voice")
 INDEX = os.path.join(ROOT, "src", "assets.ts")
 
 
@@ -78,6 +79,13 @@ def main() -> int:
         to_webp(os.path.join(FOOD_DIR, name), dest, (220, 220), quality=86)
         foods[key] = f"../assets/food/{key}.webp"
 
+    voices: dict[str, str] = {}
+    if os.path.isdir(VOICE_DIR):
+        for name in sorted(os.listdir(VOICE_DIR)):
+            if name.endswith(".mp3"):
+                key = name[:-4]
+                voices[key] = f"../assets/voice/{key}.mp3"
+
     lines = [
         "/**",
         " * 素材索引。由 tools/pack.py 生成，不要手改。",
@@ -87,6 +95,7 @@ def main() -> int:
         ("backgrounds", bgs, "bg"),
         ("actors", chars, "ch"),
         ("foods", foods, "food"),
+        ("voices", voices, "vo"),
     ):
         for key in sorted(mapping):
             var = f"{prefix}_{key.replace('-', '_')}"
@@ -100,7 +109,7 @@ def main() -> int:
         lines.append("")
     with open(INDEX, "w", encoding="utf-8") as handle:
         handle.write("\n".join(lines))
-    print(f"[index] {len(bgs)} 背景 / {len(chars)} 立绘 / {len(foods)} 食物卡")
+    print(f"[index] {len(bgs)} 背景 / {len(chars)} 立绘 / {len(foods)} 食物卡 / {len(voices)} 句语音")
     return 0
 
 

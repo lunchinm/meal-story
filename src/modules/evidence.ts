@@ -41,6 +41,8 @@ export function runEvidence(node: EvidenceNode, stage: Stage): Promise<EvidenceR
     el('div', 'board-sub', `选出 ${node.need ?? expected.length} 处`),
   );
 
+  if (node.hint) stage.hintChip(node.hint, head);
+
   const body = el('div', 'board-body evidence-wrap');
   const list = el('div', 'claim-list');
   body.append(list);

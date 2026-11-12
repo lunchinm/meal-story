@@ -1,6 +1,14 @@
-export type NodeType = 'say' | 'choice' | 'plate' | 'evidence' | 'ending' | 'branch';
+export type NodeType = 'say' | 'choice' | 'plate' | 'evidence' | 'ending' | 'branch' | 'chapter';
 
 export type SceneName = 'class' | 'canteen' | 'store' | 'chat';
+
+export interface ChapterNode {
+  id: string;
+  type: 'chapter';
+  title: string;
+  subtitle?: string;
+  next: string;
+}
 
 export interface SayNode {
   id: string;
@@ -13,6 +21,8 @@ export interface SayNode {
   expr?: 'normal' | 'happy' | 'worried';
   /** 可展开的知识卡 id */
   card?: string;
+  /** 给玩家的提示，点“提示”才展开 */
+  hint?: string;
   next?: string;
 }
 
@@ -40,6 +50,7 @@ export interface ChoiceNode {
   id: string;
   type: 'choice';
   question?: string;
+  hint?: string;
   options: ChoiceOption[];
 }
 
@@ -67,6 +78,7 @@ export interface PlateNode {
   cards: string[];
   check?: PlateCheck;
   hint?: PlateHints;
+  tip?: string;
   next: string;
 }
 
@@ -83,6 +95,7 @@ export interface EvidenceNode {
   type: 'evidence';
   prompt?: string;
   claims: EvidenceClaim[];
+  hint?: string;
   /** 需要选中几条才算对 */
   need?: number;
   allowRetry?: boolean;
@@ -97,7 +110,14 @@ export interface EndingNode {
   action?: string;
 }
 
-export type AnyNode = SayNode | ChoiceNode | PlateNode | EvidenceNode | EndingNode | BranchNode;
+export type AnyNode =
+  | SayNode
+  | ChoiceNode
+  | PlateNode
+  | EvidenceNode
+  | EndingNode
+  | BranchNode
+  | ChapterNode;
 
 export interface FoodCard {
   id: string;
