@@ -221,7 +221,10 @@ def drop_bglike_holes(subject: np.ndarray, arr: np.ndarray, bg: np.ndarray,
             xs = [p[1] * 3 for p in blob]
             patch = arr[min(ys):max(ys) + 1, min(xs):max(xs) + 1].reshape(-1, 3)
             mean = patch.mean(axis=0)
-            if float(np.sqrt(((mean - bg) ** 2).sum())) < tol:
+            spread = float(patch.std(axis=0).mean())
+            # 只吃掉“又像背景、又几乎没有明暗变化”的洞：
+            # 白大褂那种有褶皱阴影的（std 高）要留下，否则衣服会被挖空
+            if float(np.sqrt(((mean - bg) ** 2).sum())) < tol and spread < 6.0:
                 for y, x in blob:
                     result[y * 3:y * 3 + 3, x * 3:x * 3 + 3] = False
     return result
