@@ -1,5 +1,7 @@
 import type { FoodCard, PlateNode } from '../engine/types';
 import type { Stage } from '../ui/stage';
+import { foods } from '../assets';
+import { play } from '../audio';
 
 export interface PlateResult {
   picked: string[];
@@ -93,6 +95,13 @@ export function runPlate(node: PlateNode, allCards: FoodCard[], stage: Stage): P
     grid.innerHTML = '';
     catalog.forEach((card) => {
       const btn = el('button', picked.includes(card.id) ? 'food on' : 'food');
+      const art = foods[`food_${card.id}`];
+      if (art) {
+        const img = el('img', 'food-art');
+        img.src = art;
+        img.alt = card.name;
+        btn.append(img);
+      }
       btn.append(el('div', 'food-name', card.name), el('div', 'food-meta', `${card.portion} ｜ ${card.price} 元`));
       btn.title = card.note ?? '';
       btn.addEventListener('click', () => {
@@ -165,6 +174,7 @@ export function runPlate(node: PlateNode, allCards: FoodCard[], stage: Stage): P
       return;
     }
     hintLine.textContent = problem;
+    play('fail');
     if (attempts >= 3) {
       stage.toast('不如先这样，剧情往下走，回头再调');
       finish(false);

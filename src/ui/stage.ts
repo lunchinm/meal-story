@@ -1,4 +1,6 @@
-import type { ChoiceNode, EndingNode, SayNode } from '../engine/types';
+import type { ChoiceNode, EndingNode, KnowledgeCard, SayNode } from '../engine/types';
+import { backgrounds, actors } from '../assets';
+import { play, startBgm } from '../audio';
 
 function h<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -18,16 +20,18 @@ function h<K extends keyof HTMLElementTagNameMap>(
 export class Stage {
   readonly root: HTMLDivElement;
   private readonly bgLayer: HTMLDivElement;
+  private readonly bgImage: HTMLDivElement;
   private readonly actorsLayer: HTMLDivElement;
   private readonly uiLayer: HTMLDivElement;
   private readonly overlayLayer: HTMLDivElement;
   private readonly toastLayer: HTMLDivElement;
   private advanceHandler: ((e: MouseEvent) => void) | null = null;
+  private lastActor = '';
 
   constructor(host: HTMLElement) {
     this.root = h('div', 'stage');
     this.bgLayer = h('div', 'layer bg');
-
+    this.bgImage = h('div', 'layer bg-image');
     const noise = h('div', 'layer grain');
     const frame = h('div', 'layer frame');
 
@@ -36,19 +40,50 @@ export class Stage {
     this.overlayLayer = h('div', 'layer overlay');
     this.toastLayer = h('div', 'layer toast');
 
-    this.root.append(this.bgLayer, noise, frame, this.actorsLayer, this.uiLayer, this.overlayLayer, this.toastLayer);
+    this.root.append(
+      this.bgLayer,
+      this.bgImage,
+      noise,
+      frame,
+      this.actorsLayer,
+      this.uiLayer,
+      this.overlayLayer,
+      this.toastLayer,
+    );
     host.append(this.root);
+
+    // 第一次点击解锁音频（浏览器策略）
+    this.root.addEventListener('click', () => startBgm(), { capture: true });
   }
 
-  setScene(scene: 'class' | 'canteen' | 'store' | 'chat'): void {
+  setScene(scene: string): void {
     this.bgLayer.dataset.scene = scene;
+    const url = backgrounds[`bg_${scene}`];
+    this.bgImage.style.backgroundImage = url ? `url(${url})` : '';
+    this.bgImage.classList.toggle('on', Boolean(url));
+  }
+
+  /** 只换立绘，不动背景 */
+  setActor(actor?: string, expr: string = 'normal'): void {
+    const key = actor ? `ch_${actor}_${expr}` : '';
+    if (key === this.lastActor) return;
+    this.lastActor = key;
+    this.actorsLayer.innerHTML = '';
+    if (!key) return;
+    const url = actors[key];
+    if (!url) return;
+    const img = h('img', 'actor');
+    img.src = url;
+    img.alt = actor ?? '';
+    this.actorsLayer.append(img);
   }
 
   /* ---------- 标题页 ---------- */
 
   title(hasSave: boolean, onStart: () => void, onContinue: () => void): void {
     this.clearAll();
-    this.setScene('chat');
+    this.setScene('title');
+    this.setActor(undefined);
     const panel = h('div', 'title-screen');
     panel.append(
       h('div', 'title-kicker', '“合理膳食 · 免疫基石”创意宣传大赛'),
@@ -66,7 +101,6 @@ export class Stage {
       cont.addEventListener('click', onContinue);
       actions.append(cont);
     }
-
     panel.append(actions);
     this.uiLayer.append(panel);
   }
@@ -78,20 +112,29 @@ export class Stage {
     this.uiLayer.innerHTML = '';
     this.overlayLayer.innerHTML = '';
 
-    const box = h('div', 'dialog');
+    const box = h('div', 'dialog enter');
     if (node.speaker) box.append(h('div', 'speaker', node.speaker));
     box.append(h('div', 'text', node.text));
-    const tip = h('div', 'next-tip', '点击继续 ▸');
-    box.append(tip);
 
-    box.classList.add('enter');
+    if (node.card) {
+      const chip = h('button', 'card-chip', '看依据 +');
+      chip.addEventListener('click', (event) => {
+        event.stopPropagation();
+        this.showCard(node.card!);
+      });
+      box.append(chip);
+    } else {
+      box.append(h('div', 'next-tip', '点击继续 ▸'));
+    }
+
     this.uiLayer.append(box);
 
-    const handler = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+    const handler = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
       if (target.closest('button')) return;
       this.detachAdvance();
       this.uiLayer.innerHTML = '';
+      play('click');
       onNext();
     };
     this.advanceHandler = handler;
@@ -105,6 +148,35 @@ export class Stage {
     }
   }
 
+  /* ---------- 知识卡 ---------- */
+
+  private showCard(id: string): void {
+    const card = (window as unknown as { __knowledge?: KnowledgeCard[] }).__knowledge?.find((c) => c.id === id);
+    if (!card) return;
+    this.overlayLayer.innerHTML = '';
+    const panel = h('div', 'card-panel');
+    panel.append(h('div', 'card-title', card.title), h('p', 'card-body', card.body));
+    if (card.source) panel.append(h('div', 'card-source', `依据：${card.source}`));
+    const close = h('button', 'btn btn-ghost', '收起');
+    panel.append(close);
+    this.overlayLayer.append(panel);
+    this.overlayLayer.classList.add('on');
+
+    const dismiss = (event: MouseEvent) => {
+      if (event.target instanceof Node && panel.contains(event.target) && event.target !== close) return;
+      if (event.target instanceof Node && panel.contains(event.target)) return;
+      close.click();
+    };
+    close.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.overlayLayer.innerHTML = '';
+      this.overlayLayer.classList.remove('on');
+      this.root.removeEventListener('click', dismiss);
+    });
+    this.root.addEventListener('click', dismiss);
+    play('page');
+  }
+
   /* ---------- 选项 ---------- */
 
   choices(node: ChoiceNode, onPick: (index: number) => void): void {
@@ -115,7 +187,10 @@ export class Stage {
     const list = h('div', 'choice-list');
     node.options.forEach((opt, i) => {
       const btn = h('button', 'choice', opt.text);
-      btn.addEventListener('click', () => onPick(i));
+      btn.addEventListener('click', () => {
+        play('page');
+        onPick(i);
+      });
       list.append(btn);
     });
     wrap.append(list);
@@ -129,13 +204,18 @@ export class Stage {
     this.uiLayer.innerHTML = '';
     this.overlayLayer.innerHTML = '';
     this.setScene('canteen');
+    this.setActor(undefined);
+    play('ending');
 
     const card = h('div', 'ending-card');
     card.append(h('div', 'ending-tag', '结局'), h('div', 'ending-title', node.title));
     node.body.forEach((line) => card.append(h('p', 'ending-line', line)));
     if (node.action) {
       const action = h('div', 'ending-action');
-      action.append(h('span', 'ending-action-label', '明天能做的一件事'), h('span', 'ending-action-text', node.action));
+      action.append(
+        h('span', 'ending-action-label', '明天能做的一件事'),
+        h('span', 'ending-action-text', node.action),
+      );
       card.append(action);
     }
     const again = h('button', 'btn', '再走一遍');
@@ -146,7 +226,6 @@ export class Stage {
 
   /* ---------- 给互动模块用的画布 ---------- */
 
-  /** 清掉对话层，返回一个干净的全屏面板 */
   board(className: string): HTMLDivElement {
     this.detachAdvance();
     this.uiLayer.innerHTML = '';
@@ -166,6 +245,7 @@ export class Stage {
     this.detachAdvance();
     this.uiLayer.innerHTML = '';
     this.overlayLayer.innerHTML = '';
+    this.overlayLayer.classList.remove('on');
     this.toastLayer.innerHTML = '';
   }
 }

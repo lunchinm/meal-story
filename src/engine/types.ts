@@ -1,4 +1,4 @@
-export type NodeType = 'say' | 'choice' | 'plate' | 'evidence' | 'ending';
+export type NodeType = 'say' | 'choice' | 'plate' | 'evidence' | 'ending' | 'branch';
 
 export type SceneName = 'class' | 'canteen' | 'store' | 'chat';
 
@@ -8,7 +8,26 @@ export interface SayNode {
   speaker?: string;
   text: string;
   scene?: SceneName;
+  /** 立绘 id：assets 里的 ch_<actor>_<expr> */
+  actor?: string;
+  expr?: 'normal' | 'happy' | 'worried';
+  /** 可展开的知识卡 id */
+  card?: string;
   next?: string;
+}
+
+export interface BranchRule {
+  /** 集合里任一 flag 命中就走这条（all 为 true 时要求全部命中） */
+  flags: string[];
+  all?: boolean;
+  next: string;
+}
+
+export interface BranchNode {
+  id: string;
+  type: 'branch';
+  rules: BranchRule[];
+  fallback: string;
 }
 
 export interface ChoiceOption {
@@ -78,7 +97,7 @@ export interface EndingNode {
   action?: string;
 }
 
-export type AnyNode = SayNode | ChoiceNode | PlateNode | EvidenceNode | EndingNode;
+export type AnyNode = SayNode | ChoiceNode | PlateNode | EvidenceNode | EndingNode | BranchNode;
 
 export interface FoodCard {
   id: string;

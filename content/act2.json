@@ -4,7 +4,9 @@
     "type": "say",
     "speaker": "周简",
     "scene": "canteen",
-    "text": "这几样我都喜欢，也在预算里。还能怎么调？",
+    "actor": "zhoujian",
+    "expr": "normal",
+    "text": "中午的窗口就这几样。米饭、土豆丝、一份肉菜，我都喜欢，也在预算里。",
     "next": "a2-02"
   },
   {
@@ -18,7 +20,7 @@
     "check": { "require": ["蔬菜"], "maxSame": 2 },
     "hint": {
       "overBudget": "超了 {n} 元，换掉一道同类的就行",
-      "missing": "还缺一份{category}，给他留个位置",
+      "missing": "还缺一份{category}，给它留个位置",
       "other": "同类选得有点多，换一道别的类别试试"
     },
     "next": "a2-03"
@@ -28,7 +30,29 @@
     "type": "say",
     "speaker": "许知夏",
     "scene": "canteen",
-    "text": "只看一顿不够。他晚上还有自习，得看看早晚餐再下结论。",
-    "next": "a3-01"
+    "actor": "zhixia",
+    "expr": "happy",
+    "card": "k2",
+    "text": "配得还行。不过只看一顿不够——他晚上还有自习，得看早晚餐。",
+    "next": "a2-04"
+  },
+  {
+    "id": "a2-04",
+    "type": "say",
+    "speaker": "周简",
+    "scene": "canteen",
+    "actor": "zhoujian",
+    "expr": "happy",
+    "text": "这一盘 15 块，我吃得下去。钱的事我自己盯着。",
+    "next": "a2-05"
+  },
+  {
+    "id": "a2-05",
+    "type": "choice",
+    "question": "他的话，记不记？",
+    "options": [
+      { "text": "记下来：他的预算卡得很紧", "next": "a3-01", "flag": "budget" },
+      { "text": "先记搭配，钱的事以后再说", "next": "a3-01" }
+    ]
   }
 ]

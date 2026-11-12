@@ -37,7 +37,8 @@ meal-story/
 │  ├─ act3.json        第三幕《翻到包装背面》+ 结局
 │  ├─ cards.json       10 张食物卡（名称、类别、份量、模拟价格）
 │  └─ knowledge.json   知识卡与来源
-└─ assets/             背景、立绘、食物卡、音效（待补）
+├─ assets/             背景 bg/、立绘 ch/、食物卡 food/、音效 sfx/
+└─ tools/              gen.py 出图、cutout.py 抠底、pack.py 收图、sfx.py 音效、e2e.mjs 测试
 ```
 
 ## 改剧情（写手看这段）
@@ -48,7 +49,7 @@ meal-story/
 { "id": "a1-01", "type": "say", "speaker": "旁白", "text": "一句话。", "next": "a1-02" }
 ```
 
-节点类型只有五种：
+节点类型（六种，其中 branch 负责结局分流）：
 
 | type | 用途 | 关键字段 |
 | --- | --- | --- |
@@ -56,6 +57,7 @@ meal-story/
 | `choice` | 选项 | `options[{ text, next, flag }]` |
 | `plate` | 餐盘关 | `budget`、`slots`、`cards`、`check`、`hint`、`next` |
 | `evidence` | 证据判断 | `claims[{ text, suspect, reason }]`、`need`、`next` |
+| `branch` | 按 flag 分流结局 | `rules[{ flags, all, next }]`、`fallback` |
 | `ending` | 结局 | `title`、`body[]`、`action` |
 
 规则：
@@ -71,10 +73,34 @@ meal-story/
 - 两个互动关卡的判定逻辑各在自己的文件里，互不影响，两个人可以并行改。
 - 判定不许设唯一答案；餐盘试到第三次还不达标就放行，别让玩家卡死。
 
+## 素材：一条命令重出全套（素材看这段）
+
+美术与音效都在本机生成，脚本化，不用手点界面：
+
+```bash
+npm run art      # ComfyUI 出背景/立绘/食物卡（需 127.0.0.1:8188 在跑）
+python tools/cutout.py     # 立绘抠底 → *_cut.png
+python tools/pack.py       # 裁尺寸、转 webp、生成 src/assets.ts
+python tools/sfx.py        # 合成点击/过关/失败/结局音与背景垫音
+```
+
+- 任务表在 `tools/jobs/`：改提示词就是改 JSON，`--force` 重跑，已存在的自动跳过。
+- 背景走 SDXL（1216×704 约 23 秒一张），立绘与食物卡走 SD1.5（约 6 秒一张）。
+- 立绘要“半身＋纯色背景”，抠图按四周取色＋漫水＋只留最大连通块，背景带色块也能吃掉。
+- 不在作品里使用任何真人声线、他人肖像或现成素材；音效全部是振荡器算出来的波形。
+
+## 自动化测试（改完必跑）
+
+```bash
+npm run preview -- --port 4174 --strictPort   # 终端 A
+npm run e2e                                    # 终端 B
+```
+
+`tools/e2e.mjs` 用 Chrome DevTools Protocol 发真实鼠标事件，跑 14 步：标题 → 三幕 → 两个互动关（先错后对）→ 知识卡 → 隐藏结局 → 进阶结局 → 1024×720 视口检查。
+每步截图存 `tools/out/e2e/`，点不到或被遮挡会直接报出上层元素，控制台有一条报错就整轮失败。
+
 ## 还没做的
 
-- 立绘、背景、食物卡图（`assets/` 空的，现在靠配色区分场景）。
-- 知识卡弹层（数据已备好，UI 未接）。
-- 隐藏结局的 flag 判定（`state.flags` 已在存，判定未写）。
-- 图上的区域圈选（现在是点选说法，够用）。
+- 图上的肌肉记忆式圈选（现在是点选说法，够用，验收也认这个）。
 - 手机端适配（只保证桌面 16:9 浏览器）。
+- 全程配音（音色不属于本项目，明确不做）。

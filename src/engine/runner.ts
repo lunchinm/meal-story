@@ -1,4 +1,13 @@
-import type { AnyNode, ChoiceNode, Content, EndingNode, EvidenceNode, PlateNode, SayNode } from './types';
+import type {
+  AnyNode,
+  BranchNode,
+  ChoiceNode,
+  Content,
+  EndingNode,
+  EvidenceNode,
+  PlateNode,
+  SayNode,
+} from './types';
 import type { Stage } from '../ui/stage';
 import { state } from '../state';
 import { runPlate } from '../modules/plate';
@@ -47,6 +56,9 @@ export class Runner {
       case 'evidence':
         this.playEvidence(node);
         break;
+      case 'branch':
+        this.playBranch(node);
+        break;
       case 'ending':
         this.playEnding(node);
         break;
@@ -55,6 +67,7 @@ export class Runner {
 
   private playSay(node: SayNode): void {
     if (node.scene) this.stage.setScene(node.scene);
+    this.stage.setActor(node.actor, node.expr ?? 'normal');
     this.stage.say(node, () => {
       if (node.next) this.goto(node.next);
       else this.stage.toast('剧情到这里就断了，检查一下 content 里的 next');
@@ -73,6 +86,7 @@ export class Runner {
 
   private playPlate(node: PlateNode): void {
     this.stage.setScene('canteen');
+    this.stage.setActor(undefined);
     runPlate(node, this.content.cards, this.stage).then((result) => {
       result.picked.forEach((id) => state.picked.add(id));
       state.save();
@@ -81,11 +95,21 @@ export class Runner {
   }
 
   private playEvidence(node: EvidenceNode): void {
+    this.stage.setActor(undefined);
     runEvidence(node, this.stage).then((result) => {
       if (result.correct) state.flags.add(`evidence:${node.id}`);
       state.save();
       this.goto(node.next);
     });
+  }
+
+  private playBranch(node: BranchNode): void {
+    const hit = node.rules.find((rule) =>
+      rule.all
+        ? rule.flags.every((flag) => state.flags.has(flag))
+        : rule.flags.some((flag) => state.flags.has(flag)),
+    );
+    this.goto(hit ? hit.next : node.fallback);
   }
 
   private playEnding(node: EndingNode): void {

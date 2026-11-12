@@ -12,6 +12,8 @@
     "type": "say",
     "speaker": "米粒",
     "scene": "chat",
+    "actor": "mili",
+    "expr": "happy",
     "text": "“一份套餐承包一天营养，连吃七天免疫力拉满。”才 22 块，我明天就试。",
     "next": "a1-03"
   },
@@ -20,6 +22,8 @@
     "type": "say",
     "speaker": "周简",
     "scene": "chat",
+    "actor": "zhoujian",
+    "expr": "normal",
     "text": "22 块够我吃两顿……它到底给了啥？",
     "next": "a1-04"
   },
@@ -28,6 +32,8 @@
     "type": "say",
     "speaker": "许知夏",
     "scene": "chat",
+    "actor": "zhixia",
+    "expr": "normal",
     "text": "先别急着信。把这句话拆开，哪几个地方是要证据的？",
     "next": "a1-05"
   },
@@ -64,7 +70,10 @@
     "type": "say",
     "speaker": "许知夏",
     "scene": "chat",
-    "text": "第一句最麻烦。“拉满”没有单位，也没有哪份资料这么写。",
+    "actor": "zhixia",
+    "expr": "worried",
+    "card": "k1",
+    "text": "第一句最麻烦。“拉满”既没有单位，也没有哪份资料这么写。",
     "next": "a1-07"
   },
   {
@@ -72,7 +81,7 @@
     "type": "choice",
     "question": "接下来怎么办？",
     "options": [
-      { "text": "先看看他到底吃什么", "next": "a2-01" },
+      { "text": "先看看它到底给了什么", "next": "a2-01" },
       { "text": "直接劝米粒别买", "next": "a1-08", "flag": "blunt" }
     ]
   },
@@ -81,6 +90,8 @@
     "type": "say",
     "speaker": "米粒",
     "scene": "chat",
+    "actor": "mili",
+    "expr": "worried",
     "text": "……那我饿着？",
     "next": "a2-01"
   }
