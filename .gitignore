@@ -5,6 +5,3 @@ dist/
 Thumbs.db
 .vscode/
 .idea/
-tools/out/
-assets/**/*_cut.png
-assets/**/*_preview.png
