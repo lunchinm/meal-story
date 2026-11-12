@@ -1,0 +1,84 @@
+{
+  "count": 13,
+  "missing": [],
+  "items": [
+    {
+      "id": "a1-01",
+      "speaker": "旁白",
+      "file": "a1-01.mp3",
+      "seconds": 8.64
+    },
+    {
+      "id": "a1-02",
+      "speaker": "米粒",
+      "file": "a1-02.mp3",
+      "seconds": 6.96
+    },
+    {
+      "id": "a1-03",
+      "speaker": "周简",
+      "file": "a1-03.mp3",
+      "seconds": 4.97
+    },
+    {
+      "id": "a1-04",
+      "speaker": "许知夏",
+      "file": "a1-04.mp3",
+      "seconds": 4.8
+    },
+    {
+      "id": "a1-06",
+      "speaker": "许知夏",
+      "file": "a1-06.mp3",
+      "seconds": 4.8
+    },
+    {
+      "id": "a1-08",
+      "speaker": "米粒",
+      "file": "a1-08.mp3",
+      "seconds": 2.0
+    },
+    {
+      "id": "a2-01",
+      "speaker": "周简",
+      "file": "a2-01.mp3",
+      "seconds": 6.41
+    },
+    {
+      "id": "a2-03",
+      "speaker": "许知夏",
+      "file": "a2-03.mp3",
+      "seconds": 6.24
+    },
+    {
+      "id": "a2-05",
+      "speaker": "旁白",
+      "file": "a2-05.mp3",
+      "seconds": 7.28
+    },
+    {
+      "id": "a3-01",
+      "speaker": "苏桃",
+      "file": "a3-01.mp3",
+      "seconds": 5.28
+    },
+    {
+      "id": "a3-03",
+      "speaker": "苏桃",
+      "file": "a3-03.mp3",
+      "seconds": 7.04
+    },
+    {
+      "id": "a4-01",
+      "speaker": "许知夏",
+      "file": "a4-01.mp3",
+      "seconds": 6.32
+    },
+    {
+      "id": "a4-03",
+      "speaker": "米粒",
+      "file": "a4-03.mp3",
+      "seconds": 2.81
+    }
+  ]
+}

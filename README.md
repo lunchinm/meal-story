@@ -85,12 +85,15 @@ npm run art      # ComfyUI 出背景/立绘/食物卡（需 127.0.0.1:8188 在�
 python tools/cutout.py     # 立绘抠底 → *_cut.png
 python tools/pack.py       # 裁尺寸、转 webp、生成 src/assets.ts
 python tools/sfx.py        # 合成点击/过关/失败/结局音与背景垫音
+python tools/tts.py        # 逐句配音 → assets/voice/<节点id>.mp3
 ```
 
 - 任务表在 `tools/jobs/`：改提示词就是改 JSON，`--force` 重跑，已存在的自动跳过。
 - 背景走 SDXL（1216×704 约 23 秒一张），立绘与食物卡走 SD1.5（约 6 秒一张）。
-- 立绘要“半身＋纯色背景”，抠图按四周取色＋漫水＋只留最大连通块，背景带色块也能吃掉。
-- 不在作品里使用任何真人声线、他人肖像或现成素材；音效全部是振荡器算出来的波形。
+- 立绘要“半身＋纯色背景”，抠图按四周取色＋漫水＋只留最大连通块。
+- 配音规矩：只给文本和“声音描述”，`ref_audio` 留空，**一律不做变调**（rubberband / asetrate / atempo 都不许用）。
+  换音色只能改 `tools/tts.py` 里 `VOICES` 的描述再重出。五个角色的描述已定稿，别乱动。
+- 音效是振荡器算出来的波形，没有采样；配音由本机 Breeze 合成，不带任何真人参考音频。
 
 ## 自动化测试（改完必跑）
 
