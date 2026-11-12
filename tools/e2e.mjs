@@ -92,6 +92,7 @@ async function waitFor(cdp, expression, label, timeout = 8000) {
 }
 
 async function shoot(cdp, name) {
+  await sleep(500); // 等淡入动画收尾，截到的才是最终画面
   const { data } = await cdp.send('Page.captureScreenshot', { format: 'png' });
   const path = join(shotDir, `${name}.png`);
   writeFileSync(path, Buffer.from(data, 'base64'));

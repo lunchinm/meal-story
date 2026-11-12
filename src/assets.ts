@@ -2,12 +2,14 @@
  * 素材索引。由 tools/pack.py 生成，不要手改。
  */
 import bg_bg_canteen from '../assets/bg/bg_canteen.webp';
+import bg_bg_chat from '../assets/bg/bg_chat.webp';
 import bg_bg_class from '../assets/bg/bg_class.webp';
 import bg_bg_store from '../assets/bg/bg_store.webp';
 import bg_bg_title from '../assets/bg/bg_title.webp';
 
 export const backgrounds: Record<string, string> = {
   'bg_canteen': bg_bg_canteen,
+  'bg_chat': bg_bg_chat,
   'bg_class': bg_bg_class,
   'bg_store': bg_bg_store,
   'bg_title': bg_bg_title,

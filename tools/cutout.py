@@ -33,6 +33,45 @@ def background_color(arr: np.ndarray) -> np.ndarray:
     return np.median(samples, axis=0)
 
 
+def dilate(mask: np.ndarray, radius: int = 2) -> np.ndarray:
+    out = mask.copy()
+    for _ in range(radius):
+        grown = out.copy()
+        grown[1:, :] |= out[:-1, :]
+        grown[:-1, :] |= out[1:, :]
+        grown[:, 1:] |= out[:, :-1]
+        grown[:, :-1] |= out[:, 1:]
+        out = grown
+    return out
+
+
+def fill_holes(mask: np.ndarray) -> np.ndarray:
+    """把主体内部被围住的空洞补回来（白衣服内侧常被误抠）。"""
+    h, w = mask.shape
+    free = ~mask
+    seen = np.zeros_like(free, dtype=bool)
+    queue: deque[tuple[int, int]] = deque()
+    for x in range(w):
+        for y in (0, h - 1):
+            if free[y, x]:
+                seen[y, x] = True
+                queue.append((y, x))
+    for y in range(h):
+        for x in (0, w - 1):
+            if free[y, x] and not seen[y, x]:
+                seen[y, x] = True
+                queue.append((y, x))
+    while queue:
+        y, x = queue.popleft()
+        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < h and 0 <= nx < w and free[ny, nx] and not seen[ny, nx]:
+                seen[ny, nx] = True
+                queue.append((ny, nx))
+    holes = free & ~seen
+    return mask | holes
+
+
 def flood(arr: np.ndarray, near: np.ndarray, step_tol: int = 10, seed_tol: int = 48) -> np.ndarray:
     """从四条边往里漫水。
 
@@ -44,6 +83,8 @@ def flood(arr: np.ndarray, near: np.ndarray, step_tol: int = 10, seed_tol: int =
     small_arr = arr[::2, ::2].astype(np.int32)
     small_near = near[::2, ::2]
     sh, sw = small_arr.shape[:2]
+    # 外侧先胀一圈，封住手臂和身体之间那种几像素的缝，免得白衣服被穿过去
+    sealed = dilate(~small_near, 2)
 
     visited = np.zeros((sh, sw), dtype=bool)
     seeds: list[tuple[int, int]] = []
@@ -66,6 +107,8 @@ def flood(arr: np.ndarray, near: np.ndarray, step_tol: int = 10, seed_tol: int =
         for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             ny, nx = y + dy, x + dx
             if not (0 <= ny < sh and 0 <= nx < sw) or visited[ny, nx]:
+                continue
+            if sealed[ny, nx]:
                 continue
             cand = small_arr[ny, nx]
             step = int(np.abs(cand.astype(np.int32) - base.astype(np.int32)).max())
@@ -113,6 +156,12 @@ def largest_blob(foreground: np.ndarray) -> np.ndarray:
     return np.asarray(up) > 127
 
 
+def is_chroma(bg: np.ndarray) -> bool:
+    """绿幕判断：绿色明显压过红蓝。"""
+    r, g, b = (float(v) for v in bg)
+    return g > 120 and g - max(r, b) > 45
+
+
 def cutout(path: str, out_path: str | None = None, tol: int = 32, feather: float = 1.0) -> str:
     img = Image.open(path).convert("RGB")
     w, h = img.size
@@ -120,18 +169,30 @@ def cutout(path: str, out_path: str | None = None, tol: int = 32, feather: float
     bg = background_color(arr)
 
     dist = np.sqrt(((arr - bg) ** 2).sum(axis=2))
-    near = dist < tol
 
-    # 漫水两段：先按“接近背景色”铺一遍，再沿着平坦色块往外扩（有的图背景带色块）
-    background = flood(arr, near, step_tol=10, seed_tol=48)
-    # 前景只留最大连通块：背景里漂着的色块（黄块、灰条）会被一起丢掉
-    subject = largest_blob(~background)
-    background = ~subject
+    if is_chroma(bg):
+        # 绿幕：直接按颜色距离抠，闭口袋里的绿也能去掉，不依赖连通性
+        background = dist < 78
+        # 边缘那圈会残留一点绿，做一次轻微收缩
+        background = dilate(background, 1)
+        subject = largest_blob(~background)
+        background = ~subject
+    else:
+        near = dist < 38
+        background = flood(arr, near, step_tol=10, seed_tol=52)
+        subject = largest_blob(~background)
+        background = ~subject
 
     alpha = np.where(background, 0, 255).astype(np.uint8)
     out = Image.fromarray(np.dstack([np.asarray(img), alpha]), mode="RGBA")
     if feather > 0:
         out.putalpha(out.getchannel("A").filter(ImageFilter.GaussianBlur(feather)))
+
+    # 绿边压一下：把靠近边缘的像素里偏绿的分量拉回来
+    rgb = np.asarray(out.convert("RGB")).astype(np.float32)
+    edge = np.asarray(out.getchannel("A")) < 200
+    rgb[edge, 1] = np.minimum(rgb[edge, 1], (rgb[edge, 0] + rgb[edge, 2]) / 2 + 8)
+    out = Image.fromarray(np.dstack([rgb.astype(np.uint8), np.asarray(out.getchannel("A"))]), mode="RGBA")
 
     bbox = out.getbbox()
     if bbox:
@@ -143,7 +204,8 @@ def cutout(path: str, out_path: str | None = None, tol: int = 32, feather: float
 
     dest = out_path or path.replace(".png", "_cut.png")
     out.save(dest)
-    print(f"[cut] {os.path.basename(path)} -> {os.path.basename(dest)}  背景 {tuple(int(v) for v in bg)}  主体 {100 * (1 - background.mean()):.0f}%")
+    mode = "绿幕" if is_chroma(bg) else "纯色"
+    print(f"[cut] {os.path.basename(path)} -> {os.path.basename(dest)}  {mode} {tuple(int(v) for v in bg)}  主体 {100 * (1 - background.mean()):.0f}%")
     return dest
 
 
