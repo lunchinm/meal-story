@@ -229,7 +229,18 @@ async function main() {
       await click(cdp, '.food:nth-child(5)', '豆腐');
       await click(cdp, '.food:nth-child(7)', '番茄炒蛋');
       await click(cdp, '.board-foot .btn-primary', '提交');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '过关对白');
+      await waitFor(cdp, `!!document.querySelector('.record')`, '记录关');
+    }]);
+
+    steps.push(['第二章：全天记录关', async () => {
+      await goto(cdp, 'a2-rv');
+      await waitFor(cdp, `!!document.querySelector('.record')`, '记录关');
+      const cards = await cdp.eval(`document.querySelectorAll('.record').length`);
+      assert(cards === 3, `记录卡数量不对：${cards}`);
+      await shoot(cdp, '05b-records');
+      await click(cdp, '.record:nth-child(3)', '晚餐');
+      await click(cdp, '.board-foot .btn-primary', '就改这一餐');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '记录关过关');
     }]);
 
     steps.push(['第三章：同类对比', async () => {

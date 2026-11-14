@@ -205,6 +205,36 @@
    "missing": "还缺一份{category}，给它留个位置",
    "other": "同类选得有点多，换一道别的类别试试"
   },
+  "next": "a2-rv"
+ },
+ {
+  "id": "a2-rv",
+  "type": "review",
+  "prompt": "他这一天的三份记录，哪一餐最该先改？",
+  "hint": "先看哪一餐缺蔬菜，再看哪一餐是天天都这样的。",
+  "options": [
+   {
+    "id": "r_break",
+    "label": "早餐",
+    "detail": "两个包子、一杯豆浆。\n七点出门，路上吃完。",
+    "correct": false,
+    "reason": "早餐确实简单，但他天天如此的是晚餐，改那一餐更值。"
+   },
+   {
+    "id": "r_lunch",
+    "label": "午餐",
+    "detail": "米饭、土豆丝、一份肉菜。\n就是刚才你替他配的那盘。",
+    "correct": false,
+    "reason": "午餐刚配过，再看看别的。"
+   },
+   {
+    "id": "r_dinner",
+    "label": "晚餐",
+    "detail": "一碗面、一根火腿肠。\n自习到十点，几乎每天如此。",
+    "correct": true,
+    "reason": "晚餐天天如此又缺蔬菜，先改它最划算。"
+   }
+  ],
   "next": "a2-17"
  },
  {
