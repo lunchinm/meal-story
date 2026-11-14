@@ -31,6 +31,18 @@ const PROP_LABEL: Record<string, string> = {
 export class Stage {
   private chatSeg = -1;
   private chatLog: { speaker: string; text: string }[] = [];
+  private chatActive = false;
+  private lastWasChat = false;
+
+  /** 当前是否在群聊段落，选项后续对白要沿用气泡 */
+  inChat(): boolean {
+    return this.chatActive;
+  }
+
+  /** 当前群聊段号，用来把后续消息接在同一段里 */
+  chatSegId(): number {
+    return this.chatSeg;
+  }
   readonly root: HTMLDivElement;
   private readonly bgLayer: HTMLDivElement;
   private readonly bgImage: HTMLDivElement;
@@ -102,7 +114,7 @@ export class Stage {
       h('div', 'title-kicker', '“合理膳食 · 免疫基石”创意宣传大赛'),
       h('div', 'title-name', '今天吃什么？'),
       h('div', 'title-sub', '校园膳食调查簿'),
-      h('div', 'title-meta', '8—12 分钟 ｜ 对话 + 配餐 + 看标签'),
+      h('div', 'title-meta', '四章 · 约 30—40 分钟 ｜ 对话 + 配餐 + 看标签'),
     );
 
     const actions = h('div', 'title-actions');
@@ -121,29 +133,44 @@ export class Stage {
   /* ---------- 对话 ---------- */
 
 
-  /** 群聊：手机界面 + 消息气泡，攒在同一段里 */
+  /** 群聊：固定高度的手机界面，新消息自动落底 */
   private sayChat(node: SayNode, onNext: () => void): void {
     const seg = (node as unknown as { seg?: number }).seg ?? 0;
-    if (seg !== this.chatSeg) {
+    const newThread = !this.lastWasChat || seg !== this.chatSeg;
+    if (newThread) {
       this.chatSeg = seg;
       this.chatLog = [];
     }
+    this.lastWasChat = true;
     this.chatLog.push({ speaker: node.speaker ?? '旁白', text: node.text });
+    this.chatActive = true;
 
-    const phone = h('div', 'phone enter');
-    const head = h('div', 'phone-head');
-    head.append(h('div', 'phone-title', '今天吃什么'), h('div', 'phone-sub', '群聊 · 5 人'));
-    const body = h('div', 'phone-body');
-    for (const msg of this.chatLog) {
-      const row = h('div', msg.speaker === '你' ? 'msg me' : 'msg');
-      if (msg.speaker !== '你') row.append(h('div', 'msg-name', msg.speaker));
-      const bubble = h('div', 'msg-text', msg.text);
-      row.append(bubble);
-      body.append(row);
+    let phone = this.uiLayer.querySelector('.phone') as HTMLElement | null;
+    let body: HTMLElement;
+    const fresh = !phone;
+    if (!phone) {
+      phone = h('div', 'phone enter');
+      const head = h('div', 'phone-head');
+      head.append(h('div', 'phone-title', '今天吃什么'), h('div', 'phone-sub', '群聊 · 5 人'));
+      body = h('div', 'phone-body');
+      phone.append(head, body);
+      this.uiLayer.append(phone);
+      // 重建时把这段的历史消息一起画出来
+      for (const old of this.chatLog.slice(0, -1)) {
+        const past = h('div', old.speaker === '你' ? 'msg me' : 'msg');
+        if (old.speaker !== '你') past.append(h('div', 'msg-name', old.speaker));
+        past.append(h('div', 'msg-text', old.text));
+        body.append(past);
+      }
+    } else {
+      body = phone.querySelector('.phone-body') as HTMLElement;
+      phone.querySelector('.phone-choices')?.remove();
     }
-    body.scrollTop = body.scrollHeight;
-    phone.append(head, body);
 
+    const msg = this.chatLog[this.chatLog.length - 1];
+    const row = h('div', msg.speaker === '你' ? 'msg me enter' : 'msg enter');
+    if (msg.speaker !== '你') row.append(h('div', 'msg-name', msg.speaker));
+    row.append(h('div', 'msg-text', msg.text));
     if (node.prop) {
       const chip = h('button', 'msg-chip');
       chip.insertAdjacentHTML('beforeend', `${icon('card')}<span>${PROP_LABEL[node.prop] ?? '看一眼'}</span>`);
@@ -151,9 +178,12 @@ export class Stage {
         event.stopPropagation();
         this.showProp(node.prop as PropId);
       });
-      body.lastElementChild?.append(chip);
+      row.append(chip);
     }
-    this.uiLayer.append(phone);
+    body.append(row);
+    while (body.children.length > 60) body.firstElementChild?.remove();
+    if (fresh) body.scrollTop = body.scrollHeight;
+    else this.scrollChatToBottom(body);
 
     play('page');
     const handler = () => {
@@ -163,6 +193,15 @@ export class Stage {
     };
     this.advanceHandler = handler;
     this.uiLayer.addEventListener('click', handler, { once: true });
+  }
+
+  /** 只有本来就在底部时才跟着滚，玩家上翻不打断 */
+  private scrollChatToBottom(body: HTMLElement): void {
+    const nearBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 120;
+    if (!nearBottom) return;
+    requestAnimationFrame(() => {
+      body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
+    });
   }
 
   say(node: SayNode, onNext: () => void): void {
@@ -176,6 +215,8 @@ export class Stage {
     }
     this.chatSeg = -1;
     this.chatLog = [];
+    this.chatActive = false;
+    this.lastWasChat = false;
 
     const box = h('div', 'dialog enter');
     if (node.speaker) box.append(h('div', 'speaker', node.speaker));
@@ -265,10 +306,46 @@ export class Stage {
 
   /* ---------- 选项 ---------- */
 
+  /** 群聊里的选项：做成底部快捷回复条 */
+  private chatChoices(node: ChoiceNode, onPick: (index: number) => void): void {
+    const phone = this.uiLayer.querySelector('.phone') as HTMLElement | null;
+    if (!phone) {
+      this.chatActive = false;
+      this.choices(node, onPick);
+      return;
+    }
+    const bar = h('div', 'phone-choices enter');
+    if (node.question) bar.append(h('div', 'phone-choices-q', node.question));
+    node.options.forEach((opt, i) => {
+      const btn = h('button', 'quick', opt.text);
+      btn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        play('page');
+        // 先把玩家这句话发出去，再交给上层播后续
+        const body = phone.querySelector('.phone-body') as HTMLElement;
+        const row = h('div', 'msg me enter');
+        row.append(h('div', 'msg-text', opt.text));
+        body.append(row);
+        this.scrollChatToBottom(body);
+        bar.remove();
+        this.lastWasChat = true;
+        window.setTimeout(() => onPick(i), 220);
+      });
+      bar.append(btn);
+    });
+    phone.append(bar);
+    const body = phone.querySelector('.phone-body') as HTMLElement | null;
+    if (body) this.scrollChatToBottom(body);
+  }
+
   choices(node: ChoiceNode, onPick: (index: number) => void): void {
-    // 有 reply 的选项，先由调用方决定是否展示，这里只负责按钮
     this.detachAdvance();
+    if (this.chatActive) {
+      this.chatChoices(node, onPick);
+      return;
+    }
     this.uiLayer.innerHTML = '';
+    this.chatActive = false;
     const wrap = h('div', 'choice-panel');
     if (node.question) wrap.append(h('div', 'choice-question', node.question));
     const list = h('div', 'choice-list');

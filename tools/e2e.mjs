@@ -185,6 +185,23 @@ async function main() {
       await shoot(cdp, '01-title');
     }]);
 
+    steps.push(['预览面板能跳关', async () => {
+      await cdp.send('Page.navigate', { url: baseUrl });
+      await sleep(700);
+      await waitFor(cdp, `!!document.querySelector('.preview-entry')`, '预览按钮');
+      await click(cdp, '.preview-entry', '打开预览');
+      await waitFor(cdp, `!!document.querySelector('.preview-panel:not([hidden])')`, '预览面板');
+      const items = await cdp.eval(`document.querySelectorAll('.preview-item').length`);
+      assert(items >= 8, `预览条目太少：${items}`);
+      await shoot(cdp, '01b-preview-panel');
+      await click(cdp, '.preview-item', '跳到第一项');
+      await waitFor(cdp, `!!document.querySelector('.chapter-card, .phone, .dialog')`, '跳转生效');
+      const gone = await cdp.eval(`!document.querySelector('.preview-entry')`);
+      assert(gone, '跳转后预览按钮还留着');
+      await cdp.send('Page.navigate', { url: baseUrl });
+      await sleep(800);
+    }]);
+
     steps.push(['从标题页进入第一章', async () => {
       await click(cdp, '.title-screen .btn-primary', '开始调查');
       await waitFor(cdp, `!!document.querySelector('.chapter-card')`, '章节卡');
@@ -193,6 +210,38 @@ async function main() {
       await click(cdp, '.chapter-card', '跳过章节卡');
       await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '第一章对白');
       await shoot(cdp, '03-first-line');
+    }]);
+
+    steps.push(['群聊面板固定且自动落底', async () => {
+      await goto(cdp, 'a1-00');
+      await waitFor(cdp, `!!document.querySelector('.chapter-card')`, '章节卡');
+      await click(cdp, '.chapter-card', '进第一章');
+      await waitFor(cdp, `!!document.querySelector('.phone')`, '群聊面板');
+      const h1 = await cdp.eval(`Math.round(document.querySelector('.phone').getBoundingClientRect().height)`);
+      for (let i = 0; i < 8; i += 1) await click(cdp, '.phone', `第 ${i + 1} 条`);
+      const h2 = await cdp.eval(`Math.round(document.querySelector('.phone').getBoundingClientRect().height)`);
+      assert(h1 === h2, `面板高度变了：${h1} → ${h2}`);
+      const gap = await cdp.eval(`(() => { const b = document.querySelector('.phone-body');
+        return Math.round(b.scrollHeight - b.scrollTop - b.clientHeight); })()`);
+      assert(gap <= 40, `没有落到最底：还差 ${gap}px`);
+      await shoot(cdp, '13-chat-panel');
+    }]);
+
+    steps.push(['群聊里选项变成底部快捷回复', async () => {
+      for (let i = 0; i < 14 && !(await cdp.eval(`!!document.querySelector('.quick')`)); i += 1) {
+        await click(cdp, '.phone', '推进');
+      }
+      await waitFor(cdp, `!!document.querySelector('.quick')`, '快捷回复');
+      const bar = await cdp.eval(`(() => { const p = document.querySelector('.phone');
+        const q = document.querySelector('.phone-choices');
+        return { inPhone: p.contains(q), count: q.querySelectorAll('.quick').length }; })()`);
+      assert(bar.inPhone, '快捷回复不在聊天面板里');
+      assert(bar.count >= 1, '没有选项');
+      await shoot(cdp, '14-chat-choices');
+      await click(cdp, '.quick', '第一个快捷回复');
+      await sleep(400);
+      const mine = await cdp.eval(`document.querySelectorAll('.msg.me').length`);
+      assert(mine >= 1, '点完没有出现玩家气泡');
     }]);
 
     steps.push(['第一章：图上圈选', async () => {

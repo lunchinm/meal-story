@@ -50,8 +50,8 @@ export interface ChoiceOption {
   text: string;
   next: string;
   flag?: string;
-  /** 选完之后先弹这几句，再回主线 */
-  reply?: string | string[];
+  /** 选完之后先弹这几句，再回主线；可带说话人 */
+  reply?: string | Array<string | { speaker?: string; text: string }>;
   /** 这句由谁说，默认旁白 */
   replySpeaker?: string;
 }

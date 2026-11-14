@@ -36,6 +36,7 @@ function showTitle(): void {
     },
   );
   mountMuteButton();
+  mountPreview();
 }
 
 function restart(): void {
@@ -79,3 +80,93 @@ window.addEventListener('keydown', (event) => {
     (dialog as HTMLElement).click();
   }
 });
+
+/** 预览入口：列出章节、关卡与结局，点了直接跳过去 */
+function mountPreview(): void {
+  const existing = document.getElementById('preview-entry');
+  existing?.remove();
+
+  const entry = document.createElement('button');
+  entry.id = 'preview-entry';
+  entry.className = 'preview-entry';
+  entry.textContent = '预览';
+
+  const panel = document.createElement('div');
+  panel.className = 'preview-panel';
+  panel.hidden = true;
+
+  const title = document.createElement('div');
+  title.className = 'preview-title';
+  title.textContent = '跳到哪一段';
+  panel.append(title);
+
+  const labelOf = (node: AnyNodeLike): string => {
+    if (node.type === 'chapter') return node.title ?? node.id;
+    if (node.type === 'ending') return `结局：${node.title ?? node.id}`;
+    if (node.type === 'plate') return '配餐关';
+    if (node.type === 'evidence') return '证据关';
+    if (node.type === 'compare') return '对比关';
+    if (node.type === 'review') return '记录关';
+    return node.id;
+  };
+
+  const groups: Array<[string, AnyNodeLike[]]> = [
+    ['章节', []],
+    ['关卡', []],
+    ['结局', []],
+  ];
+  for (const [name, nodes] of Object.entries(content.acts)) {
+    void name;
+    for (const node of nodes as AnyNodeLike[]) {
+      if (node.type === 'chapter' || node.type === 'ending') groups[0][1].push(node);
+      else if (['plate', 'evidence', 'compare', 'review'].includes(node.type)) groups[1][1].push(node);
+    }
+  }
+  groups[0][1].sort((a, b) => String(a.id).localeCompare(String(b.id)));
+  groups[1][1].sort((a, b) => String(a.id).localeCompare(String(b.id)));
+  groups[2][1] = groups[0][1].filter((n) => n.type === 'ending');
+  groups[0][1] = groups[0][1].filter((n) => n.type === 'chapter');
+
+  for (const [title2, nodes] of groups) {
+    if (nodes.length === 0) continue;
+    const section = document.createElement('div');
+    section.className = 'preview-group';
+    section.append(Object.assign(document.createElement('div'), { className: 'preview-group-title', textContent: title2 }));
+    for (const node of nodes) {
+      const btn = document.createElement('button');
+      btn.className = 'preview-item';
+      btn.textContent = labelOf(node);
+      btn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        panel.hidden = true;
+        entry.remove();
+        panel.remove();
+        state.reset();
+        runner.start(node.id);
+      });
+      section.append(btn);
+    }
+    panel.append(section);
+  }
+
+  const close = document.createElement('button');
+  close.className = 'preview-close';
+  close.textContent = '收起';
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') panel.hidden = true;
+  });
+  close.addEventListener('click', (event) => {
+    event.stopPropagation();
+    panel.hidden = true;
+  });
+  panel.append(close);
+
+  entry.addEventListener('click', (event) => {
+    event.stopPropagation();
+    panel.hidden = !panel.hidden;
+  });
+
+  host!.append(entry, panel);
+}
+
+type AnyNodeLike = { id: string; type: string; title?: string };

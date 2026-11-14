@@ -107,10 +107,19 @@ export class Runner {
             this.goto(option.next);
             return;
           }
-          const text = replies[cursor];
+          const entry = replies[cursor] as string | { speaker?: string; text: string };
           cursor += 1;
+          const text = typeof entry === 'string' ? entry : entry.text;
+          const speaker = typeof entry === 'string' ? undefined : entry.speaker;
+          const chat = this.stage.inChat();
           this.stage.say(
-            { id: `${node.id}-reply-${index}-${cursor}`, type: 'say', text },
+            {
+              id: `${node.id}-reply-${index}-${cursor}`,
+              type: 'say',
+              speaker,
+              text,
+              ...(chat ? { channel: 'chat' as const, seg: this.stage.chatSegId() } : {}),
+            },
             playNext,
           );
         };
