@@ -95,11 +95,26 @@ export class Runner {
       if (!option) return;
       if (option.flag) state.flags.add(option.flag);
       state.save();
-      if (option.reply) {
-        this.stage.say(
-          { id: `${node.id}-reply-${index}`, type: 'say', speaker: option.replySpeaker ?? '旁白', text: option.reply },
-          () => this.goto(option.next),
-        );
+      const replies = option.reply
+        ? Array.isArray(option.reply)
+          ? option.reply
+          : [option.reply]
+        : [];
+      if (replies.length > 0) {
+        let cursor = 0;
+        const playNext = () => {
+          if (cursor >= replies.length) {
+            this.goto(option.next);
+            return;
+          }
+          const text = replies[cursor];
+          cursor += 1;
+          this.stage.say(
+            { id: `${node.id}-reply-${index}-${cursor}`, type: 'say', text },
+            playNext,
+          );
+        };
+        playNext();
         return;
       }
       this.goto(option.next);
