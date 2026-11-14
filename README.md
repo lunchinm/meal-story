@@ -40,9 +40,12 @@ meal-story/
 │  ├─ act4.json        第四章《你的方案，能坚持吗》+ 三个结局
 │  ├─ cards.json       10 张食物卡（名称、类别、份量、模拟价格）
 │  └─ knowledge.json   知识卡与来源
-├─ assets/             背景 bg/、立绘 ch/、食物卡 food/、音效 sfx/、语音 voice/
+├─ assets/             背景 bg/、立绘 ch/、食物卡 food/、音效 sfx/、语音 voice/、字体 font/
+├─ docs/               素材清单 ASSETS.md、开发计划 ROADMAP.md、文件结构 STRUCTURE.md
 └─ tools/              e2e.mjs 自动化测试
 ```
+
+素材从哪来、用了什么依据，看 [docs/ASSETS.md](docs/ASSETS.md)；接下来要做什么，看 [docs/ROADMAP.md](docs/ROADMAP.md)。
 
 ## 改剧情（写手看这段）
 
