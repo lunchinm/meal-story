@@ -1440,3 +1440,23 @@ body {
 .dialog.has-chip .next-tip {
   right: 168px;
 }
+
+.msg-chip {
+  margin-top: 6px;
+  font: inherit;
+  font-size: 12.5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(35, 48, 42, 0.2);
+  background: #fff;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: flex-start;
+  cursor: pointer;
+}
+
+.msg.me .msg-chip {
+  align-self: flex-end;
+}

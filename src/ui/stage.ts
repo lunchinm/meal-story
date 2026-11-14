@@ -137,11 +137,22 @@ export class Stage {
     for (const msg of this.chatLog) {
       const row = h('div', msg.speaker === '你' ? 'msg me' : 'msg');
       if (msg.speaker !== '你') row.append(h('div', 'msg-name', msg.speaker));
-      row.append(h('div', 'msg-text', msg.text));
+      const bubble = h('div', 'msg-text', msg.text);
+      row.append(bubble);
       body.append(row);
     }
     body.scrollTop = body.scrollHeight;
     phone.append(head, body);
+
+    if (node.prop) {
+      const chip = h('button', 'msg-chip');
+      chip.insertAdjacentHTML('beforeend', `${icon('card')}<span>${PROP_LABEL[node.prop] ?? '看一眼'}</span>`);
+      chip.addEventListener('click', (event) => {
+        event.stopPropagation();
+        this.showProp(node.prop as PropId);
+      });
+      body.lastElementChild?.append(chip);
+    }
     this.uiLayer.append(phone);
 
     play('page');
