@@ -10,84 +10,89 @@
  {
   "id": "a2-01",
   "type": "say",
-  "speaker": "陆燃",
-  "actor": "luran",
-  "text": "我提前了十五分钟。你们再不来，我就要发“十分钟”了。",
+  "speaker": "你",
+  "actor": null,
+  "text": "今天挺早。",
   "scene": "class",
   "seg": 5,
+  "channel": "stage",
   "next": "a2-02"
  },
  {
   "id": "a2-02",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我提前了十五分钟。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-03"
+ },
+ {
+  "id": "a2-03",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "你们再不来，我就要发“十分钟”了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-04"
+ },
+ {
+  "id": "a2-04",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "别发。昨天那条还没完全失去影响。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-03"
- },
- {
-  "id": "a2-03",
-  "type": "say",
-  "speaker": "许知夏",
-  "actor": "zhixia",
-  "text": "时间和大概吃了多少，有补上吗？",
-  "scene": "class",
-  "seg": 5,
-  "next": "a2-04"
- },
- {
-  "id": "a2-04",
-  "type": "say",
-  "speaker": "苏桃",
-  "actor": "sutao",
-  "text": "你早饭的其他照片呢？",
-  "scene": "class",
-  "seg": 5,
+  "channel": "stage",
   "next": "a2-05"
  },
  {
   "id": "a2-05",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "米粒，我们先看看你今天怎么赶的。陆燃，你昨天说要补的表，补好了？",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "别动，拍一张。",
   "scene": "class",
   "seg": 5,
+  "channel": "stage",
   "next": "a2-06"
  },
  {
   "id": "a2-06",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "先看看上课路上能买到什么。",
-    "next": "a2-07"
-   }
-  ]
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "拍我干什么？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-07"
  },
  {
   "id": "a2-07",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "面包＋牛奶＋一份水果",
-    "next": "a2-08",
-    "reply": "这个我能在便利店买齐。"
-   }
-  ]
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "留个记录。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-08"
  },
  {
   "id": "a2-08",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "别为了让记录好看，把加餐偷偷删了。",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我的记录在这里。早饭、午饭、晚饭。",
   "scene": "class",
   "seg": 5,
+  "channel": "stage",
   "next": "a2-09"
  },
  {
@@ -95,85 +100,877 @@
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
-  "text": "放心，我现在连两块饼干都有户口。",
+  "text": "我也拍了。",
   "scene": "class",
   "seg": 5,
+  "channel": "stage",
   "next": "a2-10"
  },
  {
   "id": "a2-10",
   "type": "say",
-  "speaker": "旁白",
-  "text": "米粒：提前确定购买地点和搭配，给赶课日准备备用方案。",
-  "scene": "chat",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "时间和大概吃了多少，有补上吗？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
   "next": "a2-11"
  },
  {
   "id": "a2-11",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "有。午饭吃完了，面汤没喝完。早上的咖啡也喝完了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-12"
+ },
+ {
+  "id": "a2-12",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "你早饭的其他照片呢？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-13"
+ },
+ {
+  "id": "a2-13",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "你已经看完了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-14"
+ },
+ {
+  "id": "a2-14",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "还有两块饼干。包装扔了，我打了字。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-15"
+ },
+ {
+  "id": "a2-15",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "这次确实记得挺全。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-16"
+ },
+ {
+  "id": "a2-16",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "把真实情况记下来就有用了。我们可以一起找找，哪里最容易调整。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-17"
+ },
+ {
+  "id": "a2-17",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "米粒，我们先看看你今天怎么赶的。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-18"
+ },
+ {
+  "id": "a2-18",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "陆燃，你昨天说要补的表，补好了？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-19"
+ },
+ {
+  "id": "a2-19",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "周简，先看看你的账本。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-20"
+ },
+ {
+  "id": "a2-20",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "你们看这个时间，就知道我为什么没去食堂。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-21"
+ },
+ {
+  "id": "a2-21",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "从起床到上课，十八分钟。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-22"
+ },
+ {
+  "id": "a2-22",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "其中还有五分钟在找校园卡。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-23"
+ },
+ {
+  "id": "a2-23",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "你需要的可能先是一个固定放卡的地方。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-24"
+ },
+ {
+  "id": "a2-24",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这个建议已经采纳了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-25"
+ },
+ {
+  "id": "a2-25",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "先看看上课路上能买到什么。",
+    "next": "a2-26",
+    "reply": "先看看上课路上能买到什么。"
+   }
+  ]
+ },
+ {
+  "id": "a2-26",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "有些东西可以前一天就放进包里。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-27"
+ },
+ {
+  "id": "a2-27",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我愿意把早上的工作交给昨晚的我。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-28"
+ },
+ {
+  "id": "a2-28",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "可以先准备按包装要求能常温保存的独立包装面包、未开封常温奶。早上吃饭时再打开。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-29"
+ },
+ {
+  "id": "a2-29",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "水果也可以提前挑好，吃之前处理干净。需要冷藏的食物就按包装要求保存。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-30"
+ },
+ {
+  "id": "a2-30",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我寝室没有冰箱。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-31"
+ },
+ {
+  "id": "a2-31",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那我们就挑符合你保存条件的。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-32"
+ },
+ {
+  "id": "a2-32",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "如果多留十分钟，能去食堂吗？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-33"
+ },
+ {
+  "id": "a2-33",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "有时候可以。星期三早八不太行，路更远。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-34"
+ },
+ {
+  "id": "a2-34",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那普通早八走食堂，星期三留一个便利店方案。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-35"
+ },
+ {
+  "id": "a2-35",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这个我能试。直接让我每天早起半小时，我可能会先把闹钟按掉。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-36"
+ },
+ {
+  "id": "a2-36",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "先定一个能坚持的调整，也给赶时间的日子留后手。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-37"
+ },
+ {
+  "id": "a2-37",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那咖啡还算在早餐里吗？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-38"
+ },
+ {
+  "id": "a2-38",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以记作饮品。不过你这杯是不加糖的美式，提供的能量和其他营养很有限。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-39"
+ },
+ {
+  "id": "a2-39",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "所以我早上真正吃进去的，主要就是那两块饼干。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-40"
+ },
+ {
+  "id": "a2-40",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对。主食、奶蛋豆类等食物，可以让早餐的搭配更充实一些。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-41"
+ },
+ {
+  "id": "a2-41",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "我们先把明早会买的摆出来看看。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-42"
+ },
+ {
+  "id": "a2-42",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "面包＋牛奶＋一份水果",
+    "next": "a2-43",
+    "reply": "这个我能在便利店买齐。"
+   }
+  ]
+ },
+ {
+  "id": "a2-43",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "牛奶和面包我今晚放好，水果明早带。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-44"
+ },
+ {
+  "id": "a2-44",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我明天直接去买，少站在货架前犹豫一轮。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-45"
+ },
+ {
+  "id": "a2-45",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这个食堂最容易买到。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-46"
+ },
+ {
+  "id": "a2-46",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "也能搭配。馒头提供主食，鸡蛋和豆浆可以提供蛋白质。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-47"
+ },
+ {
+  "id": "a2-47",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那我喝豆浆，是不是就不用管奶了？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-48"
+ },
+ {
+  "id": "a2-48",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "普通豆浆和奶的营养构成不一样。比如钙，普通豆浆通常比牛奶少，不能直接按同样一杯来算。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-49"
+ },
+ {
+  "id": "a2-49",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "早餐喜欢豆浆可以保留。其他时间再看看奶或奶制品怎么安排。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-50"
+ },
+ {
+  "id": "a2-50",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那我下午可以买一杯酸奶。我本来就喜欢。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-51"
+ },
+ {
+  "id": "a2-51",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这一套我最熟悉。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-52"
+ },
+ {
+  "id": "a2-52",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以先看看三明治实际有些什么，面包、鸡蛋和蔬菜分别有多少，够不够你吃。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-53"
+ },
+ {
+  "id": "a2-53",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我常买那款有蛋，蔬菜就一片生菜。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-54"
+ },
+ {
+  "id": "a2-54",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那这片生菜先如实记上。午饭、晚饭还得安排蔬菜。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-55"
+ },
+ {
+  "id": "a2-55",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "今天没出现的水果和奶类，也可以放进明天的安排里。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-56"
+ },
+ {
+  "id": "a2-56",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "行。我买完会拆开拍一张，让大家看见那片生菜到底多努力。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-57"
+ },
+ {
+  "id": "a2-57",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这样看起来，我明早知道要去哪里，也知道买什么了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-58"
+ },
+ {
+  "id": "a2-58",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先试一天。吃完后记一下，是否够吃、会不会赶时间。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-59"
+ },
+ {
+  "id": "a2-59",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "如果上午又饿了呢？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-60"
+ },
+ {
+  "id": "a2-60",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以看看早餐的份量是不是合适，也可以安排适量加餐。把实际情况记下来再调整。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-61"
+ },
+ {
+  "id": "a2-61",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "别为了让记录好看，把加餐偷偷删了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-62"
+ },
+ {
+  "id": "a2-62",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "放心，我现在连两块饼干都有户口。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-63"
+ },
+ {
+  "id": "a2-63",
+  "type": "say",
+  "speaker": "旁白",
+  "actor": null,
+  "channel": "stage",
+  "seg": 5,
+  "scene": "class",
+  "text": "米粒：提前确定购买地点和搭配，给赶课日准备备用方案。",
+  "next": "a2-64"
+ },
+ {
+  "id": "a2-64",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "这张构图很稳定。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-12"
+  "channel": "stage",
+  "next": "a2-65"
  },
  {
-  "id": "a2-12",
+  "id": "a2-65",
   "type": "say",
   "speaker": "陆燃",
   "actor": "luran",
   "text": "我特意把盘子拍全了。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-13"
+  "channel": "stage",
+  "next": "a2-66"
  },
  {
-  "id": "a2-13",
+  "id": "a2-66",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "米饭呢？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-67"
+ },
+ {
+  "id": "a2-67",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "晚饭没点。今天训练，我又加了一份鸡肉。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-68"
+ },
+ {
+  "id": "a2-68",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "蛋白质这一栏，我记得很认真。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-69"
+ },
+ {
+  "id": "a2-69",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "看出来了。其他栏也有东西值得聊。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-70"
+ },
+ {
+  "id": "a2-70",
   "type": "choice",
   "question": "接下来怎么做？",
   "options": [
    {
     "text": "先说说，你为什么把晚饭的米饭去掉了？",
-    "next": "a2-14"
+    "next": "a2-71",
+    "reply": "先说说，你为什么把晚饭的米饭去掉了？"
    },
    {
     "text": "把早餐、午餐也放到旁边看看。",
-    "next": "a2-14"
+    "next": "a2-71",
+    "reply": "把早餐、午餐也放到旁边看看。"
    }
   ]
  },
  {
-  "id": "a2-14",
+  "id": "a2-71",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "明天可以换一些，先从最明显的地方调整。你今天训练以后，还吃了别的东西吗？",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "鸡肉的出勤率很高。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-15"
+  "channel": "stage",
+  "next": "a2-72"
  },
  {
-  "id": "a2-15",
+  "id": "a2-72",
   "type": "say",
   "speaker": "陆燃",
   "actor": "luran",
-  "text": "好，今天先把漏掉的栏目补齐。那明天训练日，晚饭怎么点比较顺手？",
+  "text": "这个窗口省事。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-16"
+  "channel": "stage",
+  "next": "a2-73"
  },
  {
-  "id": "a2-16",
+  "id": "a2-73",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "你今天有奶、蛋、肉，也有主食。蔬菜在照片里比较少，水果还没出现。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-74"
+ },
+ {
+  "id": "a2-74",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "这么放在一起，我才发现自己一直在拍同几样东西。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-75"
+ },
+ {
+  "id": "a2-75",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "明天可以换一些，先从最明显的地方调整。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-76"
+ },
+ {
+  "id": "a2-76",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "你今天训练以后，还吃了别的东西吗？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-77"
+ },
+ {
+  "id": "a2-77",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "没有。晚饭就是这两份鸡肉，喝了白水。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-78"
+ },
+ {
+  "id": "a2-78",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那这份记录就比较清楚了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-79"
+ },
+ {
+  "id": "a2-79",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "不过只凭一天的照片，还不能算清你所有营养是否够。可以先看出哪些食物较少，再连续记录几天。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-80"
+ },
+ {
+  "id": "a2-80",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "好，今天先把漏掉的栏目补齐。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-81"
+ },
+ {
+  "id": "a2-81",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "那明天训练日，晚饭怎么点比较顺手？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-82"
+ },
+ {
+  "id": "a2-82",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "明天有鸡肉、豆腐、青菜，还有米饭和蒸红薯。你们正好看。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-83"
+ },
+ {
+  "id": "a2-83",
   "type": "choice",
   "question": "接下来怎么做？",
   "options": [
    {
     "text": "保留鸡肉，恢复米饭，再点一份青菜",
-    "next": "a2-17",
+    "next": "a2-84",
     "reply": "先保留你喜欢的鸡肉，把米饭和青菜安排回来。"
    }
-  ],
+  ]
+ },
+ {
+  "id": "a2-84",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "豆腐也能算进蛋白质来源？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-85"
+ },
+ {
+  "id": "a2-85",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "能。豆腐、豆干这类大豆制品可以提供优质蛋白质。肉、鱼、蛋、奶也各有特点，可以轮换着安排。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-86"
+ },
+ {
+  "id": "a2-86",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "明天午饭如果已经吃了肉，晚饭就多了一个选择。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-87"
+ },
+ {
+  "id": "a2-87",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "那我去试试豆腐。不过我得先看看一份多大。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
   "next": "a2-it"
  },
  {
@@ -218,14 +1015,14 @@
     "label": "早餐",
     "detail": "两个包子、一杯豆浆。\n七点出门，路上吃完。",
     "correct": false,
-    "reason": "早餐确实简单，但他天天如此的是晚餐，改那一餐更值。"
+    "reason": "早餐简单，但他天天如此的是晚餐，改那一餐更值。"
    },
    {
     "id": "r_lunch",
     "label": "午餐",
     "detail": "米饭、土豆丝、一份肉菜。\n就是刚才你替他配的那盘。",
     "correct": false,
-    "reason": "午餐刚配过，再看看别的。"
+    "reason": "午餐刚配过，看看别的。"
    },
    {
     "id": "r_dinner",
@@ -235,208 +1032,1193 @@
     "reason": "晚餐天天如此又缺蔬菜，先改它最划算。"
    }
   ],
-  "next": "a2-17"
+  "next": "a2-88"
  },
  {
-  "id": "a2-17",
+  "id": "a2-88",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "可以，别隔着照片猜。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-89"
+ },
+ {
+  "id": "a2-89",
   "type": "say",
   "speaker": "陆燃",
   "actor": "luran",
-  "text": "豆腐也能算进蛋白质来源？",
+  "text": "红薯我喜欢。那米饭还点吗？",
   "scene": "class",
   "seg": 5,
-  "next": "a2-18"
+  "channel": "stage",
+  "next": "a2-90"
  },
  {
-  "id": "a2-18",
+  "id": "a2-90",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "红薯属于薯类，也能提供主食。可以用它替换一部分米饭，具体看份量和你的需要。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-91"
+ },
+ {
+  "id": "a2-91",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "原来你把米饭拿走以后，主食也可以换个形状回来。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-92"
+ },
+ {
+  "id": "a2-92",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "这个形状我接受。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-93"
+ },
+ {
+  "id": "a2-93",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "青菜我会点。不过大份看着挺多的。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-94"
+ },
+ {
+  "id": "a2-94",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "你今天这几片，也确实很节省画面。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-95"
+ },
+ {
+  "id": "a2-95",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以把蔬菜分到几餐，选你愿意吃的种类。比如青菜、番茄、胡萝卜，轮换着来。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-96"
+ },
+ {
+  "id": "a2-96",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "明天午饭和晚饭各安排一份，先看看实际有多少。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-97"
+ },
+ {
+  "id": "a2-97",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "大概要吃多少？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-98"
+ },
+ {
+  "id": "a2-98",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "一般成人的参考建议是，每天新鲜蔬菜不少于300克，深色蔬菜约占一半。水果每天200到350克。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-99"
+ },
+ {
+  "id": "a2-99",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "这个克数，是端上来的菜连油一起称？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-100"
+ },
+ {
+  "id": "a2-100",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "这里看的是食材可食部分的生重。炒熟以后，重量和体积会变，食堂照片也很难精确算出来。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-101"
+ },
+ {
+  "id": "a2-101",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "你们想知道一份大概用了多少菜，可以来问。我分菜时给你们看一眼。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-102"
+ },
+ {
+  "id": "a2-102",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "实物教学，我支持。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-103",
+  "prop": "tray"
+ },
+ {
+  "id": "a2-103",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "水果我可以训练后路过水果摊时买。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-104"
+ },
+ {
+  "id": "a2-104",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以安排。蔬菜和水果都要照顾到，种类也换着吃。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-105"
+ },
+ {
+  "id": "a2-105",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "不用把所有缺的东西挤到今晚，明天开始好好安排就行。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-106"
+ },
+ {
+  "id": "a2-106",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "那我把记录改一下。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-107"
+ },
+ {
+  "id": "a2-107",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "鸡肉终于有同事了。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-19"
+  "channel": "stage",
+  "next": "a2-108"
  },
  {
-  "id": "a2-19",
+  "id": "a2-108",
   "type": "say",
   "speaker": "陆燃",
   "actor": "luran",
   "text": "你别说，表一下就显得很满。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-20"
+  "channel": "stage",
+  "next": "a2-109"
  },
  {
-  "id": "a2-20",
+  "id": "a2-109",
   "type": "say",
   "speaker": "旁白",
+  "actor": null,
+  "channel": "stage",
+  "seg": 5,
+  "scene": "class",
   "text": "陆燃：记录全天饮食，兼顾主食、蔬果和多种蛋白质来源。",
-  "scene": "chat",
-  "next": "a2-21"
+  "next": "a2-110"
  },
  {
-  "id": "a2-21",
+  "id": "a2-110",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "你这份记录自带审计。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-22"
+  "channel": "stage",
+  "next": "a2-111"
  },
  {
-  "id": "a2-22",
+  "id": "a2-111",
   "type": "say",
   "speaker": "周简",
   "actor": "zhoujian",
-  "text": "消费记录都在手机里，顺手而已。我想先改午饭。明天午饭预算十二元。",
+  "text": "消费记录都在手机里，顺手而已。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-23"
+  "channel": "stage",
+  "next": "a2-112"
  },
  {
-  "id": "a2-23",
+  "id": "a2-112",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我想先改午饭。明天午饭预算十二元。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-113"
+ },
+ {
+  "id": "a2-113",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "有特别想保留的吗？",
   "scene": "class",
   "seg": 5,
-  "next": "a2-24"
+  "channel": "stage",
+  "next": "a2-114"
  },
  {
-  "id": "a2-24",
+  "id": "a2-114",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "得吃得下，买得到，吃完能去上课。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-115"
+ },
+ {
+  "id": "a2-115",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "要求很朴素。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-116"
+ },
+ {
+  "id": "a2-116",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "再加一条，不能最后说“其实再加十块就好了”。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-117"
+ },
+ {
+  "id": "a2-117",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我昨天看到一个套餐，名字叫“五色能量碗”。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-118"
+ },
+ {
+  "id": "a2-118",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "名字我记住了，预算没跟上。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-119"
+ },
+ {
+  "id": "a2-119",
   "type": "choice",
   "question": "接下来怎么做？",
   "options": [
    {
     "text": "看看食堂已有的菜，重新组合。",
-    "next": "a2-25"
+    "next": "a2-120",
+    "reply": "看看食堂已有的菜，重新组合。"
    },
    {
     "text": "问问能不能打小份，多选一种。",
-    "next": "a2-25"
+    "next": "a2-120",
+    "reply": "问问能不能打小份，多选一种。"
    }
   ]
  },
  {
-  "id": "a2-25",
+  "id": "a2-120",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "明天青菜和土豆丝可以打小份，肉菜暂时不拆。别把所有菜都按半价算。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-121"
+ },
+ {
+  "id": "a2-121",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那我们用实际能买到的选项来搭。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-122"
+ },
+ {
+  "id": "a2-122",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "很好，这个计划开始落地了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-123"
+ },
+ {
+  "id": "a2-123",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先看看你现在这份，最值得改哪里。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-124"
+ },
+ {
+  "id": "a2-124",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我当时想的是，有饭、有菜、有蛋。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-125"
+ },
+ {
+  "id": "a2-125",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "土豆的确经常在菜品窗口出现。不过按膳食搭配看，它属于薯类，淀粉比较多，可以用来替换部分主食。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-126"
+ },
+ {
+  "id": "a2-126",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "所以这份土豆丝，不能直接算我已经吃到一份绿叶菜了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-127"
+ },
+ {
+  "id": "a2-127",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对，可以再安排其他蔬菜。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-128"
+ },
+ {
+  "id": "a2-128",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那就围绕这个改，不用整份推倒重来。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-129"
+ },
+ {
+  "id": "a2-129",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "还有一元余量。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-130"
+ },
+ {
+  "id": "a2-130",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "你看起来比刚才放松了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-131"
+ },
+ {
+  "id": "a2-131",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "主食、蔬菜和蛋白质来源都安排到了。豆腐是可以利用的普通食材。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-132"
+ },
+ {
+  "id": "a2-132",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "那豆腐和鸡蛋，今天就先选这两个。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-133"
+ },
+ {
+  "id": "a2-133",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以结合你一天其他餐调整，之后也能换成鱼、肉等不同食物。种类和份量都要看。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-134"
+ },
+ {
+  "id": "a2-134",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "刚好十二。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-135"
+ },
+ {
+  "id": "a2-135",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "这几个都在同一排窗口，买起来也快。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-136"
+ },
+ {
+  "id": "a2-136",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "这个方案保留了你熟悉的荤菜。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-137"
+ },
+ {
+  "id": "a2-137",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "也能作为一个搭配思路。跟刚才豆腐鸡蛋的方案相比，可以结合口味和其他餐次轮换。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-138"
+ },
+ {
+  "id": "a2-138",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "那我不用每天吃同一套。菜单有哪个就换哪个。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-139"
+ },
+ {
+  "id": "a2-139",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我还是有点想留土豆丝。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-140"
+ },
+ {
+  "id": "a2-140",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这才是诚实的点餐。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-141"
+ },
+ {
+  "id": "a2-141",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以保留。土豆能提供淀粉，点的时候把它和米饭一起考虑，调整主食的总量，再配其他蔬菜和蛋类。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-142"
+ },
+ {
+  "id": "a2-142",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "比如米饭少打一点，具体看土豆和米饭各有多少、够不够你吃。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-143"
+ },
+ {
+  "id": "a2-143",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "这样我喜欢的菜也留下了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-144"
+ },
+ {
+  "id": "a2-144",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "如果今天只想吃一点，我就要半份。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-145"
+ },
+ {
+  "id": "a2-145",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "可以，这个窗口能这么打。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-146"
+ },
+ {
+  "id": "a2-146",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "原来十二元里能列出好几种。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-147"
+ },
+ {
+  "id": "a2-147",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "以后遇到售罄，就照这个思路找替换。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-148"
+ },
+ {
+  "id": "a2-148",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "到窗口也看看实际份量。这张表能帮我们选组合，不能单凭价格算出营养够不够。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-149"
+ },
+ {
+  "id": "a2-149",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "午饭安排好了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-150"
+ },
+ {
+  "id": "a2-150",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "再看全天，你今天有豆浆和蛋，奶类、水果还没出现，蔬菜也比较少。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-151"
+ },
+ {
+  "id": "a2-151",
   "type": "say",
   "speaker": "周简",
   "actor": "zhoujian",
   "text": "水果我可以买。奶和豆浆不能直接算同一项，对吧？",
   "scene": "class",
   "seg": 5,
-  "next": "a2-26"
+  "channel": "stage",
+  "next": "a2-152"
  },
  {
-  "id": "a2-26",
+  "id": "a2-152",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "这个我刚问过！普通豆浆的钙通常比奶少。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-27"
+  "channel": "stage",
+  "next": "a2-153"
  },
  {
-  "id": "a2-27",
+  "id": "a2-153",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对，不能简单按同样一杯替换。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-154"
+ },
+ {
+  "id": "a2-154",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "它们都能提供一些蛋白质，不过营养构成不同。比如普通豆浆的钙通常比牛奶少。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-155"
+ },
+ {
+  "id": "a2-155",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "那我得把这些也算进全天预算，不能只把午饭配得好看。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-156"
+ },
+ {
+  "id": "a2-156",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "可以先看看便宜、常买得到的水果，再安排合适的奶或奶制品。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-157"
+ },
+ {
+  "id": "a2-157",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "行，我去看一下价格。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-158"
+ },
+ {
+  "id": "a2-158",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "你会不会顺便做出一张全校水果价格地图？",
   "scene": "class",
   "seg": 5,
-  "next": "a2-28"
+  "channel": "stage",
+  "next": "a2-159"
  },
  {
-  "id": "a2-28",
+  "id": "a2-159",
   "type": "say",
   "speaker": "周简",
   "actor": "zhoujian",
   "text": "样本不够，暂时不能发布。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-29"
+  "channel": "stage",
+  "next": "a2-160"
  },
  {
-  "id": "a2-29",
+  "id": "a2-160",
   "type": "say",
   "speaker": "旁白",
+  "actor": null,
+  "channel": "stage",
+  "seg": 5,
+  "scene": "class",
   "text": "周简：在预算内调整组合，并把午餐放回全天饮食中考虑。",
-  "scene": "chat",
-  "next": "a2-30"
+  "next": "a2-161"
  },
  {
-  "id": "a2-30",
+  "id": "a2-161",
   "type": "say",
   "speaker": "许知夏",
   "actor": "zhixia",
   "text": "你们发现没有，单看一顿饭，有些问题不太明显。把时间、其他餐和份量放进来，就更容易找调整的地方。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-31"
+  "channel": "stage",
+  "next": "a2-162"
  },
  {
-  "id": "a2-31",
+  "id": "a2-162",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "而且大家最需要解决的事还不一样。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-32"
+  "channel": "stage",
+  "next": "a2-163"
  },
  {
-  "id": "a2-32",
+  "id": "a2-163",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我最先要解决的是，早上到底去哪里买、买什么。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-164"
+ },
+ {
+  "id": "a2-164",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "明天少纠结一次，就有希望吃得从容一点。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-165"
+ },
+ {
+  "id": "a2-165",
   "type": "say",
   "speaker": "陆燃",
   "actor": "luran",
   "text": "我之前一直盯着肉和蛋。把照片放一起，才看见蔬菜水果没怎么出现。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-33"
+  "channel": "stage",
+  "next": "a2-166"
  },
  {
-  "id": "a2-33",
+  "id": "a2-166",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "你下次拍照，记得给它们也留位置。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-34"
+  "channel": "stage",
+  "next": "a2-167"
  },
  {
-  "id": "a2-34",
+  "id": "a2-167",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "先让它们真的出现在盘子里。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-168"
+ },
+ {
+  "id": "a2-168",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我先用窗口现有的菜调整，留几套能互换的组合。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-169"
+ },
+ {
+  "id": "a2-169",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "售价十二元以内，选择不止一种。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-170"
+ },
+ {
+  "id": "a2-170",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "还有全天预算。这个我会接着记。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-171"
+ },
+ {
+  "id": "a2-171",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "那我们这样调整，对昨天说的免疫，到底有什么帮助？",
   "scene": "class",
   "seg": 5,
-  "next": "a2-35"
+  "channel": "stage",
+  "next": "a2-172"
  },
  {
-  "id": "a2-35",
+  "id": "a2-172",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "身体维持正常免疫功能，需要充足的能量和多种营养素。主食、肉蛋奶豆、蔬菜水果，各有能提供的东西。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-173"
+ },
+ {
+  "id": "a2-173",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "今天做的这些调整，是让平时的饮食更完整。长期营养不足可能影响正常免疫功能，所以值得把日常吃饭安排好。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-174"
+ },
+ {
+  "id": "a2-174",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "也不能明天多吃一份菜，就说自己免疫力涨了多少。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-175"
+ },
+ {
+  "id": "a2-175",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对。我们可以看的是，计划有没有执行、吃得是否合适、这些习惯能不能持续。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-176"
+ },
+ {
+  "id": "a2-176",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "这个能记录。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-177"
+ },
+ {
+  "id": "a2-177",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那今天先别给我发奖状，等我明天真的吃上早餐。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-178"
+ },
+ {
+  "id": "a2-178",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "明天早上，我问问你早餐安排得怎么样。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-179"
+ },
+ {
+  "id": "a2-179",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "可以。你发“吃上了吗”就行，别发六十秒倒计时。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-180"
+ },
+ {
+  "id": "a2-180",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "收到。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-181"
+ },
+ {
+  "id": "a2-181",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "下次点餐，拍张完整餐盘来看看。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-182"
+ },
+ {
+  "id": "a2-182",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "行。米饭也入镜。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-183"
+ },
+ {
+  "id": "a2-183",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "镜头退远一点，我们要看全景。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-184"
+ },
+ {
+  "id": "a2-184",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我已经学会了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-185"
+ },
+ {
+  "id": "a2-185",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "新组合买完，记一下价格、份量，还有够不够吃。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-186"
+ },
+ {
+  "id": "a2-186",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "没问题。小票和照片一一对应。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-187"
+ },
+ {
+  "id": "a2-187",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "他的记录已经开始领先我们了。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-188"
+ },
+ {
+  "id": "a2-188",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "有需要就继续调整。明天再看实际情况。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-189"
+ },
+ {
+  "id": "a2-189",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "怎么了？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-190"
+ },
+ {
+  "id": "a2-190",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我刚才在记奶制品，发现我上午喝的那瓶，名字里有个“乳”字。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-191"
+ },
+ {
+  "id": "a2-191",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "所以呢？",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-192"
+ },
+ {
+  "id": "a2-192",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "正面说得挺热闹，背面写得很小。",
+  "scene": "class",
+  "seg": 5,
+  "channel": "stage",
+  "next": "a2-193",
+  "prop": "product_front"
+ },
+ {
+  "id": "a2-193",
   "type": "say",
   "speaker": "周简",
   "actor": "zhoujian",
   "text": "终于轮到你的记录了。",
   "scene": "class",
   "seg": 5,
-  "next": "a2-36"
+  "channel": "stage",
+  "next": "a2-194"
  },
  {
-  "id": "a2-36",
+  "id": "a2-194",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "等一下，我先找找“营养成分表”在哪儿。",
   "scene": "class",
   "seg": 5,
-  "next": "e2_end"
+  "channel": "stage",
+  "next": "e2_end",
+  "prop": "nutrition"
  },
  {
   "id": "e2_end",

@@ -15,6 +15,7 @@
   "text": "我的早八已经成为公共资料了？",
   "scene": "class",
   "seg": 14,
+  "channel": "stage",
   "next": "a4-02"
  },
  {
@@ -25,6 +26,7 @@
   "text": "这里只保留吃饭时间和购买地点，其他课程信息可以遮掉。",
   "scene": "class",
   "seg": 14,
+  "channel": "stage",
   "next": "a4-03"
  },
  {
@@ -35,6 +37,7 @@
   "text": "那还行。尤其别把我找校园卡那五分钟印进去。",
   "scene": "class",
   "seg": 14,
+  "channel": "stage",
   "next": "a4-04"
  },
  {
@@ -45,6 +48,7 @@
   "text": "我今天提前到了。",
   "scene": "class",
   "seg": 14,
+  "channel": "stage",
   "next": "a4-05"
  },
  {
@@ -55,26 +59,29 @@
   "text": "我们已经开始接受这个事实了。",
   "scene": "class",
   "seg": 14,
+  "channel": "stage",
   "next": "a4-06"
  },
  {
   "id": "a4-06",
   "type": "say",
-  "speaker": "周简",
-  "actor": "zhoujian",
-  "text": "但里面的信息影响了我们买什么。",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "指南的依据也带来了。我们今天把内容整理好，再看看哪些地方需要实际试一下。",
   "scene": "class",
   "seg": 14,
+  "channel": "stage",
   "next": "a4-07"
  },
  {
   "id": "a4-07",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "先把三件实际能做的事写清楚。",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "封面名字我先留空。等内容定下来再排。",
   "scene": "class",
   "seg": 14,
+  "channel": "stage",
   "next": "a4-08"
  },
  {
@@ -82,9 +89,10 @@
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
-  "text": "这句话没问题。但如果明早我又只有十八分钟呢？",
+  "text": "这个顺序让我想起第一天那张图。",
   "scene": "class",
-  "seg": 15,
+  "seg": 14,
+  "channel": "stage",
   "next": "a4-09"
  },
  {
@@ -92,100 +100,110 @@
   "type": "say",
   "speaker": "你",
   "actor": null,
-  "text": "把在哪里买、什么时候准备写进去。",
+  "text": "我们已经知道，标题能跑得多快了。",
   "scene": "class",
-  "seg": 15,
+  "seg": 14,
+  "channel": "stage",
   "next": "a4-10"
  },
  {
   "id": "a4-10",
   "type": "say",
-  "speaker": "米粒",
-  "actor": "mili",
-  "text": "我这次是直接去便利店拿选好的东西，确实快。",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "这张图的原始出处仍然没核实。效果承诺也没有找到可核实的依据。",
   "scene": "class",
-  "seg": 15,
-  "next": "a4-11"
+  "seg": 14,
+  "channel": "stage",
+  "next": "a4-11",
+  "prop": "poster"
  },
  {
   "id": "a4-11",
   "type": "say",
   "speaker": "你",
   "actor": null,
-  "text": "那就写清楚最近的购买点。再留一个排队太长时的备用方案。",
+  "text": "那就按调查结果写，留在“遇到宣传怎么核实”的例子里。",
   "scene": "class",
-  "seg": 15,
+  "seg": 14,
+  "channel": "stage",
   "next": "a4-12"
  },
  {
   "id": "a4-12",
   "type": "say",
-  "speaker": "米粒",
-  "actor": "mili",
-  "text": "能提前准备的东西，前一晚放好。我前一天准备好了，早上省事。",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我会遮掉无关群聊信息，保留需要讨论的文字。",
   "scene": "class",
-  "seg": 15,
+  "seg": 14,
+  "channel": "stage",
   "next": "a4-13"
  },
  {
   "id": "a4-13",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "把它写成两种可以切换的安排。",
-    "next": "a4-14"
-   }
-  ]
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这张也带来了。",
+  "scene": "class",
+  "seg": 14,
+  "channel": "stage",
+  "next": "a4-14"
  },
  {
   "id": "a4-14",
   "type": "say",
-  "speaker": "许知夏",
-  "actor": "zhixia",
-  "text": "我们也把午饭、晚饭和加餐留在一天的安排里。早餐有了计划，全天仍要一起看。",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "看上去最普通的一张。",
   "scene": "class",
-  "seg": 15,
+  "seg": 14,
+  "channel": "stage",
   "next": "a4-15"
  },
  {
   "id": "a4-15",
   "type": "say",
-  "speaker": "米粒",
-  "actor": "mili",
-  "text": "这张看着有希望执行。",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "但里面的信息影响了我们买什么。",
   "scene": "class",
-  "seg": 15,
+  "seg": 14,
+  "channel": "stage",
   "next": "a4-16"
  },
  {
   "id": "a4-16",
   "type": "say",
-  "speaker": "罗师傅",
-  "actor": "luomaster",
-  "text": "补充一下，明天鸡肉那道暂停一天，有鱼和豆腐。青菜照常供应。",
+  "speaker": "你",
+  "actor": null,
+  "text": "先把三件实际能做的事写清楚。",
   "scene": "class",
-  "seg": 16,
+  "seg": 14,
+  "channel": "stage",
   "next": "a4-17"
  },
  {
   "id": "a4-17",
   "type": "say",
-  "speaker": "周简",
-  "actor": "zhoujian",
-  "text": "刚好。旧方案不能原样用了。",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这句话没问题。但如果明早我又只有十八分钟呢？",
   "scene": "class",
-  "seg": 16,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-18"
  },
  {
   "id": "a4-18",
   "type": "say",
-  "speaker": "陆燃",
-  "actor": "luran",
-  "text": "昨天我才把鸡肉安排明白。",
+  "speaker": "你",
+  "actor": null,
+  "text": "把在哪里买、什么时候准备写进去。",
   "scene": "class",
-  "seg": 16,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-19"
  },
  {
@@ -193,61 +211,65 @@
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
-  "text": "你的菜单开始出现剧情分支了。",
+  "text": "我这次是直接去便利店拿选好的东西，确实快。",
   "scene": "class",
-  "seg": 16,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-20"
  },
  {
   "id": "a4-20",
   "type": "say",
-  "speaker": "周简",
-  "actor": "zhoujian",
-  "text": "午饭预算还是十二元。",
+  "speaker": "你",
+  "actor": null,
+  "text": "那就写清楚最近的购买点。再留一个排队太长时的备用方案。",
   "scene": "class",
-  "seg": 16,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-21"
  },
  {
   "id": "a4-21",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "米饭＋时蔬＋豆腐＋鸡蛋，共11元",
-    "next": "a4-22",
-    "reply": "这个在预算里，也都是明天有的。"
-   }
-  ]
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "能提前准备的东西，前一晚放好。",
+  "scene": "class",
+  "seg": 15,
+  "channel": "stage",
+  "next": "a4-22"
  },
  {
   "id": "a4-22",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
-  "text": "土豆丝成功留在了你的长期规划里。",
+  "text": "我前一天准备好了，早上省事。",
   "scene": "class",
-  "seg": 16,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-23"
  },
  {
   "id": "a4-23",
   "type": "say",
-  "speaker": "周简",
-  "actor": "zhoujian",
-  "text": "喜欢的食物值得认真安排。",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "那保存条件也留一句。能常温保存的按包装要求放，需要冷藏的另外处理。",
   "scene": "class",
-  "seg": 16,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-24"
  },
  {
   "id": "a4-24",
   "type": "say",
-  "speaker": "苏桃",
-  "actor": "sutao",
-  "text": "上午又拍到两盒。想把它们放进指南里，让大家试着看。",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这个要写。我寝室没冰箱，不能看见别人准备什么就原样抄。",
   "scene": "class",
-  "seg": 17,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-25"
  },
  {
@@ -255,9 +277,10 @@
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
-  "text": "B的每100毫升比较多。",
+  "text": "普通早八我能去食堂，最远那间教室的早八就用备用方案。",
   "scene": "class",
-  "seg": 17,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-26"
  },
  {
@@ -265,163 +288,1483 @@
   "type": "say",
   "speaker": "你",
   "actor": null,
-  "text": "但两盒大小不一样。",
+  "text": "那这张卡可以分成两种情况。",
   "scene": "class",
-  "seg": 17,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-27"
  },
  {
   "id": "a4-27",
   "type": "say",
-  "speaker": "苏桃",
-  "actor": "sutao",
-  "text": "对，这次我们已经会先看表头了。",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "对，别把所有早八当成同一个早八。",
   "scene": "class",
-  "seg": 17,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-28"
  },
  {
   "id": "a4-28",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "在图片下面补上每盒的换算。",
-    "next": "a4-29"
-   }
-  ]
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我上课路线旁边有便利店，食堂稍微绕一点，寝室没有冰箱。",
+  "scene": "class",
+  "seg": 15,
+  "channel": "stage",
+  "next": "a4-29"
  },
  {
   "id": "a4-29",
   "type": "say",
-  "speaker": "陆燃",
-  "actor": "luran",
-  "text": "喝完整盒，A这盒反而多一点。",
+  "speaker": "你",
+  "actor": null,
+  "text": "那可以先选好顺路能买的组合，再准备一个符合保存条件的备用方案。",
   "scene": "class",
-  "seg": 17,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-30"
  },
  {
   "id": "a4-30",
   "type": "say",
-  "speaker": "苏桃",
-  "actor": "sutao",
-  "text": "那我配三个动作。",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这个我能试。",
   "scene": "class",
-  "seg": 17,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-31"
  },
  {
   "id": "a4-31",
-  "type": "say",
-  "speaker": "许知夏",
-  "actor": "zhixia",
-  "text": "再保留来源入口，方便想继续看的人查。",
-  "scene": "class",
-  "seg": 17,
-  "next": "a4-32"
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "把它写成两种可以切换的安排。",
+    "next": "a4-32",
+    "reply": "把它写成两种可以切换的安排。"
+   }
+  ]
  },
  {
   "id": "a4-32",
   "type": "say",
-  "speaker": "苏桃",
-  "actor": "sutao",
-  "text": "这里还放得下一张小卡。写什么？",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "再加一句，数量和食物可以按自己的需要调整。",
   "scene": "class",
-  "seg": 18,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-33"
  },
  {
   "id": "a4-33",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "我们要不要先选一个人，看看这份指南对他具体怎么用？",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "还要给自己留出真正吃饭的时间。拿在手上不算已经吃了。",
   "scene": "class",
-  "seg": 18,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-34"
  },
  {
   "id": "a4-34",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "先把适用情况写清楚，再整理通用版本。",
-    "next": "a4-35"
-   }
-  ]
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "这句很有必要。",
+  "scene": "class",
+  "seg": 15,
+  "channel": "stage",
+  "next": "a4-35"
  },
  {
   "id": "a4-35",
   "type": "say",
   "speaker": "你",
   "actor": null,
-  "text": "把之前的回访对象请来，再核对一下条件。明天的课表和购买路线，还是之前那样吗？",
+  "text": "先写一套明天最容易执行的，再附上替换。",
   "scene": "class",
-  "seg": 18,
+  "seg": 15,
+  "channel": "stage",
   "next": "a4-36"
  },
  {
   "id": "a4-36",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "我们也把午饭、晚饭和加餐留在一天的安排里。早餐有了计划，全天仍要一起看。",
+  "scene": "class",
+  "seg": 15,
+  "channel": "stage",
+  "next": "a4-37"
+ },
+ {
+  "id": "a4-37",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这张看着有希望执行。",
+  "scene": "class",
+  "seg": 15,
+  "channel": "stage",
+  "next": "a4-38"
+ },
+ {
+  "id": "a4-38",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "补充一下，明天鸡肉那道暂停一天，有鱼和豆腐。青菜照常供应。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-39"
+ },
+ {
+  "id": "a4-39",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "刚好。旧方案不能原样用了。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-40"
+ },
+ {
+  "id": "a4-40",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "昨天我才把鸡肉安排明白。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-41"
+ },
+ {
+  "id": "a4-41",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "你的菜单开始出现剧情分支了。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-42"
+ },
+ {
+  "id": "a4-42",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "午饭预算还是十二元。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-43"
+ },
+ {
+  "id": "a4-43",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先看看现有东西怎么组合。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-44"
+ },
+ {
+  "id": "a4-44",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "米饭＋时蔬＋豆腐＋鸡蛋，共11元",
+    "next": "a4-45",
+    "reply": "这个在预算里，也都是明天有的。"
+   }
+  ]
+ },
+ {
+  "id": "a4-45",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "这个也一样是十一元。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-46"
+ },
+ {
+  "id": "a4-46",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "可以换成鱼，窗口倒是帮我安排轮换了。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-47"
+ },
+ {
+  "id": "a4-47",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "鱼、肉、蛋、奶、大豆制品都可以成为饮食中的营养来源，具体组合要结合其他餐和供应。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-48"
+ },
+ {
+  "id": "a4-48",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "这张卡上也写明，换菜以后看实际份量。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-49"
+ },
+ {
+  "id": "a4-49",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "把两套都放进去，现场看供应。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-50"
+ },
+ {
+  "id": "a4-50",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "那今天就有两种十一元方案。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-51"
+ },
+ {
+  "id": "a4-51",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以。让使用的人知道，某一道菜售罄后，还能按搭配思路寻找替换。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-52"
+ },
+ {
+  "id": "a4-52",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这个对我很有用。我经常排到前面才发现想吃的卖完了。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-53"
+ },
+ {
+  "id": "a4-53",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "价格我写“示例价格，以窗口当天为准”。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-54"
+ },
+ {
+  "id": "a4-54",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "再加一个提醒，午饭安排好了，也要看看全天有没有遗漏的食物。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-55"
+ },
+ {
+  "id": "a4-55",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对，奶类、水果等也要放在全天安排中考虑。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-56"
+ },
+ {
+  "id": "a4-56",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我还想把喜欢土豆丝那种情况留在旁边。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-57"
+ },
+ {
+  "id": "a4-57",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以。保留薯类时，把它和其他主食的总量一起考虑，也照顾到其他蔬菜。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-58"
+ },
+ {
+  "id": "a4-58",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "土豆丝成功留在了你的长期规划里。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-59"
+ },
+ {
+  "id": "a4-59",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "喜欢的食物值得认真安排。",
+  "scene": "class",
+  "seg": 16,
+  "channel": "stage",
+  "next": "a4-60"
+ },
+ {
+  "id": "a4-60",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "上午又拍到两盒。想把它们放进指南里，让大家试着看。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-61"
+ },
+ {
+  "id": "a4-61",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "B的每100毫升比较多。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-62",
+  "prop": "nutrition"
+ },
+ {
+  "id": "a4-62",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "但两盒大小不一样。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-63"
+ },
+ {
+  "id": "a4-63",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "对，这次我们已经会先看表头了。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-64"
+ },
+ {
+  "id": "a4-64",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "在图片下面补上每盒的换算。",
+    "next": "a4-65"
+   }
+  ]
+ },
+ {
+  "id": "a4-65",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "喝完整盒，A这盒反而多一点。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-66"
+ },
+ {
+  "id": "a4-66",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "这里说的是蛋白质这一项。选产品还要结合其他营养信息、食用量和实际需要。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-67"
+ },
+ {
+  "id": "a4-67",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "价格、能不能按要求保存，也值得看。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-68"
+ },
+ {
+  "id": "a4-68",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先问使用的人，准备一次喝多少。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-69"
+ },
+ {
+  "id": "a4-69",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "如果都喝200毫升，B提供的蛋白质多一些。喝完整盒，就得重新算。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-70"
+ },
+ {
+  "id": "a4-70",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "你已经能替我讲了。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-71"
+ },
+ {
+  "id": "a4-71",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对，这就是为什么比较之前要把单位和实际食用量说清楚。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-72"
+ },
+ {
+  "id": "a4-72",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "指南里可以保留这个例子，但不直接给整种食品贴“最好”的标签。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-73"
+ },
+ {
+  "id": "a4-73",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "那我配三个动作。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-74"
+ },
+ {
+  "id": "a4-74",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "再保留来源入口，方便想继续看的人查。",
+  "scene": "class",
+  "seg": 17,
+  "channel": "stage",
+  "next": "a4-75"
+ },
+ {
+  "id": "a4-75",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这里还放得下一张小卡。写什么？",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-76"
+ },
+ {
+  "id": "a4-76",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "可以写怎么用。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-77"
+ },
+ {
+  "id": "a4-77",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "我们要不要先选一个人，看看这份指南对他具体怎么用？",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-78"
+ },
+ {
+  "id": "a4-78",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "先把适用情况写清楚，再整理通用版本。",
+    "next": "a4-79",
+    "reply": "先把适用情况写清楚，再整理通用版本。"
+   }
+  ]
+ },
+ {
+  "id": "a4-79",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "把之前的回访对象请来，再核对一下条件。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-80"
+ },
+ {
+  "id": "a4-80",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "明天的课表和购买路线，还是之前那样吗？",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-81",
+  "prop": "note"
+ },
+ {
+  "id": "a4-81",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "早上还是要赶课。便利店顺路，食堂稍微绕一点。寝室也还是没有冰箱。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-82"
+ },
+ {
+  "id": "a4-82",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "早餐想保留什么？有没有不方便吃的？",
   "scene": "class",
   "seg": 18,
-  "next": "a4-37"
+  "channel": "stage",
+  "next": "a4-83"
  },
  {
-  "id": "a4-37",
+  "id": "a4-83",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "就按我们之前选的组合。我想要拿得到、来得及坐下吃的，别安排需要我早上现做的。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-84"
+ },
+ {
+  "id": "a4-84",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "明天还是训练日吗？",
   "scene": "class",
   "seg": 18,
-  "next": "a4-38"
+  "channel": "stage",
+  "next": "a4-85"
  },
  {
-  "id": "a4-38",
+  "id": "a4-85",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "下午有训练。午饭能正常去食堂，晚饭时间也来得及。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-86"
+ },
+ {
+  "id": "a4-86",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "目前的食量安排，有什么想调整的？",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-87"
+ },
+ {
+  "id": "a4-87",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我想看窗口实际份量。别人觉得够的一小份，我可能还需要加一点。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-88"
+ },
+ {
+  "id": "a4-88",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "那就把“按自己的需要和活动情况调整”写进你的版本，实际情况继续记录。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-89"
+ },
+ {
+  "id": "a4-89",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "明天午饭预算还是十二元？",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-90"
+ },
+ {
+  "id": "a4-90",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "对。十二元是午饭预算，不是全天伙食费。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-91"
+ },
+ {
+  "id": "a4-91",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "两套替换方案，有哪套不喜欢？",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-92"
+ },
+ {
+  "id": "a4-92",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "都可以。主要是看实际价钱和供应，最好一排窗口能买齐。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-93"
+ },
+ {
+  "id": "a4-93",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "主题说明也一起确认一下。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-94"
+ },
+ {
+  "id": "a4-94",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这样跟第一天那张图就接上了。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-95"
+ },
+ {
+  "id": "a4-95",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我们写的是具体怎么安排，也把适用情况写出来了。",
+  "scene": "class",
+  "seg": 18,
+  "channel": "stage",
+  "next": "a4-96"
+ },
+ {
+  "id": "a4-96",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "最后加上资料来源和更新日期。",
   "scene": "class",
   "seg": 18,
-  "next": "a4-39"
+  "channel": "stage",
+  "next": "a4-97"
  },
  {
-  "id": "a4-39",
+  "id": "a4-97",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "好，排版完成以后我再检查一次，别把来源挤得看不见。",
   "scene": "class",
   "seg": 18,
-  "next": "a4-40"
+  "channel": "stage",
+  "next": "a4-98"
  },
  {
-  "id": "a4-40",
+  "id": "a4-98",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "内容已经核对完了。接下来怎么用？",
   "scene": "class",
   "seg": 19,
-  "next": "a4-41"
+  "channel": "stage",
+  "next": "a4-99"
  },
  {
-  "id": "a4-41",
+  "id": "a4-99",
   "type": "choice",
   "question": "接下来怎么做？",
   "options": [
    {
     "text": "先发出这版通用指南，给大家作参考。",
-    "next": "a4-42"
+    "next": "a4-100",
+    "reply": "先发出这版通用指南，给大家作参考。可以继续收集后续意见。"
    }
-  ],
+  ]
+ },
+ {
+  "id": "a4-100",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "选一个人明天用一下，再看哪里需要调整。",
+  "scene": "class",
+  "seg": 19,
+  "channel": "stage",
+  "next": "a4-101"
+ },
+ {
+  "id": "a4-101",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我可以。",
+  "scene": "class",
+  "seg": 19,
+  "channel": "stage",
+  "next": "a4-102"
+ },
+ {
+  "id": "a4-102",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我也行。",
+  "scene": "class",
+  "seg": 19,
+  "channel": "stage",
+  "next": "a4-103"
+ },
+ {
+  "id": "a4-103",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我愿意提供小票。",
+  "scene": "class",
+  "seg": 19,
+  "channel": "stage",
+  "next": "a4-104"
+ },
+ {
+  "id": "a4-104",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "怎么大家突然都很熟练。",
+  "scene": "class",
+  "seg": 19,
+  "channel": "stage",
+  "next": "a4-105"
+ },
+ {
+  "id": "a4-105",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "记录一下实际吃了什么、买起来方不方便、份量是否合适就可以。",
+  "scene": "class",
+  "seg": 19,
+  "channel": "stage",
+  "next": "a4-106"
+ },
+ {
+  "id": "a4-106",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "明天回来讨论。",
+  "scene": "class",
+  "seg": 19,
+  "channel": "stage",
+  "next": "a4-107"
+ },
+ {
+  "id": "a4-107",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "今天早餐吃上了，不过临时遇到一点情况。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-108"
+ },
+ {
+  "id": "a4-108",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "怎么了？",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-109"
+ },
+ {
+  "id": "a4-109",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "老师让我们提前到教室确认小组汇报顺序，我原来留给吃饭的时间被挤掉了一部分。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-110"
+ },
+ {
+  "id": "a4-110",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我先吃了一部分，课间再把剩下的吃完。实际时间都记了。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-111"
+ },
+ {
+  "id": "a4-111",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那我们看看怎么给这种日子留余地。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-112"
+ },
+ {
+  "id": "a4-112",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "具体是哪一步被挤掉了？我们改一下你的安排。",
+    "next": "a4-113",
+    "reply": "具体是哪一步被挤掉了？是买东西，还是吃饭？"
+   }
+  ]
+ },
+ {
+  "id": "a4-113",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "再根据实际吃的量、饥饿感和后面餐次调整，别为了照着表走，就把没吃完的记录删掉。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-114"
+ },
+ {
+  "id": "a4-114",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "记录保留。我今天最大的发现是，买到早餐以后，还得给它留时间。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-115"
+ },
+ {
+  "id": "a4-115",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那我把赶课路线、可用时段和保存条件一起补进来。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-116"
+ },
+ {
+  "id": "a4-116",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "好，寝室没有冰箱这点也记上。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-117"
+ },
+ {
+  "id": "a4-117",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先把这条经验写进通用指南。除了在哪里买，还要留出实际吃饭的时间。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-118"
+ },
+ {
+  "id": "a4-118",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "对，拿在手上那段不算已经吃了。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-119"
+ },
+ {
+  "id": "a4-119",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "也可以提醒读者，课表变化后重新安排，结合实际食量调整。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-120"
+ },
+ {
+  "id": "a4-120",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这句我会记住。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-121"
+ },
+ {
+  "id": "a4-121",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "今天按组合点了，照片发你。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-122"
+ },
+ {
+  "id": "a4-122",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "这张拍完，我又加了一点米饭，实际记录也补上了。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-123"
+ },
+ {
+  "id": "a4-123",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "你觉得原来的份量不够？",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-124"
+ },
+ {
+  "id": "a4-124",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "窗口默认的份量比我平时吃的少。我开始还在想，既然照着示例买了，是不是就该吃这些。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-125"
+ },
+ {
+  "id": "a4-125",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "我们把实际份量和全天情况补进你的版本。",
+    "next": "a4-126",
+    "reply": "我们把实际份量和全天情况补进你的版本。你今天其他餐和活动怎么安排的？"
+   }
+  ]
+ },
+ {
+  "id": "a4-126",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "训练安排、购买时间和份量需求也一起记上。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-127"
+ },
+ {
+  "id": "a4-127",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "好。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-128"
+ },
+ {
+  "id": "a4-128",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "把“份量需要调整”在通用版里写得更明显。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-129"
+ },
+ {
+  "id": "a4-129",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "对，我一开始看那张照片，以为要照着盘子里的量买。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-130"
+ },
+ {
+  "id": "a4-130",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "那就在图下说明，照片展示的是组合示例，份量需要结合个人情况。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-131"
+ },
+ {
+  "id": "a4-131",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "这样以后看图就不会只盯着“长得一样”。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-132"
+ },
+ {
+  "id": "a4-132",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "买到了，发你今天的小票。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-133"
+ },
+ {
+  "id": "a4-133",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "时蔬今天四元，昨天的菜单上是三元。整套刚好十二元。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-134"
+ },
+ {
+  "id": "a4-134",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "还在预算里。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-135"
+ },
+ {
+  "id": "a4-135",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "对。我先看了新价签才点。幸好没直接照着旧表算。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-136"
+ },
+ {
+  "id": "a4-136",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "我们把当天怎么替换也补进去。",
+    "next": "a4-137",
+    "reply": "我们把当天怎么替换也补进去。万一下一次超过十二元，你会先看什么？"
+   }
+  ]
+ },
+ {
+  "id": "a4-137",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "午饭十二元、尽量在一排窗口买齐，也补上。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-138"
+ },
+ {
+  "id": "a4-138",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "对，别把它写成我全天只有十二元。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-139"
+ },
+ {
+  "id": "a4-139",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "给通用版加上菜单日期和核价提醒。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-140"
+ },
+ {
+  "id": "a4-140",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "好，价格别印得像永远不会变。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-141"
+ },
+ {
+  "id": "a4-141",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "保留示例的搭配思路，再提醒使用者看当日供应。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-142"
+ },
+ {
+  "id": "a4-142",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "这样这张小票也算完成任务了。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-143"
+ },
+ {
+  "id": "a4-143",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "哪一块是蔬菜来着？",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-144"
+ },
+ {
+  "id": "a4-144",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "看来这张图离开我的电脑以后，有了自己的想法。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-145"
+ },
+ {
+  "id": "a4-145",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "找个没看过的人试着读一下，看看哪里容易误解。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-146"
+ },
+ {
+  "id": "a4-146",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "收到，补文字和轮廓。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-147"
+ },
+ {
+  "id": "a4-147",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "关键说明也留在图片附近，截图转发以后还能看见。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-148"
+ },
+ {
+  "id": "a4-148",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这个我们之前也问过。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-149"
+ },
+ {
+  "id": "a4-149",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "烹调会改变重量和体积。食堂照片可以帮助粗略观察，但不能直接精确推算。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-150"
+ },
+ {
+  "id": "a4-150",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "每道菜的原料和做法不一样，盛出来的体积也不同。你们要了解某道菜大概用了多少，可以到窗口问。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-151"
+ },
+ {
+  "id": "a4-151",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "指南里的参考量按食材可食部分生重理解。我们把这句紧挨着数字放。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-152"
+ },
+ {
+  "id": "a4-152",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这句我要直接印出来，不能只藏在点开之后的说明里。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-153"
+ },
+ {
+  "id": "a4-153",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "可以参考搭配思路，再看你们当天供应、份量和自己的需要。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-154"
+ },
+ {
+  "id": "a4-154",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "感觉终于有人能直接用上了。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-155"
+ },
+ {
+  "id": "a4-155",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我的餐盘照片也算有用了。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-156",
+  "prop": "tray"
+ },
+ {
+  "id": "a4-156",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "价钱旁边有日期，满意。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-157"
+ },
+ {
+  "id": "a4-157",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这张背面照片，今天比正面更重要。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-158"
+ },
+ {
+  "id": "a4-158",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "以后用起来遇到问题，还可以继续改。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-159"
+ },
+ {
+  "id": "a4-159",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "今天吃什么？",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
   "next": "a4-it"
  },
  {
@@ -452,149 +1795,512 @@
    "missing": "还差一份{category}",
    "other": "同类选得有点多"
   },
-  "next": "a4-42"
+  "next": "a4-160"
  },
  {
-  "id": "a4-42",
+  "id": "a4-160",
   "type": "say",
   "speaker": "你",
   "actor": null,
-  "text": "选一个人明天用一下，再看哪里需要调整。",
+  "text": "先看看今天有什么。",
   "scene": "class",
-  "seg": 19,
-  "next": "a4-43"
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-161"
  },
  {
-  "id": "a4-43",
+  "id": "a4-161",
   "type": "say",
-  "speaker": "周简",
-  "actor": "zhoujian",
-  "text": "我愿意提供小票。",
+  "speaker": "你",
+  "actor": null,
+  "text": "原来方案写好以后，还能发现这些地方。",
   "scene": "class",
-  "seg": 19,
-  "next": "a4-44"
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-162"
  },
  {
-  "id": "a4-44",
-  "type": "say",
-  "speaker": "苏桃",
-  "actor": "sutao",
-  "text": "怎么大家突然都很熟练。",
-  "scene": "class",
-  "seg": 19,
-  "next": "a4-45"
- },
- {
-  "id": "a4-45",
+  "id": "a4-162",
   "type": "say",
   "speaker": "许知夏",
   "actor": "zhixia",
-  "text": "记录一下实际吃了什么、买起来方不方便、份量是否合适就可以。",
+  "text": "实际用一次，就知道哪些说明需要更清楚。",
   "scene": "class",
-  "seg": 19,
-  "next": "a4-46"
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-163"
  },
  {
-  "id": "a4-46",
+  "id": "a4-163",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
-  "text": "今天早餐吃上了，不过临时遇到一点情况。",
+  "text": "我明天会把吃饭时间也留出来，不能只算走路和排队。",
   "scene": "class",
   "seg": 20,
-  "next": "a4-47"
+  "channel": "stage",
+  "next": "a4-164"
  },
  {
-  "id": "a4-47",
+  "id": "a4-164",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我现在知道看组合，也会看自己实际吃了多少。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-165"
+ },
+ {
+  "id": "a4-165",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "以后菜单换了，我先重新核价，再找能用的组合。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-166"
+ },
+ {
+  "id": "a4-166",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "明天窗口有新的菜，菜单发群里了。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-167"
+ },
+ {
+  "id": "a4-167",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
-  "text": "老师让我们提前到教室确认小组汇报顺序，我原来留给吃饭的时间被挤掉了一部分。",
+  "text": "怎么又换？",
   "scene": "class",
   "seg": 20,
-  "next": "a4-48"
+  "channel": "chat",
+  "next": "a4-168"
  },
  {
-  "id": "a4-48",
+  "id": "a4-168",
   "type": "say",
-  "speaker": "米粒",
-  "actor": "mili",
-  "text": "我先吃了一部分，课间再把剩下的吃完。实际时间都记了。",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "食堂正常更新。",
   "scene": "class",
   "seg": 20,
-  "next": "a4-49"
+  "channel": "chat",
+  "next": "a4-169"
  },
  {
-  "id": "a4-49",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "具体是哪一步被挤掉了？我们改一下你的安排。",
-    "next": "a4-50"
-   }
-  ]
+  "id": "a4-169",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "看看这次能怎么搭。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-170"
  },
  {
-  "id": "a4-50",
+  "id": "a4-170",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "下一次用这套办法，照片应该又会不一样。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "chat",
+  "next": "a4-171"
+ },
+ {
+  "id": "a4-171",
   "type": "say",
   "speaker": "你",
   "actor": null,
-  "text": "你觉得原来的份量不够？",
+  "text": "这一版，把你这次碰到的问题也写进去了。",
   "scene": "class",
   "seg": 20,
-  "next": "a4-51"
+  "channel": "stage",
+  "next": "a4-172"
  },
  {
-  "id": "a4-51",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "我们把实际份量和全天情况补进你的版本。",
-    "next": "a4-52"
-   }
-  ]
- },
- {
-  "id": "a4-52",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "我们把当天怎么替换也补进去。",
-    "next": "a4-53"
-   }
-  ]
- },
- {
-  "id": "a4-53",
+  "id": "a4-172",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
-  "text": "哪一块是蔬菜来着？",
+  "text": "这次连不能用的那节课间都标出来了。",
   "scene": "class",
   "seg": 20,
-  "next": "a4-54"
+  "channel": "stage",
+  "next": "a4-173"
  },
  {
-  "id": "a4-54",
+  "id": "a4-173",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "你自己最清楚什么时候能坐下来吃。下次有变化，再一起改。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-174"
+ },
+ {
+  "id": "a4-174",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "以前别人提醒我吃早餐，我也知道应该吃。真到了早上，还是得现场决定去哪买、什么时候吃。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-175"
+ },
+ {
+  "id": "a4-175",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "现在我不用每天从头想一遍。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-176"
+ },
+ {
+  "id": "a4-176",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "也不用为了配合计划，把实际发生的事从记录里删掉。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-177"
+ },
+ {
+  "id": "a4-177",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那两块饼干可以安心留下了。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-178"
+ },
+ {
+  "id": "a4-178",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我把第二张也留下。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-179"
+ },
+ {
+  "id": "a4-179",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那张更接近你实际吃的情况。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-180"
+ },
+ {
+  "id": "a4-180",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "以前我总想找一个现成答案，写着训练日该吃多少，我照着来就行。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-181"
+ },
+ {
+  "id": "a4-181",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "通用建议能提供方向，具体还要结合你的实际情况。记录会让调整更有依据。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-182"
+ },
+ {
+  "id": "a4-182",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "嗯。我再记几天，看哪些安排真的适合自己。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-183"
+ },
+ {
+  "id": "a4-183",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "这张我留着。刚好多一元，也刚好提醒我看当天价签。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-184"
+ },
+ {
+  "id": "a4-184",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "方案里也写了预算和替换方法，以后再变化，知道先查什么。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-185"
+ },
+ {
+  "id": "a4-185",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "对。而且你问清了十二元是午饭预算，没给我安排成一天三顿。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-186"
+ },
+ {
+  "id": "a4-186",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这个误会听上去会很严重。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-187"
+ },
+ {
+  "id": "a4-187",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "所以问清楚真的省事。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-188"
+ },
+ {
+  "id": "a4-188",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我想给这一页拍张照片。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-189"
+ },
+ {
+  "id": "a4-189",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "拍哪里？",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-190"
+ },
+ {
+  "id": "a4-190",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "条件、原来的安排，还有修改的地方，都拍进去。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-191"
+ },
+ {
+  "id": "a4-191",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这张写的是我们为什么那样买。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-192"
+ },
+ {
+  "id": "a4-192",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这一张，是后来为什么又改了。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-193"
+ },
+ {
+  "id": "a4-193",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这次要把选择的理由也留下。以后回看，才知道这些改动是怎么来的。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-194"
+ },
+ {
+  "id": "a4-194",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "想起最开始，我就是想找一份什么都能替我决定的套餐。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-195"
+ },
+ {
+  "id": "a4-195",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我先看有没有肉。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-196"
+ },
+ {
+  "id": "a4-196",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我找了半天价格。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-197"
+ },
+ {
+  "id": "a4-197",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我看它拍得好不好看。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-198"
+ },
+ {
+  "id": "a4-198",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "这些关注点都可以留下，再把需要的信息补齐。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-199"
+ },
+ {
+  "id": "a4-199",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "知道自己想解决什么，再看看实际能怎么做。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-200"
+ },
+ {
+  "id": "a4-200",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "合理膳食提供多种营养，支持正常免疫功能。我们能做的是把这些知识落实到日常，再根据真实情况调整。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-201"
+ },
+ {
+  "id": "a4-201",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那今天午饭呢？",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-202"
+ },
+ {
+  "id": "a4-202",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "先去窗口看看。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-203"
+ },
+ {
+  "id": "a4-203",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我看一下新价签。",
+  "scene": "class",
+  "seg": 20,
+  "channel": "stage",
+  "next": "a4-204"
+ },
+ {
+  "id": "a4-204",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "等会儿拍照，我这次很快。",
   "scene": "class",
   "seg": 20,
-  "next": "a4-55"
+  "channel": "stage",
+  "next": "a4-205"
  },
  {
-  "id": "a4-55",
+  "id": "a4-205",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "那就走吧。",
   "scene": "class",
   "seg": 20,
+  "channel": "stage",
   "next": "e4_end"
  },
  {
@@ -623,7 +2329,7 @@
   "type": "ending",
   "title": "我会选了",
   "body": [
-   "你把那份套餐的夸大之处一条条拆开了，也给同学留下了能照着做的方案。",
+   "你把那份套餐的夸大之处一条条拆开，也留下了能照着做的方案。",
    "标签那一瓶，你看的是整瓶，不是每 100 毫升。"
   ],
   "action": "明天中午，给自己加一份蔬菜",

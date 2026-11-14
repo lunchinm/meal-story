@@ -81,7 +81,8 @@ export class Runner {
 
   private playSay(node: SayNode): void {
     if (node.scene) this.stage.setScene(node.scene);
-    this.stage.setActor(node.actor, node.expr ?? 'normal');
+    if (node.channel === 'chat') this.stage.setActor(undefined);
+    else this.stage.setActor(node.actor, node.expr ?? 'normal');
     this.stage.say(node, () => {
       if (node.next) this.goto(node.next);
       else this.stage.toast('剧情到这里就断了，检查一下 content 里的 next');

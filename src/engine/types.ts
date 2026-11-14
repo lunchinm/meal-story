@@ -15,6 +15,10 @@ export interface ChapterNode {
 export interface SayNode {
   id: string;
   type: 'say';
+  /** chat＝群聊消息，stage＝当面说话；群聊不出立绘也不配音 */
+  channel?: 'chat' | 'stage';
+  /** 这句台词要展示的道具：标签、便签、菜牌等 */
+  prop?: string;
   speaker?: string;
   text: string;
   scene?: SceneName;

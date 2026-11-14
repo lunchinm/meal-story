@@ -2,6 +2,7 @@ import type { ChoiceNode, EndingNode, KnowledgeCard, SayNode } from '../engine/t
 import { backgrounds, actors } from '../assets';
 import { play, speak, startBgm, stopVoice } from '../audio';
 import { icon } from './icons';
+import { buildProp, type PropId } from './props';
 
 function h<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -18,7 +19,18 @@ function h<K extends keyof HTMLElementTagNameMap>(
  * 所有画面都在这里落 DOM。
  * 剧情只给数据，stage 只负责画和收点击。
  */
+const PROP_LABEL: Record<string, string> = {
+  product_front: '看瓶子正面',
+  product_back: '翻到背面',
+  nutrition: '看营养成分表',
+  note: '看便签',
+  menu: '看菜牌',
+  tray: '看实物',
+};
+
 export class Stage {
+  private chatSeg = -1;
+  private chatLog: { speaker: string; text: string }[] = [];
   readonly root: HTMLDivElement;
   private readonly bgLayer: HTMLDivElement;
   private readonly bgImage: HTMLDivElement;
@@ -108,14 +120,66 @@ export class Stage {
 
   /* ---------- 对话 ---------- */
 
+
+  /** 群聊：手机界面 + 消息气泡，攒在同一段里 */
+  private sayChat(node: SayNode, onNext: () => void): void {
+    const seg = (node as unknown as { seg?: number }).seg ?? 0;
+    if (seg !== this.chatSeg) {
+      this.chatSeg = seg;
+      this.chatLog = [];
+    }
+    this.chatLog.push({ speaker: node.speaker ?? '旁白', text: node.text });
+
+    const phone = h('div', 'phone enter');
+    const head = h('div', 'phone-head');
+    head.append(h('div', 'phone-title', '今天吃什么'), h('div', 'phone-sub', '群聊 · 5 人'));
+    const body = h('div', 'phone-body');
+    for (const msg of this.chatLog) {
+      const row = h('div', msg.speaker === '你' ? 'msg me' : 'msg');
+      if (msg.speaker !== '你') row.append(h('div', 'msg-name', msg.speaker));
+      row.append(h('div', 'msg-text', msg.text));
+      body.append(row);
+    }
+    body.scrollTop = body.scrollHeight;
+    phone.append(head, body);
+    this.uiLayer.append(phone);
+
+    play('page');
+    const handler = () => {
+      this.detachAdvance();
+      play('click');
+      onNext();
+    };
+    this.advanceHandler = handler;
+    this.uiLayer.addEventListener('click', handler, { once: true });
+  }
+
   say(node: SayNode, onNext: () => void): void {
     this.detachAdvance();
     this.uiLayer.innerHTML = '';
     this.overlayLayer.innerHTML = '';
 
+    if (node.channel === 'chat') {
+      this.sayChat(node, onNext);
+      return;
+    }
+    this.chatSeg = -1;
+    this.chatLog = [];
+
     const box = h('div', 'dialog enter');
     if (node.speaker) box.append(h('div', 'speaker', node.speaker));
     box.append(h('div', 'text', node.text));
+
+    if (node.prop) {
+      const chip = h('button', 'card-chip');
+      chip.insertAdjacentHTML('beforeend', `${icon('card')}<span>${PROP_LABEL[node.prop] ?? '看一眼'}</span>`);
+      chip.addEventListener('click', (event) => {
+        event.stopPropagation();
+        this.showProp(node.prop as PropId);
+      });
+      box.append(chip);
+      box.classList.add('has-chip');
+    }
 
     if (node.card) {
       const chip = h('button', 'card-chip');
@@ -169,6 +233,7 @@ export class Stage {
     if (card.source) panel.append(h('div', 'card-source', `依据：${card.source}`));
     const close = h('button', 'btn btn-ghost', '收起');
     panel.append(close);
+    this.overlayLayer.classList.add('on');
     this.overlayLayer.append(panel);
     this.overlayLayer.classList.add('on');
 
@@ -313,5 +378,23 @@ export class Stage {
     this.overlayLayer.innerHTML = '';
     this.overlayLayer.classList.remove('on');
     this.toastLayer.innerHTML = '';
+  }
+
+  private showProp(id: PropId): void {
+    const view = buildProp(id);
+    const panel = h('div', 'prop-panel enter');
+    const head = h('div', 'prop-head');
+    head.append(h('div', 'prop-title', view.title));
+    const close = h('button', 'btn btn-ghost btn-small', '收起');
+    close.addEventListener('click', (event) => {
+      event.stopPropagation();
+      panel.remove();
+      if (!this.overlayLayer.children.length) this.overlayLayer.classList.remove('on');
+    });
+    head.append(close);
+    panel.append(head, view.body);
+    panel.addEventListener('click', (event) => event.stopPropagation());
+    this.overlayLayer.classList.add('on');
+    this.overlayLayer.append(panel);
   }
 }

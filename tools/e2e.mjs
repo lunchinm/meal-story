@@ -191,7 +191,7 @@ async function main() {
       assert((await text(cdp, '.chapter-title')).includes('第一章'), '第一章章节卡不对');
       await shoot(cdp, '02-chapter1');
       await click(cdp, '.chapter-card', '跳过章节卡');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '第一章对白');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '第一章对白');
       await shoot(cdp, '03-first-line');
     }]);
 
@@ -208,7 +208,7 @@ async function main() {
       await click(cdp, '.poster-copy .spot:nth-child(2)', '取消价格');
       await click(cdp, '.poster-copy .spot:nth-child(3)', '免疫力拉满');
       await click(cdp, '.board-foot .btn-primary', '确定');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '过关对白');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
     }]);
 
     steps.push(['第二章：配餐关', async () => {
@@ -240,7 +240,7 @@ async function main() {
       await shoot(cdp, '05b-records');
       await click(cdp, '.record:nth-child(3)', '晚餐');
       await click(cdp, '.board-foot .btn-primary', '就改这一餐');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '记录关过关');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '记录关过关');
     }]);
 
     steps.push(['第三章：同类对比', async () => {
@@ -253,7 +253,7 @@ async function main() {
       assert(back.includes('100'), `背面没有单位信息：${back.slice(0, 40)}`);
       await click(cdp, '.offer:nth-child(1)', '选柠檬茶');
       await click(cdp, '.board-foot .btn-primary', '选它');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '过关对白');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
     }]);
 
     steps.push(['第四章：早餐关与结局', async () => {
@@ -263,7 +263,19 @@ async function main() {
       await click(cdp, '.food:nth-child(3)', '鸡蛋');
       await click(cdp, '.food:nth-child(4)', '牛奶');
       await click(cdp, '.board-foot .btn-primary', '提交');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text')`, '过关对白');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
+    }]);
+
+    steps.push(['道具面板能开能收', async () => {
+      await goto(cdp, 'a3-06');
+      await waitFor(cdp, `!!document.querySelector('.card-chip')`, '道具按钮');
+      await click(cdp, '.dialog .card-chip', '翻到背面');
+      await waitFor(cdp, `!!document.querySelector('.prop-panel')`, '道具面板');
+      const title = await text(cdp, '.prop-title');
+      assert(title.length > 0, '道具面板没有标题');
+      await shoot(cdp, '11-prop-panel');
+      await click(cdp, '.prop-head .btn', '收起');
+      await waitFor(cdp, `!document.querySelector('.prop-panel')`, '面板收起');
     }]);
 
     steps.push(['三个结局都能跑', async () => {

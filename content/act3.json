@@ -15,6 +15,7 @@
   "text": "你在给它找角度？",
   "scene": "class",
   "seg": 6,
+  "channel": "stage",
   "next": "a3-02"
  },
  {
@@ -22,110 +23,123 @@
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
-  "text": "找字。这个位置刚好反光。我一直把它记在奶那一栏。",
+  "text": "找字。这个位置刚好反光。",
   "scene": "class",
   "seg": 6,
+  "channel": "stage",
   "next": "a3-03"
  },
  {
   "id": "a3-03",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我一直把它记在奶那一栏。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-04"
+ },
+ {
+  "id": "a3-04",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "先看看它具体是什么。",
   "scene": "class",
   "seg": 6,
-  "next": "a3-04"
+  "channel": "stage",
+  "next": "a3-05"
  },
  {
-  "id": "a3-04",
+  "id": "a3-05",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "正面有一头奶牛，还有一大杯白色的东西。",
   "scene": "class",
   "seg": 6,
-  "next": "a3-05"
- },
- {
-  "id": "a3-05",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "你买它的时候，主要想喝奶吗？",
-    "next": "a3-06"
-   }
-  ]
+  "channel": "stage",
+  "next": "a3-06",
+  "prop": "product_front"
  },
  {
   "id": "a3-06",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "你是因为喜欢它的味道才买的？",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "看一下产品名称、配料表，再和奶的营养成分比较一下，会更清楚。",
   "scene": "class",
   "seg": 6,
-  "next": "a3-07"
+  "channel": "stage",
+  "next": "a3-07",
+  "prop": "product_back"
  },
  {
   "id": "a3-07",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "群里说是下午碰面，三点半。",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "等我拍下来。",
   "scene": "class",
   "seg": 6,
+  "channel": "stage",
   "next": "a3-08"
  },
  {
   "id": "a3-08",
   "type": "say",
-  "speaker": "陆燃",
-  "actor": "luran",
-  "text": "我提前到。这次我不说几分钟了。",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "第一次见你拍瓶子背面。",
   "scene": "class",
   "seg": 6,
+  "channel": "stage",
   "next": "a3-09"
  },
  {
   "id": "a3-09",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "今天早餐安排得怎么样？",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "今天正面已经出过镜了，给背面一个机会。",
   "scene": "class",
-  "seg": 7,
+  "seg": 6,
+  "channel": "stage",
   "next": "a3-10"
  },
  {
   "id": "a3-10",
-  "type": "say",
-  "speaker": "米粒",
-  "actor": "mili",
-  "text": "吃上了。这次照片里有完整的食物。我直接去便利店拿昨天选好的，没站在货架前想半天。",
-  "scene": "class",
-  "seg": 7,
-  "next": "a3-11"
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "你买它的时候，主要想喝奶吗？",
+    "next": "a3-11",
+    "reply": "你买它的时候，主要想喝奶吗？"
+   }
+  ]
  },
  {
   "id": "a3-11",
   "type": "say",
   "speaker": "你",
   "actor": null,
-  "text": "来得及吃吗？份量感觉怎么样？",
+  "text": "你是因为喜欢它的味道才买的？",
   "scene": "class",
-  "seg": 7,
+  "seg": 6,
+  "channel": "stage",
   "next": "a3-12"
  },
  {
   "id": "a3-12",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "今天准备怎么点餐？",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "嗯，桃子味，我挺喜欢。",
   "scene": "class",
-  "seg": 7,
+  "seg": 6,
+  "channel": "stage",
   "next": "a3-13"
  },
  {
@@ -133,109 +147,827 @@
   "type": "say",
   "speaker": "你",
   "actor": null,
-  "text": "新组合买到了吗？",
+  "text": "那把它按实际类别记成饮料。奶类再另外安排。",
   "scene": "class",
-  "seg": 7,
+  "seg": 6,
+  "channel": "stage",
   "next": "a3-14"
  },
  {
   "id": "a3-14",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对，先弄清它是什么，再考虑喝多少、放在哪一餐。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-15"
+ },
+ {
+  "id": "a3-15",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我之前是喝了一瓶饮料，顺便给自己的奶类记录盖了章。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-16"
+ },
+ {
+  "id": "a3-16",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先找一盒普通牛奶，对着看看。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-17"
+ },
+ {
+  "id": "a3-17",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "目前桌上没有这个证据。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-18"
+ },
+ {
+  "id": "a3-18",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "明天去便利店，我知道在哪排。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-19"
+ },
+ {
+  "id": "a3-19",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "可以。比较时先把“每100毫升”这一栏对齐。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-20",
+  "prop": "nutrition"
+ },
+ {
+  "id": "a3-20",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "别拿一瓶和一口比。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-21"
+ },
+ {
+  "id": "a3-21",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "那明天去一趟。顺便给科普小组买点开会吃的东西。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-22"
+ },
+ {
+  "id": "a3-22",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "群里说是下午碰面，三点半。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-23"
+ },
+ {
+  "id": "a3-23",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我列预算。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-24"
+ },
+ {
+  "id": "a3-24",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我负责带杯子。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-25"
+ },
+ {
+  "id": "a3-25",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我提前到。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-26"
+ },
+ {
+  "id": "a3-26",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "这次我不说几分钟了。",
+  "scene": "class",
+  "seg": 6,
+  "channel": "stage",
+  "next": "a3-27"
+ },
+ {
+  "id": "a3-27",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "今天早餐安排得怎么样？",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-28"
+ },
+ {
+  "id": "a3-28",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "吃上了。这次照片里有完整的食物。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-29"
+ },
+ {
+  "id": "a3-29",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我直接去便利店拿昨天选好的，没站在货架前想半天。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-30"
+ },
+ {
+  "id": "a3-30",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "昨晚把能按包装要求常温保存的东西准备好了，早上拿起来就走。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-31"
+ },
+ {
+  "id": "a3-31",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "今天食堂排队不长。星期三赶课那天，我就用备用方案。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-32"
+ },
+ {
+  "id": "a3-32",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "来得及吃吗？份量感觉怎么样？",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-33"
+ },
+ {
+  "id": "a3-33",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "来得及。先这样试几天，有不合适的再改。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-34"
+ },
+ {
+  "id": "a3-34",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "好，记下实际情况就行。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-35"
+ },
+ {
+  "id": "a3-35",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "酸奶我下午再看看，已经记在便签上了。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-36",
+  "prop": "note"
+ },
+ {
+  "id": "a3-36",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "今天准备怎么点餐？",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-37"
+ },
+ {
+  "id": "a3-37",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "午饭正好用上昨天的方案，晚饭再按今天实际情况调整。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-38"
+ },
+ {
+  "id": "a3-38",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "鸡肉、米饭、青菜都点了。份量到窗口看着打。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-39"
+ },
+ {
+  "id": "a3-39",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "今天豆腐有，我点了米饭、豆腐和青菜。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-40"
+ },
+ {
+  "id": "a3-40",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "有蒸红薯。我买了一个，米饭相应少打一点，也点了鸡肉和蔬菜。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-41"
+ },
+ {
+  "id": "a3-41",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "镜头终于拍到了盘子边缘。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-42"
+ },
+ {
+  "id": "a3-42",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我专门站远了半步。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-43"
+ },
+ {
+  "id": "a3-43",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "这张记录清楚多了，吃完也记一下实际吃了多少。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-44"
+ },
+ {
+  "id": "a3-44",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "好。现在先吃，拍摄工作结束。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-45"
+ },
+ {
+  "id": "a3-45",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "新组合买到了吗？",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-46"
+ },
+ {
+  "id": "a3-46",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "买到了，价格和菜单一致。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-47"
+ },
+ {
+  "id": "a3-47",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "份量呢？",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-48"
+ },
+ {
+  "id": "a3-48",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我拍了，吃完再记够不够。省下的钱也不会自动变成奶茶预算。",
+  "scene": "class",
+  "seg": 7,
+  "channel": "stage",
+  "next": "a3-49"
+ },
+ {
+  "id": "a3-49",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "你为什么看起来像在提前回答我？",
   "scene": "class",
   "seg": 7,
-  "next": "a3-15"
+  "channel": "stage",
+  "next": "a3-50"
  },
  {
-  "id": "a3-15",
+  "id": "a3-50",
   "type": "say",
   "speaker": "周简",
   "actor": "zhoujian",
   "text": "因为我了解这个群。",
   "scene": "class",
   "seg": 7,
-  "next": "a3-16"
+  "channel": "stage",
+  "next": "a3-51"
  },
  {
-  "id": "a3-16",
+  "id": "a3-51",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "今天给它们拍合照。",
   "scene": "class",
   "seg": 8,
-  "next": "a3-17"
+  "channel": "stage",
+  "next": "a3-52"
  },
  {
-  "id": "a3-17",
+  "id": "a3-52",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "背面朝前。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-53"
+ },
+ {
+  "id": "a3-53",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "知道了，摄影要求已经变了。",
   "scene": "class",
   "seg": 8,
-  "next": "a3-18"
+  "channel": "stage",
+  "next": "a3-54"
  },
  {
-  "id": "a3-18",
+  "id": "a3-54",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "一个写灭菌乳，一个写含乳饮料。",
   "scene": "class",
   "seg": 8,
-  "next": "a3-19"
+  "channel": "stage",
+  "next": "a3-55"
  },
  {
-  "id": "a3-19",
+  "id": "a3-55",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "正面都有奶牛，背面分得倒很清楚。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-56"
+ },
+ {
+  "id": "a3-56",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "产品名称和类型能帮助我们确认买的是什么。包装图案只能提供一部分印象。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-57"
+ },
+ {
+  "id": "a3-57",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我以后先找这一行。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-58"
+ },
+ {
+  "id": "a3-58",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "这盒纯牛奶的配料是生牛乳。饮料这边先写了水。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-59"
+ },
+ {
+  "id": "a3-59",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "排在前面的，一般是放得更多的？",
   "scene": "class",
   "seg": 8,
-  "next": "a3-20"
+  "channel": "stage",
+  "next": "a3-60"
  },
  {
-  "id": "a3-20",
+  "id": "a3-60",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "通常按生产时加入量从多到少排列。不过少量配料有排列例外，不能光靠位置算出准确百分比。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-61"
+ },
+ {
+  "id": "a3-61",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "所以可以看主要用了什么，不能自己给它编比例。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-62"
+ },
+ {
+  "id": "a3-62",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-63"
+ },
+ {
+  "id": "a3-63",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "两份都写每100毫升，可以直接对比这一行。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-64"
+ },
+ {
+  "id": "a3-64",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "3.2克和1.0克。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-65"
+ },
+ {
+  "id": "a3-65",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "这里买的两瓶都是250毫升。喝完整瓶，就分别约是8克和2.5克蛋白质。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-66"
+ },
+ {
+  "id": "a3-66",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这次差别看得挺明白。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-67"
+ },
+ {
+  "id": "a3-67",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "但判断一种食品，还要结合其他营养成分和你购买的目的。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-68"
+ },
+ {
+  "id": "a3-68",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "牛奶配料只有生牛乳，为什么还有4.7克碳水化合物？",
   "scene": "class",
   "seg": 8,
-  "next": "a3-21"
+  "channel": "stage",
+  "next": "a3-69"
  },
  {
-  "id": "a3-21",
+  "id": "a3-69",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "奶本身含有乳糖。配料没有加白砂糖，也可以有天然存在的糖。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-70"
+ },
+ {
+  "id": "a3-70",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那看到这一栏，不能直接说它加了这么多糖。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-71"
+ },
+ {
+  "id": "a3-71",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对。碳水化合物还包括淀粉等成分，不能把整行数字都当成添加糖。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-72"
+ },
+ {
+  "id": "a3-72",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "记住了。我之前差点拿这一栏给所有食品算“放了几勺糖”。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-73"
+ },
+ {
+  "id": "a3-73",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "如果你是想安排每天的奶类，就选合适的奶或奶制品。含乳饮料要按它的实际类别考虑。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-74"
+ },
+ {
+  "id": "a3-74",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "那我昨天那瓶，还是记饮料。奶类另外安排。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-75"
+ },
+ {
+  "id": "a3-75",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我昨天想补奶类，今天就先看奶类货架。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-76"
+ },
+ {
+  "id": "a3-76",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "哪天想喝桃子味，可以再考虑这款，份量也照实记。",
+  "scene": "class",
+  "seg": 8,
+  "channel": "stage",
+  "next": "a3-77"
+ },
+ {
+  "id": "a3-77",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "这次买东西，你主要想安排奶类，还是买喜欢的饮料？",
   "scene": "class",
   "seg": 8,
-  "next": "a3-22"
+  "channel": "stage",
+  "next": "a3-78"
  },
  {
-  "id": "a3-22",
+  "id": "a3-78",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "今天先把奶类安排好。",
   "scene": "class",
   "seg": 8,
-  "next": "a3-23"
+  "channel": "stage",
+  "next": "a3-79"
  },
  {
-  "id": "a3-23",
+  "id": "a3-79",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "我来买下午开会的饮料。陆燃在外面等。",
   "scene": "class",
   "seg": 9,
+  "channel": "stage",
+  "next": "a3-80"
+ },
+ {
+  "id": "a3-80",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "为什么？",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-81"
+ },
+ {
+  "id": "a3-81",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "他说人齐再进去，可以减少他临时买东西的机会。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-82"
+ },
+ {
+  "id": "a3-82",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这个办法我需要学一下。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-83"
+ },
+ {
+  "id": "a3-83",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "这两个都标了糖含量。大瓶每100毫升4克，小瓶6克。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-84"
+ },
+ {
+  "id": "a3-84",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "大瓶的数字小一点。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-85"
+ },
+ {
+  "id": "a3-85",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "再看看一瓶多大。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-86"
+ },
+ {
+  "id": "a3-86",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "把‘整瓶’这一栏也展开。",
+    "next": "a3-87",
+    "reply": "把“整瓶”这一栏也展开。"
+   }
+  ]
+ },
+ {
+  "id": "a3-87",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "原来喝完大瓶，反而会更多。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
   "next": "a3-it"
  },
  {
@@ -268,379 +1000,1456 @@
    }
   ],
   "worse": "bottle_a",
-  "next": "a3-24"
+  "next": "a3-88"
  },
  {
-  "id": "a3-24",
+  "id": "a3-88",
   "type": "say",
-  "speaker": "米粒",
-  "actor": "mili",
-  "text": "他说人齐再进去，可以减少他临时买东西的机会。",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "因为喝进去的总量也变了。",
   "scene": "class",
   "seg": 9,
-  "next": "a3-25"
+  "channel": "stage",
+  "next": "a3-89"
  },
  {
-  "id": "a3-25",
-  "type": "say",
-  "speaker": "苏桃",
-  "actor": "sutao",
-  "text": "这个办法我需要学一下。",
-  "scene": "class",
-  "seg": 9,
-  "next": "a3-26"
- },
- {
-  "id": "a3-26",
+  "id": "a3-89",
   "type": "say",
   "speaker": "周简",
   "actor": "zhoujian",
-  "text": "这两个都标了糖含量。大瓶每100毫升4克，小瓶6克。",
+  "text": "两个瓶子刚才站在一起，我光看数字了。",
   "scene": "class",
   "seg": 9,
-  "next": "a3-27"
+  "channel": "stage",
+  "next": "a3-90"
  },
  {
-  "id": "a3-27",
-  "type": "choice",
-  "question": "接下来怎么做？",
-  "options": [
-   {
-    "text": "把‘整瓶’这一栏也展开。",
-    "next": "a3-28",
-    "reply": "把“整瓶”这一栏也展开。"
-   }
-  ]
- },
- {
-  "id": "a3-28",
+  "id": "a3-90",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "如果我每次只喝250毫升呢？",
   "scene": "class",
   "seg": 9,
-  "next": "a3-29"
+  "channel": "stage",
+  "next": "a3-91"
  },
  {
-  "id": "a3-29",
+  "id": "a3-91",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这次又是A少了。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-92"
+ },
+ {
+  "id": "a3-92",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "同样喝250毫升，A的糖含量较少。喝完整瓶，就要按各自容量计算。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-93"
+ },
+ {
+  "id": "a3-93",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "所以比较的时候，得先说清楚自己准备喝多少。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-94"
+ },
+ {
+  "id": "a3-94",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先问大家需要多少，别直接按大瓶买。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-95"
+ },
+ {
+  "id": "a3-95",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我主要是开会时口渴。我带了杯子，可以接水。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-96"
+ },
+ {
+  "id": "a3-96",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我只是想尝一口这个口味。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-97"
+ },
+ {
+  "id": "a3-97",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "那不用先默认每个人喝完一大瓶。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-98"
+ },
+ {
+  "id": "a3-98",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对。喝多少会影响实际摄入量。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-99"
+ },
+ {
+  "id": "a3-99",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "看每100毫升，方便比较浓度；看实际喝多少，才能知道这次喝进去多少。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-100"
+ },
+ {
+  "id": "a3-100",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这回我知道净含量为什么也要一起看了。",
+  "scene": "class",
+  "seg": 9,
+  "channel": "stage",
+  "next": "a3-101"
+ },
+ {
+  "id": "a3-101",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "那我先去接水。下午真想喝这个味道，再按想喝的量考虑。",
   "scene": "class",
   "seg": 9,
-  "next": "a3-30"
+  "channel": "stage",
+  "next": "a3-102"
  },
  {
-  "id": "a3-30",
+  "id": "a3-102",
   "type": "say",
   "speaker": "周简",
   "actor": "zhoujian",
   "text": "预算跟着需要走，挺好。",
   "scene": "class",
   "seg": 9,
-  "next": "a3-31"
+  "channel": "stage",
+  "next": "a3-103"
  },
  {
-  "id": "a3-31",
+  "id": "a3-103",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "这个能不能放进下午的零食清单？",
   "scene": "class",
   "seg": 10,
-  "next": "a3-32"
+  "channel": "stage",
+  "next": "a3-104"
  },
  {
-  "id": "a3-32",
+  "id": "a3-104",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "翻过来看看。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-105"
+ },
+ {
+  "id": "a3-105",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "麦芽糖浆还在。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-106"
+ },
+ {
+  "id": "a3-106",
   "type": "choice",
   "question": "接下来怎么做？",
   "options": [
    {
     "text": "蔗糖只是糖里面的一种。",
-    "next": "a3-33"
+    "next": "a3-107",
+    "reply": "蔗糖只是糖里面的一种，这里还有其他糖的来源。"
    },
    {
     "text": "再找找，它有没有单独标糖含量。",
-    "next": "a3-33"
+    "next": "a3-107",
+    "reply": "再找找，它有没有单独标糖含量。"
    }
   ]
  },
  {
-  "id": "a3-33",
+  "id": "a3-107",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "没有糖那一行。碳水化合物倒是写了。",
   "scene": "class",
   "seg": 10,
-  "next": "a3-34"
+  "channel": "stage",
+  "next": "a3-108"
  },
  {
-  "id": "a3-34",
+  "id": "a3-108",
   "type": "say",
   "speaker": "许知夏",
   "actor": "zhixia",
   "text": "不能直接拿碳水化合物当糖的含量。这里面还有淀粉等成分。",
   "scene": "class",
   "seg": 10,
-  "next": "a3-35"
+  "channel": "stage",
+  "next": "a3-109"
  },
  {
-  "id": "a3-35",
+  "id": "a3-109",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "没有单列，也不能按零来记。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-110"
+ },
+ {
+  "id": "a3-110",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对，这张表没有提供单独的糖含量。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-111"
+ },
+ {
+  "id": "a3-111",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "你想用它解决什么？饿了，还是想吃点甜的？",
   "scene": "class",
   "seg": 10,
-  "next": "a3-36"
+  "channel": "stage",
+  "next": "a3-112"
  },
  {
-  "id": "a3-36",
+  "id": "a3-112",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "下午开会可能饿，也想吃点有味道的。我以为“无蔗糖”就能放心一直拿。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-113"
+ },
+ {
+  "id": "a3-113",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "先按你准备吃的量看。它仍然有能量，配料里的麦芽糖浆也会带来糖。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-114"
+ },
+ {
+  "id": "a3-114",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "那先别因为三个字，把购物数量改成三袋。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-115"
+ },
+ {
+  "id": "a3-115",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "你观察得很及时。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-116"
+ },
+ {
+  "id": "a3-116",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "糖只是碳水化合物的一部分。标签有单列糖时，可以直接查看对应含量；没有单列时，不能把碳水化合物全算成糖，也不能认为没有糖。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-117"
+ },
+ {
+  "id": "a3-117",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "那配料表能帮我发现加了什么，但未必告诉我加了几克。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-118"
+ },
+ {
+  "id": "a3-118",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对，两张表要结合着看。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-119"
+ },
+ {
+  "id": "a3-119",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "牛奶里还有原本就存在的乳糖。所以糖那一行，也不能直接当成“额外加了多少”。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-120"
+ },
+ {
+  "id": "a3-120",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "记得很清楚。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-121"
+ },
+ {
+  "id": "a3-121",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "今天这袋饼干，你还想吃吗？",
   "scene": "class",
   "seg": 10,
-  "next": "a3-37"
+  "channel": "stage",
+  "next": "a3-122"
  },
  {
-  "id": "a3-37",
+  "id": "a3-122",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "想吃。买一小份，下午饿的时候吃一些，晚饭照常安排。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-123"
+ },
+ {
+  "id": "a3-123",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "好，把食品类别和本次份量照实记下来。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-124"
+ },
+ {
+  "id": "a3-124",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "今天先买水果和奶吧。这个标签我拍下来，下午给大家看看。",
+  "scene": "class",
+  "seg": 10,
+  "channel": "stage",
+  "next": "a3-125"
+ },
+ {
+  "id": "a3-125",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "拍上净含量，别又只留下最醒目的那行字。",
   "scene": "class",
   "seg": 10,
-  "next": "a3-38"
+  "channel": "stage",
+  "next": "a3-126"
  },
  {
-  "id": "a3-38",
+  "id": "a3-126",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "放心，今天我已经升级成全景摄影了。",
   "scene": "class",
   "seg": 10,
-  "next": "a3-39"
+  "channel": "stage",
+  "next": "a3-127"
  },
  {
-  "id": "a3-39",
+  "id": "a3-127",
   "type": "say",
   "speaker": "周简",
   "actor": "zhoujian",
   "text": "先确认一下，哪些是个人买的，哪些是下午一起吃的。",
   "scene": "class",
   "seg": 11,
-  "next": "a3-40"
+  "channel": "stage",
+  "next": "a3-128"
  },
  {
-  "id": "a3-40",
+  "id": "a3-128",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "我主要带水杯，别算我一瓶饮料。",
   "scene": "class",
   "seg": 11,
-  "next": "a3-41"
+  "channel": "stage",
+  "next": "a3-129"
  },
  {
-  "id": "a3-41",
+  "id": "a3-129",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "我自己的奶和水果，我自己付。",
   "scene": "class",
   "seg": 11,
-  "next": "a3-42"
+  "channel": "stage",
+  "next": "a3-130"
  },
  {
-  "id": "a3-42",
+  "id": "a3-130",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "小组的采购还差什么信息？",
   "scene": "class",
   "seg": 11,
-  "next": "a3-43"
+  "channel": "stage",
+  "next": "a3-131"
  },
  {
-  "id": "a3-43",
+  "id": "a3-131",
   "type": "choice",
   "question": "接下来怎么做？",
   "options": [
    {
     "text": "先问问有没有不能吃的，或者不方便保存的。",
-    "next": "a3-44"
+    "next": "a3-132",
+    "reply": "先问问有没有不能吃的，或者不方便保存的。"
    }
   ]
  },
  {
-  "id": "a3-44",
+  "id": "a3-132",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "下午准备带一点吃的。大家有没有明确不能吃的食物，或者需要避开的配料？",
   "scene": "class",
   "seg": 11,
-  "next": "a3-45"
+  "channel": "chat",
+  "next": "a3-133"
  },
  {
-  "id": "a3-45",
+  "id": "a3-133",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我没有已知食物过敏，少买一点就行，我晚饭正常吃。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-134"
+ },
+ {
+  "id": "a3-134",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "我也没有。会议室没冰箱，保存条件记得看。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-135"
+ },
+ {
+  "id": "a3-135",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我更想要能分开拿的，吃多少自己取。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-136"
+ },
+ {
+  "id": "a3-136",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "那就结合这些选。需要冷藏的产品按包装要求保存，准备什么时候吃也一起考虑。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-137"
+ },
+ {
+  "id": "a3-137",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "你昨天问我的课表，今天问采购条件，已经很熟练了。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-138"
+ },
+ {
+  "id": "a3-138",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先各自说说准备吃多少，再决定买多大包装。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-139"
+ },
+ {
+  "id": "a3-139",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "好，先别用“总会有人吃”当人数。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-140"
+ },
+ {
+  "id": "a3-140",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我带一个水果就够了。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-141"
+ },
+ {
+  "id": "a3-141",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我也不用一大袋饼干。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-142"
+ },
+ {
+  "id": "a3-142",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "再确认一下有没有食物过敏或其他明确的饮食限制。需要冷藏的东西，也看看有没有合适的保存条件。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-143"
+ },
+ {
+  "id": "a3-143",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "我来把现有清单发到群里，大家补充。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-144"
+ },
+ {
+  "id": "a3-144",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "补上数量。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-145"
+ },
+ {
+  "id": "a3-145",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我可以自己带水果，别重复买。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-146"
+ },
+ {
+  "id": "a3-146",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "会议室没有冰箱，买的时候看看贮存条件。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-147"
+ },
+ {
+  "id": "a3-147",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "也请大家确认一下过敏或其他饮食限制。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-148"
+ },
+ {
+  "id": "a3-148",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "好，按回复改清单。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-149"
+ },
+ {
+  "id": "a3-149",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "现在买的东西，都知道给谁、什么时候吃了。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-150"
+ },
+ {
+  "id": "a3-150",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我还多拍了一整组背面照片。",
+  "scene": "class",
+  "seg": 11,
+  "channel": "chat",
+  "next": "a3-151"
+ },
+ {
+  "id": "a3-151",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "你的相册终于开始提供有效信息。",
   "scene": "class",
   "seg": 11,
-  "next": "a3-46"
+  "channel": "chat",
+  "next": "a3-152"
  },
  {
-  "id": "a3-46",
+  "id": "a3-152",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "昨天那组也有，鸡肉拍得很清楚。",
   "scene": "class",
   "seg": 11,
-  "next": "a3-47"
+  "channel": "chat",
+  "next": "a3-153"
  },
  {
-  "id": "a3-47",
+  "id": "a3-153",
   "type": "say",
   "speaker": "陆燃",
   "actor": "luran",
   "text": "我提前来了，这次大家都看见了。",
   "scene": "class",
   "seg": 12,
-  "next": "a3-48"
+  "channel": "stage",
+  "next": "a3-154"
  },
  {
-  "id": "a3-48",
+  "id": "a3-154",
   "type": "say",
   "speaker": "周简",
   "actor": "zhoujian",
   "text": "看见了，已经不需要再举证。",
   "scene": "class",
   "seg": 12,
-  "next": "a3-49"
+  "channel": "stage",
+  "next": "a3-155"
  },
  {
-  "id": "a3-49",
+  "id": "a3-155",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "今天至少弄明白了一件事。以后给饮食记录分类，我先看清楚产品。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-156"
+ },
+ {
+  "id": "a3-156",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我学会看一瓶多大了。以前默认那张表写的就是整瓶。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-157"
+ },
+ {
+  "id": "a3-157",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "还有“没有单列”的信息，不能自己补成零。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-158"
+ },
+ {
+  "id": "a3-158",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "嗯。不过这些标签，主要帮助我们了解食品和作比较。一顿饭、一天怎么搭配，还得放回前面聊过的实际情况里。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-159"
+ },
+ {
+  "id": "a3-159",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "所以我不能买一袋蛋白质数字很高的东西，就宣布今天吃得很好。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-160"
+ },
+ {
+  "id": "a3-160",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "还要看其他食物、实际份量，以及你一天的饮食。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-161"
+ },
+ {
+  "id": "a3-161",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那跟免疫有关的营养，也得从整体饮食去安排。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-162"
+ },
+ {
+  "id": "a3-162",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对。充足、多样的营养有助于支持正常免疫功能，某一项数字或一句包装宣传不能保证健康效果。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-163"
+ },
+ {
+  "id": "a3-163",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "窗口菜单我整理好了。明天有几样会换，你们写建议时可以用。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-164"
+ },
+ {
+  "id": "a3-164",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "很好，菜单有变化。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-165"
+ },
+ {
+  "id": "a3-165",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "你为什么听起来有点高兴？",
   "scene": "class",
   "seg": 12,
-  "next": "a3-50"
+  "channel": "chat",
+  "next": "a3-166"
  },
  {
-  "id": "a3-50",
+  "id": "a3-166",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "看看我们的方案能不能换着用。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-167"
+ },
+ {
+  "id": "a3-167",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "还有，昨天帮你追截图来源的同学回复了。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-168"
+ },
+ {
+  "id": "a3-168",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那来源就继续标“待核实”。我们整理指南时把自己的依据列清楚。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-169"
+ },
+ {
+  "id": "a3-169",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "第一天那张宣传图，出处还是没有核实。我们这次整理自己的指南，把依据和适用情况写清楚。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-170"
+ },
+ {
+  "id": "a3-170",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "封面我来拍。这次正面背面都拍。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-171"
+ },
+ {
+  "id": "a3-171",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "餐盘我也可以提供。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-172"
+ },
+ {
+  "id": "a3-172",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "价格和替换方案交给我。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-173"
+ },
+ {
+  "id": "a3-173",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "赶课版一定要有。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-174"
+ },
+ {
+  "id": "a3-174",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那下一步，我们把这些信息做成真正能照着用的方案。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-175"
+ },
+ {
+  "id": "a3-175",
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
   "text": "这个是不是比较划算？",
   "scene": "class",
   "seg": 12,
-  "next": "a3-51"
+  "channel": "stage",
+  "next": "a3-176"
  },
  {
-  "id": "a3-51",
+  "id": "a3-176",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "得先知道我们本来要买几件。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-177"
+ },
+ {
+  "id": "a3-177",
   "type": "choice",
   "question": "接下来怎么做？",
   "options": [
    {
     "text": "算算实际要付多少钱。",
-    "next": "a3-52"
+    "next": "a3-178"
    }
   ]
  },
  {
-  "id": "a3-52",
+  "id": "a3-178",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "买一瓶6元，两瓶9元。单瓶平均价便宜了，但今天付的钱会多3元。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-179"
+ },
+ {
+  "id": "a3-179",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "如果我本来只想买一瓶，就不是少花钱了。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-180"
+ },
+ {
+  "id": "a3-180",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "对。如果本来就要买两瓶，可以再比较。先看需要。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-181"
+ },
+ {
+  "id": "a3-181",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "有人本来就准备买同款吗？",
   "scene": "class",
   "seg": 12,
-  "next": "a3-53"
+  "channel": "stage",
+  "next": "a3-182"
  },
  {
-  "id": "a3-53",
+  "id": "a3-182",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我今天已经选了别的。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-183"
+ },
+ {
+  "id": "a3-183",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那我也按原来需要的买。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-184"
+ },
+ {
+  "id": "a3-184",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "这样数量就清楚了。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-185"
+ },
+ {
+  "id": "a3-185",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这张也能放调查簿，提醒一下未来的我。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-186"
+ },
+ {
+  "id": "a3-186",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "这个写钠120毫克，旁边是6%。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-187"
+ },
+ {
+  "id": "a3-187",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先看表头。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-188"
+ },
+ {
+  "id": "a3-188",
   "type": "choice",
   "question": "接下来怎么做？",
   "options": [
    {
     "text": "看看整袋相当于几份。",
-    "next": "a3-54",
+    "next": "a3-189",
     "reply": "90克一袋，每份30克，整袋是三份。"
    }
   ]
  },
  {
-  "id": "a3-54",
+  "id": "a3-189",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我刚才差点把一份当成一袋。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-190"
+ },
+ {
+  "id": "a3-190",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "这个错误我在饮料那里刚犯过，我们可以组成学习小组。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-191"
+ },
+ {
+  "id": "a3-191",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "你准备一次吃多少？",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-192"
+ },
+ {
+  "id": "a3-192",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "可能拿一些，没想过一定吃完。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-193"
+ },
+ {
+  "id": "a3-193",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "那按实际份量看。吃30克是这里的一份，整袋吃完就是三份。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-194"
+ },
+ {
+  "id": "a3-194",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我知道了，标签分份不代表我拿在手里就是一份。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-195"
+ },
+ {
+  "id": "a3-195",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "那6%是说，这袋里面6%都是钠？",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-196"
+ },
+ {
+  "id": "a3-196",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "不是这个意思。它表示标示份量中的钠，相当于标签规定的营养素参考值的6%。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-197"
+ },
+ {
+  "id": "a3-197",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "这是用于理解和比较的参考比例，不是每个人的精确个人额度。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-198"
+ },
+ {
+  "id": "a3-198",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对。这里按每份算，吃几份还要换算。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "stage",
+  "next": "a3-199"
+ },
+ {
+  "id": "a3-199",
   "type": "choice",
   "question": "接下来怎么做？",
   "options": [
    {
     "text": "先让她补一张完整标签。",
-    "next": "a3-55",
+    "next": "a3-200",
     "reply": "麻烦补一下产品名称、营养成分表和净含量，我们先看看具体是什么。"
    }
   ]
  },
  {
-  "id": "a3-55",
+  "id": "a3-200",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这回我们知道先要什么了。上次追截图追了好几层。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-201"
+ },
+ {
+  "id": "a3-201",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "你是打算用它补充某种营养，还是想靠它预防生病？",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-202"
+ },
+ {
+  "id": "a3-202",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "维生素C参与正常免疫功能，但不能因此认定这瓶饮料能预防感冒。还要看具体证据，日常饮食也要整体安排。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-203"
+ },
+ {
+  "id": "a3-203",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "你可以先发完整标签，我们帮你看懂写了什么。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-204"
+ },
+ {
+  "id": "a3-204",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我昨天也差不多。下次拍照把背面带上。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-205"
+ },
+ {
+  "id": "a3-205",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "这个写常温保存，另一款写冷藏。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-206"
+ },
+ {
+  "id": "a3-206",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "按各自包装要求保存，开封后的要求也要看。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-207"
+ },
+ {
+  "id": "a3-207",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "会议室没有冰箱，这个信息影响我们买什么、什么时候买。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-208"
+ },
+ {
+  "id": "a3-208",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我已经装好水了。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-209"
+ },
+ {
+  "id": "a3-209",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "所以今天的饮料预算可以按实际需要改。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-210"
+ },
+ {
+  "id": "a3-210",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "对，我不需要拿着一瓶饮料来证明自己参与了采购。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-211"
+ },
+ {
+  "id": "a3-211",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我的相册越来越像调查材料了。",
+  "scene": "class",
+  "seg": 12,
+  "channel": "chat",
+  "next": "a3-212"
+ },
+ {
+  "id": "a3-212",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "构图还是挺好的。",
   "scene": "class",
   "seg": 12,
-  "next": "a3-56"
+  "channel": "chat",
+  "next": "a3-213"
  },
  {
-  "id": "a3-56",
+  "id": "a3-213",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "这句我也存一下。",
   "scene": "class",
   "seg": 12,
-  "next": "a3-57"
+  "channel": "chat",
+  "next": "a3-214"
  },
  {
-  "id": "a3-57",
+  "id": "a3-214",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "还要拍标签吗？",
+  "scene": "class",
+  "seg": 13,
+  "channel": "stage",
+  "next": "a3-215"
+ },
+ {
+  "id": "a3-215",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
-  "text": "拍我们为什么买这些。过几天我再翻相册，才知道当时为什么这样选。",
+  "text": "拍我们为什么买这些。",
   "scene": "class",
   "seg": 13,
-  "next": "a3-58"
+  "channel": "stage",
+  "next": "a3-216"
  },
  {
-  "id": "a3-58",
+  "id": "a3-216",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "过几天我再翻相册，才知道当时为什么这样选。",
+  "scene": "class",
+  "seg": 13,
+  "channel": "stage",
+  "next": "a3-217"
+ },
+ {
+  "id": "a3-217",
   "type": "say",
   "speaker": "你",
   "actor": null,
   "text": "这张也留给第四章。",
   "scene": "class",
   "seg": 13,
-  "next": "a3-59"
+  "channel": "stage",
+  "next": "a3-218"
  },
  {
-  "id": "a3-59",
+  "id": "a3-218",
   "type": "say",
   "speaker": "苏桃",
   "actor": "sutao",
   "text": "好，跟包装照片放一起。",
   "scene": "class",
   "seg": 13,
+  "channel": "stage",
   "next": "e3_end"
  },
  {
