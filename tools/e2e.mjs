@@ -266,6 +266,21 @@ async function main() {
       await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
     }]);
 
+    steps.push(['分支对白连播', async () => {
+      await goto(cdp, 'a4-44');
+      await waitFor(cdp, `!!document.querySelector('.choice')`, '选项');
+      await click(cdp, '.choice:nth-child(1)', '第一个选项');
+      const seen = new Set();
+      for (let i = 0; i < 6; i += 1) {
+        const line = await text(cdp, '.dialog .text');
+        if (line) seen.add(line);
+        await click(cdp, '.dialog', '继续');
+        await sleep(150);
+      }
+      assert(seen.size >= 3, `分支对白只看到 ${seen.size} 句，可能被截断`);
+      await shoot(cdp, '13-branch-reply');
+    }]);
+
     steps.push(['道具面板能开能收', async () => {
       await goto(cdp, 'a3-06');
       await waitFor(cdp, `!!document.querySelector('.card-chip')`, '道具按钮');
