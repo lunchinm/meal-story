@@ -392,7 +392,8 @@ export class Stage {
   }
 
   private showProp(id: PropId): void {
-    const view = buildProp(id);
+    const image = id === 'poster' ? backgrounds['poster_meal'] : id === 'tray' ? backgrounds['ch_banner_2'] : undefined;
+    const view = buildProp(id, image);
     const panel = h('div', 'prop-panel enter');
     const head = h('div', 'prop-head');
     head.append(h('div', 'prop-title', view.title));
