@@ -1,6 +1,7 @@
 import type { CompareNode } from '../engine/types';
 import type { Stage } from '../ui/stage';
 import { play } from '../audio';
+import { Bottle, type BottleDesign } from './bottle';
 
 export interface CompareResult {
   picked: string;
@@ -42,6 +43,7 @@ export function runCompare(node: CompareNode, stage: Stage): Promise<CompareResu
   foot.append(hintLine, spacer, submit);
   board.append(head, body, foot);
 
+  const bottles = new Map<string, Bottle>();
   const flipped = new Set<string>();
   let picked = '';
   let done = false;
@@ -51,29 +53,41 @@ export function runCompare(node: CompareNode, stage: Stage): Promise<CompareResu
     resolveFn = resolve;
   });
 
+  function designOf(offer: (typeof node.offers)[number]): BottleDesign {
+    const isTea = /茶/.test(offer.name);
+    return {
+      main: isTea ? '#c8452a' : '#2f7d7a',
+      accent: isTea ? '#e0663f' : '#4aa39c',
+      name: offer.name.replace(/\s*500ml$/i, ''),
+      subtitle: isTea ? '清爽解腻' : '零蔗糖 · 0 卡',
+      back: offer.back.slice(0, 3),
+    };
+  }
+
   function render(): void {
     row.innerHTML = '';
+    bottles.clear();
     node.offers.forEach((offer) => {
       const card = el('div', picked === offer.id ? 'offer on' : 'offer');
-      const back = flipped.has(offer.id);
       card.append(el('div', 'offer-name', offer.name));
-      const face = el('div', 'offer-face');
-      if (back) {
-        const ul = el('div', 'offer-back');
-        offer.back.forEach((line) => ul.append(el('div', 'offer-line', line)));
-        face.append(ul);
-      } else {
-        face.append(el('div', 'offer-front', offer.front));
-      }
+
+      const face = el('div', 'offer-face bottle-face');
+      const canvas = document.createElement('canvas');
+      canvas.className = 'bottle-canvas';
+      canvas.tabIndex = 0;
+      canvas.setAttribute('aria-label', `${offer.name}，按住左右拖动可转动`);
+      face.append(canvas);
+      const tip = el('div', 'bottle-tip', '按住左右拖动转动瓶身');
+      face.append(tip);
       card.append(face);
 
-      const flip = el('button', 'btn btn-ghost btn-small', back ? '看正面' : '翻到背面');
-      flip.append(document.createElement('span'));
+      const bottle = new Bottle(canvas, designOf(offer));
+      bottles.set(offer.id, bottle);
+
+      const flip = el('button', 'btn btn-ghost btn-small', '转到背面');
       flip.addEventListener('click', (event) => {
         event.stopPropagation();
-        if (back) flipped.delete(offer.id);
-        else flipped.add(offer.id);
-        render();
+        bottle.show(false);
       });
       card.append(flip);
 

@@ -292,14 +292,25 @@ async function main() {
       await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '记录关过关');
     }]);
 
-    steps.push(['第三章：同类对比', async () => {
+    steps.push(['第三章：同类对比（可转瓶身）', async () => {
       await goto(cdp, 'a3-it');
-      await waitFor(cdp, `!!document.querySelector('.offer')`, '对比关');
-      await click(cdp, '.offer:nth-child(1) .btn', '翻面');
-      await click(cdp, '.offer:nth-child(2) .btn', '翻面');
+      await waitFor(cdp, `!!document.querySelector('.bottle-canvas')`, '瓶子');
+      const count = await cdp.eval(`document.querySelectorAll('.bottle-canvas').length`);
+      assert(count === 2, `瓶子数量不对：${count}`);
+      const box = await cdp.eval(`(() => {
+        const c = document.querySelector('.bottle-canvas').getBoundingClientRect();
+        return { x: c.left + c.width / 2, y: c.top + c.height / 2 };
+      })()`);
+      await cdp.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: Math.round(box.x), y: Math.round(box.y), button: 'left', clickCount: 1 });
+      for (let i = 1; i <= 6; i += 1) {
+        await cdp.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: Math.round(box.x + i * 22), y: Math.round(box.y), button: 'left' });
+        await sleep(30);
+      }
+      await cdp.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: Math.round(box.x + 132), y: Math.round(box.y), button: 'left' });
+      await sleep(250);
       await shoot(cdp, '06-compare');
-      const back = await text(cdp, '.offer-back');
-      assert(back.includes('100'), `背面没有单位信息：${back.slice(0, 40)}`);
+      await click(cdp, '.offer:nth-child(1) .btn', '转到背面');
+      await sleep(250);
       await click(cdp, '.offer:nth-child(1)', '选柠檬茶');
       await click(cdp, '.board-foot .btn-primary', '选它');
       await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
