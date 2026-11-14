@@ -1460,3 +1460,116 @@ body {
 .msg.me .msg-chip {
   align-self: flex-end;
 }
+
+/* ---------- 手机竖屏 ---------- */
+
+@media (max-aspect-ratio: 1 / 1) {
+  .stage {
+    width: 100vw;
+    height: 100dvh;
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  .board {
+    inset: 10px;
+    padding: 18px 16px 92px;
+  }
+
+  .board-head {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .board-body {
+    overflow-y: auto;
+    gap: 10px;
+  }
+
+  .board-foot {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .food-grid,
+  .food-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .food {
+    padding: 8px;
+  }
+
+  .food .food-name {
+    font-size: 13px;
+  }
+
+  .review-list,
+  .compare-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dialog {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    min-height: 132px;
+    padding: 16px 18px 30px;
+  }
+
+  .dialog .text {
+    font-size: 16px;
+  }
+
+  .phone {
+    width: calc(100vw - 24px);
+    max-height: 70dvh;
+  }
+
+  .prop-panel {
+    right: 12px;
+    left: 12px;
+    top: 8%;
+    width: auto;
+    max-height: 76%;
+  }
+
+  .poster-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-aspect-ratio: 1 / 1) {
+  .board-body {
+    align-content: start;
+  }
+
+  .food {
+    aspect-ratio: auto;
+    height: auto;
+    min-height: 96px;
+    justify-content: flex-start;
+  }
+
+  .food .food-img {
+    height: 42px;
+  }
+}
+
+@media (max-aspect-ratio: 1 / 1) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .food .food-name {
+    font-size: 13px;
+  }
+
+  .food .food-meta {
+    font-size: 11px;
+  }
+}

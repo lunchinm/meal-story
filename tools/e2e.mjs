@@ -291,6 +291,20 @@ async function main() {
       }
     }]);
 
+    steps.push(['手机竖屏不溢出', async () => {
+      await cdp.send('Emulation.setDeviceMetricsOverride', {
+        width: 390, height: 844, deviceScaleFactor: 2, mobile: true,
+      });
+      await goto(cdp, 'a2-it');
+      await waitFor(cdp, `!!document.querySelector('.food')`, '手机餐盘');
+      const overflow = await cdp.eval(
+        `(() => { const s = document.querySelector('.stage').getBoundingClientRect();
+          return { over: s.right > innerWidth + 1 || s.left < -1, w: Math.round(s.width), vw: innerWidth }; })()`,
+      );
+      assert(!overflow.over, `手机竖屏溢出：${JSON.stringify(overflow)}`);
+      await shoot(cdp, '12-mobile');
+    }]);
+
     steps.push(['窄屏不溢出', async () => {
       await cdp.send('Emulation.setDeviceMetricsOverride', {
         width: 1024, height: 720, deviceScaleFactor: 1, mobile: false,
