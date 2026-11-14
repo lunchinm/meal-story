@@ -190,6 +190,7 @@ export class Stage {
   /* ---------- 选项 ---------- */
 
   choices(node: ChoiceNode, onPick: (index: number) => void): void {
+    // 有 reply 的选项，先由调用方决定是否展示，这里只负责按钮
     this.detachAdvance();
     this.uiLayer.innerHTML = '';
     const wrap = h('div', 'choice-panel');

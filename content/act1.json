@@ -1,140 +1,843 @@
 [
-  {
-    "id": "a1-00",
-    "type": "chapter",
-    "title": "第一章《套餐的秘密》",
-    "subtitle": "群里那张图，哪句话要证据？",
-    "next": "a1-01",
-    "image": "bg_chat"
-  },
-  {
-    "id": "a1-01",
-    "type": "say",
-    "speaker": "旁白",
-    "scene": "chat",
-    "text": "晚上十点，班级群弹出一张图：一份套餐，22 块，红字写着“连吃七天”。",
-    "next": "a1-02"
-  },
-  {
-    "id": "a1-02",
-    "type": "say",
-    "speaker": "米粒",
-    "scene": "chat",
-    "actor": "mili",
-    "expr": "happy",
-    "text": "“一份套餐承包一天营养，连吃七天免疫力拉满。”才 22 块，我明天就试。",
-    "next": "a1-03"
-  },
-  {
-    "id": "a1-03",
-    "type": "say",
-    "speaker": "周简",
-    "scene": "chat",
-    "actor": "zhoujian",
-    "expr": "normal",
-    "text": "22 块够我吃两顿……它到底给了啥？",
-    "next": "a1-04"
-  },
-  {
-    "id": "a1-04",
-    "type": "say",
-    "speaker": "许知夏",
-    "scene": "chat",
-    "actor": "zhixia",
-    "expr": "normal",
-    "hint": "找两类词：一是程度（拉满、翻倍），二是范围（一天、七天）。",
-    "text": "别急着信。把这句话拆开，哪几个地方是要证据的？",
-    "next": "a1-05"
-  },
-  {
-    "id": "a1-05",
-    "type": "evidence",
-    "prompt": "在宣传图上圈出需要核实的说法",
-    "hint": "一共三处可以点，其中两处在夸大。价格那句不用圈。",
-    "need": 2,
-    "allowRetry": true,
-    "claims": [
-      {
-        "id": "c1",
-        "text": "免疫力拉满",
-        "suspect": true,
-        "reason": "“拉满”没有单位，也没有哪份资料这样描述免疫功能。"
-      },
-      {
-        "id": "c2",
-        "text": "承包一天营养",
-        "suspect": true,
-        "reason": "一天的营养来自多种食物，一个套餐很难全部覆盖。"
-      },
-      {
-        "id": "c3",
-        "text": "才 22 块",
-        "suspect": false,
-        "reason": "价格本身没问题，要问的是这 22 块换来了什么。"
-      }
-    ],
-    "next": "a1-06",
-    "image": "poster_meal",
-    "posterText": [
-      "免疫满分套餐",
-      "一份承包全天营养",
-      "连吃七天，免疫力拉满！",
-      "原价 38，今天 22"
-    ],
-    "regions": [
-      {
-        "claimId": "c1",
-        "line": 2,
-        "label": "连吃七天，免疫力拉满！"
-      },
-      {
-        "claimId": "c2",
-        "line": 1,
-        "label": "一份承包全天营养"
-      },
-      {
-        "claimId": "c3",
-        "line": 3,
-        "label": "原价 38，今天 22"
-      }
-    ]
-  },
-  {
-    "id": "a1-06",
-    "type": "say",
-    "speaker": "许知夏",
-    "scene": "chat",
-    "actor": "zhixia",
-    "expr": "worried",
-    "card": "k1",
-    "text": "第一句最麻烦。“拉满”既没有单位，也没有哪份资料这么写。",
-    "next": "a1-07"
-  },
-  {
-    "id": "a1-07",
-    "type": "choice",
-    "question": "接下来怎么办？",
-    "hint": "两种做法都行，但看待会儿谁会被说动。",
-    "options": [
-      {
-        "text": "先看看它到底给了什么",
-        "next": "a2-00"
-      },
-      {
-        "text": "直接劝米粒别买",
-        "next": "a1-08",
-        "flag": "blunt"
-      }
-    ]
-  },
-  {
-    "id": "a1-08",
-    "type": "say",
-    "speaker": "米粒",
-    "scene": "chat",
-    "actor": "mili",
-    "expr": "worried",
-    "text": "……那我饿着？",
-    "next": "a2-00"
-  }
+ {
+  "id": "a1-00",
+  "type": "chapter",
+  "title": "第一章《套餐的秘密》",
+  "subtitle": "",
+  "image": "ch_banner_1",
+  "next": "a1-01"
+ },
+ {
+  "id": "a1-01",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "食堂二楼，谁来？",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-02"
+ },
+ {
+  "id": "a1-02",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "你上次的十分钟，是从我吃饭开始算到我洗完碗。",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-03"
+ },
+ {
+  "id": "a1-03",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "先看这个！。要是真能承包，我以后就不用每天在窗口前思考人生了。",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-04"
+ },
+ {
+  "id": "a1-04",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "价格被裁掉了。这张图没有考虑我的感受。",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-05"
+ },
+ {
+  "id": "a1-05",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "有鸡肉有鸡蛋。可以。",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-06"
+ },
+ {
+  "id": "a1-06",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "原图从哪里来的？",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-07"
+ },
+ {
+  "id": "a1-07",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "隔壁群的原图呢？",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-08"
+ },
+ {
+  "id": "a1-08",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "……。隔壁群的隔壁群。",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-09"
+ },
+ {
+  "id": "a1-09",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "我想知道，它怎么知道免疫力已经满了？",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-10"
+ },
+ {
+  "id": "a1-10",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "名字怎么突然朴素了？",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-11"
+ },
+ {
+  "id": "a1-11",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "去看看实物吧，顺便问问师傅。",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-12"
+ },
+ {
+  "id": "a1-12",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我已经到二楼了。靠窗，绿色书包，正在努力占住三个位置。",
+  "scene": "chat",
+  "seg": 1,
+  "next": "a1-13"
+ },
+ {
+  "id": "a1-13",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "菜基本一样，就是西兰花没有照片里站得那么整齐。",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-14"
+ },
+ {
+  "id": "a1-14",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我可以一边吃，一边保持怀疑。",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-15"
+ },
+ {
+  "id": "a1-15",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "这个安排挺合理。",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-16"
+ },
+ {
+  "id": "a1-16",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "你看！我就说——",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-17"
+ },
+ {
+  "id": "a1-17",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "我说的是先吃饭。",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-18"
+ },
+ {
+  "id": "a1-18",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "师傅，这份套餐是你们新出的？",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-19"
+ },
+ {
+  "id": "a1-19",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "这周配的。点起来快一点，窗口也能少堵一会儿。",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-20"
+ },
+ {
+  "id": "a1-20",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那这个宣传也是你们的吗？",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-21"
+ },
+ {
+  "id": "a1-21",
+  "type": "say",
+  "speaker": "罗师傅",
+  "actor": "luomaster",
+  "text": "菜是我们的。后面这几句话，我也是第一次见。",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-22"
+ },
+ {
+  "id": "a1-22",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "所以，现在确定了什么？",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-23"
+ },
+ {
+  "id": "a1-23",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "饭找到了，广告还在流浪。看来我们今天省下了选菜时间，花在研究广告上了。",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-24"
+ },
+ {
+  "id": "a1-24",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "至少终于知道自己在忙什么。下面只写了“网友分享”。",
+  "scene": "class",
+  "seg": 2,
+  "next": "a1-25"
+ },
+ {
+  "id": "a1-25",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "网友真忙，每天都在分享。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-26"
+ },
+ {
+  "id": "a1-26",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "这能告诉我们它被转发过，没告诉我们效果是怎么得出的。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-27"
+ },
+ {
+  "id": "a1-27",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那我去问问有没有原图。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-it"
+ },
+ {
+  "id": "a1-it",
+  "type": "evidence",
+  "prompt": "在宣传图上圈出需要核实的说法",
+  "hint": "一共三处可以点，其中两处在夸大。价格那句不用圈。",
+  "need": 2,
+  "allowRetry": true,
+  "claims": [
+   {
+    "id": "c1",
+    "text": "免疫力拉满",
+    "suspect": true,
+    "reason": "“拉满”没有单位，也没有哪份资料这样描述免疫功能。"
+   },
+   {
+    "id": "c2",
+    "text": "承包一天营养",
+    "suspect": true,
+    "reason": "一天的营养来自多种食物，一个套餐很难全部覆盖。"
+   },
+   {
+    "id": "c3",
+    "text": "才 22 块",
+    "suspect": false,
+    "reason": "价格本身没问题，要问的是这 22 块换来了什么。"
+   }
+  ],
+  "next": "a1-28",
+  "image": "poster_meal",
+  "posterText": [
+   "免疫满分套餐",
+   "一份承包全天营养",
+   "连吃七天，免疫力拉满！",
+   "原价 38，今天 22"
+  ],
+  "regions": [
+   {
+    "claimId": "c1",
+    "line": 2,
+    "label": "连吃七天，免疫力拉满！"
+   },
+   {
+    "claimId": "c2",
+    "line": 1,
+    "label": "一份承包全天营养"
+   },
+   {
+    "claimId": "c3",
+    "line": 3,
+    "label": "原价 38，今天 22"
+   }
+  ]
+ },
+ {
+  "id": "a1-28",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我问转给我的同学。这张图有原链接吗？。暂时追到这里了。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-29"
+ },
+ {
+  "id": "a1-29",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "那就记“出处待核实”。后面拿到原图，再看它具体引用了什么。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-30"
+ },
+ {
+  "id": "a1-30",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "如果图上写着“研究证明”呢？",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-31"
+ },
+ {
+  "id": "a1-31",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "还得看是哪项研究。研究了谁，吃了什么，观察了什么结果，能不能支持图上的话。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-32"
+ },
+ {
+  "id": "a1-32",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那四个字后面，还得有内容。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-33"
+ },
+ {
+  "id": "a1-33",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "嗯，有出处才方便查。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-34"
+ },
+ {
+  "id": "a1-34",
+  "type": "say",
+  "speaker": "旁白",
+  "text": "目前只有转发截图，效果承诺的来源尚未查明。",
+  "scene": "chat",
+  "next": "a1-35"
+ },
+ {
+  "id": "a1-35",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我觉得它至少长得挺有营养的。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-36"
+ },
+ {
+  "id": "a1-36",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "确实有好几样东西。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-37"
+ },
+ {
+  "id": "a1-37",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "有主食、肉蛋和蔬菜，可以用来讨论一顿饭的搭配。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-38"
+ },
+ {
+  "id": "a1-38",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那为什么“承包全天”还要打问号？",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-39"
+ },
+ {
+  "id": "a1-39",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "我们还不知道份量，也不知道你早饭、晚饭吃什么。这一张照片提供的信息有限。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-40"
+ },
+ {
+  "id": "a1-40",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "等一下，我买的是午饭，它把早饭和晚饭的功劳也领了？",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-41"
+ },
+ {
+  "id": "a1-41",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "工作范围扩得有点快。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-42"
+ },
+ {
+  "id": "a1-42",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "看全天饮食，要把一天的记录合起来。再看更长一点的时间，食物种类和搭配是不是合适。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-43"
+ },
+ {
+  "id": "a1-43",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "明白。那我先把这顿吃明白。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-44"
+ },
+ {
+  "id": "a1-44",
+  "type": "say",
+  "speaker": "旁白",
+  "text": "判断一日饮食，需要结合各餐、食物种类与数量。",
+  "scene": "chat",
+  "next": "a1-45"
+ },
+ {
+  "id": "a1-45",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "对，所以我才看到“承包”两个字就心动了。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-46"
+ },
+ {
+  "id": "a1-46",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "你想解决的是每天选饭太费时间。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-47"
+ },
+ {
+  "id": "a1-47",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "还有排队。我上午想了三家，最后哪家队短就去哪家。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-48"
+ },
+ {
+  "id": "a1-48",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那以后给你建议，得把窗口、排队和上课时间一起考虑。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-49"
+ },
+ {
+  "id": "a1-49",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "对！别给我列一个在三个校区分别采购的豪华菜单。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-50"
+ },
+ {
+  "id": "a1-50",
+  "type": "say",
+  "speaker": "旁白",
+  "text": "米粒希望吃饭省时，建议需要结合课表和购买条件。",
+  "scene": "chat",
+  "next": "a1-51"
+ },
+ {
+  "id": "a1-51",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "我刚把图放大看了，没找到能核实效果的出处。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-52"
+ },
+ {
+  "id": "a1-52",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我也问了转图的人，暂时只有截图。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-53"
+ },
+ {
+  "id": "a1-53",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "这份有主食、肉蛋和蔬菜。搭配可以讨论，但要判断一天吃得怎么样，还得看其他餐和份量。",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-54"
+ },
+ {
+  "id": "a1-54",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "好，先把它按一顿午饭看。不过，你们总说合理膳食和免疫有关。它具体帮了什么忙？",
+  "scene": "class",
+  "seg": 3,
+  "next": "a1-55"
+ },
+ {
+  "id": "a1-55",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "身体维持正常免疫功能，需要从饮食中获得充足的营养。如果某些必需营养素长期摄入不足，免疫功能就可能受到影响。",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-56"
+ },
+ {
+  "id": "a1-56",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "所以要关心自己平时有没有吃够、搭配是不是合适。",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-57"
+ },
+ {
+  "id": "a1-57",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "嗯。不同食物提供的营养各有特点，长期合理搭配很重要。",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-58"
+ },
+ {
+  "id": "a1-58",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那“吃七天就拉满”，跨得确实有点远。",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-59"
+ },
+ {
+  "id": "a1-59",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "对。这张图没有给出支持那个承诺的证据。",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-60"
+ },
+ {
+  "id": "a1-60",
+  "type": "say",
+  "speaker": "周简",
+  "actor": "zhoujian",
+  "text": "你的十分钟已经二十分钟了。",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-61"
+ },
+ {
+  "id": "a1-61",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "刚才帮人搬了器材。",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-62"
+ },
+ {
+  "id": "a1-62",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "你们研究得怎么样？我这边有人问能不能跟着买七天。",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-63"
+ },
+ {
+  "id": "a1-63",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "先问苏桃，她们是想省事，还是想达到什么效果？。她是想省下选饭时间，还是冲着“增强免疫”的效果？",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-64"
+ },
+ {
+  "id": "a1-64",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "那我的午饭怎么办？",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-65"
+ },
+ {
+  "id": "a1-65",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "以及够不够我吃。",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-66"
+ },
+ {
+  "id": "a1-66",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "你先出现，我们再讨论够不够。那我有个更实际的问题。如果没有那种一键解决的套餐，我怎么知道自己平时吃得怎么样？",
+  "scene": "class",
+  "seg": 4,
+  "next": "a1-67"
+ },
+ {
+  "id": "a1-67",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "先从记录开始。今天吃了什么，大概多少，分几次吃，漏掉了什么，都可以记。",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-68"
+ },
+ {
+  "id": "a1-68",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "用手机拍照就行？",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-69"
+ },
+ {
+  "id": "a1-69",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "照片加一点份量和时间说明，会更有帮助。",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-70"
+ },
+ {
+  "id": "a1-70",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我有！我吃饭之前经常拍。第四张是苏桃说光线不好，想把盘子搬走。我在抢救我的饭。",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-71"
+ },
+ {
+  "id": "a1-71",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "这组记录的艺术性比较突出。",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-72"
+ },
+ {
+  "id": "a1-72",
+  "type": "say",
+  "speaker": "许知夏",
+  "actor": "zhixia",
+  "text": "我们可以从明天开始拍完整一点。",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-73"
+ },
+ {
+  "id": "a1-73",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "我可以负责拍摄规范。",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-74"
+ },
+ {
+  "id": "a1-74",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "我负责按时来吃。",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-75"
+ },
+ {
+  "id": "a1-75",
+  "type": "say",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "对，你已经看过我的课表了。明天早上比今天还赶。",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-76"
+ },
+ {
+  "id": "a1-76",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那从早餐开始，把买饭的时间也记上。",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-77"
+ },
+ {
+  "id": "a1-77",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "等等，饮料也要拍吗？",
+  "scene": "class",
+  "seg": 5,
+  "next": "a1-78"
+ },
+ {
+  "id": "a1-78",
+  "type": "say",
+  "speaker": "苏桃",
+  "actor": "sutao",
+  "text": "那我的相册可能比想象中长。",
+  "scene": "class",
+  "seg": 5,
+  "next": "e1_end"
+ },
+ {
+  "id": "e1_end",
+  "type": "branch",
+  "rules": [],
+  "fallback": "a2-00"
+ }
 ]

@@ -94,6 +94,13 @@ export class Runner {
       if (!option) return;
       if (option.flag) state.flags.add(option.flag);
       state.save();
+      if (option.reply) {
+        this.stage.say(
+          { id: `${node.id}-reply-${index}`, type: 'say', speaker: option.replySpeaker ?? '旁白', text: option.reply },
+          () => this.goto(option.next),
+        );
+        return;
+      }
       this.goto(option.next);
     });
   }

@@ -46,6 +46,10 @@ export interface ChoiceOption {
   text: string;
   next: string;
   flag?: string;
+  /** 选完之后先弹这一句，再回主线 */
+  reply?: string;
+  /** 这句由谁说，默认旁白 */
+  replySpeaker?: string;
 }
 
 export interface ChoiceNode {
