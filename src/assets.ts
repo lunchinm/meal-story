@@ -95,32 +95,6 @@ export const foods: Record<string, string> = {
   'food_tomato_egg': food_food_tomato_egg,
 };
 
-import vo_a1_01 from '../assets/voice/a1-01.mp3';
-import vo_a1_02 from '../assets/voice/a1-02.mp3';
-import vo_a1_03 from '../assets/voice/a1-03.mp3';
-import vo_a1_04 from '../assets/voice/a1-04.mp3';
-import vo_a1_06 from '../assets/voice/a1-06.mp3';
-import vo_a1_08 from '../assets/voice/a1-08.mp3';
-import vo_a2_01 from '../assets/voice/a2-01.mp3';
-import vo_a2_03 from '../assets/voice/a2-03.mp3';
-import vo_a2_05 from '../assets/voice/a2-05.mp3';
-import vo_a3_01 from '../assets/voice/a3-01.mp3';
-import vo_a3_03 from '../assets/voice/a3-03.mp3';
-import vo_a4_01 from '../assets/voice/a4-01.mp3';
-import vo_a4_03 from '../assets/voice/a4-03.mp3';
 
 export const voices: Record<string, string> = {
-  'a1-01': vo_a1_01,
-  'a1-02': vo_a1_02,
-  'a1-03': vo_a1_03,
-  'a1-04': vo_a1_04,
-  'a1-06': vo_a1_06,
-  'a1-08': vo_a1_08,
-  'a2-01': vo_a2_01,
-  'a2-03': vo_a2_03,
-  'a2-05': vo_a2_05,
-  'a3-01': vo_a3_01,
-  'a3-03': vo_a3_03,
-  'a4-01': vo_a4_01,
-  'a4-03': vo_a4_03,
 };
