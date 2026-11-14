@@ -22,14 +22,22 @@ function hasSave(): boolean {
   return Boolean(data?.nodeId);
 }
 
+/** 离开标题页时把预览入口收掉，避免挡住游戏画面 */
+function hidePreview(): void {
+  document.getElementById('preview-entry')?.remove();
+  document.querySelector('.preview-panel')?.remove();
+}
+
 function showTitle(): void {
   stage.title(
     hasSave(),
     () => {
+      hidePreview();
       state.reset();
       runner.start();
     },
     () => {
+      hidePreview();
       const data = state.load();
       state.restore();
       runner.start(data?.nodeId);
@@ -139,8 +147,7 @@ function mountPreview(): void {
       btn.addEventListener('click', (event) => {
         event.stopPropagation();
         panel.hidden = true;
-        entry.remove();
-        panel.remove();
+        hidePreview();
         state.reset();
         runner.start(node.id);
       });

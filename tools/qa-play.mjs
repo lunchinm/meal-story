@@ -183,6 +183,12 @@ async function main() {
         stuck = 0;
         continue;
       }
+      if (await cdp.eval(`!!document.querySelector('.quick')`)) {
+        await clickSel(cdp, '.quick');
+        steps += 1;
+        stuck = 0;
+        continue;
+      }
       if (await cdp.eval(`!!document.querySelector('.choice')`)) {
         const count = await cdp.eval(`document.querySelectorAll('.choice').length`);
         await clickSel(cdp, `.choice:nth-child(${1 + (steps % count)})`);
