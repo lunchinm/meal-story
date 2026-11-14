@@ -28,6 +28,7 @@
 | ending_normal.webp | 结局《我会选了》 | 是 |
 | ending_advanced.webp | 结局《换一家食堂，也会选》 | 是 |
 | ending_hidden.webp | 结局《先问清楚，再给建议》 | 是 |
+| poster_meal.webp | 第一章宣传图底图（文字由界面叠加，图里不要有字） | 是 |
 
 ## 二、角色立绘 `assets/ch/`
 
@@ -72,8 +73,9 @@
 | 周简 | 少年，声音偏低，语速平稳 | reference/周简.wav |
 | 许知夏 | 年轻女性，声音温和清晰 | reference/许知夏.wav |
 | 苏桃 | 年轻女性，语气轻松俏皮 | reference/苏桃.wav |
+| 陆燃 | 少年，声音偏低，说话干脆 | reference/陆燃.wav |
 | 陆燃 | 少年，声音亮，有冲劲 | reference/陆燃.wav |
-| 罗师傅 | 中年男性，声音偏低，和善 | reference/罗师傅.wav |
+| 罗师傅 | 中年男性，声音低而略带沙哑，语速慢 | reference/罗师傅.wav |
 
 `reference/` 里的样音是这个项目自己的合成产物，用于保持同一角色音色一致；替换配音时按同样音色录即可。
 **配音一律不做变调**，音色差异只能靠选人或换描述解决。
