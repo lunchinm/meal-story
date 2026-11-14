@@ -66,6 +66,7 @@ export function runCompare(node: CompareNode, stage: Stage): Promise<CompareResu
 
   function render(): void {
     row.innerHTML = '';
+    bottles.forEach((b) => b.destroy());
     bottles.clear();
     node.offers.forEach((offer) => {
       const card = el('div', picked === offer.id ? 'offer on' : 'offer');
@@ -105,6 +106,8 @@ export function runCompare(node: CompareNode, stage: Stage): Promise<CompareResu
     if (done) return;
     done = true;
     submit.disabled = true;
+    bottles.forEach((b) => b.destroy());
+    bottles.clear();
     window.setTimeout(() => resolveFn({ picked, correct }), 220);
   }
 
