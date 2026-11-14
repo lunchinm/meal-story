@@ -62,7 +62,7 @@
   "type": "say",
   "speaker": "你",
   "actor": null,
-  "text": "米粒，我们先看看你今天怎么赶的。陆燃，你昨天说要补的表，补好了？。周简，先看看你的账本。",
+  "text": "米粒，我们先看看你今天怎么赶的。陆燃，你昨天说要补的表，补好了？",
   "scene": "class",
   "seg": 5,
   "next": "a2-07"
@@ -70,12 +70,11 @@
  {
   "id": "a2-07",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "先看看上课路上能买到什么。",
-    "next": "a2-08",
-    "reply": "先看看上课路上能买到什么。"
+    "next": "a2-08"
    }
   ]
  },
@@ -102,7 +101,7 @@
  {
   "id": "a2-10",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "面包＋牛奶＋一份水果",
@@ -202,17 +201,15 @@
  {
   "id": "a2-20",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "先说说，你为什么把晚饭的米饭去掉了？",
-    "next": "a2-21",
-    "reply": "先说说，你为什么把晚饭的米饭去掉了？"
+    "next": "a2-21"
    },
    {
     "text": "把早餐、午餐也放到旁边看看。",
-    "next": "a2-21",
-    "reply": "把早餐、午餐也放到旁边看看。"
+    "next": "a2-21"
    }
   ]
  },
@@ -232,6 +229,38 @@
   "speaker": "你",
   "actor": null,
   "text": "明天可以换一些，先从最明显的地方调整。你今天训练以后，还吃了别的东西吗？",
+  "scene": "class",
+  "seg": 5,
+  "next": "a2-23"
+ },
+ {
+  "id": "a2-23",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "好，今天先把漏掉的栏目补齐。那明天训练日，晚饭怎么点比较顺手？",
+  "scene": "class",
+  "seg": 5,
+  "next": "a2-24"
+ },
+ {
+  "id": "a2-24",
+  "type": "choice",
+  "question": "接下来怎么做？",
+  "options": [
+   {
+    "text": "保留鸡肉，恢复米饭，再点一份青菜",
+    "next": "a2-25",
+    "reply": "先保留你喜欢的鸡肉，把米饭和青菜安排回来。"
+   }
+  ]
+ },
+ {
+  "id": "a2-25",
+  "type": "say",
+  "speaker": "陆燃",
+  "actor": "luran",
+  "text": "豆腐也能算进蛋白质来源？",
   "scene": "class",
   "seg": 5,
   "next": "a2-it"
@@ -265,38 +294,6 @@
    "missing": "还缺一份{category}，给它留个位置",
    "other": "同类选得有点多，换一道别的类别试试"
   },
-  "next": "a2-23"
- },
- {
-  "id": "a2-23",
-  "type": "say",
-  "speaker": "陆燃",
-  "actor": "luran",
-  "text": "好，今天先把漏掉的栏目补齐。那明天训练日，晚饭怎么点比较顺手？",
-  "scene": "class",
-  "seg": 5,
-  "next": "a2-24"
- },
- {
-  "id": "a2-24",
-  "type": "choice",
-  "question": "怎么选？",
-  "options": [
-   {
-    "text": "保留鸡肉，恢复米饭，再点一份青菜",
-    "next": "a2-25",
-    "reply": "先保留你喜欢的鸡肉，把米饭和青菜安排回来。"
-   }
-  ]
- },
- {
-  "id": "a2-25",
-  "type": "say",
-  "speaker": "陆燃",
-  "actor": "luran",
-  "text": "豆腐也能算进蛋白质来源？",
-  "scene": "class",
-  "seg": 5,
   "next": "a2-26"
  },
  {
@@ -420,17 +417,15 @@
  {
   "id": "a2-38",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "看看食堂已有的菜，重新组合。",
-    "next": "a2-39",
-    "reply": "看看食堂已有的菜，重新组合。"
+    "next": "a2-39"
    },
    {
     "text": "问问能不能打小份，多选一种。",
-    "next": "a2-39",
-    "reply": "问问能不能打小份，多选一种。"
+    "next": "a2-39"
    }
   ]
  },

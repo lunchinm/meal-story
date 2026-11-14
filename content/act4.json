@@ -210,12 +210,11 @@
  {
   "id": "a4-21",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "把它写成两种可以切换的安排。",
-    "next": "a4-22",
-    "reply": "把它写成两种可以切换的安排。"
+    "next": "a4-22"
    }
   ]
  },
@@ -322,7 +321,7 @@
  {
   "id": "a4-32",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "米饭＋时蔬＋豆腐＋鸡蛋，共11元",
@@ -349,36 +348,6 @@
   "text": "可以换成鱼，窗口倒是帮我安排轮换了。",
   "scene": "class",
   "seg": 16,
-  "next": "a4-it"
- },
- {
-  "id": "a4-it",
-  "type": "plate",
-  "speaker": "米粒",
-  "tip": "八块钱、三个格子。主食和蛋白各来一份，别硬凑蔬菜。",
-  "text": "七点出门，我只想拿了就走。",
-  "budget": 8,
-  "slots": 3,
-  "cards": [
-   "rice",
-   "noodle",
-   "egg",
-   "milk",
-   "tofu",
-   "greens"
-  ],
-  "check": {
-   "require": [
-    "主食",
-    "蛋白"
-   ],
-   "maxSame": 2
-  },
-  "hint": {
-   "overBudget": "超了 {n} 元，便利店的东西不便宜",
-   "missing": "还差一份{category}",
-   "other": "同类选得有点多"
-  },
   "next": "a4-35"
  },
  {
@@ -464,7 +433,7 @@
  {
   "id": "a4-43",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "在图片下面补上每盒的换算。",
@@ -575,12 +544,11 @@
  {
   "id": "a4-54",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "先把适用情况写清楚，再整理通用版本。",
-    "next": "a4-55",
-    "reply": "先把适用情况写清楚，再整理通用版本。"
+    "next": "a4-55"
    }
   ]
  },
@@ -682,6 +650,36 @@
   "text": "好，排版完成以后我再检查一次，别把来源挤得看不见。",
   "scene": "class",
   "seg": 18,
+  "next": "a4-it"
+ },
+ {
+  "id": "a4-it",
+  "type": "plate",
+  "speaker": "米粒",
+  "tip": "八块钱、三个格子。主食和蛋白各来一份，别硬凑蔬菜。",
+  "text": "七点出门，我只想拿了就走。",
+  "budget": 8,
+  "slots": 3,
+  "cards": [
+   "rice",
+   "noodle",
+   "egg",
+   "milk",
+   "tofu",
+   "greens"
+  ],
+  "check": {
+   "require": [
+    "主食",
+    "蛋白"
+   ],
+   "maxSame": 2
+  },
+  "hint": {
+   "overBudget": "超了 {n} 元，便利店的东西不便宜",
+   "missing": "还差一份{category}",
+   "other": "同类选得有点多"
+  },
   "next": "a4-65"
  },
  {
@@ -697,12 +695,11 @@
  {
   "id": "a4-66",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "先发出这版通用指南，给大家作参考。",
-    "next": "a4-67",
-    "reply": "先发出这版通用指南，给大家作参考。可以继续收集后续意见。"
+    "next": "a4-67"
    }
   ]
  },
@@ -761,7 +758,7 @@
   "type": "say",
   "speaker": "米粒",
   "actor": "mili",
-  "text": "老师让我们提前到教室确认小组汇报顺序，我原来留给吃饭的时间被挤掉了一部分。我先吃了一部分，课间再把剩下的吃完。实际时间都记了。",
+  "text": "老师让我们提前到教室确认小组汇报顺序，我原来留给吃饭的时间被挤掉了一部分。",
   "scene": "class",
   "seg": 20,
   "next": "a4-73"
@@ -769,41 +766,40 @@
  {
   "id": "a4-73",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "那我们看看怎么给这种日子留余地。",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "我先吃了一部分，课间再把剩下的吃完。实际时间都记了。",
   "scene": "class",
   "seg": 20,
   "next": "a4-74"
  },
  {
   "id": "a4-74",
+  "type": "say",
+  "speaker": "你",
+  "actor": null,
+  "text": "那我们看看怎么给这种日子留余地。",
+  "scene": "class",
+  "seg": 20,
+  "next": "a4-75"
+ },
+ {
+  "id": "a4-75",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "具体是哪一步被挤掉了？我们改一下你的安排。",
-    "next": "a4-75",
-    "reply": "具体是哪一步被挤掉了？是买东西，还是吃饭？"
+    "next": "a4-76"
    }
   ]
  },
  {
-  "id": "a4-75",
+  "id": "a4-76",
   "type": "say",
   "speaker": "许知夏",
   "actor": "zhixia",
   "text": "再根据实际吃的量、饥饿感和后面餐次调整，别为了照着表走，就把没吃完的记录删掉。",
-  "scene": "class",
-  "seg": 20,
-  "next": "a4-76"
- },
- {
-  "id": "a4-76",
-  "type": "say",
-  "speaker": "米粒",
-  "actor": "mili",
-  "text": "记录保留。我今天最大的发现是，买到早餐以后，还得给它留时间。",
   "scene": "class",
   "seg": 20,
   "next": "a4-77"
@@ -811,9 +807,9 @@
  {
   "id": "a4-77",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "那我把赶课路线、可用时段和保存条件一起补进来。",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "记录保留。我今天最大的发现是，买到早餐以后，还得给它留时间。",
   "scene": "class",
   "seg": 20,
   "next": "a4-78"
@@ -821,9 +817,9 @@
  {
   "id": "a4-78",
   "type": "say",
-  "speaker": "米粒",
-  "actor": "mili",
-  "text": "好，寝室没有冰箱这点也记上。",
+  "speaker": "你",
+  "actor": null,
+  "text": "那我把赶课路线、可用时段和保存条件一起补进来。",
   "scene": "class",
   "seg": 20,
   "next": "a4-79"
@@ -831,9 +827,9 @@
  {
   "id": "a4-79",
   "type": "say",
-  "speaker": "你",
-  "actor": null,
-  "text": "先把这条经验写进通用指南。除了在哪里买，还要留出实际吃饭的时间。",
+  "speaker": "米粒",
+  "actor": "mili",
+  "text": "好，寝室没有冰箱这点也记上。",
   "scene": "class",
   "seg": 20,
   "next": "a4-80"
@@ -851,24 +847,22 @@
  {
   "id": "a4-81",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "我们把实际份量和全天情况补进你的版本。",
-    "next": "a4-82",
-    "reply": "我们把实际份量和全天情况补进你的版本。你今天其他餐和活动怎么安排的？"
+    "next": "a4-82"
    }
   ]
  },
  {
   "id": "a4-82",
   "type": "choice",
-  "question": "怎么选？",
+  "question": "接下来怎么做？",
   "options": [
    {
     "text": "我们把当天怎么替换也补进去。",
-    "next": "a4-83",
-    "reply": "我们把当天怎么替换也补进去。万一下一次超过十二元，你会先看什么？"
+    "next": "a4-83"
    }
   ]
  },
