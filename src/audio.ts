@@ -9,7 +9,10 @@ import pageUrl from '../assets/sfx/sfx_page.wav';
 import passUrl from '../assets/sfx/sfx_pass.wav';
 import failUrl from '../assets/sfx/sfx_fail.wav';
 import endingUrl from '../assets/sfx/sfx_ending.wav';
-import bgmUrl from '../assets/sfx/bgm_loop.mp3';
+import bgmDefault from '../assets/sfx/bgm_loop.mp3';
+import bgmChat from '../assets/sfx/bgm_chat.mp3';
+import bgmCanteen from '../assets/sfx/bgm_canteen.mp3';
+import bgmStore from '../assets/sfx/bgm_store.mp3';
 import { voices } from './assets';
 
 const sounds: Record<string, string> = {
@@ -44,7 +47,7 @@ export function speak(nodeId: string): void {
   if (!url) return;
   try {
     voice = new Audio(url);
-    voice.volume = 0.9;
+    voice.volume = 1.0;
     void voice.play().catch(() => {});
   } catch {
     voice = null;
@@ -62,22 +65,50 @@ export function stopVoice(): void {
   voice = null;
 }
 
-export function startBgm(): void {
-  if (started) return;
-  started = true;
+const BGM_TRACKS: Record<string, string> = {
+  chat: bgmChat,
+  canteen: bgmCanteen,
+  store: bgmStore,
+  class: bgmCanteen,
+  title: bgmDefault,
+  ending: bgmDefault,
+};
+
+let currentTrack = '';
+
+/** 进哪一幕就换哪一段，同一段不重复起播 */
+export function startBgm(scene = 'title'): void {
+  const url = BGM_TRACKS[scene] ?? bgmDefault;
+  if (bgm && currentTrack === url) {
+    if (bgm.paused) void bgm.play().catch(() => {});
+    return;
+  }
+  currentTrack = url;
+  if (bgm) {
+    try {
+      bgm.pause();
+    } catch {
+      /* 忽略 */
+    }
+  }
   try {
-    bgm = new Audio(bgmUrl);
+    bgm = new Audio(url);
     bgm.loop = true;
-    bgm.volume = muted ? 0 : 0.12;
+    bgm.volume = muted ? 0 : 0.09;
     void bgm.play().catch(() => {});
   } catch {
     bgm = null;
   }
+  started = true;
+}
+
+export function bgmStarted(): boolean {
+  return started;
 }
 
 export function toggleMute(): boolean {
   muted = !muted;
-  if (bgm) bgm.volume = muted ? 0 : 0.12;
+  if (bgm) bgm.volume = muted ? 0 : 0.09;
   if (muted) stopVoice();
   return muted;
 }

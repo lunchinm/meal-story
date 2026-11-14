@@ -1,6 +1,7 @@
 import type { ChoiceNode, EndingNode, KnowledgeCard, SayNode } from '../engine/types';
 import { backgrounds, actors } from '../assets';
 import { play, speak, startBgm, stopVoice } from '../audio';
+import { icon } from './icons';
 
 function h<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -117,14 +118,18 @@ export class Stage {
     box.append(h('div', 'text', node.text));
 
     if (node.card) {
-      const chip = h('button', 'card-chip', '看依据 +');
+      const chip = h('button', 'card-chip');
+      chip.insertAdjacentHTML('beforeend', `${icon('card')}<span>看依据</span>`);
       chip.addEventListener('click', (event) => {
         event.stopPropagation();
         this.showCard(node.card!);
       });
       box.append(chip);
     } else {
-      box.append(h('div', 'next-tip', '点击继续 ▸'));
+      const tip = h('div', 'next-tip');
+      tip.append(h('span', 'next-tip-text', '点击继续'));
+      tip.insertAdjacentHTML('beforeend', icon('next'));
+      box.append(tip);
     }
 
     if (node.hint) this.hintChip(node.hint, box);
@@ -209,7 +214,11 @@ export class Stage {
     this.detachAdvance();
     this.uiLayer.innerHTML = '';
     this.overlayLayer.innerHTML = '';
-    this.setScene('canteen');
+    this.setScene(node.image ? 'ending' : 'canteen');
+    if (node.image && backgrounds[node.image]) {
+      this.bgImage.style.backgroundImage = `url(${backgrounds[node.image]})`;
+      this.bgImage.classList.add('on');
+    }
     this.setActor(undefined);
     play('ending');
 
@@ -233,11 +242,17 @@ export class Stage {
 
   /* ---------- 章节卡 ---------- */
 
-  chapter(title: string, subtitle: string, onDone: () => void): void {
+  chapter(title: string, subtitle: string, image: string | undefined, onDone: () => void): void {
     this.detachAdvance();
     this.uiLayer.innerHTML = '';
     this.overlayLayer.innerHTML = '';
     const card = h('div', 'chapter-card');
+    const art = image ? backgrounds[image] : undefined;
+    if (art) {
+      const img = h('div', 'chapter-art');
+      img.style.backgroundImage = `url(${art})`;
+      card.append(img);
+    }
     card.append(h('div', 'chapter-kicker', '调查进行到'), h('div', 'chapter-title', title));
     if (subtitle) card.append(h('div', 'chapter-sub', subtitle));
     this.uiLayer.append(card);
@@ -263,13 +278,14 @@ export class Stage {
   /* ---------- 提示 ---------- */
 
   hintChip(text: string, host: HTMLElement): void {
-    const chip = h('button', 'hint-chip', '提示 ?');
+    const chip = h('button', 'hint-chip');
+    chip.insertAdjacentHTML('beforeend', `${icon('hint')}<span>提示</span>`);
     const panel = h('div', 'hint-panel', text);
     panel.hidden = true;
     chip.addEventListener('click', (event) => {
       event.stopPropagation();
       panel.hidden = !panel.hidden;
-      chip.textContent = panel.hidden ? '提示 ?' : '收起提示';
+      chip.innerHTML = `${icon('hint')}<span>${panel.hidden ? '提示' : '收起提示'}</span>`;
     });
     host.append(chip, panel);
   }

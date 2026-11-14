@@ -1,15 +1,131 @@
 [
-  {"id":"a4-00","type":"chapter","title":"第四章《你的方案，能坚持吗》","subtitle":"最后一步：写一份她真能做到的早餐","next":"a4-01"},
-  {"id":"a4-01","type":"say","speaker":"许知夏","scene":"class","actor":"zhixia","expr":"normal","hint":"早餐只有 8 块，三个格子，便利店能买到的优先。","text":"给米粒配一份早餐：8 块，三个格子。关键是明天早上她真能拿到。","next":"a4-02"},
-  {"id":"a4-02","type":"plate","speaker":"米粒","tip":"八块钱、三个格子。主食和蛋白各来一份，别硬凑蔬菜。","text":"七点出门，我只想拿了就走。","budget":8,"slots":3,"cards":["rice","noodle","egg","milk","tofu","greens"],"check":{"require":["主食","蛋白"],"maxSame":2},"hint":{"overBudget":"超了 {n} 元，便利店的东西不便宜","missing":"还差一份{category}","other":"同类选得有点多"},"next":"a4-03"},
-  {"id":"a4-03","type":"say","speaker":"米粒","scene":"class","actor":"mili","expr":"happy","text":"这样我明天早上拿上就走，不用排队。","next":"a4-04"},
-  {"id":"a4-04","type":"choice","question":"最后一步，怎么交出去？","hint":"记得的东西越多，方案能越具体。","options":[
-      {"text":"给周简和米粒各写一份","next":"a4-05"},
-      {"text":"发一份大家通用的小清单","next":"a4-05"}]},
-  {"id":"a4-05","type":"branch","rules":[
-      {"flags":["budget","early"],"all":true,"next":"e_hidden"},
-      {"flags":["evidence:a3-02"],"next":"e_advanced"}],"fallback":"e_normal"},
-  {"id":"e_normal","type":"ending","title":"我会选了","body":["你查清了那份套餐夸大在哪，也把周简的午餐调成了他愿意吃、也吃得下去的样子。","标签那一瓶，你算的是整瓶，不是每 100 毫升。"],"action":"明天中午，给自己加一份蔬菜"},
-  {"id":"e_advanced","type":"ending","title":"换一家食堂，也会选","body":["你不只改了这一次。换一份没见过的菜单，你还能说出哪里要补、哪里可以省。","原则没变：主食打底、蔬菜到位、蛋白别省，预算里做取舍。"],"action":"下次点餐前，先看一眼有没有蔬菜"},
-  {"id":"e_hidden","type":"ending","title":"先问清楚，再给建议","body":["你记得周简的预算卡得紧，也记得米粒七点就要出门。所以方案给的是两份，不是一份。","米粒的早餐改成了拿了就走的组合，周简那份把肉菜换成了豆腐，钱省下来，搭配也没塌。"],"action":"给建议之前，先问一句他的时间表"}
+  {
+    "id": "a4-00",
+    "type": "chapter",
+    "title": "第四章《你的方案，能坚持吗》",
+    "subtitle": "最后一步：写一份她真能做到的早餐",
+    "next": "a4-01",
+    "image": "ch_banner_4"
+  },
+  {
+    "id": "a4-01",
+    "type": "say",
+    "speaker": "许知夏",
+    "scene": "class",
+    "actor": "zhixia",
+    "expr": "normal",
+    "hint": "早餐只有 8 块，三个格子，便利店能买到的优先。",
+    "text": "给米粒配一份早餐：8 块，三个格子。关键是明天早上她真能拿到。",
+    "next": "a4-02"
+  },
+  {
+    "id": "a4-02",
+    "type": "plate",
+    "speaker": "米粒",
+    "tip": "八块钱、三个格子。主食和蛋白各来一份，别硬凑蔬菜。",
+    "text": "七点出门，我只想拿了就走。",
+    "budget": 8,
+    "slots": 3,
+    "cards": [
+      "rice",
+      "noodle",
+      "egg",
+      "milk",
+      "tofu",
+      "greens"
+    ],
+    "check": {
+      "require": [
+        "主食",
+        "蛋白"
+      ],
+      "maxSame": 2
+    },
+    "hint": {
+      "overBudget": "超了 {n} 元，便利店的东西不便宜",
+      "missing": "还差一份{category}",
+      "other": "同类选得有点多"
+    },
+    "next": "a4-03"
+  },
+  {
+    "id": "a4-03",
+    "type": "say",
+    "speaker": "米粒",
+    "scene": "class",
+    "actor": "mili",
+    "expr": "happy",
+    "text": "这样我明天早上拿上就走，不用排队。",
+    "next": "a4-04"
+  },
+  {
+    "id": "a4-04",
+    "type": "choice",
+    "question": "最后一步，怎么交出去？",
+    "hint": "记得的东西越多，方案能越具体。",
+    "options": [
+      {
+        "text": "给周简和米粒各写一份",
+        "next": "a4-05"
+      },
+      {
+        "text": "发一份大家通用的小清单",
+        "next": "a4-05"
+      }
+    ]
+  },
+  {
+    "id": "a4-05",
+    "type": "branch",
+    "rules": [
+      {
+        "flags": [
+          "budget",
+          "early"
+        ],
+        "all": true,
+        "next": "e_hidden"
+      },
+      {
+        "flags": [
+          "evidence:a3-02"
+        ],
+        "next": "e_advanced"
+      }
+    ],
+    "fallback": "e_normal"
+  },
+  {
+    "id": "e_normal",
+    "type": "ending",
+    "title": "我会选了",
+    "body": [
+      "你查清了那份套餐夸大在哪，也把周简的午餐调成了他愿意吃、也吃得下去的样子。",
+      "标签那一瓶，你算的是整瓶，不是每 100 毫升。"
+    ],
+    "action": "明天中午，给自己加一份蔬菜",
+    "image": "ending_normal"
+  },
+  {
+    "id": "e_advanced",
+    "type": "ending",
+    "title": "换一家食堂，也会选",
+    "body": [
+      "你不只改了这一次。换一份没见过的菜单，你还能说出哪里要补、哪里可以省。",
+      "原则没变：主食打底、蔬菜到位、蛋白别省，预算里做取舍。"
+    ],
+    "action": "下次点餐前，先看一眼有没有蔬菜",
+    "image": "ending_advanced"
+  },
+  {
+    "id": "e_hidden",
+    "type": "ending",
+    "title": "先问清楚，再给建议",
+    "body": [
+      "你记得周简的预算卡得紧，也记得米粒七点就要出门。所以方案给的是两份，不是一份。",
+      "米粒的早餐改成了拿了就走的组合，周简那份把肉菜换成了豆腐，钱省下来，搭配也没塌。"
+    ],
+    "action": "给建议之前，先问一句他的时间表",
+    "image": "ending_hidden"
+  }
 ]

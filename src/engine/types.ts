@@ -7,6 +7,8 @@ export interface ChapterNode {
   type: 'chapter';
   title: string;
   subtitle?: string;
+  /** 章节过场图，assets/bg 里的 key */
+  image?: string;
   next: string;
 }
 
@@ -108,6 +110,45 @@ export interface EndingNode {
   title: string;
   body: string[];
   action?: string;
+  /** 结局插画，assets/bg 里的 key */
+  image?: string;
+}
+
+export interface ReviewOption {
+  id: string;
+  label: string;
+  detail: string;
+  /** 是不是「最该改」的那一餐 */
+  correct: boolean;
+  reason: string;
+}
+
+export interface ReviewNode {
+  id: string;
+  type: 'review';
+  prompt?: string;
+  hint?: string;
+  options: ReviewOption[];
+  next: string;
+}
+
+export interface CompareOffer {
+  id: string;
+  name: string;
+  front: string;
+  back: string[];
+  note: string;
+}
+
+export interface CompareNode {
+  id: string;
+  type: 'compare';
+  prompt?: string;
+  hint?: string;
+  offers: CompareOffer[];
+  /** 哪一件整份含糖更高 */
+  worse: string;
+  next: string;
 }
 
 export type AnyNode =
@@ -117,7 +158,9 @@ export type AnyNode =
   | EvidenceNode
   | EndingNode
   | BranchNode
-  | ChapterNode;
+  | ChapterNode
+  | ReviewNode
+  | CompareNode;
 
 export interface FoodCard {
   id: string;

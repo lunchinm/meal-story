@@ -3,6 +3,8 @@ import type {
   BranchNode,
   ChapterNode,
   ChoiceNode,
+  CompareNode,
+  ReviewNode,
   Content,
   EndingNode,
   EvidenceNode,
@@ -13,6 +15,8 @@ import type { Stage } from '../ui/stage';
 import { state } from '../state';
 import { runPlate } from '../modules/plate';
 import { runEvidence } from '../modules/evidence';
+import { runReview } from '../modules/review';
+import { runCompare } from '../modules/compare';
 
 export class Runner {
   private readonly nodes = new Map<string, AnyNode>();
@@ -63,6 +67,12 @@ export class Runner {
       case 'chapter':
         this.playChapter(node);
         break;
+      case 'review':
+        this.playReview(node);
+        break;
+      case 'compare':
+        this.playCompare(node);
+        break;
       case 'ending':
         this.playEnding(node);
         break;
@@ -109,7 +119,25 @@ export class Runner {
 
   private playChapter(node: ChapterNode): void {
     this.stage.setActor(undefined);
-    this.stage.chapter(node.title, node.subtitle ?? '', () => this.goto(node.next));
+    this.stage.chapter(node.title, node.subtitle ?? '', node.image, () => this.goto(node.next));
+  }
+
+  private playReview(node: ReviewNode): void {
+    this.stage.setActor(undefined);
+    runReview(node, this.stage).then((result) => {
+      if (result.correct) state.flags.add(`review:${node.id}`);
+      state.save();
+      this.goto(node.next);
+    });
+  }
+
+  private playCompare(node: CompareNode): void {
+    this.stage.setActor(undefined);
+    runCompare(node, this.stage).then((result) => {
+      if (result.correct) state.flags.add(`compare:${node.id}`);
+      state.save();
+      this.goto(node.next);
+    });
   }
 
   private playBranch(node: BranchNode): void {

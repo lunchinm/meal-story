@@ -317,20 +317,50 @@ async function main() {
       await shoot(cdp, '12-plate-passed');
     }]);
 
-    steps.push(['记下预算，进第三章', async () => {
+    steps.push(['全天记录关：先错后对', async () => {
+      await until(cdp, '.record', '全天记录关');
+      const cards = await cdp.eval(`document.querySelectorAll('.record').length`);
+      assert(cards === 3, `记录卡数量不对：${cards}`);
+      await shoot(cdp, '13-records');
+      await click(cdp, '.record:nth-child(1)', '早餐');
+      await click(cdp, '.board-foot .btn-primary', '就改这一餐');
+      await sleep(250);
+      const wrong = await text(cdp, '.hint-line');
+      assert(wrong.length > 0, '选错了却没有理由');
+      await click(cdp, '.record:nth-child(3)', '晚餐');
+      await click(cdp, '.board-foot .btn-primary', '就改这一餐');
       await until(cdp, '.choice', '记住预算的选项');
       await click(cdp, '.choice:nth-child(1)', '记下预算');
       await until(cdp, '.chapter-card', '第三章章节卡');
-      await shoot(cdp, '13-chapter3');
-      await until(cdp, '.claim', '标签证据');
+      await shoot(cdp, '14-chapter3');
+    }]);
+
+    steps.push(['同类对比关：翻面看标签', async () => {
+      await until(cdp, '.offer', '对比关');
+      const offers = await cdp.eval(`document.querySelectorAll('.offer').length`);
+      assert(offers === 2, `商品数量不对：${offers}`);
+      await click(cdp, '.offer:nth-child(1) .btn', '翻第一瓶');
+      await click(cdp, '.offer:nth-child(2) .btn', '翻第二瓶');
+      await shoot(cdp, '15-compare-flipped');
+      const lines = await text(cdp, '.offer-back');
+      assert(lines.includes('100 毫升') || lines.includes('100毫升'), `背面没有单位信息：${lines}`);
+      // 先选错的一瓶
+      await click(cdp, '.offer:nth-child(2)', '零蔗糖那瓶');
+      await click(cdp, '.board-foot .btn-primary', '选它');
+      await sleep(250);
+      const note = await text(cdp, '.hint-line');
+      assert(note.length > 0, '选错没有提示');
+      await click(cdp, '.offer:nth-child(1)', '柠檬茶那瓶');
+      await click(cdp, '.board-foot .btn-primary', '选它');
+      await until(cdp, '.claim', '广告词核实关');
       const labels = await cdp.eval(
         `[...document.querySelectorAll('.claim-text')].map(e => e.textContent).join('|')`,
       );
-      assert(labels.includes('500'), `第三幕证据不像标签题：${labels}`);
+      assert(labels.includes('零蔗糖'), `第三幕证据不对：${labels}`);
       const index = await cdp.eval(
-        `[...document.querySelectorAll('.claim-text')].findIndex(e => e.textContent.includes('整瓶')) + 1`,
+        `[...document.querySelectorAll('.claim-text')].findIndex(e => e.textContent.includes('随便喝')) + 1`,
       );
-      await click(cdp, `.claim:nth-child(${index})`, '整瓶那一条');
+      await click(cdp, `.claim:nth-child(${index})`, '随便喝那一条');
       await click(cdp, '.board-foot .btn-primary', '确定');
       await until(cdp, '.dialog .text', '标签题过关');
     }]);

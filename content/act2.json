@@ -4,7 +4,8 @@
     "type": "chapter",
     "title": "第二章《餐盘之外》",
     "subtitle": "15 块、四个格子，怎么配",
-    "next": "a2-01"
+    "next": "a2-01",
+    "image": "ch_banner_2"
   },
   {
     "id": "a2-01",
@@ -56,6 +57,46 @@
     "expr": "happy",
     "card": "k2",
     "text": "配得还行。不过只看一顿不够——他晚上还有自习，得看早晚餐。",
+    "next": "a2-03b"
+  },
+  {
+    "id": "a2-03b",
+    "type": "say",
+    "speaker": "周简",
+    "scene": "canteen",
+    "actor": "zhoujian",
+    "expr": "normal",
+    "text": "我早上两个包子，晚上一碗面，中午就靠这顿了。",
+    "next": "a2-04r"
+  },
+  {
+    "id": "a2-04r",
+    "type": "review",
+    "prompt": "他这三份记录，哪一餐最该先改？",
+    "hint": "先看哪一餐缺蔬菜，再看哪一餐是天天都这样的。",
+    "options": [
+      {
+        "id": "r_break",
+        "label": "早餐",
+        "detail": "两个包子、一杯豆浆。\n七点出门，路上吃完。",
+        "correct": false,
+        "reason": "早餐确实简单，但他每天只补一顿，改晚餐更划算。"
+      },
+      {
+        "id": "r_lunch",
+        "label": "午餐",
+        "detail": "米饭、土豆丝、一份肉菜。\n就是刚才你替他配的那盘。",
+        "correct": false,
+        "reason": "午餐已经调过了，再看别的。"
+      },
+      {
+        "id": "r_dinner",
+        "label": "晚餐",
+        "detail": "一碗面、一根火腿肠。\n自习到十点，几乎每天如此。",
+        "correct": true,
+        "reason": "晚餐天天如此、还缺蔬菜，改这一餐最值。"
+      }
+    ],
     "next": "a2-04"
   },
   {

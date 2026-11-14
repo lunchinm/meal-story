@@ -4,7 +4,8 @@
     "type": "chapter",
     "title": "第一章《套餐的秘密》",
     "subtitle": "群里那张图，哪句话要证据？",
-    "next": "a1-01"
+    "next": "a1-01",
+    "image": "bg_chat"
   },
   {
     "id": "a1-01",
