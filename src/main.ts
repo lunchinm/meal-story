@@ -71,8 +71,9 @@ if (jumpTo) {
 window.addEventListener('keydown', (event) => {
   if (event.key !== ' ' && event.key !== 'Enter') return;
   const target = document.activeElement as HTMLElement | null;
-  if (target && (target.tagName === 'BUTTON' || target.tagName === 'INPUT')) return;
-  const dialog = document.querySelector('.dialog');
+  if (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return;
+  if (target && target.tagName === 'BUTTON' && target.closest('.board')) return;
+  const dialog = document.querySelector('.dialog, .phone');
   if (dialog) {
     event.preventDefault();
     (dialog as HTMLElement).click();
