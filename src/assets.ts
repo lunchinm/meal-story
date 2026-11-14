@@ -13,6 +13,7 @@ import bg_ch_banner_4 from '../assets/bg/ch_banner_4.webp';
 import bg_ending_advanced from '../assets/bg/ending_advanced.webp';
 import bg_ending_hidden from '../assets/bg/ending_hidden.webp';
 import bg_ending_normal from '../assets/bg/ending_normal.webp';
+import bg_poster_meal from '../assets/bg/poster_meal.webp';
 
 export const backgrounds: Record<string, string> = {
   'bg_canteen': bg_bg_canteen,
@@ -27,6 +28,7 @@ export const backgrounds: Record<string, string> = {
   'ending_advanced': bg_ending_advanced,
   'ending_hidden': bg_ending_hidden,
   'ending_normal': bg_ending_normal,
+  'poster_meal': bg_poster_meal,
 };
 
 import ch_ch_luomaster_happy from '../assets/ch/ch_luomaster_happy.webp';

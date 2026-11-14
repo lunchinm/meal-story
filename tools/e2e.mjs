@@ -249,19 +249,19 @@ async function main() {
       await click(cdp, '.hint-chip', '收起提示');
     }]);
 
-    steps.push(['第一章证据关：先错后对', async () => {
-      await until(cdp, '.claim', '证据面板');
-      const count = await cdp.eval(`document.querySelectorAll('.claim').length`);
-      assert(count === 3, `证据卡数量不对：${count}`);
-      await shoot(cdp, '05-evidence-idle');
-      await click(cdp, '.claim:nth-child(1)', '说法一');
-      await click(cdp, '.claim:nth-child(3)', '说法三');
+    steps.push(['第一章证据关：图上圈选', async () => {
+      await until(cdp, '.poster-line.spot', '宣传图圈选');
+      const spots = await cdp.eval(`document.querySelectorAll('.poster-line.spot').length`);
+      assert(spots === 3, `圈选区域数量不对：${spots}`);
+      await shoot(cdp, '05-poster-idle');
+      await click(cdp, '.poster-copy .spot:nth-child(2)', '价格那句');
       await click(cdp, '.board-foot .btn-primary', '确定');
-      await sleep(300);
+      await sleep(250);
       const hint = await text(cdp, '.hint-line');
-      assert(hint.length > 0, '选错了却没有提示');
-      await click(cdp, '.claim:nth-child(3)', '说法三');
-      await click(cdp, '.claim:nth-child(2)', '说法二');
+      assert(hint.length > 0, '圈错了却没有提示');
+      await shoot(cdp, '05b-poster-wrong');
+      await click(cdp, '.poster-copy .spot:nth-child(2)', '取消价格');
+      await click(cdp, '.poster-copy .spot:nth-child(3)', '免疫力拉满');
       await click(cdp, '.board-foot .btn-primary', '确定');
       await until(cdp, '.dialog .text', '过关后的对白');
     }]);

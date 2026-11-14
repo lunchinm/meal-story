@@ -1064,3 +1064,143 @@ body {
 .offer {
   max-height: 340px;
 }
+
+/* ---------- 证据关：图上圈选 ---------- */
+
+.poster-wrap {
+  grid-template-columns: minmax(360px, 460px) 1fr;
+  align-content: center;
+  align-items: center;
+  gap: 26px;
+}
+
+.poster-art {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 12px 30px rgba(30, 40, 32, 0.18);
+  overflow: hidden;
+}
+
+.poster-copy {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: 6%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.86);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.poster-line {
+  font-size: 15px;
+  font-weight: 700;
+  color: #8a2f24;
+  letter-spacing: 0.5px;
+}
+
+.poster-line-0 {
+  font-size: 19px;
+}
+
+.poster-line-2 {
+  color: #b0361f;
+}
+
+.hotspot {
+  position: absolute;
+  border: 2px dashed rgba(35, 48, 42, 0.45);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.16);
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.hotspot:hover {
+  border-color: var(--green);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.hotspot.on {
+  border: 2px solid var(--accent);
+  background: rgba(217, 119, 47, 0.26);
+}
+
+.hotspot-index {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+}
+
+.hotspot.on .hotspot-index {
+  background: var(--accent);
+}
+
+.poster-legend {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+
+.poster-line.spot {
+  font: inherit;
+  text-align: left;
+  border: 1px dashed transparent;
+  border-radius: 8px;
+  padding: 3px 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.poster-line.spot:hover {
+  border-color: var(--green-soft);
+  background: rgba(47, 107, 63, 0.08);
+}
+
+.poster-line.spot.on {
+  border: 1px solid var(--accent);
+  background: rgba(217, 119, 47, 0.18);
+}
+
+.spot-text {
+  pointer-events: none;
+}
+
+.poster-tip {
+  font-size: 14px;
+  color: var(--ink-soft);
+  align-self: start;
+  padding-top: 6px;
+}
+
+/* 圈选界面对齐：海报居中，说明放到图下 */
+.poster-wrap {
+  grid-template-columns: minmax(360px, 480px);
+  justify-content: center;
+  align-content: center;
+  gap: 12px;
+}
+
+.poster-tip {
+  text-align: center;
+  padding-top: 0;
+}

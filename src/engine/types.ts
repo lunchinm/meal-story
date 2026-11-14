@@ -92,10 +92,22 @@ export interface EvidenceClaim {
   reason: string;
 }
 
+export interface PosterRegion {
+  /** 对应哪一条说法 */
+  claimId: string;
+  /** 对应宣传图上的第几行文字（从 0 数） */
+  line: number;
+  label: string;
+}
+
 export interface EvidenceNode {
   id: string;
   type: 'evidence';
   prompt?: string;
+  /** 有图就用图上圈选，没有就退回点选列表 */
+  image?: string;
+  posterText?: string[];
+  regions?: PosterRegion[];
   claims: EvidenceClaim[];
   hint?: string;
   /** 需要选中几条才算对 */
