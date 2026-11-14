@@ -185,6 +185,18 @@ async function main() {
       await shoot(cdp, '01-title');
     }]);
 
+    steps.push(['聊天记录分段', async () => {
+      // a1-50 是一段群聊的第一句，前面刚是当面场景
+      await goto(cdp, 'a1-50');
+      await waitFor(cdp, `!!document.querySelector('.phone')`, '群聊');
+      const first = await cdp.eval(`document.querySelectorAll('.phone .msg').length`);
+      assert(first <= 2, `新一段群聊不该带着旧消息，现在有 ${first} 条`);
+      await click(cdp, '.phone', '推进一条');
+      const next = await cdp.eval(`document.querySelectorAll('.phone .msg').length`);
+      assert(next === first + 1, `同一段内应当累加：${first} → ${next}`);
+      await shoot(cdp, '01c-chat-thread');
+    }]);
+
     steps.push(['预览面板能跳关', async () => {
       await cdp.send('Page.navigate', { url: baseUrl });
       await sleep(700);
