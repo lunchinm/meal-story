@@ -171,149 +171,134 @@ import vo_a2_07 from '../assets/voice/a2-07.mp3';
 import vo_a2_08 from '../assets/voice/a2-08.mp3';
 import vo_a2_09 from '../assets/voice/a2-09.mp3';
 import vo_a2_10 from '../assets/voice/a2-10.mp3';
-import vo_a2_100 from '../assets/voice/a2-100.mp3';
-import vo_a2_101 from '../assets/voice/a2-101.mp3';
-import vo_a2_102 from '../assets/voice/a2-102.mp3';
-import vo_a2_103 from '../assets/voice/a2-103.mp3';
-import vo_a2_104 from '../assets/voice/a2-104.mp3';
-import vo_a2_106 from '../assets/voice/a2-106.mp3';
-import vo_a2_107 from '../assets/voice/a2-107.mp3';
-import vo_a2_108 from '../assets/voice/a2-108.mp3';
-import vo_a2_109 from '../assets/voice/a2-109.mp3';
 import vo_a2_11 from '../assets/voice/a2-11.mp3';
-import vo_a2_110 from '../assets/voice/a2-110.mp3';
-import vo_a2_111 from '../assets/voice/a2-111.mp3';
-import vo_a2_112 from '../assets/voice/a2-112.mp3';
-import vo_a2_114 from '../assets/voice/a2-114.mp3';
-import vo_a2_115 from '../assets/voice/a2-115.mp3';
-import vo_a2_116 from '../assets/voice/a2-116.mp3';
-import vo_a2_117 from '../assets/voice/a2-117.mp3';
-import vo_a2_118 from '../assets/voice/a2-118.mp3';
 import vo_a2_12 from '../assets/voice/a2-12.mp3';
-import vo_a2_120 from '../assets/voice/a2-120.mp3';
-import vo_a2_122 from '../assets/voice/a2-122.mp3';
-import vo_a2_124 from '../assets/voice/a2-124.mp3';
-import vo_a2_125 from '../assets/voice/a2-125.mp3';
-import vo_a2_126 from '../assets/voice/a2-126.mp3';
-import vo_a2_127 from '../assets/voice/a2-127.mp3';
-import vo_a2_129 from '../assets/voice/a2-129.mp3';
 import vo_a2_13 from '../assets/voice/a2-13.mp3';
-import vo_a2_130 from '../assets/voice/a2-130.mp3';
-import vo_a2_131 from '../assets/voice/a2-131.mp3';
-import vo_a2_132 from '../assets/voice/a2-132.mp3';
-import vo_a2_133 from '../assets/voice/a2-133.mp3';
-import vo_a2_134 from '../assets/voice/a2-134.mp3';
-import vo_a2_135 from '../assets/voice/a2-135.mp3';
-import vo_a2_137 from '../assets/voice/a2-137.mp3';
-import vo_a2_138 from '../assets/voice/a2-138.mp3';
-import vo_a2_139 from '../assets/voice/a2-139.mp3';
 import vo_a2_14 from '../assets/voice/a2-14.mp3';
-import vo_a2_140 from '../assets/voice/a2-140.mp3';
-import vo_a2_141 from '../assets/voice/a2-141.mp3';
-import vo_a2_143 from '../assets/voice/a2-143.mp3';
-import vo_a2_144 from '../assets/voice/a2-144.mp3';
-import vo_a2_145 from '../assets/voice/a2-145.mp3';
-import vo_a2_146 from '../assets/voice/a2-146.mp3';
-import vo_a2_148 from '../assets/voice/a2-148.mp3';
-import vo_a2_149 from '../assets/voice/a2-149.mp3';
-import vo_a2_150 from '../assets/voice/a2-150.mp3';
-import vo_a2_151 from '../assets/voice/a2-151.mp3';
-import vo_a2_152 from '../assets/voice/a2-152.mp3';
-import vo_a2_153 from '../assets/voice/a2-153.mp3';
-import vo_a2_154 from '../assets/voice/a2-154.mp3';
-import vo_a2_155 from '../assets/voice/a2-155.mp3';
-import vo_a2_157 from '../assets/voice/a2-157.mp3';
-import vo_a2_158 from '../assets/voice/a2-158.mp3';
-import vo_a2_159 from '../assets/voice/a2-159.mp3';
 import vo_a2_16 from '../assets/voice/a2-16.mp3';
-import vo_a2_160 from '../assets/voice/a2-160.mp3';
-import vo_a2_161 from '../assets/voice/a2-161.mp3';
-import vo_a2_163 from '../assets/voice/a2-163.mp3';
-import vo_a2_164 from '../assets/voice/a2-164.mp3';
-import vo_a2_165 from '../assets/voice/a2-165.mp3';
-import vo_a2_166 from '../assets/voice/a2-166.mp3';
-import vo_a2_167 from '../assets/voice/a2-167.mp3';
-import vo_a2_168 from '../assets/voice/a2-168.mp3';
-import vo_a2_169 from '../assets/voice/a2-169.mp3';
-import vo_a2_170 from '../assets/voice/a2-170.mp3';
-import vo_a2_171 from '../assets/voice/a2-171.mp3';
-import vo_a2_172 from '../assets/voice/a2-172.mp3';
-import vo_a2_173 from '../assets/voice/a2-173.mp3';
-import vo_a2_174 from '../assets/voice/a2-174.mp3';
-import vo_a2_175 from '../assets/voice/a2-175.mp3';
-import vo_a2_176 from '../assets/voice/a2-176.mp3';
-import vo_a2_177 from '../assets/voice/a2-177.mp3';
-import vo_a2_179 from '../assets/voice/a2-179.mp3';
-import vo_a2_182 from '../assets/voice/a2-182.mp3';
-import vo_a2_183 from '../assets/voice/a2-183.mp3';
-import vo_a2_184 from '../assets/voice/a2-184.mp3';
-import vo_a2_186 from '../assets/voice/a2-186.mp3';
-import vo_a2_187 from '../assets/voice/a2-187.mp3';
-import vo_a2_188 from '../assets/voice/a2-188.mp3';
-import vo_a2_190 from '../assets/voice/a2-190.mp3';
-import vo_a2_191 from '../assets/voice/a2-191.mp3';
-import vo_a2_192 from '../assets/voice/a2-192.mp3';
-import vo_a2_193 from '../assets/voice/a2-193.mp3';
-import vo_a2_194 from '../assets/voice/a2-194.mp3';
-import vo_a2_20 from '../assets/voice/a2-20.mp3';
-import vo_a2_22 from '../assets/voice/a2-22.mp3';
-import vo_a2_23 from '../assets/voice/a2-23.mp3';
-import vo_a2_24 from '../assets/voice/a2-24.mp3';
-import vo_a2_27 from '../assets/voice/a2-27.mp3';
-import vo_a2_29 from '../assets/voice/a2-29.mp3';
-import vo_a2_30 from '../assets/voice/a2-30.mp3';
-import vo_a2_33 from '../assets/voice/a2-33.mp3';
-import vo_a2_35 from '../assets/voice/a2-35.mp3';
-import vo_a2_36 from '../assets/voice/a2-36.mp3';
-import vo_a2_37 from '../assets/voice/a2-37.mp3';
-import vo_a2_38 from '../assets/voice/a2-38.mp3';
-import vo_a2_39 from '../assets/voice/a2-39.mp3';
-import vo_a2_40 from '../assets/voice/a2-40.mp3';
-import vo_a2_43 from '../assets/voice/a2-43.mp3';
-import vo_a2_44 from '../assets/voice/a2-44.mp3';
-import vo_a2_45 from '../assets/voice/a2-45.mp3';
-import vo_a2_46 from '../assets/voice/a2-46.mp3';
-import vo_a2_47 from '../assets/voice/a2-47.mp3';
-import vo_a2_48 from '../assets/voice/a2-48.mp3';
-import vo_a2_50 from '../assets/voice/a2-50.mp3';
-import vo_a2_51 from '../assets/voice/a2-51.mp3';
-import vo_a2_52 from '../assets/voice/a2-52.mp3';
-import vo_a2_53 from '../assets/voice/a2-53.mp3';
-import vo_a2_55 from '../assets/voice/a2-55.mp3';
-import vo_a2_56 from '../assets/voice/a2-56.mp3';
-import vo_a2_57 from '../assets/voice/a2-57.mp3';
-import vo_a2_59 from '../assets/voice/a2-59.mp3';
-import vo_a2_60 from '../assets/voice/a2-60.mp3';
-import vo_a2_62 from '../assets/voice/a2-62.mp3';
-import vo_a2_63 from '../assets/voice/a2-63.mp3';
-import vo_a2_64 from '../assets/voice/a2-64.mp3';
-import vo_a2_65 from '../assets/voice/a2-65.mp3';
-import vo_a2_67 from '../assets/voice/a2-67.mp3';
-import vo_a2_68 from '../assets/voice/a2-68.mp3';
-import vo_a2_69 from '../assets/voice/a2-69.mp3';
-import vo_a2_71 from '../assets/voice/a2-71.mp3';
-import vo_a2_72 from '../assets/voice/a2-72.mp3';
-import vo_a2_73 from '../assets/voice/a2-73.mp3';
-import vo_a2_74 from '../assets/voice/a2-74.mp3';
-import vo_a2_77 from '../assets/voice/a2-77.mp3';
-import vo_a2_79 from '../assets/voice/a2-79.mp3';
-import vo_a2_80 from '../assets/voice/a2-80.mp3';
-import vo_a2_81 from '../assets/voice/a2-81.mp3';
-import vo_a2_82 from '../assets/voice/a2-82.mp3';
-import vo_a2_84 from '../assets/voice/a2-84.mp3';
-import vo_a2_85 from '../assets/voice/a2-85.mp3';
-import vo_a2_87 from '../assets/voice/a2-87.mp3';
-import vo_a2_88 from '../assets/voice/a2-88.mp3';
-import vo_a2_89 from '../assets/voice/a2-89.mp3';
-import vo_a2_90 from '../assets/voice/a2-90.mp3';
-import vo_a2_91 from '../assets/voice/a2-91.mp3';
-import vo_a2_92 from '../assets/voice/a2-92.mp3';
-import vo_a2_93 from '../assets/voice/a2-93.mp3';
-import vo_a2_94 from '../assets/voice/a2-94.mp3';
-import vo_a2_95 from '../assets/voice/a2-95.mp3';
-import vo_a2_97 from '../assets/voice/a2-97.mp3';
-import vo_a2_98 from '../assets/voice/a2-98.mp3';
-import vo_a2_99 from '../assets/voice/a2-99.mp3';
+import vo_a2_c01 from '../assets/voice/a2-c01.mp3';
+import vo_a2_c03 from '../assets/voice/a2-c03.mp3';
+import vo_a2_c04 from '../assets/voice/a2-c04.mp3';
+import vo_a2_c05 from '../assets/voice/a2-c05.mp3';
+import vo_a2_c06 from '../assets/voice/a2-c06.mp3';
+import vo_a2_c07 from '../assets/voice/a2-c07.mp3';
+import vo_a2_c08 from '../assets/voice/a2-c08.mp3';
+import vo_a2_c09 from '../assets/voice/a2-c09.mp3';
+import vo_a2_c10 from '../assets/voice/a2-c10.mp3';
+import vo_a2_c11 from '../assets/voice/a2-c11.mp3';
+import vo_a2_c12 from '../assets/voice/a2-c12.mp3';
+import vo_a2_c13 from '../assets/voice/a2-c13.mp3';
+import vo_a2_c14 from '../assets/voice/a2-c14.mp3';
+import vo_a2_c15 from '../assets/voice/a2-c15.mp3';
+import vo_a2_c16 from '../assets/voice/a2-c16.mp3';
+import vo_a2_c17 from '../assets/voice/a2-c17.mp3';
+import vo_a2_l01 from '../assets/voice/a2-l01.mp3';
+import vo_a2_l02 from '../assets/voice/a2-l02.mp3';
+import vo_a2_l04 from '../assets/voice/a2-l04.mp3';
+import vo_a2_l05 from '../assets/voice/a2-l05.mp3';
+import vo_a2_l06 from '../assets/voice/a2-l06.mp3';
+import vo_a2_l08 from '../assets/voice/a2-l08.mp3';
+import vo_a2_l09 from '../assets/voice/a2-l09.mp3';
+import vo_a2_l10 from '../assets/voice/a2-l10.mp3';
+import vo_a2_l11 from '../assets/voice/a2-l11.mp3';
+import vo_a2_l14 from '../assets/voice/a2-l14.mp3';
+import vo_a2_l16 from '../assets/voice/a2-l16.mp3';
+import vo_a2_l17 from '../assets/voice/a2-l17.mp3';
+import vo_a2_l18 from '../assets/voice/a2-l18.mp3';
+import vo_a2_l19 from '../assets/voice/a2-l19.mp3';
+import vo_a2_l21 from '../assets/voice/a2-l21.mp3';
+import vo_a2_l22 from '../assets/voice/a2-l22.mp3';
+import vo_a2_l24 from '../assets/voice/a2-l24.mp3';
+import vo_a2_l25 from '../assets/voice/a2-l25.mp3';
+import vo_a2_l26 from '../assets/voice/a2-l26.mp3';
+import vo_a2_l27 from '../assets/voice/a2-l27.mp3';
+import vo_a2_l28 from '../assets/voice/a2-l28.mp3';
+import vo_a2_l29 from '../assets/voice/a2-l29.mp3';
+import vo_a2_l30 from '../assets/voice/a2-l30.mp3';
+import vo_a2_l31 from '../assets/voice/a2-l31.mp3';
+import vo_a2_l32 from '../assets/voice/a2-l32.mp3';
+import vo_a2_l34 from '../assets/voice/a2-l34.mp3';
+import vo_a2_l35 from '../assets/voice/a2-l35.mp3';
+import vo_a2_l36 from '../assets/voice/a2-l36.mp3';
+import vo_a2_l37 from '../assets/voice/a2-l37.mp3';
+import vo_a2_l38 from '../assets/voice/a2-l38.mp3';
+import vo_a2_l39 from '../assets/voice/a2-l39.mp3';
+import vo_a2_l40 from '../assets/voice/a2-l40.mp3';
+import vo_a2_l41 from '../assets/voice/a2-l41.mp3';
+import vo_a2_l43 from '../assets/voice/a2-l43.mp3';
+import vo_a2_l44 from '../assets/voice/a2-l44.mp3';
+import vo_a2_l45 from '../assets/voice/a2-l45.mp3';
+import vo_a2_m01 from '../assets/voice/a2-m01.mp3';
+import vo_a2_m03 from '../assets/voice/a2-m03.mp3';
+import vo_a2_m04 from '../assets/voice/a2-m04.mp3';
+import vo_a2_m05 from '../assets/voice/a2-m05.mp3';
+import vo_a2_m09 from '../assets/voice/a2-m09.mp3';
+import vo_a2_m11 from '../assets/voice/a2-m11.mp3';
+import vo_a2_m12 from '../assets/voice/a2-m12.mp3';
+import vo_a2_m16 from '../assets/voice/a2-m16.mp3';
+import vo_a2_m18 from '../assets/voice/a2-m18.mp3';
+import vo_a2_m19 from '../assets/voice/a2-m19.mp3';
+import vo_a2_m21 from '../assets/voice/a2-m21.mp3';
+import vo_a2_m22 from '../assets/voice/a2-m22.mp3';
+import vo_a2_m23 from '../assets/voice/a2-m23.mp3';
+import vo_a2_m24 from '../assets/voice/a2-m24.mp3';
+import vo_a2_m27 from '../assets/voice/a2-m27.mp3';
+import vo_a2_m28 from '../assets/voice/a2-m28.mp3';
+import vo_a2_m29 from '../assets/voice/a2-m29.mp3';
+import vo_a2_m30 from '../assets/voice/a2-m30.mp3';
+import vo_a2_m31 from '../assets/voice/a2-m31.mp3';
+import vo_a2_m32 from '../assets/voice/a2-m32.mp3';
+import vo_a2_m34 from '../assets/voice/a2-m34.mp3';
+import vo_a2_m35 from '../assets/voice/a2-m35.mp3';
+import vo_a2_m36 from '../assets/voice/a2-m36.mp3';
+import vo_a2_m37 from '../assets/voice/a2-m37.mp3';
+import vo_a2_m39 from '../assets/voice/a2-m39.mp3';
+import vo_a2_m40 from '../assets/voice/a2-m40.mp3';
+import vo_a2_m41 from '../assets/voice/a2-m41.mp3';
+import vo_a2_m43 from '../assets/voice/a2-m43.mp3';
+import vo_a2_m44 from '../assets/voice/a2-m44.mp3';
+import vo_a2_m46 from '../assets/voice/a2-m46.mp3';
+import vo_a2_z01 from '../assets/voice/a2-z01.mp3';
+import vo_a2_z02 from '../assets/voice/a2-z02.mp3';
+import vo_a2_z03 from '../assets/voice/a2-z03.mp3';
+import vo_a2_z05 from '../assets/voice/a2-z05.mp3';
+import vo_a2_z06 from '../assets/voice/a2-z06.mp3';
+import vo_a2_z07 from '../assets/voice/a2-z07.mp3';
+import vo_a2_z08 from '../assets/voice/a2-z08.mp3';
+import vo_a2_z09 from '../assets/voice/a2-z09.mp3';
+import vo_a2_z11 from '../assets/voice/a2-z11.mp3';
+import vo_a2_z13 from '../assets/voice/a2-z13.mp3';
+import vo_a2_z15 from '../assets/voice/a2-z15.mp3';
+import vo_a2_z16 from '../assets/voice/a2-z16.mp3';
+import vo_a2_z17 from '../assets/voice/a2-z17.mp3';
+import vo_a2_z18 from '../assets/voice/a2-z18.mp3';
+import vo_a2_z20 from '../assets/voice/a2-z20.mp3';
+import vo_a2_z21 from '../assets/voice/a2-z21.mp3';
+import vo_a2_z22 from '../assets/voice/a2-z22.mp3';
+import vo_a2_z23 from '../assets/voice/a2-z23.mp3';
+import vo_a2_z24 from '../assets/voice/a2-z24.mp3';
+import vo_a2_z25 from '../assets/voice/a2-z25.mp3';
+import vo_a2_z26 from '../assets/voice/a2-z26.mp3';
+import vo_a2_z28 from '../assets/voice/a2-z28.mp3';
+import vo_a2_z29 from '../assets/voice/a2-z29.mp3';
+import vo_a2_z30 from '../assets/voice/a2-z30.mp3';
+import vo_a2_z31 from '../assets/voice/a2-z31.mp3';
+import vo_a2_z32 from '../assets/voice/a2-z32.mp3';
+import vo_a2_z34 from '../assets/voice/a2-z34.mp3';
+import vo_a2_z35 from '../assets/voice/a2-z35.mp3';
+import vo_a2_z36 from '../assets/voice/a2-z36.mp3';
+import vo_a2_z37 from '../assets/voice/a2-z37.mp3';
+import vo_a2_z39 from '../assets/voice/a2-z39.mp3';
+import vo_a2_z40 from '../assets/voice/a2-z40.mp3';
+import vo_a2_z41 from '../assets/voice/a2-z41.mp3';
+import vo_a2_z42 from '../assets/voice/a2-z42.mp3';
+import vo_a2_z43 from '../assets/voice/a2-z43.mp3';
+import vo_a2_z44 from '../assets/voice/a2-z44.mp3';
+import vo_a2_z45 from '../assets/voice/a2-z45.mp3';
+import vo_a2_z46 from '../assets/voice/a2-z46.mp3';
+import vo_a2_z48 from '../assets/voice/a2-z48.mp3';
+import vo_a2_z49 from '../assets/voice/a2-z49.mp3';
+import vo_a2_z50 from '../assets/voice/a2-z50.mp3';
 import vo_a3_01 from '../assets/voice/a3-01.mp3';
 import vo_a3_02 from '../assets/voice/a3-02.mp3';
 import vo_a3_03 from '../assets/voice/a3-03.mp3';
@@ -444,6 +429,14 @@ import vo_a3_96 from '../assets/voice/a3-96.mp3';
 import vo_a3_97 from '../assets/voice/a3-97.mp3';
 import vo_a3_98 from '../assets/voice/a3-98.mp3';
 import vo_a3_99 from '../assets/voice/a3-99.mp3';
+import vo_a3_nosugar1 from '../assets/voice/a3-nosugar1.mp3';
+import vo_a3_photo1 from '../assets/voice/a3-photo1.mp3';
+import vo_a3_photo2 from '../assets/voice/a3-photo2.mp3';
+import vo_a3_r1_1 from '../assets/voice/a3-r1-1.mp3';
+import vo_a3_r1_2 from '../assets/voice/a3-r1-2.mp3';
+import vo_a3_r2_1 from '../assets/voice/a3-r2-1.mp3';
+import vo_a3_r2_2 from '../assets/voice/a3-r2-2.mp3';
+import vo_a3_r3_1 from '../assets/voice/a3-r3-1.mp3';
 import vo_a4_01 from '../assets/voice/a4-01.mp3';
 import vo_a4_03 from '../assets/voice/a4-03.mp3';
 import vo_a4_04 from '../assets/voice/a4-04.mp3';
@@ -552,6 +545,7 @@ import vo_a4_93 from '../assets/voice/a4-93.mp3';
 import vo_a4_94 from '../assets/voice/a4-94.mp3';
 import vo_a4_95 from '../assets/voice/a4-95.mp3';
 import vo_a4_97 from '../assets/voice/a4-97.mp3';
+import vo_a4_revise1 from '../assets/voice/a4-revise1.mp3';
 
 export const voices: Record<string, string> = {
   'a1-100': vo_a1_100,
@@ -630,149 +624,134 @@ export const voices: Record<string, string> = {
   'a2-08': vo_a2_08,
   'a2-09': vo_a2_09,
   'a2-10': vo_a2_10,
-  'a2-100': vo_a2_100,
-  'a2-101': vo_a2_101,
-  'a2-102': vo_a2_102,
-  'a2-103': vo_a2_103,
-  'a2-104': vo_a2_104,
-  'a2-106': vo_a2_106,
-  'a2-107': vo_a2_107,
-  'a2-108': vo_a2_108,
-  'a2-109': vo_a2_109,
   'a2-11': vo_a2_11,
-  'a2-110': vo_a2_110,
-  'a2-111': vo_a2_111,
-  'a2-112': vo_a2_112,
-  'a2-114': vo_a2_114,
-  'a2-115': vo_a2_115,
-  'a2-116': vo_a2_116,
-  'a2-117': vo_a2_117,
-  'a2-118': vo_a2_118,
   'a2-12': vo_a2_12,
-  'a2-120': vo_a2_120,
-  'a2-122': vo_a2_122,
-  'a2-124': vo_a2_124,
-  'a2-125': vo_a2_125,
-  'a2-126': vo_a2_126,
-  'a2-127': vo_a2_127,
-  'a2-129': vo_a2_129,
   'a2-13': vo_a2_13,
-  'a2-130': vo_a2_130,
-  'a2-131': vo_a2_131,
-  'a2-132': vo_a2_132,
-  'a2-133': vo_a2_133,
-  'a2-134': vo_a2_134,
-  'a2-135': vo_a2_135,
-  'a2-137': vo_a2_137,
-  'a2-138': vo_a2_138,
-  'a2-139': vo_a2_139,
   'a2-14': vo_a2_14,
-  'a2-140': vo_a2_140,
-  'a2-141': vo_a2_141,
-  'a2-143': vo_a2_143,
-  'a2-144': vo_a2_144,
-  'a2-145': vo_a2_145,
-  'a2-146': vo_a2_146,
-  'a2-148': vo_a2_148,
-  'a2-149': vo_a2_149,
-  'a2-150': vo_a2_150,
-  'a2-151': vo_a2_151,
-  'a2-152': vo_a2_152,
-  'a2-153': vo_a2_153,
-  'a2-154': vo_a2_154,
-  'a2-155': vo_a2_155,
-  'a2-157': vo_a2_157,
-  'a2-158': vo_a2_158,
-  'a2-159': vo_a2_159,
   'a2-16': vo_a2_16,
-  'a2-160': vo_a2_160,
-  'a2-161': vo_a2_161,
-  'a2-163': vo_a2_163,
-  'a2-164': vo_a2_164,
-  'a2-165': vo_a2_165,
-  'a2-166': vo_a2_166,
-  'a2-167': vo_a2_167,
-  'a2-168': vo_a2_168,
-  'a2-169': vo_a2_169,
-  'a2-170': vo_a2_170,
-  'a2-171': vo_a2_171,
-  'a2-172': vo_a2_172,
-  'a2-173': vo_a2_173,
-  'a2-174': vo_a2_174,
-  'a2-175': vo_a2_175,
-  'a2-176': vo_a2_176,
-  'a2-177': vo_a2_177,
-  'a2-179': vo_a2_179,
-  'a2-182': vo_a2_182,
-  'a2-183': vo_a2_183,
-  'a2-184': vo_a2_184,
-  'a2-186': vo_a2_186,
-  'a2-187': vo_a2_187,
-  'a2-188': vo_a2_188,
-  'a2-190': vo_a2_190,
-  'a2-191': vo_a2_191,
-  'a2-192': vo_a2_192,
-  'a2-193': vo_a2_193,
-  'a2-194': vo_a2_194,
-  'a2-20': vo_a2_20,
-  'a2-22': vo_a2_22,
-  'a2-23': vo_a2_23,
-  'a2-24': vo_a2_24,
-  'a2-27': vo_a2_27,
-  'a2-29': vo_a2_29,
-  'a2-30': vo_a2_30,
-  'a2-33': vo_a2_33,
-  'a2-35': vo_a2_35,
-  'a2-36': vo_a2_36,
-  'a2-37': vo_a2_37,
-  'a2-38': vo_a2_38,
-  'a2-39': vo_a2_39,
-  'a2-40': vo_a2_40,
-  'a2-43': vo_a2_43,
-  'a2-44': vo_a2_44,
-  'a2-45': vo_a2_45,
-  'a2-46': vo_a2_46,
-  'a2-47': vo_a2_47,
-  'a2-48': vo_a2_48,
-  'a2-50': vo_a2_50,
-  'a2-51': vo_a2_51,
-  'a2-52': vo_a2_52,
-  'a2-53': vo_a2_53,
-  'a2-55': vo_a2_55,
-  'a2-56': vo_a2_56,
-  'a2-57': vo_a2_57,
-  'a2-59': vo_a2_59,
-  'a2-60': vo_a2_60,
-  'a2-62': vo_a2_62,
-  'a2-63': vo_a2_63,
-  'a2-64': vo_a2_64,
-  'a2-65': vo_a2_65,
-  'a2-67': vo_a2_67,
-  'a2-68': vo_a2_68,
-  'a2-69': vo_a2_69,
-  'a2-71': vo_a2_71,
-  'a2-72': vo_a2_72,
-  'a2-73': vo_a2_73,
-  'a2-74': vo_a2_74,
-  'a2-77': vo_a2_77,
-  'a2-79': vo_a2_79,
-  'a2-80': vo_a2_80,
-  'a2-81': vo_a2_81,
-  'a2-82': vo_a2_82,
-  'a2-84': vo_a2_84,
-  'a2-85': vo_a2_85,
-  'a2-87': vo_a2_87,
-  'a2-88': vo_a2_88,
-  'a2-89': vo_a2_89,
-  'a2-90': vo_a2_90,
-  'a2-91': vo_a2_91,
-  'a2-92': vo_a2_92,
-  'a2-93': vo_a2_93,
-  'a2-94': vo_a2_94,
-  'a2-95': vo_a2_95,
-  'a2-97': vo_a2_97,
-  'a2-98': vo_a2_98,
-  'a2-99': vo_a2_99,
+  'a2-c01': vo_a2_c01,
+  'a2-c03': vo_a2_c03,
+  'a2-c04': vo_a2_c04,
+  'a2-c05': vo_a2_c05,
+  'a2-c06': vo_a2_c06,
+  'a2-c07': vo_a2_c07,
+  'a2-c08': vo_a2_c08,
+  'a2-c09': vo_a2_c09,
+  'a2-c10': vo_a2_c10,
+  'a2-c11': vo_a2_c11,
+  'a2-c12': vo_a2_c12,
+  'a2-c13': vo_a2_c13,
+  'a2-c14': vo_a2_c14,
+  'a2-c15': vo_a2_c15,
+  'a2-c16': vo_a2_c16,
+  'a2-c17': vo_a2_c17,
+  'a2-l01': vo_a2_l01,
+  'a2-l02': vo_a2_l02,
+  'a2-l04': vo_a2_l04,
+  'a2-l05': vo_a2_l05,
+  'a2-l06': vo_a2_l06,
+  'a2-l08': vo_a2_l08,
+  'a2-l09': vo_a2_l09,
+  'a2-l10': vo_a2_l10,
+  'a2-l11': vo_a2_l11,
+  'a2-l14': vo_a2_l14,
+  'a2-l16': vo_a2_l16,
+  'a2-l17': vo_a2_l17,
+  'a2-l18': vo_a2_l18,
+  'a2-l19': vo_a2_l19,
+  'a2-l21': vo_a2_l21,
+  'a2-l22': vo_a2_l22,
+  'a2-l24': vo_a2_l24,
+  'a2-l25': vo_a2_l25,
+  'a2-l26': vo_a2_l26,
+  'a2-l27': vo_a2_l27,
+  'a2-l28': vo_a2_l28,
+  'a2-l29': vo_a2_l29,
+  'a2-l30': vo_a2_l30,
+  'a2-l31': vo_a2_l31,
+  'a2-l32': vo_a2_l32,
+  'a2-l34': vo_a2_l34,
+  'a2-l35': vo_a2_l35,
+  'a2-l36': vo_a2_l36,
+  'a2-l37': vo_a2_l37,
+  'a2-l38': vo_a2_l38,
+  'a2-l39': vo_a2_l39,
+  'a2-l40': vo_a2_l40,
+  'a2-l41': vo_a2_l41,
+  'a2-l43': vo_a2_l43,
+  'a2-l44': vo_a2_l44,
+  'a2-l45': vo_a2_l45,
+  'a2-m01': vo_a2_m01,
+  'a2-m03': vo_a2_m03,
+  'a2-m04': vo_a2_m04,
+  'a2-m05': vo_a2_m05,
+  'a2-m09': vo_a2_m09,
+  'a2-m11': vo_a2_m11,
+  'a2-m12': vo_a2_m12,
+  'a2-m16': vo_a2_m16,
+  'a2-m18': vo_a2_m18,
+  'a2-m19': vo_a2_m19,
+  'a2-m21': vo_a2_m21,
+  'a2-m22': vo_a2_m22,
+  'a2-m23': vo_a2_m23,
+  'a2-m24': vo_a2_m24,
+  'a2-m27': vo_a2_m27,
+  'a2-m28': vo_a2_m28,
+  'a2-m29': vo_a2_m29,
+  'a2-m30': vo_a2_m30,
+  'a2-m31': vo_a2_m31,
+  'a2-m32': vo_a2_m32,
+  'a2-m34': vo_a2_m34,
+  'a2-m35': vo_a2_m35,
+  'a2-m36': vo_a2_m36,
+  'a2-m37': vo_a2_m37,
+  'a2-m39': vo_a2_m39,
+  'a2-m40': vo_a2_m40,
+  'a2-m41': vo_a2_m41,
+  'a2-m43': vo_a2_m43,
+  'a2-m44': vo_a2_m44,
+  'a2-m46': vo_a2_m46,
+  'a2-z01': vo_a2_z01,
+  'a2-z02': vo_a2_z02,
+  'a2-z03': vo_a2_z03,
+  'a2-z05': vo_a2_z05,
+  'a2-z06': vo_a2_z06,
+  'a2-z07': vo_a2_z07,
+  'a2-z08': vo_a2_z08,
+  'a2-z09': vo_a2_z09,
+  'a2-z11': vo_a2_z11,
+  'a2-z13': vo_a2_z13,
+  'a2-z15': vo_a2_z15,
+  'a2-z16': vo_a2_z16,
+  'a2-z17': vo_a2_z17,
+  'a2-z18': vo_a2_z18,
+  'a2-z20': vo_a2_z20,
+  'a2-z21': vo_a2_z21,
+  'a2-z22': vo_a2_z22,
+  'a2-z23': vo_a2_z23,
+  'a2-z24': vo_a2_z24,
+  'a2-z25': vo_a2_z25,
+  'a2-z26': vo_a2_z26,
+  'a2-z28': vo_a2_z28,
+  'a2-z29': vo_a2_z29,
+  'a2-z30': vo_a2_z30,
+  'a2-z31': vo_a2_z31,
+  'a2-z32': vo_a2_z32,
+  'a2-z34': vo_a2_z34,
+  'a2-z35': vo_a2_z35,
+  'a2-z36': vo_a2_z36,
+  'a2-z37': vo_a2_z37,
+  'a2-z39': vo_a2_z39,
+  'a2-z40': vo_a2_z40,
+  'a2-z41': vo_a2_z41,
+  'a2-z42': vo_a2_z42,
+  'a2-z43': vo_a2_z43,
+  'a2-z44': vo_a2_z44,
+  'a2-z45': vo_a2_z45,
+  'a2-z46': vo_a2_z46,
+  'a2-z48': vo_a2_z48,
+  'a2-z49': vo_a2_z49,
+  'a2-z50': vo_a2_z50,
   'a3-01': vo_a3_01,
   'a3-02': vo_a3_02,
   'a3-03': vo_a3_03,
@@ -903,6 +882,14 @@ export const voices: Record<string, string> = {
   'a3-97': vo_a3_97,
   'a3-98': vo_a3_98,
   'a3-99': vo_a3_99,
+  'a3-nosugar1': vo_a3_nosugar1,
+  'a3-photo1': vo_a3_photo1,
+  'a3-photo2': vo_a3_photo2,
+  'a3-r1-1': vo_a3_r1_1,
+  'a3-r1-2': vo_a3_r1_2,
+  'a3-r2-1': vo_a3_r2_1,
+  'a3-r2-2': vo_a3_r2_2,
+  'a3-r3-1': vo_a3_r3_1,
   'a4-01': vo_a4_01,
   'a4-03': vo_a4_03,
   'a4-04': vo_a4_04,
@@ -1011,4 +998,5 @@ export const voices: Record<string, string> = {
   'a4-94': vo_a4_94,
   'a4-95': vo_a4_95,
   'a4-97': vo_a4_97,
+  'a4-revise1': vo_a4_revise1,
 };

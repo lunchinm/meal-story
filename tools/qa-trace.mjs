@@ -71,6 +71,16 @@ try {
   await new Promise((ok) => ws.addEventListener('open', ok, { once: true }));
   const cdp = new Cdp(ws);
   await cdp.send('Page.enable'); await cdp.send('Runtime.enable');
+  cdp.ws.addEventListener('message', (e) => {
+    const m = JSON.parse(e.data);
+    if (m.method === 'Runtime.exceptionThrown') {
+      const d = m.params?.exceptionDetails;
+      console.log('PAGE-ERROR', d?.text, d?.exception?.description?.split('\n')[0]);
+    }
+    if (m.method === 'Runtime.consoleAPICalled' && m.params?.type === 'error') {
+      console.log('CONSOLE-ERROR', (m.params.args || []).map((a) => a.value ?? a.description).join(' ').slice(0, 200));
+    }
+  });
   await cdp.send('Emulation.setDeviceMetricsOverride', { width: 1400, height: 900, deviceScaleFactor: 1, mobile: false });
   await cdp.send('Page.navigate', { url: baseUrl });
   await sleep(900);
@@ -93,6 +103,11 @@ try {
     })()`);
     console.log(`${String(i).padStart(4)} ${info.ui.padEnd(9)} ${String(info.node).padEnd(14)} ${info.line}`);
 
+    if (info.ui === 'dialog' && info.node === 'a1-it') {
+      const dump = await cdp.eval(`[...document.querySelectorAll('body *')].map((e) => e.tagName + '.' + (e.className || '')).slice(0, 40).join(' | ')`);
+      console.log('STALL-DUMP', dump);
+      break;
+    }
     if (info.ui === 'ending') break;
     if (info.ui === 'explore') {
       const n = await cdp.eval(`document.querySelectorAll('.explore-card').length`);

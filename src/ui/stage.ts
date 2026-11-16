@@ -384,7 +384,7 @@ export class Stage {
     const head = h('div', 'board-head');
     head.append(h('div', 'board-title', node.title), h('div', 'board-sub', '可逐条翻开，也可以直接继续'));
     const body = h('div', 'board-body notebook-body');
-    const entries = node.entries;
+    const entries = node.entries.filter((entry) => !entry.flag || state.flags.has(entry.flag));
 
     entries.forEach((entry, index) => {
       const item = h('button', 'nb-item');
@@ -406,8 +406,19 @@ export class Stage {
       body.append(wrap);
     });
 
+    if (entries.length === 0) {
+      body.append(h('div', 'explore-hint', '这次没有记下需要核实的内容，可以直接继续。'));
+    }
+
     const foot = h('div', 'board-foot');
     foot.append(h('div', 'spacer'));
+    const quit = h('button', 'btn btn-ghost', '保存并退出');
+    quit.addEventListener('click', (event) => {
+      event.stopPropagation();
+      state.save();
+      window.location.reload();
+    });
+    foot.append(quit);
     const next = h('button', 'btn btn-primary', '继续');
     next.addEventListener('click', (event) => {
       event.stopPropagation();

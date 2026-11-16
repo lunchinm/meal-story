@@ -2854,7 +2854,7 @@
     "next": "a3-photo1"
    }
   ],
-  "fallback": "e3_end"
+  "fallback": "a3-meets"
  },
  {
   "id": "a3-photo1",
@@ -2885,6 +2885,32 @@
   "type": "record",
   "flag": "rec:购买理由照片",
   "label": "调查簿增加“购买理由”照片",
+  "next": "a3-meets"
+ },
+ {
+  "id": "a3-meets",
+  "type": "notebook",
+  "title": "偶遇记录",
+  "entries": [
+   {
+    "label": "R1 第二件半价",
+    "flag": "rec:偶遇:R1",
+    "text": "促销要看本来要买几件；多买一件放着，也是钱。",
+    "source": "教学示例：促销牌为虚构商品"
+   },
+   {
+    "label": "R2 一袋原来分三份",
+    "flag": "rec:偶遇:R2",
+    "text": "家庭装拆开分份，要看每份的量，别把一袋当成一次的量。",
+    "source": "教学示例"
+   },
+   {
+    "label": "R3 瓶身只拍到一半",
+    "flag": "rec:偶遇:R3",
+    "text": "只拍到半个瓶身，看不到配料和营养表，等于没拍到。",
+    "source": "教学示例"
+   }
+  ],
   "next": "e3_end"
  },
  {

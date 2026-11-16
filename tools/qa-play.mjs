@@ -191,7 +191,7 @@ async function main() {
           }
         } else if (await cdp.eval(`!!document.querySelector('.claim')`)) {
           const idx = await cdp.eval(
-            `[...document.querySelectorAll('.claim-text')].findIndex(e => /七天|整瓶|随便喝|拉满/.test(e.textContent)) + 1`,
+            `[...document.querySelectorAll('.claim-text')].findIndex(e => /七天|整瓶|随便喝|拉满|乳饮料|配料表第一位/.test(e.textContent)) + 1`,
           );
           if (idx > 0) await clickSel(cdp, `.claim:nth-child(${idx})`);
         }
@@ -225,6 +225,8 @@ async function main() {
     }
 
     report.push(['推进步数', String(steps)]);
+    const stallNode = await cdp.eval(`JSON.parse(localStorage.getItem('meal_save_v1')||'{}').nodeId`);
+    report.push(['卡住节点', stallNode ?? '']);
     report.push(['结局', ending ?? '未到达（可能卡住）']);
     if (!ending) failures += 1;
 
