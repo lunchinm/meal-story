@@ -2050,3 +2050,37 @@ body {
   background: #fff;
   width: 180px;
 }
+
+/* ---------- 群聊里的图片消息 ---------- */
+
+.msg-pic {
+  display: block;
+  width: 176px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(20, 30, 24, 0.16);
+  cursor: zoom-in;
+  font: inherit;
+}
+
+.msg-pic-art {
+  width: 176px;
+  height: 108px;
+  background-size: cover;
+  background-position: center;
+}
+
+.msg-pic-cap {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  text-align: left;
+  padding: 5px 8px 6px;
+  background: #fff;
+}
+
+.msg-pic:hover .msg-pic-art {
+  filter: brightness(1.04);
+}

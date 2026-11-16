@@ -256,6 +256,22 @@ async function main() {
       assert(mine >= 1, '点完没有出现玩家气泡');
     }]);
 
+    steps.push(['群聊里的图片直接贴出、点图放大', async () => {
+      await goto(cdp, 'a1-08');
+      await waitFor(cdp, `!!document.querySelector('.msg-pic')`, '图片气泡');
+      const art = await cdp.eval(`(() => {
+        const el = document.querySelector('.msg-pic-art');
+        return getComputedStyle(el).backgroundImage.slice(0, 30);
+      })()`);
+      assert(art.includes('url('), `图片气泡没有背景图：${art}`);
+      const chips = await cdp.eval(`document.querySelectorAll('.msg-chip').length`);
+      assert(chips === 0, '不该再出现“看一眼”文字按钮');
+      await shoot(cdp, '22-chat-picture');
+      await click(cdp, '.msg-pic', '点图放大');
+      await waitFor(cdp, `!!document.querySelector('.prop-panel, .card-panel')`, '放大面板');
+      await shoot(cdp, '23-prop-zoom');
+    }]);
+
     steps.push(['第一章：图上圈选', async () => {
       await goto(cdp, 'a1-it');
       await waitFor(cdp, `!!document.querySelector('.poster-line.spot')`, '圈选');

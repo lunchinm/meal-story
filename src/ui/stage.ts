@@ -20,7 +20,18 @@ function h<K extends keyof HTMLElementTagNameMap>(
  * 所有画面都在这里落 DOM。
  * 剧情只给数据，stage 只负责画和收点击。
  */
+const PROP_IMAGE: Record<string, string> = {
+  poster: 'poster_meal',
+  tray: 'ch_banner_2',
+  menu: 'ch_banner_2',
+  note: 'bg_class',
+  product_front: 'ch_banner_3',
+  product_back: 'ch_banner_3',
+  nutrition: 'ch_banner_3',
+};
+
 const PROP_LABEL: Record<string, string> = {
+  poster: '群里的宣传图',
   product_front: '看瓶子正面',
   product_back: '翻到背面',
   nutrition: '看营养成分表',
@@ -226,13 +237,19 @@ export class Stage {
     if (msg.speaker !== '你') row.append(h('div', 'msg-name', msg.speaker));
     row.append(h('div', 'msg-text', msg.text));
     if (node.prop) {
-      const chip = h('button', 'msg-chip');
-      chip.insertAdjacentHTML('beforeend', `${icon('card')}<span>${PROP_LABEL[node.prop] ?? '看一眼'}</span>`);
-      chip.addEventListener('click', (event) => {
+      // 直接把图贴在消息里：点图放大，不再用文字按钮
+      const pic = h('button', 'msg-pic');
+      const src = PROP_IMAGE[node.prop as PropId];
+      const art = h('div', 'msg-pic-art');
+      if (src && backgrounds[src]) art.style.backgroundImage = `url(${backgrounds[src]})`;
+      pic.append(art);
+      pic.append(h('div', 'msg-pic-cap', `${PROP_LABEL[node.prop] ?? '图片'} · 点击看大图`));
+      pic.addEventListener('click', (event) => {
         event.stopPropagation();
+        play('page');
         this.showProp(node.prop as PropId);
       });
-      row.append(chip);
+      row.append(pic);
     }
     body.append(row);
     while (body.children.length > 60) body.firstElementChild?.remove();
