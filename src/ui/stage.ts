@@ -29,6 +29,44 @@ const PROP_LABEL: Record<string, string> = {
   tray: '看实物',
 };
 
+
+const NAME_KEY = 'meal_player_name';
+const ENDING_KEY = 'meal_endings';
+
+function readPlayerName(): string {
+  try {
+    return window.localStorage.getItem(NAME_KEY) ?? '';
+  } catch {
+    return '';
+  }
+}
+
+function savePlayerName(name: string): void {
+  try {
+    if (name) window.localStorage.setItem(NAME_KEY, name);
+    else window.localStorage.removeItem(NAME_KEY);
+  } catch {
+    /* 忽略隐私模式下的写入失败 */
+  }
+}
+
+function readEndings(): Set<string> {
+  try {
+    const raw = window.localStorage.getItem(ENDING_KEY);
+    return new Set<string>(raw ? (JSON.parse(raw) as string[]) : []);
+  } catch {
+    return new Set<string>();
+  }
+}
+
+function saveEndings(ids: Set<string>): void {
+  try {
+    window.localStorage.setItem(ENDING_KEY, JSON.stringify([...ids]));
+  } catch {
+    /* 同上 */
+  }
+}
+
 export class Stage {
   private chatSeg = -1;
   private chatLog: { speaker: string; text: string }[] = [];
@@ -118,9 +156,24 @@ export class Stage {
       h('div', 'title-meta', '四章 · 约 30—40 分钟 ｜ 对话 + 配餐 + 看标签'),
     );
 
+    const nameRow = h('label', 'title-name-row');
+    nameRow.append(h('span', 'title-name-label', '调查员'));
+    const nameInput = document.createElement('input');
+    nameInput.className = 'title-name-input';
+    nameInput.type = 'text';
+    nameInput.maxLength = 12;
+    nameInput.placeholder = '可不填，默认“你”';
+    nameInput.value = readPlayerName();
+    nameInput.addEventListener('click', (event) => event.stopPropagation());
+    nameRow.append(nameInput);
+    panel.append(nameRow);
+
     const actions = h('div', 'title-actions');
     const start = h('button', 'btn btn-primary', hasSave ? '重新开始' : '开始调查');
-    start.addEventListener('click', onStart);
+    start.addEventListener('click', () => {
+      savePlayerName(nameInput.value.trim());
+      onStart();
+    });
     actions.append(start);
     if (hasSave) {
       const cont = h('button', 'btn', '继续上次');
@@ -522,6 +575,57 @@ export class Stage {
       );
       card.append(action);
     }
+    if (node.cards && node.cards.length > 0) {
+      const wrap = h('div', 'ending-cards');
+      wrap.append(h('div', 'ending-cards-title', '片尾这四张，可以带走'));
+      const row = h('div', 'ending-cards-row');
+      node.cards.forEach((id, index) => {
+        const item = h('button', 'ending-card-item');
+        item.append(h('span', 'ending-card-num', String(index + 1)));
+        const cardData = (window as unknown as { __knowledge?: KnowledgeCard[] }).__knowledge?.find((c) => c.id === id);
+        item.append(h('span', 'ending-card-name', cardData?.title ?? `第 ${index + 1} 张`));
+        item.addEventListener('click', (event) => {
+          event.stopPropagation();
+          this.showCard(id);
+        });
+        row.append(item);
+      });
+      wrap.append(row);
+      card.append(wrap);
+    }
+
+    if (node.unlocks && node.unlocks.length > 0) {
+      const box = h('div', 'ending-unlocks');
+      box.append(h('div', 'ending-unlocks-title', '片尾后解锁'));
+      const list = h('div', 'ending-unlocks-list');
+      node.unlocks.forEach((text) => list.append(h('span', 'ending-unlock', text)));
+      box.append(list);
+      card.append(box);
+    }
+
+    // 结局相册
+    const album = h('div', 'ending-album');
+    album.append(h('div', 'ending-album-title', '结局相册'));
+    const slots = h('div', 'ending-album-row');
+    const seen = readEndings();
+    seen.add(node.id);
+    saveEndings(seen);
+    const all = (window as unknown as { __endings?: Array<{ id: string; title: string }> }).__endings ?? [];
+    all.forEach((entry) => {
+      const got = seen.has(entry.id);
+      const slot = h('div', got ? 'ending-slot got' : 'ending-slot');
+      slot.append(h('span', 'ending-slot-mark', got ? '✔' : '·'));
+      slot.append(h('span', 'ending-slot-name', got ? entry.title : '未解锁'));
+      slots.append(slot);
+    });
+    album.append(slots);
+    card.append(album);
+
+    const name = readPlayerName();
+    if (name) {
+      card.append(h('div', 'ending-player', `本次调查员：${name}`));
+    }
+
     const again = h('button', 'btn', '再走一遍');
     again.addEventListener('click', onRestart);
     card.append(again);

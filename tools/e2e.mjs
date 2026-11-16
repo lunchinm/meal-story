@@ -420,6 +420,36 @@ async function main() {
       await shoot(cdp, '20-ending-normal');
     }]);
 
+    steps.push(['结局页：片尾四张卡与相册', async () => {
+      await goto(cdp, 'e_hidden');
+      await waitFor(cdp, `!!document.querySelector('.ending-title')`, '结局页');
+      const cards = await cdp.eval(`document.querySelectorAll('.ending-card-item').length`);
+      assert(cards === 4, `片尾卡数量不对：${cards}`);
+      const unlocks = await cdp.eval(`document.querySelectorAll('.ending-unlock').length`);
+      assert(unlocks >= 3, `解锁项太少：${unlocks}`);
+      const slots = await cdp.eval(`document.querySelectorAll('.ending-slot').length`);
+      assert(slots === 3, `结局相册槽位不对：${slots}`);
+      const gotCount = await cdp.eval(`document.querySelectorAll('.ending-slot.got').length`);
+      assert(gotCount >= 1, '当前结局没进相册');
+      await click(cdp, '.ending-card-item', '打开第一张');
+      await waitFor(cdp, `!!document.querySelector('.card-panel')`, '知识卡');
+      const title = await text(cdp, '.card-title');
+      assert(title.length > 0, '知识卡没有标题');
+      await click(cdp, '.card-panel .btn-ghost', '收起');
+      await shoot(cdp, '21-ending-album');
+    }]);
+
+    steps.push(['标题页可以填调查员名字', async () => {
+      await cdp.send('Page.navigate', { url: `${baseUrl}?fresh=1` });
+      await waitFor(cdp, `!!document.querySelector('.title-name-input')`, '名字输入框');
+      await cdp.eval(`(() => { const el = document.querySelector('.title-name-input');
+        el.value = '林小满'; el.dispatchEvent(new Event('input', { bubbles: true })); })()`);
+      await click(cdp, '.title-screen .btn-primary', '开始调查');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '进入正文');
+      const saved = await cdp.eval(`localStorage.getItem('meal_player_name')`);
+      assert(saved === '林小满', `名字没存下来：${saved}`);
+    }]);
+
     steps.push(['分支对白连播', async () => {
       await goto(cdp, 'a4-44');
       await waitFor(cdp, `!!document.querySelector('.choice')`, '选项');

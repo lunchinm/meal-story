@@ -2750,7 +2750,18 @@
    "查看信息、合理搭配、考虑实际需要，开始用在日常选择里。"
   ],
   "action": "明天中午，给自己加一份蔬菜",
-  "image": "ending_normal"
+  "image": "ending_normal",
+  "cards": [
+   "k_end1",
+   "k_end2",
+   "k_end3",
+   "k_end4"
+  ],
+  "unlocks": [
+   "完整通用指南",
+   "已体验角色记录",
+   "知识来源页"
+  ]
  },
  {
   "id": "e_advanced",
@@ -2761,7 +2772,19 @@
    "换一份没见过的菜单，你还能说出哪里要补、哪里可以省。"
   ],
   "action": "下次点餐前，先看一眼有没有蔬菜",
-  "image": "ending_advanced"
+  "image": "ending_advanced",
+  "cards": [
+   "k_end1",
+   "k_end2",
+   "k_end3",
+   "k_end4"
+  ],
+  "unlocks": [
+   "完整通用指南",
+   "已体验角色记录",
+   "知识来源页",
+   "试行反馈摘要"
+  ]
  },
  {
   "id": "e_hidden",
@@ -2772,6 +2795,19 @@
    "给的是能执行的方案，不是要求。"
   ],
   "action": "给建议之前，先问一句他的时间表",
-  "image": "ending_hidden"
+  "image": "ending_hidden",
+  "cards": [
+   "k_end1",
+   "k_end2",
+   "k_end3",
+   "k_end4"
+  ],
+  "unlocks": [
+   "完整通用指南",
+   "已体验角色记录",
+   "知识来源页",
+   "试行反馈摘要",
+   "个人条件便签"
+  ]
  }
 ]

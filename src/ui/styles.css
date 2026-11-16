@@ -1935,3 +1935,118 @@ body {
 .dialog.chip-row ~ .next-tip {
   right: auto;
 }
+
+/* ---------- 结局相册与片尾卡 ---------- */
+
+.ending-cards,
+.ending-unlocks,
+.ending-album {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(35, 48, 42, 0.18);
+}
+
+.ending-cards-title,
+.ending-unlocks-title,
+.ending-album-title {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.ending-cards-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.ending-card-item {
+  font: inherit;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ending-card-item:hover {
+  border-color: var(--green-soft);
+}
+
+.ending-card-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 11.5px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.ending-card-name {
+  font-size: 13.5px;
+}
+
+.ending-unlocks-list,
+.ending-album-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ending-unlock {
+  font-size: 12.5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eef5ea;
+  color: var(--green);
+}
+
+.ending-slot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px dashed var(--line);
+  color: var(--ink-soft);
+}
+
+.ending-slot.got {
+  border-style: solid;
+  border-color: var(--green-soft);
+  color: var(--green);
+  background: #f3f8f0;
+}
+
+.ending-player {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+.title-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 4px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.title-name-input {
+  font: inherit;
+  font-size: 13.5px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: #fff;
+  width: 180px;
+}

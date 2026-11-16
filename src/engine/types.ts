@@ -129,6 +129,10 @@ export interface EvidenceNode {
 }
 
 export interface EndingNode {
+  /** 片尾四张知识卡（knowledge 里的 id） */
+  cards?: string[];
+  /** 片尾后解锁的内容 */
+  unlocks?: string[];
   id: string;
   type: 'ending';
   title: string;

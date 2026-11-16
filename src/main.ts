@@ -13,6 +13,11 @@ if (!host) {
 const content = loadContent();
 // 知识卡给 stage 读，避免把 data 一层层传下去
 (window as unknown as { __knowledge: unknown }).__knowledge = content.knowledge;
+// 结局相册要列出全部结局标题
+(window as unknown as { __endings: unknown }).__endings = (['act1', 'act2', 'act3', 'act4'] as const)
+  .flatMap((key) => content.acts[key])
+  .filter((node) => node.type === 'ending')
+  .map((node) => ({ id: node.id, title: (node as { title: string }).title }));
 
 const stage = new Stage(host);
 const runner = new Runner(content, stage, () => restart());
