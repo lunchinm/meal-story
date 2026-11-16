@@ -1,4 +1,6 @@
-export type NodeType = 'say' | 'choice' | 'plate' | 'evidence' | 'ending' | 'branch' | 'chapter';
+export type NodeType =
+  | 'say' | 'choice' | 'plate' | 'evidence' | 'ending' | 'branch' | 'chapter'
+  | 'record' | 'notebook' | 'explore' | 'random' | 'compare' | 'review';
 
 export type SceneName = 'class' | 'canteen' | 'store' | 'chat';
 
@@ -50,6 +52,8 @@ export interface ChoiceOption {
   text: string;
   next: string;
   flag?: string;
+  /** 条件显示：flag 存在才显示；notFlag 存在则不显示 */
+  showIf?: { flag?: string; notFlag?: string };
   /** 选完之后先弹这几句，再回主线；可带说话人 */
   reply?: string | Array<string | { speaker?: string; text: string }>;
   /** 这句由谁说，默认旁白 */
@@ -176,11 +180,15 @@ export type AnyNode =
   | ChoiceNode
   | PlateNode
   | EvidenceNode
-  | EndingNode
+  | CompareNode
+  | ReviewNode
   | BranchNode
   | ChapterNode
-  | ReviewNode
-  | CompareNode;
+  | EndingNode
+  | RecordNode
+  | NotebookNode
+  | ExploreNode
+  | RandomNode;
 
 export interface FoodCard {
   id: string;
@@ -202,4 +210,62 @@ export interface Content {
   acts: Record<string, AnyNode[]>;
   cards: FoodCard[];
   knowledge: KnowledgeCard[];
+}
+
+/** 记录：落地一条【记录“X”】，不弹加分提示，只闪一下便签图标 */
+export interface RecordNode {
+  id: string;
+  type: 'record';
+  flag: string;
+  label: string;
+  next: string;
+}
+
+export interface NotebookEntry {
+  label: string;
+  text: string;
+  source?: string;
+  /** 只有拿到这个 flag 才显示 */
+  flag?: string;
+}
+
+/** 调查簿：章末摊开的簿子，逐条点开看解释与来源 */
+export interface NotebookNode {
+  id: string;
+  type: 'notebook';
+  title: string;
+  entries: NotebookEntry[];
+  next: string;
+}
+
+export interface ExploreItem {
+  id: string;
+  label: string;
+  /** 重复点击时的一句话回顾 */
+  summary: string;
+  lines: Array<{ speaker?: string; text: string; card?: string }>;
+}
+
+/** 物件点击探索：首次给对白，重复只给摘要，看完两个才能继续 */
+export interface ExploreNode {
+  id: string;
+  type: 'explore';
+  title: string;
+  items: ExploreItem[];
+  next: string;
+}
+
+export interface RandomEvent {
+  id: string;
+  /** 需要命中的 flag（为空表示无条件） */
+  flags?: string[];
+  next: string;
+}
+
+/** 随机事件池：等概率抽一个没触发过的，同一局不重复 */
+export interface RandomNode {
+  id: string;
+  type: 'random';
+  pool: RandomEvent[];
+  next: string;
 }

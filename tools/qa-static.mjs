@@ -32,6 +32,7 @@ function outgoing(node) {
   for (const rule of node.rules ?? []) out.push(rule.next);
   if (node.fallback) out.push(node.fallback);
   for (const target of node.targets ?? []) out.push(target);
+  for (const event of node.pool ?? []) out.push(event.next);
   return out.filter(Boolean);
 }
 

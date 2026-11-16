@@ -149,6 +149,23 @@ async function main() {
         stuck = 0;
         continue;
       }
+      if (await cdp.eval(`!!document.querySelector('.explore-card')`)) {
+        const cards = await cdp.eval(`document.querySelectorAll('.explore-card').length`);
+        for (let i = 1; i <= cards; i += 1) {
+          await clickSel(cdp, `.explore-card:nth-child(${i})`);
+          await sleep(120);
+        }
+        await clickSel(cdp, '.board-foot .btn-primary');
+        steps += 1;
+        stuck = 0;
+        continue;
+      }
+      if (await cdp.eval(`!!document.querySelector('.nb-item')`)) {
+        await clickSel(cdp, '.board-foot .btn-primary');
+        steps += 1;
+        stuck = 0;
+        continue;
+      }
       if (await cdp.eval(`!!document.querySelector('.board-foot .btn-primary')`)) {
         // 互动关
         if (await cdp.eval(`!!document.querySelector('.spot')`)) {

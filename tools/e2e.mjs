@@ -273,35 +273,27 @@ async function main() {
     }]);
 
     steps.push(['第二章：配餐关', async () => {
-      await goto(cdp, 'a2-it');
+      await goto(cdp, 'a2-plate');
       await waitFor(cdp, `!!document.querySelector('.food')`, '餐盘');
       const foods = await cdp.eval(`document.querySelectorAll('.food').length`);
       assert(foods >= 6, `食物卡太少：${foods}`);
       await shoot(cdp, '05-plate');
-      await click(cdp, '.food:nth-child(3)', '肉菜');
-      await click(cdp, '.food:nth-child(8)', '汤面');
-      await click(cdp, '.food:nth-child(7)', '番茄炒蛋');
+      // 先选到超预算：肉菜 6 + 汤面 5 + 番茄炒蛋 6 = 17 元
+      await click(cdp, '.food:nth-child(6)', '肉菜');
+      await click(cdp, '.food:nth-child(2)', '汤面');
+      await click(cdp, '.food:nth-child(5)', '番茄炒蛋');
       await click(cdp, '.board-foot .btn-primary', '提交');
       await sleep(250);
-      assert((await text(cdp, '.hint-line')).includes('超'), '超预算没提示');
+      const hint = await text(cdp, '.hint-line');
+      assert(hint.includes('超'), `超预算没提示：${hint}`);
       await click(cdp, '.btn-ghost', '清空');
+      // 12 元以内：米饭 2 + 时蔬 3 + 土豆丝 3 + 豆腐 4
       await click(cdp, '.food:nth-child(1)', '米饭');
-      await click(cdp, '.food:nth-child(4)', '时蔬');
-      await click(cdp, '.food:nth-child(5)', '豆腐');
-      await click(cdp, '.food:nth-child(7)', '番茄炒蛋');
+      await click(cdp, '.food:nth-child(4)', '清炒时蔬');
+      await click(cdp, '.food:nth-child(3)', '土豆丝');
+      await click(cdp, '.food:nth-child(7)', '家常豆腐');
       await click(cdp, '.board-foot .btn-primary', '提交');
-      await waitFor(cdp, `!!document.querySelector('.record')`, '记录关');
-    }]);
-
-    steps.push(['第二章：全天记录关', async () => {
-      await goto(cdp, 'a2-rv');
-      await waitFor(cdp, `!!document.querySelector('.record')`, '记录关');
-      const cards = await cdp.eval(`document.querySelectorAll('.record').length`);
-      assert(cards === 3, `记录卡数量不对：${cards}`);
-      await shoot(cdp, '05b-records');
-      await click(cdp, '.record:nth-child(3)', '晚餐');
-      await click(cdp, '.board-foot .btn-primary', '就改这一餐');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '记录关过关');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
     }]);
 
     steps.push(['第三章：同类对比（可转瓶身）', async () => {
@@ -336,6 +328,96 @@ async function main() {
       await click(cdp, '.food:nth-child(4)', '牛奶');
       await click(cdp, '.board-foot .btn-primary', '提交');
       await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
+    }]);
+
+    steps.push(['第一章：物件点击探索', async () => {
+      await goto(cdp, 'a1-explore');
+      await waitFor(cdp, `!!document.querySelector('.explore-card')`, '探索界面');
+      const cards = await cdp.eval(`document.querySelectorAll('.explore-card').length`);
+      assert(cards === 3, `物件数量不对：${cards}`);
+      await click(cdp, '.explore-card:nth-child(1)', '宣传图');
+      await waitFor(cdp, `!!document.querySelector('.explore-line')`, '首次对白');
+      await shoot(cdp, '16-explore');
+      await click(cdp, '.explore-card:nth-child(3)', '便签');
+      await sleep(200);
+      const enabled = await cdp.eval(`!document.querySelector('.board-foot .btn-primary').disabled`);
+      assert(enabled, '看完两个后“和大家聊聊”应当可用');
+      // 重复点击只给摘要
+      await click(cdp, '.explore-card:nth-child(1)', '再看一次宣传图');
+      await sleep(200);
+      const summary = await text(cdp, '.explore-summary');
+      assert(summary.length > 0, '重复点击没有给摘要');
+      await click(cdp, '.board-foot .btn-primary', '和大家聊聊');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text, .record-chip')`, '回到主线');
+    }]);
+
+    steps.push(['第一章：章末调查簿', async () => {
+      await goto(cdp, 'a1-notebook');
+      await waitFor(cdp, `!!document.querySelector('.nb-item')`, '调查簿');
+      const items = await cdp.eval(`document.querySelectorAll('.nb-item').length`);
+      assert(items >= 1, '调查簿没有条目');
+      await click(cdp, '.nb-item', '翻开第一条');
+      const detail = await text(cdp, '.nb-detail');
+      assert(detail.includes('来源') || detail.length > 10, '条目展开后没有解释');
+      await shoot(cdp, '17-notebook');
+      await click(cdp, '.board-foot .btn-primary', '继续');
+    }]);
+
+    steps.push(['第三章：随机事件与偶遇记录', async () => {
+      await goto(cdp, 'a3-ask');
+      await waitFor(cdp, `!!document.querySelector('.choice')`, '采购前选择');
+      await click(cdp, '.choice:nth-child(1)', '先问需求');
+      let hit = false;
+      for (let i = 0; i < 14; i += 1) {
+        const body = await cdp.eval(`document.body.innerText`);
+        if (/第二件半价|分三份|只拍到一半/.test(body)) { hit = true; break; }
+        await click(cdp, '.dialog, .phone', '推进');
+        await sleep(220);
+      }
+      assert(hit, '随机事件没触发');
+      await shoot(cdp, '18-random-event');
+    }]);
+
+    steps.push(['第四章：试行链走到隐藏结局', async () => {
+      await goto(cdp, 'a4-publish');
+      await waitFor(cdp, `!!document.querySelector('.choice')`, '发布方式');
+      await click(cdp, '.choice:nth-child(2)', '先试行');
+      for (let i = 0; i < 6 && !(await cdp.eval(`!!document.querySelector('.choice')`)); i += 1) {
+        await click(cdp, '.dialog', '推进到选择');
+      }
+      await waitFor(cdp, `!!document.querySelector('.choice')`, '选试行对象');
+      await click(cdp, '.choice:nth-child(1)', '米粒');
+      for (let i = 0; i < 8 && !(await cdp.eval(`!!document.querySelector('.choice')`)); i += 1) {
+        await click(cdp, '.dialog', '推进到修订选择');
+      }
+      await waitFor(cdp, `!!document.querySelector('.choice')`, '是否按反馈修订');
+      await click(cdp, '.choice:nth-child(1)', '改');
+      for (let i = 0; i < 12; i += 1) {
+        if (await cdp.eval(`!!document.querySelector('.ending-title')`)) break;
+        await click(cdp, '.dialog, .phone', '推进到结局');
+        await sleep(220);
+      }
+      await waitFor(cdp, `!!document.querySelector('.ending-title')`, '结局');
+      const title = await text(cdp, '.ending-title');
+      assert(title.includes('先问清楚'), `试行+修订应到隐藏结局，实际：${title}`);
+      await shoot(cdp, '19-ending-hidden');
+    }]);
+
+    steps.push(['第四章：先发布通用版到普通结局', async () => {
+      await goto(cdp, 'a4-publish');
+      await waitFor(cdp, `!!document.querySelector('.choice')`, '发布方式');
+      const labels = await cdp.eval(`[...document.querySelectorAll('.choice')].map((e) => e.innerText.trim()).join(' | ')`);
+      assert(labels.includes('通用版'), `选项文案不对：${labels}`);
+      await click(cdp, '.choice:nth-child(1)', '先发布通用版');
+      for (let i = 0; i < 10; i += 1) {
+        if (await cdp.eval(`!!document.querySelector('.ending-title')`)) break;
+        await click(cdp, '.dialog, .phone', '推进到结局');
+        await sleep(200);
+      }
+      await waitFor(cdp, `!!document.querySelector('.ending-title')`, '结局');
+      const title = await text(cdp, '.ending-title');
+      assert(title.includes('我会选了'), `先发布通用版应到普通结局，实际：${title}`);
+      await shoot(cdp, '20-ending-normal');
     }]);
 
     steps.push(['分支对白连播', async () => {
@@ -382,7 +464,7 @@ async function main() {
       await cdp.send('Emulation.setDeviceMetricsOverride', {
         width: 390, height: 844, deviceScaleFactor: 2, mobile: true,
       });
-      await goto(cdp, 'a2-it');
+      await goto(cdp, 'a2-plate');
       await waitFor(cdp, `!!document.querySelector('.food')`, '手机餐盘');
       const overflow = await cdp.eval(
         `(() => { const s = document.querySelector('.stage').getBoundingClientRect();
@@ -396,7 +478,7 @@ async function main() {
       await cdp.send('Emulation.setDeviceMetricsOverride', {
         width: 1024, height: 720, deviceScaleFactor: 1, mobile: false,
       });
-      await goto(cdp, 'a2-it');
+      await goto(cdp, 'a2-plate');
       await waitFor(cdp, `!!document.querySelector('.food')`, '窄屏餐盘');
       const overflow = await cdp.eval(
         `(() => { const s = document.querySelector('.stage').getBoundingClientRect();

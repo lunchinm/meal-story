@@ -1740,3 +1740,198 @@ body {
   height: 300px;
   width: auto;
 }
+
+/* ---------- 记录闪现 ---------- */
+
+.record-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(35, 48, 42, 0.88);
+  color: #f6f3e7;
+  font-size: 13px;
+  box-shadow: 0 10px 24px rgba(20, 30, 24, 0.28);
+  animation: recordIn 1500ms ease-out forwards;
+}
+
+@keyframes recordIn {
+  0% { opacity: 0; transform: translateY(8px); }
+  18% { opacity: 1; transform: none; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ---------- 调查簿 ---------- */
+
+.notebook-body {
+  align-content: start;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.nb-entry {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.nb-item {
+  width: 100%;
+  font: inherit;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.nb-item.open {
+  background: #f1f7ee;
+}
+
+.nb-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.nb-label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.nb-detail {
+  padding: 0 16px 14px 50px;
+}
+
+.nb-text {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+
+.nb-source {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+/* ---------- 物件探索 ---------- */
+
+.explore-body {
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+  align-content: stretch;
+}
+
+.explore-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.explore-card {
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+
+.explore-card:hover {
+  border-color: var(--green-soft);
+}
+
+.explore-card.seen {
+  border-color: var(--green);
+  background: #f1f7ee;
+}
+
+.explore-panel {
+  border-radius: 12px;
+  border: 1px dashed var(--line);
+  padding: 16px 18px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #fff;
+}
+
+.explore-hint {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+.explore-line {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.explore-speaker {
+  font-size: 12.5px;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.explore-text {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.explore-summary {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+
+/* ---------- 教学示例角标 ---------- */
+
+.prop-badge {
+  margin-left: auto;
+  margin-right: 8px;
+  font-size: 11.5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(35, 48, 42, 0.22);
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* 多个按钮排一行，不再互相遮挡 */
+.chip-row {
+  position: absolute;
+  right: 22px;
+  bottom: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.chip-row .card-chip {
+  position: static;
+  right: auto;
+  bottom: auto;
+}
+
+.dialog.has-chip .next-tip,
+.dialog.chip-row ~ .next-tip {
+  right: auto;
+}

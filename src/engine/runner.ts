@@ -10,6 +10,10 @@ import type {
   EvidenceNode,
   PlateNode,
   SayNode,
+  RecordNode,
+  NotebookNode,
+  ExploreNode,
+  RandomNode,
 } from './types';
 import type { Stage } from '../ui/stage';
 import { state } from '../state';
@@ -49,7 +53,35 @@ export class Runner {
     state.save();
 
     switch (node.type) {
-      case 'say':
+    case 'record': {
+      state.flags.add(node.flag);
+      state.save();
+      this.stage.recordFlash(node.label);
+      this.goto(node.next);
+      break;
+    }
+    case 'notebook':
+      this.stage.notebook(node, () => this.goto(node.next));
+      break;
+    case 'explore':
+      this.stage.explore(node, () => this.goto(node.next));
+      break;
+    case 'random': {
+      const pool = node.pool.filter((event) => {
+        if (state.usedEvents.has(event.id)) return false;
+        return (event.flags ?? []).every((flag) => state.flags.has(flag));
+      });
+      if (pool.length === 0) {
+        this.goto(node.next);
+        break;
+      }
+      const picked = pool[Math.floor(Math.random() * pool.length)];
+      state.usedEvents.add(picked.id);
+      state.save();
+      this.goto(picked.next);
+      break;
+    }
+    case 'say':
         this.playSay(node);
         break;
       case 'choice':
@@ -90,8 +122,16 @@ export class Runner {
   }
 
   private playChoice(node: ChoiceNode): void {
-    this.stage.choices(node, (index) => {
-      const option = node.options[index];
+    const visible = node.options.filter((option) => {
+      const rule = (option as { showIf?: { flag?: string; notFlag?: string } }).showIf;
+      if (!rule) return true;
+      if (rule.flag && !state.flags.has(rule.flag)) return false;
+      if (rule.notFlag && state.flags.has(rule.notFlag)) return false;
+      return true;
+    });
+    const view = { ...node, options: visible };
+    this.stage.choices(view, (index) => {
+      const option = visible[index];
       if (!option) return;
       if (option.flag) state.flags.add(option.flag);
       state.save();

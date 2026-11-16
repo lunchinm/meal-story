@@ -1,6 +1,7 @@
-import type { ChoiceNode, EndingNode, KnowledgeCard, SayNode } from '../engine/types';
+import type { ChoiceNode, EndingNode, ExploreNode, KnowledgeCard, NotebookNode, SayNode } from '../engine/types';
 import { backgrounds, actors } from '../assets';
 import { play, speak, startBgm, stopVoice } from '../audio';
+import { state } from '../state';
 import { icon } from './icons';
 import { buildProp, type PropId } from './props';
 
@@ -222,6 +223,9 @@ export class Stage {
     if (node.speaker) box.append(h('div', 'speaker', node.speaker));
     box.append(h('div', 'text', node.text));
 
+    const chipRow = h('div', 'chip-row');
+    if (node.prop || node.card) box.append(chipRow);
+
     if (node.prop) {
       const chip = h('button', 'card-chip');
       chip.insertAdjacentHTML('beforeend', `${icon('card')}<span>${PROP_LABEL[node.prop] ?? '看一眼'}</span>`);
@@ -229,8 +233,7 @@ export class Stage {
         event.stopPropagation();
         this.showProp(node.prop as PropId);
       });
-      box.append(chip);
-      box.classList.add('has-chip');
+      chipRow.append(chip);
     }
 
     if (node.card) {
@@ -240,7 +243,7 @@ export class Stage {
         event.stopPropagation();
         this.showCard(node.card!);
       });
-      box.append(chip);
+      chipRow.append(chip);
     } else {
       const tip = h('div', 'next-tip');
       tip.append(h('span', 'next-tip-text', '点击继续'));
@@ -362,6 +365,127 @@ export class Stage {
     this.uiLayer.append(wrap);
   }
 
+
+  /* ---------- 记录与调查簿 ---------- */
+
+  /** 记录一条行为：只闪一下便签图标，不给加分提示 */
+  recordFlash(label: string): void {
+    const chip = h('div', 'record-chip');
+    chip.insertAdjacentHTML('beforeend', `${icon('card')}<span>记录：${label}</span>`);
+    this.toastLayer.append(chip);
+    window.setTimeout(() => chip.remove(), 1400);
+  }
+
+  /** 调查簿：逐条展开看解释与来源 */
+  notebook(node: NotebookNode, onDone: () => void): void {
+    this.detachAdvance();
+    this.uiLayer.innerHTML = '';
+    const board = this.board('notebook');
+    const head = h('div', 'board-head');
+    head.append(h('div', 'board-title', node.title), h('div', 'board-sub', '可逐条翻开，也可以直接继续'));
+    const body = h('div', 'board-body notebook-body');
+    const entries = node.entries;
+
+    entries.forEach((entry, index) => {
+      const item = h('button', 'nb-item');
+      const num = h('span', 'nb-num', String(index + 1));
+      const label = h('span', 'nb-label', entry.label);
+      item.append(num, label);
+      const detail = h('div', 'nb-detail');
+      detail.append(h('div', 'nb-text', entry.text));
+      if (entry.source) detail.append(h('div', 'nb-source', `来源：${entry.source}`));
+      detail.hidden = true;
+      item.addEventListener('click', (event) => {
+        event.stopPropagation();
+        detail.hidden = !detail.hidden;
+        item.classList.toggle('open', !detail.hidden);
+        play('page');
+      });
+      const wrap = h('div', 'nb-entry');
+      wrap.append(item, detail);
+      body.append(wrap);
+    });
+
+    const foot = h('div', 'board-foot');
+    foot.append(h('div', 'spacer'));
+    const next = h('button', 'btn btn-primary', '继续');
+    next.addEventListener('click', (event) => {
+      event.stopPropagation();
+      play('page');
+      onDone();
+    });
+    foot.append(next);
+    board.append(head, body, foot);
+  }
+
+  /* ---------- 物件点击探索 ---------- */
+
+  explore(node: ExploreNode, onDone: () => void): void {
+    this.detachAdvance();
+    this.uiLayer.innerHTML = '';
+    const board = this.board('explore');
+    const head = h('div', 'board-head');
+    const counter = h('div', 'board-sub', '');
+    head.append(h('div', 'board-title', node.title), counter);
+    const body = h('div', 'board-body explore-body');
+    const grid = h('div', 'explore-grid');
+    const panel = h('div', 'explore-panel');
+    panel.append(h('div', 'explore-hint', '点左边的物件看看。看过的会在再次点击时给一句回顾。'));
+    body.append(grid, panel);
+
+    const viewed = new Set<string>();
+    const foot = h('div', 'board-foot');
+    const talk = h('button', 'btn btn-primary', '和大家聊聊');
+    talk.disabled = true;
+    foot.append(h('div', 'spacer'), talk);
+    board.append(head, body, foot);
+
+    const refresh = () => {
+      counter.textContent = `已查看 ${viewed.size} / ${node.items.length}`;
+      talk.disabled = viewed.size < 2;
+    };
+
+    node.items.forEach((item) => {
+      const card = h('button', 'explore-card');
+      card.append(h('div', 'explore-name', item.label));
+      card.addEventListener('click', (event) => {
+        event.stopPropagation();
+        panel.innerHTML = '';
+        play('page');
+        if (viewed.has(item.id)) {
+          panel.append(h('div', 'explore-summary', item.summary));
+          return;
+        }
+        viewed.add(item.id);
+        card.classList.add('seen');
+        item.lines.forEach((line) => {
+          const row = h('div', 'explore-line');
+          if (line.speaker) row.append(h('div', 'explore-speaker', line.speaker));
+          row.append(h('div', 'explore-text', line.text));
+          if (line.card) {
+            const chip = h('button', 'card-chip');
+            chip.insertAdjacentHTML('beforeend', `${icon('card')}<span>查看依据</span>`);
+            chip.addEventListener('click', (e) => {
+              e.stopPropagation();
+              this.showCard(line.card!);
+            });
+            row.append(chip);
+          }
+          panel.append(row);
+        });
+        refresh();
+      });
+      grid.append(card);
+    });
+
+    talk.addEventListener('click', (event) => {
+      event.stopPropagation();
+      play('pass');
+      onDone();
+    });
+    refresh();
+  }
+
   /* ---------- 结局 ---------- */
 
   ending(node: EndingNode, onRestart: () => void): void {
@@ -473,7 +597,7 @@ export class Stage {
     const view = buildProp(id, image);
     const panel = h('div', 'prop-panel enter');
     const head = h('div', 'prop-head');
-    head.append(h('div', 'prop-title', view.title));
+    head.append(h('div', 'prop-title', view.title), h('div', 'prop-badge', '教学示例'));
     const close = h('button', 'btn btn-ghost btn-small', '收起');
     close.addEventListener('click', (event) => {
       event.stopPropagation();
