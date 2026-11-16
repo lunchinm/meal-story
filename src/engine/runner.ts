@@ -22,6 +22,10 @@ import { runEvidence } from '../modules/evidence';
 import { runReview } from '../modules/review';
 import { runCompare } from '../modules/compare';
 
+const SPEAKER_ACTOR: Record<string, string> = {
+  米粒: 'mili', 周简: 'zhoujian', 许知夏: 'zhixia', 苏桃: 'sutao', 陆燃: 'luran', 罗师傅: 'luomaster',
+};
+
 export class Runner {
   private readonly nodes = new Map<string, AnyNode>();
 
@@ -157,6 +161,8 @@ export class Runner {
               id: `${node.id}-reply-${index}-${cursor}`,
               type: 'say',
               speaker,
+              actor: speaker ? SPEAKER_ACTOR[speaker] : undefined,
+              expr: text.includes('！') ? 'happy' : text.includes('？') || text.includes('……') ? 'worried' : 'normal',
               text,
               ...(chat ? { channel: 'chat' as const, seg: this.stage.chatSegId() } : {}),
             },

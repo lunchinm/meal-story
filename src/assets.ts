@@ -109,6 +109,11 @@ import vo_a1_122 from '../assets/voice/a1-122.mp3';
 import vo_a1_123 from '../assets/voice/a1-123.mp3';
 import vo_a1_124 from '../assets/voice/a1-124.mp3';
 import vo_a1_126 from '../assets/voice/a1-126.mp3';
+import vo_a1_15_reply_0_2 from '../assets/voice/a1-15-reply-0-2.mp3';
+import vo_a1_15_reply_0_3 from '../assets/voice/a1-15-reply-0-3.mp3';
+import vo_a1_15_reply_0_4 from '../assets/voice/a1-15-reply-0-4.mp3';
+import vo_a1_15_reply_0_5 from '../assets/voice/a1-15-reply-0-5.mp3';
+import vo_a1_15_reply_0_6 from '../assets/voice/a1-15-reply-0-6.mp3';
 import vo_a1_29 from '../assets/voice/a1-29.mp3';
 import vo_a1_31 from '../assets/voice/a1-31.mp3';
 import vo_a1_32 from '../assets/voice/a1-32.mp3';
@@ -162,6 +167,10 @@ import vo_a1_94 from '../assets/voice/a1-94.mp3';
 import vo_a1_95 from '../assets/voice/a1-95.mp3';
 import vo_a1_96 from '../assets/voice/a1-96.mp3';
 import vo_a1_97 from '../assets/voice/a1-97.mp3';
+import vo_a1_98_reply_0_3 from '../assets/voice/a1-98-reply-0-3.mp3';
+import vo_a1_98_reply_0_4 from '../assets/voice/a1-98-reply-0-4.mp3';
+import vo_a1_98_reply_0_5 from '../assets/voice/a1-98-reply-0-5.mp3';
+import vo_a1_98_reply_0_6 from '../assets/voice/a1-98-reply-0-6.mp3';
 import vo_a2_02 from '../assets/voice/a2-02.mp3';
 import vo_a2_03 from '../assets/voice/a2-03.mp3';
 import vo_a2_04 from '../assets/voice/a2-04.mp3';
@@ -197,6 +206,10 @@ import vo_a2_l02 from '../assets/voice/a2-l02.mp3';
 import vo_a2_l04 from '../assets/voice/a2-l04.mp3';
 import vo_a2_l05 from '../assets/voice/a2-l05.mp3';
 import vo_a2_l06 from '../assets/voice/a2-l06.mp3';
+import vo_a2_l07_reply_0_2 from '../assets/voice/a2-l07-reply-0-2.mp3';
+import vo_a2_l07_reply_0_3 from '../assets/voice/a2-l07-reply-0-3.mp3';
+import vo_a2_l07_reply_0_5 from '../assets/voice/a2-l07-reply-0-5.mp3';
+import vo_a2_l07_reply_0_6 from '../assets/voice/a2-l07-reply-0-6.mp3';
 import vo_a2_l08 from '../assets/voice/a2-l08.mp3';
 import vo_a2_l09 from '../assets/voice/a2-l09.mp3';
 import vo_a2_l10 from '../assets/voice/a2-l10.mp3';
@@ -206,6 +219,10 @@ import vo_a2_l16 from '../assets/voice/a2-l16.mp3';
 import vo_a2_l17 from '../assets/voice/a2-l17.mp3';
 import vo_a2_l18 from '../assets/voice/a2-l18.mp3';
 import vo_a2_l19 from '../assets/voice/a2-l19.mp3';
+import vo_a2_l20_reply_0_2 from '../assets/voice/a2-l20-reply-0-2.mp3';
+import vo_a2_l20_reply_0_3 from '../assets/voice/a2-l20-reply-0-3.mp3';
+import vo_a2_l20_reply_0_4 from '../assets/voice/a2-l20-reply-0-4.mp3';
+import vo_a2_l20_reply_0_5 from '../assets/voice/a2-l20-reply-0-5.mp3';
 import vo_a2_l21 from '../assets/voice/a2-l21.mp3';
 import vo_a2_l22 from '../assets/voice/a2-l22.mp3';
 import vo_a2_l24 from '../assets/voice/a2-l24.mp3';
@@ -232,6 +249,10 @@ import vo_a2_m01 from '../assets/voice/a2-m01.mp3';
 import vo_a2_m03 from '../assets/voice/a2-m03.mp3';
 import vo_a2_m04 from '../assets/voice/a2-m04.mp3';
 import vo_a2_m05 from '../assets/voice/a2-m05.mp3';
+import vo_a2_m06_reply_0_2 from '../assets/voice/a2-m06-reply-0-2.mp3';
+import vo_a2_m06_reply_0_4 from '../assets/voice/a2-m06-reply-0-4.mp3';
+import vo_a2_m06_reply_0_5 from '../assets/voice/a2-m06-reply-0-5.mp3';
+import vo_a2_m06_reply_0_6 from '../assets/voice/a2-m06-reply-0-6.mp3';
 import vo_a2_m09 from '../assets/voice/a2-m09.mp3';
 import vo_a2_m11 from '../assets/voice/a2-m11.mp3';
 import vo_a2_m12 from '../assets/voice/a2-m12.mp3';
@@ -242,6 +263,10 @@ import vo_a2_m21 from '../assets/voice/a2-m21.mp3';
 import vo_a2_m22 from '../assets/voice/a2-m22.mp3';
 import vo_a2_m23 from '../assets/voice/a2-m23.mp3';
 import vo_a2_m24 from '../assets/voice/a2-m24.mp3';
+import vo_a2_m26_reply_0_1 from '../assets/voice/a2-m26-reply-0-1.mp3';
+import vo_a2_m26_reply_0_2 from '../assets/voice/a2-m26-reply-0-2.mp3';
+import vo_a2_m26_reply_0_3 from '../assets/voice/a2-m26-reply-0-3.mp3';
+import vo_a2_m26_reply_0_4 from '../assets/voice/a2-m26-reply-0-4.mp3';
 import vo_a2_m27 from '../assets/voice/a2-m27.mp3';
 import vo_a2_m28 from '../assets/voice/a2-m28.mp3';
 import vo_a2_m29 from '../assets/voice/a2-m29.mp3';
@@ -258,6 +283,9 @@ import vo_a2_m41 from '../assets/voice/a2-m41.mp3';
 import vo_a2_m43 from '../assets/voice/a2-m43.mp3';
 import vo_a2_m44 from '../assets/voice/a2-m44.mp3';
 import vo_a2_m46 from '../assets/voice/a2-m46.mp3';
+import vo_a2_note_reply_0_1 from '../assets/voice/a2-note-reply-0-1.mp3';
+import vo_a2_note_reply_1_1 from '../assets/voice/a2-note-reply-1-1.mp3';
+import vo_a2_note_reply_1_2 from '../assets/voice/a2-note-reply-1-2.mp3';
 import vo_a2_z01 from '../assets/voice/a2-z01.mp3';
 import vo_a2_z02 from '../assets/voice/a2-z02.mp3';
 import vo_a2_z03 from '../assets/voice/a2-z03.mp3';
@@ -266,6 +294,8 @@ import vo_a2_z06 from '../assets/voice/a2-z06.mp3';
 import vo_a2_z07 from '../assets/voice/a2-z07.mp3';
 import vo_a2_z08 from '../assets/voice/a2-z08.mp3';
 import vo_a2_z09 from '../assets/voice/a2-z09.mp3';
+import vo_a2_z10_reply_0_3 from '../assets/voice/a2-z10-reply-0-3.mp3';
+import vo_a2_z10_reply_0_4 from '../assets/voice/a2-z10-reply-0-4.mp3';
 import vo_a2_z11 from '../assets/voice/a2-z11.mp3';
 import vo_a2_z13 from '../assets/voice/a2-z13.mp3';
 import vo_a2_z15 from '../assets/voice/a2-z15.mp3';
@@ -307,11 +337,18 @@ import vo_a3_06 from '../assets/voice/a3-06.mp3';
 import vo_a3_07 from '../assets/voice/a3-07.mp3';
 import vo_a3_08 from '../assets/voice/a3-08.mp3';
 import vo_a3_09 from '../assets/voice/a3-09.mp3';
+import vo_a3_10_reply_0_2 from '../assets/voice/a3-10-reply-0-2.mp3';
+import vo_a3_10_reply_0_3 from '../assets/voice/a3-10-reply-0-3.mp3';
+import vo_a3_10_reply_0_4 from '../assets/voice/a3-10-reply-0-4.mp3';
+import vo_a3_10_reply_0_5 from '../assets/voice/a3-10-reply-0-5.mp3';
+import vo_a3_10_reply_0_6 from '../assets/voice/a3-10-reply-0-6.mp3';
 import vo_a3_100 from '../assets/voice/a3-100.mp3';
 import vo_a3_101 from '../assets/voice/a3-101.mp3';
 import vo_a3_102 from '../assets/voice/a3-102.mp3';
 import vo_a3_103 from '../assets/voice/a3-103.mp3';
 import vo_a3_105 from '../assets/voice/a3-105.mp3';
+import vo_a3_106_reply_0_2 from '../assets/voice/a3-106-reply-0-2.mp3';
+import vo_a3_106_reply_0_3 from '../assets/voice/a3-106-reply-0-3.mp3';
 import vo_a3_107 from '../assets/voice/a3-107.mp3';
 import vo_a3_108 from '../assets/voice/a3-108.mp3';
 import vo_a3_110 from '../assets/voice/a3-110.mp3';
@@ -362,6 +399,8 @@ import vo_a3_194 from '../assets/voice/a3-194.mp3';
 import vo_a3_195 from '../assets/voice/a3-195.mp3';
 import vo_a3_196 from '../assets/voice/a3-196.mp3';
 import vo_a3_198 from '../assets/voice/a3-198.mp3';
+import vo_a3_199_reply_0_2 from '../assets/voice/a3-199-reply-0-2.mp3';
+import vo_a3_199_reply_0_3 from '../assets/voice/a3-199-reply-0-3.mp3';
 import vo_a3_20 from '../assets/voice/a3-20.mp3';
 import vo_a3_21 from '../assets/voice/a3-21.mp3';
 import vo_a3_215 from '../assets/voice/a3-215.mp3';
@@ -429,9 +468,14 @@ import vo_a3_96 from '../assets/voice/a3-96.mp3';
 import vo_a3_97 from '../assets/voice/a3-97.mp3';
 import vo_a3_98 from '../assets/voice/a3-98.mp3';
 import vo_a3_99 from '../assets/voice/a3-99.mp3';
+import vo_a3_ask_reply_0_2 from '../assets/voice/a3-ask-reply-0-2.mp3';
+import vo_a3_nosugar_reply_0_1 from '../assets/voice/a3-nosugar-reply-0-1.mp3';
+import vo_a3_nosugar_reply_1_1 from '../assets/voice/a3-nosugar-reply-1-1.mp3';
 import vo_a3_nosugar1 from '../assets/voice/a3-nosugar1.mp3';
 import vo_a3_photo1 from '../assets/voice/a3-photo1.mp3';
 import vo_a3_photo2 from '../assets/voice/a3-photo2.mp3';
+import vo_a3_purpose_reply_0_1 from '../assets/voice/a3-purpose-reply-0-1.mp3';
+import vo_a3_purpose_reply_1_1 from '../assets/voice/a3-purpose-reply-1-1.mp3';
 import vo_a3_r1_1 from '../assets/voice/a3-r1-1.mp3';
 import vo_a3_r1_2 from '../assets/voice/a3-r1-2.mp3';
 import vo_a3_r2_1 from '../assets/voice/a3-r2-1.mp3';
@@ -450,8 +494,15 @@ import vo_a4_102 from '../assets/voice/a4-102.mp3';
 import vo_a4_103 from '../assets/voice/a4-103.mp3';
 import vo_a4_104 from '../assets/voice/a4-104.mp3';
 import vo_a4_105 from '../assets/voice/a4-105.mp3';
+import vo_a4_112_reply_0_2 from '../assets/voice/a4-112-reply-0-2.mp3';
+import vo_a4_112_reply_0_4 from '../assets/voice/a4-112-reply-0-4.mp3';
 import vo_a4_12 from '../assets/voice/a4-12.mp3';
+import vo_a4_125_reply_0_2 from '../assets/voice/a4-125-reply-0-2.mp3';
+import vo_a4_125_reply_0_3 from '../assets/voice/a4-125-reply-0-3.mp3';
+import vo_a4_125_reply_0_5 from '../assets/voice/a4-125-reply-0-5.mp3';
 import vo_a4_13 from '../assets/voice/a4-13.mp3';
+import vo_a4_136_reply_0_3 from '../assets/voice/a4-136-reply-0-3.mp3';
+import vo_a4_136_reply_0_5 from '../assets/voice/a4-136-reply-0-5.mp3';
 import vo_a4_14 from '../assets/voice/a4-14.mp3';
 import vo_a4_143 from '../assets/voice/a4-143.mp3';
 import vo_a4_144 from '../assets/voice/a4-144.mp3';
@@ -509,6 +560,8 @@ import vo_a4_39 from '../assets/voice/a4-39.mp3';
 import vo_a4_40 from '../assets/voice/a4-40.mp3';
 import vo_a4_41 from '../assets/voice/a4-41.mp3';
 import vo_a4_42 from '../assets/voice/a4-42.mp3';
+import vo_a4_44_reply_0_2 from '../assets/voice/a4-44-reply-0-2.mp3';
+import vo_a4_44_reply_0_3 from '../assets/voice/a4-44-reply-0-3.mp3';
 import vo_a4_45 from '../assets/voice/a4-45.mp3';
 import vo_a4_46 from '../assets/voice/a4-46.mp3';
 import vo_a4_47 from '../assets/voice/a4-47.mp3';
@@ -534,6 +587,8 @@ import vo_a4_73 from '../assets/voice/a4-73.mp3';
 import vo_a4_74 from '../assets/voice/a4-74.mp3';
 import vo_a4_75 from '../assets/voice/a4-75.mp3';
 import vo_a4_76 from '../assets/voice/a4-76.mp3';
+import vo_a4_78_reply_0_2 from '../assets/voice/a4-78-reply-0-2.mp3';
+import vo_a4_78_reply_0_4 from '../assets/voice/a4-78-reply-0-4.mp3';
 import vo_a4_81 from '../assets/voice/a4-81.mp3';
 import vo_a4_83 from '../assets/voice/a4-83.mp3';
 import vo_a4_85 from '../assets/voice/a4-85.mp3';
@@ -545,7 +600,17 @@ import vo_a4_93 from '../assets/voice/a4-93.mp3';
 import vo_a4_94 from '../assets/voice/a4-94.mp3';
 import vo_a4_95 from '../assets/voice/a4-95.mp3';
 import vo_a4_97 from '../assets/voice/a4-97.mp3';
+import vo_a4_99_reply_0_2 from '../assets/voice/a4-99-reply-0-2.mp3';
+import vo_a4_99_reply_0_4 from '../assets/voice/a4-99-reply-0-4.mp3';
+import vo_a4_lunch_reply_0_1 from '../assets/voice/a4-lunch-reply-0-1.mp3';
+import vo_a4_lunch_reply_1_1 from '../assets/voice/a4-lunch-reply-1-1.mp3';
+import vo_a4_lunch_reply_2_1 from '../assets/voice/a4-lunch-reply-2-1.mp3';
+import vo_a4_publish_reply_0_1 from '../assets/voice/a4-publish-reply-0-1.mp3';
+import vo_a4_revise_reply_0_1 from '../assets/voice/a4-revise-reply-0-1.mp3';
 import vo_a4_revise1 from '../assets/voice/a4-revise1.mp3';
+import vo_a4_trial_reply_0_1 from '../assets/voice/a4-trial-reply-0-1.mp3';
+import vo_a4_trial_reply_1_1 from '../assets/voice/a4-trial-reply-1-1.mp3';
+import vo_a4_trial_reply_2_1 from '../assets/voice/a4-trial-reply-2-1.mp3';
 
 export const voices: Record<string, string> = {
   'a1-100': vo_a1_100,
@@ -562,6 +627,11 @@ export const voices: Record<string, string> = {
   'a1-123': vo_a1_123,
   'a1-124': vo_a1_124,
   'a1-126': vo_a1_126,
+  'a1-15-reply-0-2': vo_a1_15_reply_0_2,
+  'a1-15-reply-0-3': vo_a1_15_reply_0_3,
+  'a1-15-reply-0-4': vo_a1_15_reply_0_4,
+  'a1-15-reply-0-5': vo_a1_15_reply_0_5,
+  'a1-15-reply-0-6': vo_a1_15_reply_0_6,
   'a1-29': vo_a1_29,
   'a1-31': vo_a1_31,
   'a1-32': vo_a1_32,
@@ -615,6 +685,10 @@ export const voices: Record<string, string> = {
   'a1-95': vo_a1_95,
   'a1-96': vo_a1_96,
   'a1-97': vo_a1_97,
+  'a1-98-reply-0-3': vo_a1_98_reply_0_3,
+  'a1-98-reply-0-4': vo_a1_98_reply_0_4,
+  'a1-98-reply-0-5': vo_a1_98_reply_0_5,
+  'a1-98-reply-0-6': vo_a1_98_reply_0_6,
   'a2-02': vo_a2_02,
   'a2-03': vo_a2_03,
   'a2-04': vo_a2_04,
@@ -650,6 +724,10 @@ export const voices: Record<string, string> = {
   'a2-l04': vo_a2_l04,
   'a2-l05': vo_a2_l05,
   'a2-l06': vo_a2_l06,
+  'a2-l07-reply-0-2': vo_a2_l07_reply_0_2,
+  'a2-l07-reply-0-3': vo_a2_l07_reply_0_3,
+  'a2-l07-reply-0-5': vo_a2_l07_reply_0_5,
+  'a2-l07-reply-0-6': vo_a2_l07_reply_0_6,
   'a2-l08': vo_a2_l08,
   'a2-l09': vo_a2_l09,
   'a2-l10': vo_a2_l10,
@@ -659,6 +737,10 @@ export const voices: Record<string, string> = {
   'a2-l17': vo_a2_l17,
   'a2-l18': vo_a2_l18,
   'a2-l19': vo_a2_l19,
+  'a2-l20-reply-0-2': vo_a2_l20_reply_0_2,
+  'a2-l20-reply-0-3': vo_a2_l20_reply_0_3,
+  'a2-l20-reply-0-4': vo_a2_l20_reply_0_4,
+  'a2-l20-reply-0-5': vo_a2_l20_reply_0_5,
   'a2-l21': vo_a2_l21,
   'a2-l22': vo_a2_l22,
   'a2-l24': vo_a2_l24,
@@ -685,6 +767,10 @@ export const voices: Record<string, string> = {
   'a2-m03': vo_a2_m03,
   'a2-m04': vo_a2_m04,
   'a2-m05': vo_a2_m05,
+  'a2-m06-reply-0-2': vo_a2_m06_reply_0_2,
+  'a2-m06-reply-0-4': vo_a2_m06_reply_0_4,
+  'a2-m06-reply-0-5': vo_a2_m06_reply_0_5,
+  'a2-m06-reply-0-6': vo_a2_m06_reply_0_6,
   'a2-m09': vo_a2_m09,
   'a2-m11': vo_a2_m11,
   'a2-m12': vo_a2_m12,
@@ -695,6 +781,10 @@ export const voices: Record<string, string> = {
   'a2-m22': vo_a2_m22,
   'a2-m23': vo_a2_m23,
   'a2-m24': vo_a2_m24,
+  'a2-m26-reply-0-1': vo_a2_m26_reply_0_1,
+  'a2-m26-reply-0-2': vo_a2_m26_reply_0_2,
+  'a2-m26-reply-0-3': vo_a2_m26_reply_0_3,
+  'a2-m26-reply-0-4': vo_a2_m26_reply_0_4,
   'a2-m27': vo_a2_m27,
   'a2-m28': vo_a2_m28,
   'a2-m29': vo_a2_m29,
@@ -711,6 +801,9 @@ export const voices: Record<string, string> = {
   'a2-m43': vo_a2_m43,
   'a2-m44': vo_a2_m44,
   'a2-m46': vo_a2_m46,
+  'a2-note-reply-0-1': vo_a2_note_reply_0_1,
+  'a2-note-reply-1-1': vo_a2_note_reply_1_1,
+  'a2-note-reply-1-2': vo_a2_note_reply_1_2,
   'a2-z01': vo_a2_z01,
   'a2-z02': vo_a2_z02,
   'a2-z03': vo_a2_z03,
@@ -719,6 +812,8 @@ export const voices: Record<string, string> = {
   'a2-z07': vo_a2_z07,
   'a2-z08': vo_a2_z08,
   'a2-z09': vo_a2_z09,
+  'a2-z10-reply-0-3': vo_a2_z10_reply_0_3,
+  'a2-z10-reply-0-4': vo_a2_z10_reply_0_4,
   'a2-z11': vo_a2_z11,
   'a2-z13': vo_a2_z13,
   'a2-z15': vo_a2_z15,
@@ -760,11 +855,18 @@ export const voices: Record<string, string> = {
   'a3-07': vo_a3_07,
   'a3-08': vo_a3_08,
   'a3-09': vo_a3_09,
+  'a3-10-reply-0-2': vo_a3_10_reply_0_2,
+  'a3-10-reply-0-3': vo_a3_10_reply_0_3,
+  'a3-10-reply-0-4': vo_a3_10_reply_0_4,
+  'a3-10-reply-0-5': vo_a3_10_reply_0_5,
+  'a3-10-reply-0-6': vo_a3_10_reply_0_6,
   'a3-100': vo_a3_100,
   'a3-101': vo_a3_101,
   'a3-102': vo_a3_102,
   'a3-103': vo_a3_103,
   'a3-105': vo_a3_105,
+  'a3-106-reply-0-2': vo_a3_106_reply_0_2,
+  'a3-106-reply-0-3': vo_a3_106_reply_0_3,
   'a3-107': vo_a3_107,
   'a3-108': vo_a3_108,
   'a3-110': vo_a3_110,
@@ -815,6 +917,8 @@ export const voices: Record<string, string> = {
   'a3-195': vo_a3_195,
   'a3-196': vo_a3_196,
   'a3-198': vo_a3_198,
+  'a3-199-reply-0-2': vo_a3_199_reply_0_2,
+  'a3-199-reply-0-3': vo_a3_199_reply_0_3,
   'a3-20': vo_a3_20,
   'a3-21': vo_a3_21,
   'a3-215': vo_a3_215,
@@ -882,9 +986,14 @@ export const voices: Record<string, string> = {
   'a3-97': vo_a3_97,
   'a3-98': vo_a3_98,
   'a3-99': vo_a3_99,
+  'a3-ask-reply-0-2': vo_a3_ask_reply_0_2,
+  'a3-nosugar-reply-0-1': vo_a3_nosugar_reply_0_1,
+  'a3-nosugar-reply-1-1': vo_a3_nosugar_reply_1_1,
   'a3-nosugar1': vo_a3_nosugar1,
   'a3-photo1': vo_a3_photo1,
   'a3-photo2': vo_a3_photo2,
+  'a3-purpose-reply-0-1': vo_a3_purpose_reply_0_1,
+  'a3-purpose-reply-1-1': vo_a3_purpose_reply_1_1,
   'a3-r1-1': vo_a3_r1_1,
   'a3-r1-2': vo_a3_r1_2,
   'a3-r2-1': vo_a3_r2_1,
@@ -903,8 +1012,15 @@ export const voices: Record<string, string> = {
   'a4-103': vo_a4_103,
   'a4-104': vo_a4_104,
   'a4-105': vo_a4_105,
+  'a4-112-reply-0-2': vo_a4_112_reply_0_2,
+  'a4-112-reply-0-4': vo_a4_112_reply_0_4,
   'a4-12': vo_a4_12,
+  'a4-125-reply-0-2': vo_a4_125_reply_0_2,
+  'a4-125-reply-0-3': vo_a4_125_reply_0_3,
+  'a4-125-reply-0-5': vo_a4_125_reply_0_5,
   'a4-13': vo_a4_13,
+  'a4-136-reply-0-3': vo_a4_136_reply_0_3,
+  'a4-136-reply-0-5': vo_a4_136_reply_0_5,
   'a4-14': vo_a4_14,
   'a4-143': vo_a4_143,
   'a4-144': vo_a4_144,
@@ -962,6 +1078,8 @@ export const voices: Record<string, string> = {
   'a4-40': vo_a4_40,
   'a4-41': vo_a4_41,
   'a4-42': vo_a4_42,
+  'a4-44-reply-0-2': vo_a4_44_reply_0_2,
+  'a4-44-reply-0-3': vo_a4_44_reply_0_3,
   'a4-45': vo_a4_45,
   'a4-46': vo_a4_46,
   'a4-47': vo_a4_47,
@@ -987,6 +1105,8 @@ export const voices: Record<string, string> = {
   'a4-74': vo_a4_74,
   'a4-75': vo_a4_75,
   'a4-76': vo_a4_76,
+  'a4-78-reply-0-2': vo_a4_78_reply_0_2,
+  'a4-78-reply-0-4': vo_a4_78_reply_0_4,
   'a4-81': vo_a4_81,
   'a4-83': vo_a4_83,
   'a4-85': vo_a4_85,
@@ -998,5 +1118,15 @@ export const voices: Record<string, string> = {
   'a4-94': vo_a4_94,
   'a4-95': vo_a4_95,
   'a4-97': vo_a4_97,
+  'a4-99-reply-0-2': vo_a4_99_reply_0_2,
+  'a4-99-reply-0-4': vo_a4_99_reply_0_4,
+  'a4-lunch-reply-0-1': vo_a4_lunch_reply_0_1,
+  'a4-lunch-reply-1-1': vo_a4_lunch_reply_1_1,
+  'a4-lunch-reply-2-1': vo_a4_lunch_reply_2_1,
+  'a4-publish-reply-0-1': vo_a4_publish_reply_0_1,
+  'a4-revise-reply-0-1': vo_a4_revise_reply_0_1,
   'a4-revise1': vo_a4_revise1,
+  'a4-trial-reply-0-1': vo_a4_trial_reply_0_1,
+  'a4-trial-reply-1-1': vo_a4_trial_reply_1_1,
+  'a4-trial-reply-2-1': vo_a4_trial_reply_2_1,
 };

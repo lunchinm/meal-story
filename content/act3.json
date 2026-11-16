@@ -2720,6 +2720,82 @@
   "scene": "store",
   "text": "“无蔗糖”只说明没加蔗糖，不等于没有糖，也不等于可以随便吃。",
   "card": "k3",
+  "next": "a3-purpose"
+ },
+ {
+  "id": "a3-purpose",
+  "type": "choice",
+  "question": "这瓶饮料，是买给什么用的？",
+  "hint": "苏桃自己还没细想过，可以先问清楚再决定。",
+  "options": [
+   {
+    "text": "补一下今天的奶类",
+    "next": "a3-rec-1",
+    "flag": "rec:苏桃购买目的：补充奶类",
+    "reply": [
+     {
+      "speaker": "苏桃",
+      "text": "那按奶类的量来算，不只算一瓶饮料。"
+     }
+    ]
+   },
+   {
+    "text": "就是想喝这个味道",
+    "next": "a3-rec-1",
+    "flag": "rec:苏桃购买目的：喜欢口味",
+    "reply": [
+     {
+      "speaker": "苏桃",
+      "text": "想喝就买想喝的量，别按“补营养”来算。"
+     }
+    ]
+   },
+   {
+    "text": "还没细问，先问一句",
+    "next": "a3-rec-1",
+    "flag": "rec:苏桃购买目的：尚未细问",
+    "reply": [
+     {
+      "speaker": "你",
+      "text": "先问清楚用途，再决定买几瓶。"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "a3-rec-1",
+  "type": "record",
+  "flag": "rec:按实际份量采购",
+  "label": "按实际份量采购",
+  "next": "a3-rec-2"
+ },
+ {
+  "id": "a3-rec-2",
+  "type": "record",
+  "flag": "rec:共同确认清单",
+  "label": "共同确认清单",
+  "next": "a3-rec-3"
+ },
+ {
+  "id": "a3-rec-3",
+  "type": "record",
+  "flag": "rec:再次核对完整信息",
+  "label": "再次核对完整信息",
+  "next": "a3-rec-4"
+ },
+ {
+  "id": "a3-rec-4",
+  "type": "record",
+  "flag": "rec:看过贮存条件",
+  "label": "看过贮存条件",
+  "next": "a3-rec-5"
+ },
+ {
+  "id": "a3-rec-5",
+  "type": "record",
+  "flag": "rec:看过苏桃的照片变化",
+  "label": "看过苏桃的照片变化",
   "next": "a3-ask"
  },
  {

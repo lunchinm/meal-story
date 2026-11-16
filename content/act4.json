@@ -1965,8 +1965,49 @@
   "scene": "canteen",
   "seg": 20,
   "channel": "stage",
-  "next": "a4-it",
+  "next": "a4-lunch",
   "expr": "worried"
+ },
+ {
+  "id": "a4-lunch",
+  "type": "choice",
+  "question": "午餐方案定哪个？",
+  "hint": "按窗口当天有什么、以及试行对象吃多少来定。",
+  "options": [
+   {
+    "text": "豆腐＋鸡蛋的组合",
+    "next": "a4-it",
+    "flag": "rec:当前午餐方案：豆腐鸡蛋",
+    "reply": [
+     {
+      "speaker": "许知夏",
+      "text": "蛋白有两样，蔬菜再补一份就够了。"
+     }
+    ]
+   },
+   {
+    "text": "清蒸鱼＋时蔬",
+    "next": "a4-it",
+    "flag": "rec:当前午餐方案：清蒸鱼",
+    "reply": [
+     {
+      "speaker": "周简",
+      "text": "这个价格还行，份量看窗口给多少。"
+     }
+    ]
+   },
+   {
+    "text": "两个方案都留着，按当天情况选",
+    "next": "a4-it",
+    "flag": "rec:当前午餐方案：双方案",
+    "reply": [
+     {
+      "speaker": "米粒",
+      "text": "两个都写下来，赶时间就挑快的那份。"
+     }
+    ]
+   }
+  ]
  },
  {
   "id": "a4-it",
@@ -2648,13 +2689,27 @@
   "speaker": "旁白",
   "scene": "class",
   "text": "通用总结写完了，个人方案这次没有改。",
-  "next": "a4-rec-summary"
+  "next": "a4-rec-manual"
  },
  {
   "id": "a4-rec-revise",
   "type": "record",
   "flag": "rec:完成个人修订",
   "label": "根据反馈完成修订",
+  "next": "a4-rec-guide"
+ },
+ {
+  "id": "a4-rec-manual",
+  "type": "record",
+  "flag": "rec:已有使用说明",
+  "label": "已有使用说明",
+  "next": "a4-rec-summary"
+ },
+ {
+  "id": "a4-rec-guide",
+  "type": "record",
+  "flag": "rec:完成指南",
+  "label": "完成指南",
   "next": "a4-rec-summary"
  },
  {
