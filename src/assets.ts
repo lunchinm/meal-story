@@ -286,6 +286,7 @@ import vo_a2_m46 from '../assets/voice/a2-m46.mp3';
 import vo_a2_note_reply_0_1 from '../assets/voice/a2-note-reply-0-1.mp3';
 import vo_a2_note_reply_1_1 from '../assets/voice/a2-note-reply-1-1.mp3';
 import vo_a2_note_reply_1_2 from '../assets/voice/a2-note-reply-1-2.mp3';
+import vo_a2_note_reply_2_1 from '../assets/voice/a2-note-reply-2-1.mp3';
 import vo_a2_z01 from '../assets/voice/a2-z01.mp3';
 import vo_a2_z02 from '../assets/voice/a2-z02.mp3';
 import vo_a2_z03 from '../assets/voice/a2-z03.mp3';
@@ -294,8 +295,11 @@ import vo_a2_z06 from '../assets/voice/a2-z06.mp3';
 import vo_a2_z07 from '../assets/voice/a2-z07.mp3';
 import vo_a2_z08 from '../assets/voice/a2-z08.mp3';
 import vo_a2_z09 from '../assets/voice/a2-z09.mp3';
+import vo_a2_z10_reply_0_2 from '../assets/voice/a2-z10-reply-0-2.mp3';
 import vo_a2_z10_reply_0_3 from '../assets/voice/a2-z10-reply-0-3.mp3';
 import vo_a2_z10_reply_0_4 from '../assets/voice/a2-z10-reply-0-4.mp3';
+import vo_a2_z10_reply_0_5 from '../assets/voice/a2-z10-reply-0-5.mp3';
+import vo_a2_z10_reply_1_2 from '../assets/voice/a2-z10-reply-1-2.mp3';
 import vo_a2_z11 from '../assets/voice/a2-z11.mp3';
 import vo_a2_z13 from '../assets/voice/a2-z13.mp3';
 import vo_a2_z15 from '../assets/voice/a2-z15.mp3';
@@ -501,6 +505,7 @@ import vo_a4_125_reply_0_2 from '../assets/voice/a4-125-reply-0-2.mp3';
 import vo_a4_125_reply_0_3 from '../assets/voice/a4-125-reply-0-3.mp3';
 import vo_a4_125_reply_0_5 from '../assets/voice/a4-125-reply-0-5.mp3';
 import vo_a4_13 from '../assets/voice/a4-13.mp3';
+import vo_a4_136_reply_0_2 from '../assets/voice/a4-136-reply-0-2.mp3';
 import vo_a4_136_reply_0_3 from '../assets/voice/a4-136-reply-0-3.mp3';
 import vo_a4_136_reply_0_5 from '../assets/voice/a4-136-reply-0-5.mp3';
 import vo_a4_14 from '../assets/voice/a4-14.mp3';
@@ -560,6 +565,7 @@ import vo_a4_39 from '../assets/voice/a4-39.mp3';
 import vo_a4_40 from '../assets/voice/a4-40.mp3';
 import vo_a4_41 from '../assets/voice/a4-41.mp3';
 import vo_a4_42 from '../assets/voice/a4-42.mp3';
+import vo_a4_44_reply_0_1 from '../assets/voice/a4-44-reply-0-1.mp3';
 import vo_a4_44_reply_0_2 from '../assets/voice/a4-44-reply-0-2.mp3';
 import vo_a4_44_reply_0_3 from '../assets/voice/a4-44-reply-0-3.mp3';
 import vo_a4_45 from '../assets/voice/a4-45.mp3';
@@ -588,6 +594,7 @@ import vo_a4_74 from '../assets/voice/a4-74.mp3';
 import vo_a4_75 from '../assets/voice/a4-75.mp3';
 import vo_a4_76 from '../assets/voice/a4-76.mp3';
 import vo_a4_78_reply_0_2 from '../assets/voice/a4-78-reply-0-2.mp3';
+import vo_a4_78_reply_0_3 from '../assets/voice/a4-78-reply-0-3.mp3';
 import vo_a4_78_reply_0_4 from '../assets/voice/a4-78-reply-0-4.mp3';
 import vo_a4_81 from '../assets/voice/a4-81.mp3';
 import vo_a4_83 from '../assets/voice/a4-83.mp3';
@@ -601,6 +608,7 @@ import vo_a4_94 from '../assets/voice/a4-94.mp3';
 import vo_a4_95 from '../assets/voice/a4-95.mp3';
 import vo_a4_97 from '../assets/voice/a4-97.mp3';
 import vo_a4_99_reply_0_2 from '../assets/voice/a4-99-reply-0-2.mp3';
+import vo_a4_99_reply_0_3 from '../assets/voice/a4-99-reply-0-3.mp3';
 import vo_a4_99_reply_0_4 from '../assets/voice/a4-99-reply-0-4.mp3';
 import vo_a4_lunch_reply_0_1 from '../assets/voice/a4-lunch-reply-0-1.mp3';
 import vo_a4_lunch_reply_1_1 from '../assets/voice/a4-lunch-reply-1-1.mp3';
@@ -804,6 +812,7 @@ export const voices: Record<string, string> = {
   'a2-note-reply-0-1': vo_a2_note_reply_0_1,
   'a2-note-reply-1-1': vo_a2_note_reply_1_1,
   'a2-note-reply-1-2': vo_a2_note_reply_1_2,
+  'a2-note-reply-2-1': vo_a2_note_reply_2_1,
   'a2-z01': vo_a2_z01,
   'a2-z02': vo_a2_z02,
   'a2-z03': vo_a2_z03,
@@ -812,8 +821,11 @@ export const voices: Record<string, string> = {
   'a2-z07': vo_a2_z07,
   'a2-z08': vo_a2_z08,
   'a2-z09': vo_a2_z09,
+  'a2-z10-reply-0-2': vo_a2_z10_reply_0_2,
   'a2-z10-reply-0-3': vo_a2_z10_reply_0_3,
   'a2-z10-reply-0-4': vo_a2_z10_reply_0_4,
+  'a2-z10-reply-0-5': vo_a2_z10_reply_0_5,
+  'a2-z10-reply-1-2': vo_a2_z10_reply_1_2,
   'a2-z11': vo_a2_z11,
   'a2-z13': vo_a2_z13,
   'a2-z15': vo_a2_z15,
@@ -1019,6 +1031,7 @@ export const voices: Record<string, string> = {
   'a4-125-reply-0-3': vo_a4_125_reply_0_3,
   'a4-125-reply-0-5': vo_a4_125_reply_0_5,
   'a4-13': vo_a4_13,
+  'a4-136-reply-0-2': vo_a4_136_reply_0_2,
   'a4-136-reply-0-3': vo_a4_136_reply_0_3,
   'a4-136-reply-0-5': vo_a4_136_reply_0_5,
   'a4-14': vo_a4_14,
@@ -1078,6 +1091,7 @@ export const voices: Record<string, string> = {
   'a4-40': vo_a4_40,
   'a4-41': vo_a4_41,
   'a4-42': vo_a4_42,
+  'a4-44-reply-0-1': vo_a4_44_reply_0_1,
   'a4-44-reply-0-2': vo_a4_44_reply_0_2,
   'a4-44-reply-0-3': vo_a4_44_reply_0_3,
   'a4-45': vo_a4_45,
@@ -1106,6 +1120,7 @@ export const voices: Record<string, string> = {
   'a4-75': vo_a4_75,
   'a4-76': vo_a4_76,
   'a4-78-reply-0-2': vo_a4_78_reply_0_2,
+  'a4-78-reply-0-3': vo_a4_78_reply_0_3,
   'a4-78-reply-0-4': vo_a4_78_reply_0_4,
   'a4-81': vo_a4_81,
   'a4-83': vo_a4_83,
@@ -1119,6 +1134,7 @@ export const voices: Record<string, string> = {
   'a4-95': vo_a4_95,
   'a4-97': vo_a4_97,
   'a4-99-reply-0-2': vo_a4_99_reply_0_2,
+  'a4-99-reply-0-3': vo_a4_99_reply_0_3,
   'a4-99-reply-0-4': vo_a4_99_reply_0_4,
   'a4-lunch-reply-0-1': vo_a4_lunch_reply_0_1,
   'a4-lunch-reply-1-1': vo_a4_lunch_reply_1_1,
