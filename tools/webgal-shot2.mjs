@@ -1,0 +1,15 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ serviceWorkers: 'block' });
+const p = await ctx.newPage();
+p.on('console', (m) => { if (m.type() === 'error') console.log('CONSOLE', m.text().slice(0, 100)); });
+await p.goto('http://127.0.0.1:8081/index.html');
+await p.waitForTimeout(3500);
+await p.mouse.click(720, 450);
+await p.waitForTimeout(1500);
+await p.screenshot({ path: 'C:/Users/MIC lunchinm/Desktop/学习资料/Vibe-Coding/合理膳食/文档/out/webgal-title2.png' });
+await p.mouse.click(720, 620);
+await p.waitForTimeout(2500);
+await p.screenshot({ path: 'C:/Users/MIC lunchinm/Desktop/学习资料/Vibe-Coding/合理膳食/文档/out/webgal-dialog3.png' });
+console.log('done');
+await b.close();
