@@ -2224,3 +2224,202 @@ body {
   color: var(--ink-soft);
   line-height: 1.6;
 }
+
+/* ================= v4.3 界面改版：满屏 + 半透明文本框 + 立绘构图 ================= */
+
+.stage {
+  width: 100vw;
+  height: 100vh;
+  aspect-ratio: auto;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.frame {
+  display: none;
+}
+
+/* 文本框：贴底、半透明磨砂、更矮，让立绘站得住 */
+.dialog {
+  left: clamp(20px, 4vw, 76px);
+  right: clamp(20px, 4vw, 76px);
+  bottom: clamp(14px, 3vh, 40px);
+  min-height: 0;
+  padding: 26px 30px 24px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(252, 250, 243, 0.9), rgba(247, 243, 233, 0.86));
+  backdrop-filter: blur(16px) saturate(1.08);
+  -webkit-backdrop-filter: blur(16px) saturate(1.08);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 50px rgba(16, 26, 20, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.dialog .text {
+  font-size: 20px;
+  line-height: 1.92;
+  letter-spacing: 0.02em;
+}
+
+.dialog .speaker {
+  position: absolute;
+  top: -16px;
+  left: 24px;
+  padding: 5px 16px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #f8f5ea;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  box-shadow: 0 8px 18px rgba(47, 93, 62, 0.32);
+}
+
+/* 打完字才显示“继续”，呼吸感更明显 */
+.dialog .next-tip {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.dialog.typed .next-tip {
+  opacity: 1;
+}
+
+/* 立绘：贴着文本框上沿站，说话的人亮、不说话的人压暗 */
+.actors {
+  padding-bottom: clamp(170px, 26vh, 250px);
+  transition: filter 200ms ease;
+}
+
+.actors .actor {
+  max-height: 74vh;
+  filter: drop-shadow(0 24px 40px rgba(14, 22, 18, 0.35));
+}
+
+/* 选项：改成胶囊，居中偏下 */
+.choice-panel {
+  right: clamp(24px, 6vw, 120px);
+  bottom: clamp(190px, 30vh, 300px);
+  width: min(520px, 62%);
+}
+
+.choice {
+  border-radius: 999px;
+  padding: 15px 26px;
+  background: rgba(252, 250, 243, 0.94);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 28px rgba(16, 26, 20, 0.22);
+}
+
+.choice:hover {
+  transform: translateX(-4px);
+  border-color: var(--green-soft);
+  background: #fff;
+}
+
+/* 工具栏更轻 */
+.hud {
+  top: 16px;
+  right: 60px;
+}
+
+.hud-btn {
+  font-size: 12px;
+  padding: 5px 11px;
+  background: rgba(20, 30, 24, 0.42);
+}
+
+/* 手机竖屏：保持满屏但不挤压文本框 */
+@media (max-width: 720px) {
+  .dialog {
+    padding: 22px 20px 20px;
+  }
+  .dialog .text {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+  .actors {
+    padding-bottom: 40vh;
+  }
+  .actors .actor {
+    max-height: 46vh;
+  }
+}
+
+
+/* ================= v4.3.1 第二轮：暗角、限宽、选项居中 ================= */
+
+/* 画面底部渐深，文本框和画面更融 */
+.stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(14, 22, 18, 0.22) 100%),
+    linear-gradient(to bottom, transparent 62%, rgba(14, 22, 18, 0.26) 100%);
+  z-index: 2;
+}
+
+.dialog {
+  max-width: 1180px;
+  margin: 0 auto;
+  z-index: 3;
+}
+
+.choice-panel {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  bottom: clamp(150px, 22vh, 240px);
+  width: min(680px, 74%);
+  align-items: center;
+  text-align: center;
+  z-index: 3;
+}
+
+.choice-question {
+  text-align: center;
+  color: #f4f1e6;
+  text-shadow: 0 1px 6px rgba(10, 18, 14, 0.6);
+  margin-bottom: 2px;
+}
+
+.choice-list {
+  width: 100%;
+  gap: 14px;
+}
+
+.choice {
+  width: 100%;
+  text-align: center;
+  font-size: 17.5px;
+}
+
+/* 只有一条时更像“继续”，不装成选项 */
+.choice-list .choice:only-child {
+  width: auto;
+  min-width: 320px;
+  padding-left: 34px;
+  padding-right: 34px;
+}
+
+/* 群聊面板也压一层柔和阴影，别像贴纸 */
+.phone {
+  box-shadow: 0 26px 60px rgba(12, 20, 16, 0.38);
+}
+
+/* 选项上方的小题问，加深色底以便压在画面上也清楚 */
+.choice-question {
+  display: inline-block;
+  padding: 5px 16px;
+  border-radius: 999px;
+  background: rgba(20, 30, 24, 0.55);
+  backdrop-filter: blur(6px);
+  font-size: 13.5px;
+  letter-spacing: 0.06em;
+  color: #f6f3e7;
+}
+
+.choice-list {
+  margin-top: 10px;
+}

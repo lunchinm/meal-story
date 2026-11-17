@@ -88,6 +88,7 @@ export class Stage {
   skipMode = false;
   private autoTimer: number | null = null;
   private advanceAction?: () => void;
+  private typeTimer: number | null = null;
   private log: LogEntry[] = [];
   private uiHidden = false;
 
@@ -317,7 +318,25 @@ export class Stage {
 
     const box = h('div', 'dialog enter');
     if (node.speaker) box.append(h('div', 'speaker', node.speaker));
-    box.append(h('div', 'text', node.text));
+    const textEl = h('div', 'text', '');
+    box.append(textEl);
+    // 打字机：点一下先显示全句，再点才推进
+    let typing = 0;
+    let typedAll = false;
+    const fullText = node.text;
+    const typeNext = () => {
+      if (typedAll) return;
+      typing += 1;
+      textEl.textContent = fullText.slice(0, typing);
+      if (typing >= fullText.length) {
+        typedAll = true;
+        box.classList.add('typed');
+        return;
+      }
+      this.typeTimer = window.setTimeout(typeNext, 22);
+    };
+    this.clearTypeTimer();
+    typeNext();
 
     const chipRow = h('div', 'chip-row');
     if (node.prop || node.card) box.append(chipRow);
@@ -353,6 +372,15 @@ export class Stage {
     speak(node.id);
 
     const proceed = () => {
+      if (!typedAll) {
+        this.clearTypeTimer();
+        typedAll = true;
+        typing = fullText.length;
+        textEl.textContent = fullText;
+        box.classList.add('typed');
+        this.scheduleAdvance();
+        return;
+      }
       this.detachAdvance();
       stopVoice();
       this.uiLayer.innerHTML = '';
@@ -447,6 +475,8 @@ export class Stage {
   choices(node: ChoiceNode, onPick: (index: number) => void): void {
     this.detachAdvance();
     this.stopAutoSkip();
+    // 直接跳到分支节点时可能还没有背景，补一个默认场景
+    if (!this.bgImage.classList.contains('on')) this.setScene('canteen');
     if (this.chatActive) {
       this.chatChoices(node, onPick);
       return;
@@ -635,6 +665,13 @@ export class Stage {
     this.setSkip(!this.skipMode);
   }
 
+  private clearTypeTimer(): void {
+    if (this.typeTimer !== null) {
+      window.clearTimeout(this.typeTimer);
+      this.typeTimer = null;
+    }
+  }
+
   private clearAutoTimer(): void {
     if (this.autoTimer !== null) {
       window.clearTimeout(this.autoTimer);
@@ -646,6 +683,11 @@ export class Stage {
   private scheduleAdvance(forceDelay?: number): void {
     this.clearAutoTimer();
     if (!this.autoMode && !this.skipMode) return;
+    // 还在打字就别抢跑，等打完这一句再计时
+    if (this.typeTimer !== null && !forceDelay) {
+      this.autoTimer = window.setTimeout(() => this.scheduleAdvance(), 200);
+      return;
+    }
     const delay = forceDelay ?? this.currentDelay;
     this.autoTimer = window.setTimeout(() => {
       this.autoTimer = null;
