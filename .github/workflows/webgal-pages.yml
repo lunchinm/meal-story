@@ -1,27 +1,13 @@
 name: 构建并发布 WebGAL 版
 
-# 用官方的 WebGAL 源码构建一个干净的运行时，把我们的 game 目录塞进去，
-# 再发布到 GitHub Pages。GH_PAGES 需要在仓库 Settings → Pages 里选
-# “GitHub Actions” 作为来源。
+# 从 WebGAL 源码构建干净引擎，把我们的 game 目录塞进去，产物直推 gh-pages 分支。
+# 不用改仓库的 Pages 设置（仍走 branch 模式），随时可以退回单文件版本。
 
 on:
-  workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'webgal-game/**'
-      - 'content/**'
-      - 'assets/bg/**'
-      - 'assets/ch/**'
-      - 'assets/sfx/**'
-      - 'assets/voice/**'
-      - 'tools/convert-to-webgal.py'
-      - '.github/workflows/webgal-pages.yml'
+  workflow_dispatch:   # 仅手动触发：确认构建可用后再考虑自动
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: webgal-pages
@@ -44,52 +30,43 @@ jobs:
           ref: ${{ env.WEBGAL_TAG }}
           path: .webgal-src
 
-      - name: 准备 Node
+      - name: 准备 Node 与 yarn
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - run: corepack enable
 
-      - name: 安装依赖并构建引擎
+      - name: 安装依赖
         working-directory: .webgal-src
-        run: |
-          npm install --no-audit --no-fund
-          npm run build --workspace=@webgal/webgal || npm run build
+        run: yarn install --frozen-lockfile
 
-      - name: 用我们的内容替换 game 目录
-        run: |
-          GAME=.webgal-src/packages/webgal/public/game
-          rm -rf "$GAME"
-          mkdir -p "$GAME"/{background,figure,bgm,vocal,scene,template,animation}
-          # 保留引擎自带的动画与模板
-          cp -r .webgal-src/packages/webgal/public/game.orig/* "$GAME"/ 2>/dev/null || true
-          cp -r webgal-game/template/* "$GAME"/template/ 2>/dev/null || true
-          cp -r webgal-game/animation/* "$GAME"/animation/ 2>/dev/null || true
-          # 我们的素材
-          cp assets/bg/*.webp "$GAME"/background/ 2>/dev/null || true
-          cp assets/ch/*.webp "$GAME"/figure/ 2>/dev/null || true
-          cp assets/sfx/*.mp3 "$GAME"/bgm/ 2>/dev/null || true
-          cp assets/voice/*.mp3 "$GAME"/vocal/ 2>/dev/null || true
-          # 剧本与配置
-          cp webgal-game/scene/*.txt "$GAME"/scene/
-          cp webgal-game/config.txt "$GAME"/config.txt
-          ls -la "$GAME"/scene | head -20
-
-      - name: 再构建一次，把新 game 目录打进产物
+      - name: 构建解析器
         working-directory: .webgal-src
-        run: npm run build --workspace=@webgal/webgal || npm run build
+        run: yarn parser:build
 
-      - name: 上传 Pages 产物
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: .webgal-src/packages/webgal/dist
+      - name: 替换 game 目录
+        run: |
+          SRC=.webgal-src/packages/webgal/public/game
+          rm -rf "$SRC/scene" "$SRC/background" "$SRC/figure" "$SRC/bgm" "$SRC/vocal"
+          mkdir -p "$SRC"/{background,figure,bgm,vocal,scene}
+          cp assets/bg/*.webp "$SRC"/background/
+          cp assets/ch/*.webp "$SRC"/figure/
+          cp assets/sfx/*.mp3 "$SRC"/bgm/
+          cp assets/voice/*.mp3 "$SRC"/vocal/
+          cp webgal-game/scene/*.txt "$SRC"/scene/
+          cp webgal-game/config.txt "$SRC"/config.txt
+          echo "场景 $(ls "$SRC/scene" | wc -l) / 立绘 $(ls "$SRC/figure" | wc -l) / 配音 $(ls "$SRC/vocal" | wc -l)"
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: 发布
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: 构建引擎
+        working-directory: .webgal-src
+        run: yarn webgal:build
+
+      - name: 推到 gh-pages
+        working-directory: .webgal-src/packages/webgal/dist
+        run: |
+          touch .nojekyll
+          git init -q
+          git checkout -q -b gh-pages
+          git add -A
+          git -c user.name="github-actions" -c user.email="actions@github.com" commit -qm "deploy: WebGAL ${{ github.sha }}"
+          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages

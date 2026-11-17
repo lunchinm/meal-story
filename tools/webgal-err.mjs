@@ -1,0 +1,17 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ viewport: { width: 1280, height: 720 } });
+const p = await ctx.newPage();
+p.on('console', (m) => { const t = m.text(); if (/error|Error|解析|失败/.test(t)) console.log('C:', t.slice(0, 220)); });
+p.on('pageerror', (e) => console.log('E:', e.message.slice(0, 200)));
+p.on('response', async (r) => { if (r.status() >= 400 && r.url().includes('/game/')) console.log('404:', r.url().slice(-50)); });
+await p.goto('http://127.0.0.1:8082/');
+await p.waitForTimeout(3000);
+await p.mouse.click(640, 360);
+await p.waitForTimeout(1500);
+await p.getByText('简体中文').last().click({ force: true });
+await p.waitForTimeout(1500);
+await p.getByText('开始游戏').last().click({ force: true });
+await p.waitForTimeout(4000);
+console.log('--- done ---');
+await b.close();
