@@ -1,13 +1,12 @@
 name: 构建并发布 WebGAL 版
 
-# 从 WebGAL 源码构建干净引擎 → 换成我们的 game 目录 → 注入 A 纸质主题 → 推 gh-pages
-# 关键：注释掉编辑器同步（连不上会重置场景）
-
 on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
   group: webgal-pages
@@ -75,13 +74,20 @@ jobs:
           DIST=.webgal-src/packages/webgal/dist
           cp webgal-game/theme-inject.js "$DIST"/theme-inject.js
           python3 .github/inject_theme.py
+          touch "$DIST"/.nojekyll
 
-      - name: 推到 gh-pages
-        working-directory: .webgal-src/packages/webgal/dist
-        run: |
-          touch .nojekyll
-          git init -q
-          git checkout -q -b gh-pages
-          git add -A
-          git -c user.name="github-actions" -c user.email="actions@github.com" commit -qm "deploy: WebGAL ${{ github.sha }}"
-          git push -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
+      - name: 打包 Pages 产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .webgal-src/packages/webgal/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 发布
+        id: deployment
+        uses: actions/deploy-pages@v4
