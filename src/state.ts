@@ -4,6 +4,7 @@ export interface SaveData {
   nodeId: string;
   flags: string[];
   usedEvents?: string[];
+  readNodes?: string[];
   picked: string[];
   updatedAt: string;
 }
@@ -12,6 +13,7 @@ export const state = {
   nodeId: '',
   flags: new Set<string>(),
   usedEvents: new Set<string>(),
+  readNodes: new Set<string>(),
   /** 玩家在餐盘里选过的食物卡 id */
   picked: new Set<string>(),
 
@@ -20,6 +22,7 @@ export const state = {
       nodeId: this.nodeId,
       flags: [...this.flags],
       usedEvents: [...this.usedEvents],
+      readNodes: [...this.readNodes],
       picked: [...this.picked],
       updatedAt: new Date().toISOString(),
     };
@@ -46,6 +49,7 @@ export const state = {
     this.nodeId = data.nodeId;
     this.flags = new Set(data.flags ?? []);
     this.usedEvents = new Set(data.usedEvents ?? []);
+    this.readNodes = new Set(data.readNodes ?? []);
     this.picked = new Set(data.picked ?? []);
     return true;
   },
@@ -54,6 +58,7 @@ export const state = {
     this.nodeId = '';
     this.flags.clear();
     this.usedEvents.clear();
+    this.readNodes.clear();
     this.picked.clear();
     try {
       localStorage.removeItem(SAVE_KEY);

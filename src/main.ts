@@ -49,12 +49,67 @@ function showTitle(): void {
     },
   );
   mountMuteButton();
+  mountHud();
   mountPreview();
 }
 
 function restart(): void {
   state.reset();
   showTitle();
+}
+
+
+/** 右上角工具条：自动、快进、回想、设置 */
+function mountHud(): void {
+  if (document.querySelector('.hud')) return;
+  const hud = document.createElement('div');
+  hud.className = 'hud';
+
+  const auto = document.createElement('button');
+  auto.className = 'hud-btn hud-auto';
+  auto.textContent = '自动';
+  auto.title = '自动播放（A）';
+  auto.addEventListener('click', (event) => {
+    event.stopPropagation();
+    stage.toggleAuto();
+  });
+
+  const skip = document.createElement('button');
+  skip.className = 'hud-btn hud-skip';
+  skip.textContent = '快进';
+  skip.title = '快进已读（S）';
+  skip.addEventListener('click', (event) => {
+    event.stopPropagation();
+    stage.toggleSkip();
+  });
+
+  const log = document.createElement('button');
+  log.className = 'hud-btn hud-log';
+  log.textContent = '回想';
+  log.title = '回看对白（L）';
+  log.addEventListener('click', (event) => {
+    event.stopPropagation();
+    stage.openBacklog();
+  });
+
+  const config = document.createElement('button');
+  config.className = 'hud-btn hud-config';
+  config.textContent = '设置';
+  config.title = '音量与节奏';
+  config.addEventListener('click', (event) => {
+    event.stopPropagation();
+    stage.openSettings();
+  });
+
+  hud.append(auto, skip, log, config);
+  document.body.append(hud);
+
+  stage.onAutoSkipChange = (isAuto, isSkip) => {
+    auto.classList.toggle('on', isAuto);
+    skip.classList.toggle('on', isSkip);
+    auto.textContent = isAuto ? '自动 ·开' : '自动';
+    skip.textContent = isSkip ? '快进 ·开' : '快进';
+  };
 }
 
 /** 右上角的静音开关，录屏时也用得上 */
@@ -72,11 +127,39 @@ function mountMuteButton(): void {
   document.body.append(btn);
 }
 
+
+// A 自动 / S 快进 / L 回想 / Esc 关闭面板 / 右键隐藏界面
+window.addEventListener('keydown', (event) => {
+  const target = event.target as HTMLElement | null;
+  if (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return;
+  const key = event.key.toLowerCase();
+  if (key === 'a') {
+    stage.toggleAuto();
+  } else if (key === 's') {
+    stage.toggleSkip();
+  } else if (key === 'l') {
+    stage.openBacklog();
+  } else if (event.key === 'Escape') {
+    document.querySelectorAll('.overlay.on').forEach((node) => {
+      (node as HTMLElement).innerHTML = '';
+      node.classList.remove('on');
+    });
+    document.querySelector('.ui-hidden')?.classList.remove('ui-hidden');
+  }
+});
+
+window.addEventListener('contextmenu', (event) => {
+  if (!document.querySelector('.stage')) return;
+  event.preventDefault();
+  stage.toggleUiHidden();
+});
+
 // 调试用：地址后面加 ?node=a2-02 直接从某一幕开机
 const jumpTo = new URLSearchParams(location.search).get('node');
 if (jumpTo) {
   runner.start(jumpTo);
   mountMuteButton();
+  mountHud();
 } else {
   showTitle();
 }

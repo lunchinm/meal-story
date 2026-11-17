@@ -8,3 +8,5 @@ Thumbs.db
 .artifacts/
 *.tmp.wav
 *.tmp.wav
+test-results/
+playwright-report/

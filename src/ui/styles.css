@@ -2084,3 +2084,143 @@ body {
 .msg-pic:hover .msg-pic-art {
   filter: brightness(1.04);
 }
+
+/* ---------- 右上工具条 ---------- */
+
+.hud {
+  position: fixed;
+  top: 18px;
+  right: 64px;
+  display: flex;
+  gap: 6px;
+  z-index: 40;
+}
+
+.hud-btn {
+  font: inherit;
+  font-size: 12.5px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 243, 231, 0.28);
+  background: rgba(28, 38, 33, 0.55);
+  color: #f4f1e6;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.hud-btn:hover {
+  background: rgba(28, 38, 33, 0.78);
+}
+
+.hud-btn.on {
+  background: #f0c26a;
+  border-color: #f0c26a;
+  color: #2a2318;
+  font-weight: 600;
+}
+
+/* 右键隐藏界面 */
+.stage.ui-hidden .ui,
+.stage.ui-hidden .hud,
+.stage.ui-hidden .mute-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stage .ui {
+  transition: opacity 160ms ease;
+}
+
+/* ---------- 回想面板 ---------- */
+
+.backlog-panel {
+  width: min(680px, 88vw);
+  max-height: 76vh;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: #fbfaf4;
+  box-shadow: 0 24px 60px rgba(12, 20, 16, 0.4);
+}
+
+.backlog-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.backlog-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 6px;
+}
+
+.backlog-row {
+  border-left: 3px solid #dfe6d8;
+  padding-left: 10px;
+}
+
+.backlog-speaker {
+  font-size: 12px;
+  color: var(--green);
+  font-weight: 600;
+}
+
+.backlog-text {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.backlog-empty {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+/* ---------- 设置面板 ---------- */
+
+.settings-panel {
+  width: min(520px, 86vw);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: #fbfaf4;
+  box-shadow: 0 24px 60px rgba(12, 20, 16, 0.4);
+}
+
+.settings-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.settings-row {
+  display: grid;
+  grid-template-columns: 96px 1fr 56px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+}
+
+.settings-range {
+  width: 100%;
+  accent-color: #2f5d3e;
+}
+
+.settings-value {
+  text-align: right;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+.settings-note {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}

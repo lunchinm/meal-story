@@ -14,6 +14,7 @@ import bgmChat from '../assets/sfx/bgm_chat.mp3';
 import bgmCanteen from '../assets/sfx/bgm_canteen.mp3';
 import bgmStore from '../assets/sfx/bgm_store.mp3';
 import { voices } from './assets';
+import { loadSettings, saveSettings, getSettings } from './settings';
 
 const sounds: Record<string, string> = {
   click: clickUrl,
@@ -24,6 +25,29 @@ const sounds: Record<string, string> = {
 };
 
 let muted = false;
+const initial = loadSettings();
+let seVol = initial.se;
+let bgmVol = initial.bgm;
+let voiceVol = initial.voice;
+
+export type Channel = 'bgm' | 'se' | 'voice';
+
+export function getVolume(channel: Channel): number {
+  if (channel === 'bgm') return getSettings().bgm;
+  if (channel === 'se') return getSettings().se;
+  return getSettings().voice;
+}
+
+/** 改某一条通道的音量，立即生效并持久化 */
+export function setVolume(channel: Channel, value: number): void {
+  const clamped = Math.min(1, Math.max(0, value));
+  const patch = channel === 'bgm' ? { bgm: clamped } : channel === 'se' ? { se: clamped } : { voice: clamped };
+  const next = saveSettings(patch);
+  seVol = next.se;
+  bgmVol = next.bgm;
+  voiceVol = next.voice;
+  if (bgm) bgm.volume = muted ? 0 : bgmVol;
+}
 let bgm: HTMLAudioElement | null = null;
 let started = false;
 let voice: HTMLAudioElement | null = null;
@@ -32,7 +56,7 @@ export function play(name: keyof typeof sounds): void {
   if (muted) return;
   try {
     const audio = new Audio(sounds[name]);
-    audio.volume = name === 'ending' ? 0.5 : 0.35;
+    audio.volume = (name === 'ending' ? 0.5 : 0.35) * (seVol / 0.35);
     void audio.play().catch(() => {});
   } catch {
     /* 播放失败不影响剧情 */
@@ -47,7 +71,7 @@ export function speak(nodeId: string): void {
   if (!url) return;
   try {
     voice = new Audio(url);
-    voice.volume = 1.0;
+    voice.volume = voiceVol;
     void voice.play().catch(() => {});
   } catch {
     voice = null;
@@ -94,7 +118,7 @@ export function startBgm(scene = 'title'): void {
   try {
     bgm = new Audio(url);
     bgm.loop = true;
-    bgm.volume = muted ? 0 : 0.09;
+    bgm.volume = muted ? 0 : bgmVol;
     void bgm.play().catch(() => {});
   } catch {
     bgm = null;
@@ -108,7 +132,7 @@ export function bgmStarted(): boolean {
 
 export function toggleMute(): boolean {
   muted = !muted;
-  if (bgm) bgm.volume = muted ? 0 : 0.09;
+  if (bgm) bgm.volume = muted ? 0 : bgmVol;
   if (muted) stopVoice();
   return muted;
 }

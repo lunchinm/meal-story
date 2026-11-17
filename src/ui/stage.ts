@@ -1,6 +1,7 @@
 import type { ChoiceNode, EndingNode, ExploreNode, KnowledgeCard, NotebookNode, SayNode } from '../engine/types';
 import { backgrounds, actors } from '../assets';
-import { play, speak, startBgm, stopVoice } from '../audio';
+import { play, speak, startBgm, stopVoice, getVolume, setVolume } from '../audio';
+import { getSettings, saveSettings } from '../settings';
 import { state } from '../state';
 import { icon } from './icons';
 import { buildProp, type PropId } from './props';
@@ -78,7 +79,20 @@ function saveEndings(ids: Set<string>): void {
   }
 }
 
+type LogEntry = { speaker: string; text: string; id: string };
+
 export class Stage {
+  /** 自动播放 */
+  autoMode = false;
+  /** 快进（只跳已读） */
+  skipMode = false;
+  private autoTimer: number | null = null;
+  private advanceAction?: () => void;
+  private log: LogEntry[] = [];
+  private uiHidden = false;
+
+  onAutoSkipChange?: (auto: boolean, skip: boolean) => void;
+
   private chatSeg = -1;
   private chatLog: { speaker: string; text: string }[] = [];
   private chatActive = false;
@@ -208,6 +222,8 @@ export class Stage {
     }
     this.lastWasChat = true;
     this.chatLog.push({ speaker: node.speaker ?? '旁白', text: node.text });
+    this.pushLog(node.speaker ?? '旁白', node.text, node.id);
+    state.readNodes.add(node.id);
     this.chatActive = true;
 
     let phone = this.uiLayer.querySelector('.phone') as HTMLElement | null;
@@ -262,8 +278,10 @@ export class Stage {
       play('click');
       onNext();
     };
+    this.advanceAction = handler;
     this.advanceHandler = handler;
     this.uiLayer.addEventListener('click', handler, { once: true });
+    this.scheduleAdvance();
   }
 
   /** 只有本来就在底部时才跟着滚，玩家上翻不打断 */
@@ -277,6 +295,14 @@ export class Stage {
 
   say(node: SayNode, onNext: () => void): void {
     this.detachAdvance();
+    this.pushLog(node.speaker ?? '旁白', node.text, node.id);
+    const wasRead = state.readNodes.has(node.id);
+    state.readNodes.add(node.id);
+    // 快进只跳已读；遇到没读过的就停下来
+    if (this.skipMode && !wasRead) {
+      this.skipMode = false;
+      this.onAutoSkipChange?.(this.autoMode, this.skipMode);
+    }
     this.uiLayer.innerHTML = '';
     this.overlayLayer.innerHTML = '';
 
@@ -326,17 +352,22 @@ export class Stage {
     this.uiLayer.append(box);
     speak(node.id);
 
-    const handler = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      if (target.closest('button')) return;
+    const proceed = () => {
       this.detachAdvance();
       stopVoice();
       this.uiLayer.innerHTML = '';
       play('click');
       onNext();
     };
+    const handler = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (target.closest('button')) return;
+      proceed();
+    };
+    this.advanceAction = proceed;
     this.advanceHandler = handler;
     this.root.addEventListener('click', handler);
+    this.scheduleAdvance();
   }
 
   private detachAdvance(): void {
@@ -413,6 +444,7 @@ export class Stage {
 
   choices(node: ChoiceNode, onPick: (index: number) => void): void {
     this.detachAdvance();
+    this.stopAutoSkip();
     if (this.chatActive) {
       this.chatChoices(node, onPick);
       return;
@@ -565,6 +597,185 @@ export class Stage {
       onDone();
     });
     refresh();
+  }
+
+
+  /* ---------- 自动播放 / 快进 / 回想 ---------- */
+
+  setAuto(on: boolean): void {
+    // 选项、关卡、面板在场时自动播放无意义，直接不开
+    if (on && this.uiLayer.querySelector('.choice, .quick, .board, .ending-card, .chapter-card')) {
+      this.autoMode = false;
+      this.onAutoSkipChange?.(false, this.skipMode);
+      return;
+    }
+    this.autoMode = on;
+    if (on) this.skipMode = false;
+    this.clearAutoTimer();
+    this.onAutoSkipChange?.(this.autoMode, this.skipMode);
+    // 当前停在对话上就立即接着走
+    if (on) this.scheduleAdvance();
+  }
+
+  setSkip(on: boolean): void {
+    this.skipMode = on;
+    if (on) this.autoMode = false;
+    this.clearAutoTimer();
+    this.onAutoSkipChange?.(this.autoMode, this.skipMode);
+    if (on) this.scheduleAdvance(60);
+  }
+
+  toggleAuto(): void {
+    this.setAuto(!this.autoMode);
+  }
+
+  toggleSkip(): void {
+    this.setSkip(!this.skipMode);
+  }
+
+  private clearAutoTimer(): void {
+    if (this.autoTimer !== null) {
+      window.clearTimeout(this.autoTimer);
+      this.autoTimer = null;
+    }
+  }
+
+  /** 对话停在可推进状态时，按设置决定多久后自动走 */
+  private scheduleAdvance(forceDelay?: number): void {
+    this.clearAutoTimer();
+    if (!this.autoMode && !this.skipMode) return;
+    const delay = forceDelay ?? this.currentDelay;
+    this.autoTimer = window.setTimeout(() => {
+      this.autoTimer = null;
+      this.advanceAction?.();
+    }, delay);
+  }
+
+  /** 进入关卡、选项、面板时停掉自动与快进 */
+  stopAutoSkip(): void {
+    this.clearAutoTimer();
+    if (this.autoMode || this.skipMode) {
+      this.autoMode = false;
+      this.skipMode = false;
+      this.onAutoSkipChange?.(false, false);
+    }
+  }
+
+  private get currentDelay(): number {
+    const base = getSettings().autoDelay;
+    return this.skipMode ? 60 : base;
+  }
+
+  private pushLog(speaker: string, text: string, id: string): void {
+    this.log.push({ speaker, text, id });
+    if (this.log.length > 300) this.log.shift();
+  }
+
+  /** 回想：把这一路看过的对白列出来 */
+  openBacklog(): void {
+    this.clearAutoTimer();
+    this.overlayLayer.innerHTML = '';
+    const panel = h('div', 'backlog-panel');
+    panel.append(h('div', 'backlog-title', `对话回想（${this.log.length} 条）`));
+    const list = h('div', 'backlog-list');
+    if (this.log.length === 0) {
+      list.append(h('div', 'backlog-empty', '还没有可以回看的对白。'));
+    }
+    this.log.forEach((entry) => {
+      const row = h('div', 'backlog-row');
+      row.append(h('div', 'backlog-speaker', entry.speaker || '旁白'));
+      row.append(h('div', 'backlog-text', entry.text));
+      list.append(row);
+    });
+    panel.append(list);
+    const close = h('button', 'btn btn-ghost', '收起');
+    close.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.overlayLayer.innerHTML = '';
+      this.overlayLayer.classList.remove('on');
+    });
+    panel.append(close);
+    this.overlayLayer.classList.add('on');
+    this.overlayLayer.append(panel);
+    requestAnimationFrame(() => {
+      list.scrollTop = list.scrollHeight;
+    });
+    play('page');
+  }
+
+  /** 设置面板：三条音量 + 自动播放停顿 */
+  openSettings(): void {
+    this.clearAutoTimer();
+    this.overlayLayer.innerHTML = '';
+    const panel = h('div', 'settings-panel');
+    panel.append(h('div', 'settings-title', '设置'));
+
+    const rows: Array<{ label: string; channel: 'bgm' | 'se' | 'voice' }> = [
+      { label: '背景音乐', channel: 'bgm' },
+      { label: '音效', channel: 'se' },
+      { label: '角色语音', channel: 'voice' },
+    ];
+    rows.forEach((row) => {
+      const line = h('div', 'settings-row');
+      line.append(h('label', 'settings-label', row.label));
+      const input = document.createElement('input');
+      input.type = 'range';
+      input.min = '0';
+      input.max = '100';
+      input.value = String(Math.round(getVolume(row.channel) * 100));
+      input.className = 'settings-range';
+      input.dataset.channel = row.channel;
+      input.addEventListener('input', () => {
+        setVolume(row.channel, Number(input.value) / 100);
+      });
+      input.addEventListener('click', (event) => event.stopPropagation());
+      line.append(input);
+      const value = h('span', 'settings-value', `${input.value}`);
+      input.addEventListener('input', () => {
+        value.textContent = input.value;
+      });
+      line.append(value);
+      panel.append(line);
+    });
+
+    const speedRow = h('div', 'settings-row');
+    speedRow.append(h('label', 'settings-label', '自动播放停顿'));
+    const speed = document.createElement('input');
+    speed.type = 'range';
+    speed.min = '600';
+    speed.max = '3000';
+    speed.step = '100';
+    speed.value = String(getSettings().autoDelay);
+    speed.className = 'settings-range';
+    speed.dataset.channel = 'auto';
+    speed.addEventListener('click', (event) => event.stopPropagation());
+    speed.addEventListener('input', () => {
+      saveSettings({ autoDelay: Number(speed.value) });
+      speedValue.textContent = `${(Number(speed.value) / 1000).toFixed(1)} 秒`;
+    });
+    const speedValue = h('span', 'settings-value', `${(getSettings().autoDelay / 1000).toFixed(1)} 秒`);
+    speedRow.append(speed, speedValue);
+    panel.append(speedRow);
+
+    panel.append(h('div', 'settings-note', '快捷键：A 自动播放 ｜ S 快进已读 ｜ L 回想 ｜ Esc 关闭 ｜ 右键 隐藏界面'));
+
+    const close = h('button', 'btn btn-ghost', '完成');
+    close.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.overlayLayer.innerHTML = '';
+      this.overlayLayer.classList.remove('on');
+    });
+    panel.append(close);
+    this.overlayLayer.classList.add('on');
+    this.overlayLayer.append(panel);
+    play('page');
+  }
+
+  /** 右键隐藏/恢复界面，方便看立绘和背景 */
+  toggleUiHidden(): boolean {
+    this.uiHidden = !this.uiHidden;
+    this.root.classList.toggle('ui-hidden', this.uiHidden);
+    return this.uiHidden;
   }
 
   /* ---------- 结局 ---------- */
