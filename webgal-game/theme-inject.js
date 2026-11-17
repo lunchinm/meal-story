@@ -1,8 +1,11 @@
-// A 纸质调查簿 · 奶油纸主题（与预览图 A 一致：纸底 + 墨绿宋体）
+// A 纸质调查簿 · 运行时主题（在 index.html 末尾加载，最后注入 <head>，优先级最高）
+// 结构：纸卡 = 文本框容器第一个子 div；正文 = 逐字 span；名牌 = outerName/innerName 逐字 span
 (function () {
   var THEME = `
+/* ---------- 纸卡 ---------- */
 [class*="TextBox_Container"] > div:first-child {
-  height: 250px !important;
+  min-height: 250px !important;
+  height: auto !important;
   background-color: #f7f1e0 !important;
   background-image: linear-gradient(180deg, #fbf6e8 0%, #efe5cc 100%) !important;
   border: 1px solid #b9a986 !important;
@@ -19,6 +22,7 @@
   padding: 30px 52px 34px 52px !important;
 }
 
+/* ---------- 正文：墨绿宋体 ---------- */
 [class*="TextBox_Container"] span {
   font-size: 48px !important;
   line-height: 1.85 !important;
@@ -29,20 +33,51 @@
   letter-spacing: .02em !important;
 }
 
-[class*="TextBox_showName"], [class*="TextBox_ShowName"] {
+/* ---------- 名牌：深绿纸签 + 米白字 ---------- */
+[class*="showName"], [class*="ShowName"], [class*="nameContainer"], [class*="showname"] {
   background: #2f4a34 !important;
-  color: #f7f2e3 !important;
   border-radius: 2px !important;
-  letter-spacing: .14em !important;
-  font-family: 'Songti SC', 'SimSun', serif !important;
   box-shadow: 0 6px 14px rgba(47, 74, 52, .3) !important;
+  border: none !important;
 }
-[class*="TextBox_showName"] span, [class*="TextBox_ShowName"] span {
-  color: #f7f2e3 !important;
-  font-size: 26px !important;
+
+[class*="outerName"] {
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  color: #fbf6e8 !important;
   -webkit-text-stroke: 0 !important;
 }
 
+[class*="innerName"] {
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  color: #fbf6e8 !important;
+}
+
+[class*="showname"] span, [class*="showName"] span, [class*="ShowName"] span {
+  color: #fbf6e8 !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  font-size: 26px !important;
+}
+
+/* ---------- 选项（实际容器 _chooseContainer_xxx） ---------- */
+[class*="hoose"] > div {
+  background-image: linear-gradient(180deg, #fbf6e9, #f1e7d1) !important;
+  color: #33402f !important;
+  border: 1px solid #b9a986 !important;
+  border-radius: 3px !important;
+  box-shadow: 0 10px 22px rgba(84, 70, 44, .25) !important;
+}
+
+[class*="hoose"] span {
+  color: #33402f !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  font-family: 'Songti SC', 'SimSun', serif !important;
+}
+/* ---------- 选项：米色纸标签 ---------- */
 [class*="Choose"] [class*="item"], [class*="Choose"] button {
   background-image: linear-gradient(180deg, #fbf6e9, #f1e7d1) !important;
   color: #33402f !important;
@@ -51,6 +86,7 @@
   box-shadow: 0 10px 22px rgba(84, 70, 44, .25) !important;
   font-family: 'Songti SC', 'SimSun', serif !important;
 }
+
 [class*="Choose"] span {
   color: #33402f !important;
   -webkit-text-stroke: 0 !important;
