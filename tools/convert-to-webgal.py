@@ -25,8 +25,12 @@ ENDBG = {
 
 
 def esc(text: str) -> str:
-    """WebGAL 用英文冒号/分号做语法，正文里的要转义。"""
-    return text.replace(";", "\\;").replace(":", "\\：")
+    """WebGAL 用英文冒号、分号、竖线做语法，正文里的要按官方规则转义。"""
+    return (text.replace("\\", "\\\\")
+                .replace(";", "\\;")
+                .replace(":", "\\:")
+                .replace("|", "\\|")
+                .replace(",", "\\,"))
 
 
 def say_line(speaker: str | None, text: str) -> str:
