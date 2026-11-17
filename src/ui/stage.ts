@@ -381,6 +381,7 @@ export class Stage {
   /* ---------- 知识卡 ---------- */
 
   private showCard(id: string): void {
+    this.clearAutoTimer();
     const card = (window as unknown as { __knowledge?: KnowledgeCard[] }).__knowledge?.find((c) => c.id === id);
     if (!card) return;
     this.overlayLayer.innerHTML = '';
@@ -403,6 +404,7 @@ export class Stage {
       this.overlayLayer.innerHTML = '';
       this.overlayLayer.classList.remove('on');
       this.root.removeEventListener('click', dismiss);
+      this.scheduleAdvance();
     });
     this.root.addEventListener('click', dismiss);
     play('page');
@@ -647,6 +649,8 @@ export class Stage {
     const delay = forceDelay ?? this.currentDelay;
     this.autoTimer = window.setTimeout(() => {
       this.autoTimer = null;
+      // 有面板盖在上面时先不动，等玩家收起来
+      if (this.overlayLayer.classList.contains('on')) return;
       this.advanceAction?.();
     }, delay);
   }
@@ -693,6 +697,7 @@ export class Stage {
       event.stopPropagation();
       this.overlayLayer.innerHTML = '';
       this.overlayLayer.classList.remove('on');
+      this.scheduleAdvance();
     });
     panel.append(close);
     this.overlayLayer.classList.add('on');
@@ -764,6 +769,7 @@ export class Stage {
       event.stopPropagation();
       this.overlayLayer.innerHTML = '';
       this.overlayLayer.classList.remove('on');
+      this.scheduleAdvance();
     });
     panel.append(close);
     this.overlayLayer.classList.add('on');
@@ -936,6 +942,7 @@ export class Stage {
   }
 
   private showProp(id: PropId): void {
+    this.clearAutoTimer();
     const image = id === 'poster' ? backgrounds['poster_meal'] : id === 'tray' ? backgrounds['ch_banner_2'] : undefined;
     const view = buildProp(id, image);
     const panel = h('div', 'prop-panel enter');
@@ -946,6 +953,7 @@ export class Stage {
       event.stopPropagation();
       panel.remove();
       if (!this.overlayLayer.children.length) this.overlayLayer.classList.remove('on');
+      this.scheduleAdvance();
     });
     head.append(close);
     panel.append(head, view.body);
