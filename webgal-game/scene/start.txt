@@ -1,7 +1,6 @@
 ; 《今天吃什么？》WebGAL 版（自动生成，勿手改）
-jumpLabel:act1;
-label:act1;
 ; ==== 第一章《套餐的秘密》 ====
+:第一章《套餐的秘密》;
 changeBg:ch_banner_1.webp;
 changeBg:bg_chat.webp;
 changeFigure:ch_zhoujian_normal.webp -center -id=zhoujian;
@@ -318,9 +317,8 @@ changeFigure:ch_sutao_normal.webp -center -id=sutao;
 苏桃:那我的相册可能比想象中长。;
 ; 记录：问过需求
 ; 互动节点（待迁移）：a1-notebook [notebook]
-jumpLabel:act2;
-label:act2;
 ; ==== 第二章《餐盘之外》 ====
+:第二章《餐盘之外》;
 changeBg:ch_banner_2.webp;
 changeBg:bg_canteen.webp;
 你:今天挺早。;
@@ -725,9 +723,8 @@ label:c2_a2_note_2;
 jumpLabel:after_a2_note;
 label:after_a2_note;
 ; 记录：给明天留了一张便签
-jumpLabel:act3;
-label:act3;
 ; ==== 第三章《翻到包装背面》 ====
+:第三章《翻到包装背面》;
 changeBg:ch_banner_3.webp;
 changeBg:bg_class.webp;
 changeFigure:ch_mili_worried.webp -center -id=mili;
@@ -1218,9 +1215,8 @@ label:after_a3_ask;
 你:过几天翻相册，才知道当时为什么这样选。这张留给第四章。;
 ; 记录：调查簿增加“购买理由”照片
 ; 互动节点（待迁移）：a3-meets [notebook]
-jumpLabel:act4;
-label:act4;
 ; ==== 第四章《你的方案，能坚持吗》 ====
+:第四章《你的方案，能坚持吗》;
 changeBg:ch_banner_4.webp;
 changeBg:bg_class.webp;
 changeFigure:ch_mili_worried.webp -center -id=mili;

@@ -50,6 +50,8 @@ def convert_act(act: int) -> list[str]:
 
         if kind == "chapter":
             lines.append(f"; ==== {node.get('title', '')} ====")
+            # 第一句必须是 say：否则 changeBg / changeFigure 会卡住整个脚本
+            lines.append(f":{esc(node.get('title', '') or '第一章')};")
             if node.get("image"):
                 lines.append(f"changeBg:{node['image']}.webp;")
             continue
@@ -116,24 +118,19 @@ def convert_act(act: int) -> list[str]:
 
 def main() -> int:
     os.makedirs(OUT, exist_ok=True)
-    all_acts = {}
-    for act in (1, 2, 3, 4):
-        all_acts[act] = convert_act(act)
+    acts = {act: convert_act(act) for act in (1, 2, 3, 4)}
 
-    # start.txt：把四章串起来
-    start = ["; 《今天吃什么？》WebGAL 版（自动生成，勿手改）", "jumpLabel:act1;"]
-    for act in (1, 2, 3, 4):
-        start.append(f"label:act{act};")
-        start.extend(all_acts[act])
-        if act < 4:
-            start.append(f"jumpLabel:act{act + 1};")
-        else:
-            start.append("end;")
+    # 分卷（备用，不参与运行）
+    for act, body in acts.items():
+        io.open(os.path.join(OUT, f"act{act}.txt"), "w", encoding="utf-8").write("\n".join(body) + "\n")
 
-    io.open(os.path.join(OUT, "start.txt"), "w", encoding="utf-8").write("\n".join(start) + "\n")
-    print("生成 scene/start.txt，共", len(start), "行")
+    # 主脚本：四章串成一条，开头必须是 say，否则 WebGAL 不放立绘
+    lines = ["; 《今天吃什么？》WebGAL 版（自动生成，勿手改）"]
     for act in (1, 2, 3, 4):
-        print(f"  act{act}: {len(all_acts[act])} 行")
+        lines.extend(acts[act])
+    lines.append("end;")
+    io.open(os.path.join(OUT, "start.txt"), "w", encoding="utf-8").write("\n".join(lines) + "\n")
+    print(f"start.txt: {len(lines)} 行；分卷 " + "、".join(f"act{a}:{len(b)}" for a, b in acts.items()))
     return 0
 
 
