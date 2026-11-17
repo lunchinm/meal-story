@@ -1,0 +1,8 @@
+Game_name:今天吃什么？——校园膳食调查簿;
+Game_key:todayeat2026;
+Title_img:bg_title.webp;
+Title_bgm:bgm_loop.mp3;
+Game_Logo:bg_title.webp;
+Enable_Appreciation:true;
+Enable_Continue:true;
+Enable_flowchart:true;
