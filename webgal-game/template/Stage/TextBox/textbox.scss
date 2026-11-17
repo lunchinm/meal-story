@@ -3,12 +3,12 @@
 .TextBox_main {
   z-index: 3;
   position: absolute;
-  min-height: 236px;
-  max-height: 300px;
+  min-height: 196px;
+  max-height: 240px;
   bottom: 30px;
   left: 44px;
   right: 44px;
-  padding: 34px 46px 30px 46px;
+  padding: 30px 46px 26px 46px;
   box-sizing: border-box;
   display: flex;
   flex-flow: column;
@@ -144,12 +144,25 @@
 /* TEXT-SIZE-FORCE：WebGAL 用内联字号，必须 !important 才盖得住 */
 .outer, .inner, .zhanwei,
 .outerName, .innerName {
-  font-size: 22px !important;
-  line-height: 1.92 !important;
+  font-size: 26px !important;
+  line-height: 1.85 !important;
   font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif !important;
 }
 
 .TextBox_textElement_Settled,
 .TextBox_textElement_start {
-  font-size: 22px !important;
+  font-size: 26px !important;
+  line-height: 1.85 !important;
+}
+/* SPAN-INK：正文逐字 span 的实际样式（emotion 类名不稳定，用父级结构选） */
+.text span,
+.readText span,
+.TextBox_textElement_Settled span,
+.TextBox_textElement_start span {
+  font-size: 26px !important;
+  line-height: 1.85 !important;
+  color: #2f3a2f !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif !important;
 }

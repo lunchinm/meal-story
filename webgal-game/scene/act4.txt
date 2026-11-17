@@ -480,3 +480,4 @@ changeBg:ending_hidden.webp;
 changeFigure:none -center;
 intro:先问清楚，再给建议|你按具体的人核对条件，做完便签，又按反馈改了方案。 给的是能执行的方案，不是要求。;
 end;
+end;

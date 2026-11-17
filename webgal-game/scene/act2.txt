@@ -404,3 +404,4 @@ label:c2_a2_note_2;
 jumpLabel:after_a2_note;
 label:after_a2_note;
 ; 记录：给明天留了一张便签
+changeScene:act3.txt;

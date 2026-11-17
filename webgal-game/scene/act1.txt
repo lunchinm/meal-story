@@ -316,3 +316,4 @@ changeFigure:ch_sutao_normal.webp -center -id=sutao;
 苏桃:那我的相册可能比想象中长。;
 ; 记录：问过需求
 ; 互动节点（待迁移）：a1-notebook [notebook]
+changeScene:act2.txt;

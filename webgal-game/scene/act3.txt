@@ -490,3 +490,4 @@ label:after_a3_ask;
 你:过几天翻相册，才知道当时为什么这样选。这张留给第四章。;
 ; 记录：调查簿增加“购买理由”照片
 ; 互动节点（待迁移）：a3-meets [notebook]
+changeScene:act4.txt;

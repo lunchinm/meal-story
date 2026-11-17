@@ -35,6 +35,7 @@ def esc(text: str) -> str:
 
 def say_line(speaker: str | None, text: str) -> str:
     body = esc(text)
+    # WebGAL 的字号是「用户设置」，默认偏小；脚本里逐句指定 large 最稳
     return f"{speaker or ''}:{body};"
 
 
@@ -118,19 +119,23 @@ def convert_act(act: int) -> list[str]:
 
 def main() -> int:
     os.makedirs(OUT, exist_ok=True)
-    acts = {act: convert_act(act) for act in (1, 2, 3, 4)}
-
-    # 分卷（备用，不参与运行）
-    for act, body in acts.items():
-        io.open(os.path.join(OUT, f"act{act}.txt"), "w", encoding="utf-8").write("\n".join(body) + "\n")
-
-    # 主脚本：四章串成一条，开头必须是 say，否则 WebGAL 不放立绘
-    lines = ["; 《今天吃什么？》WebGAL 版（自动生成，勿手改）"]
     for act in (1, 2, 3, 4):
-        lines.extend(acts[act])
-    lines.append("end;")
-    io.open(os.path.join(OUT, "start.txt"), "w", encoding="utf-8").write("\n".join(lines) + "\n")
-    print(f"start.txt: {len(lines)} 行；分卷 " + "、".join(f"act{a}:{len(b)}" for a, b in acts.items()))
+        body = convert_act(act)
+        if act < 4:
+            body.append(f"changeScene:act{act + 1}.txt;")
+        else:
+            body.append("end;")
+        io.open(os.path.join(OUT, f"act{act}.txt"), "w", encoding="utf-8").write("\n".join(body) + "\n")
+        print(f"act{act}.txt: {len(body)} 行")
+
+    # 注意：WebGAL 的第一条语句必须是 say，否则 changeScene 会卡死
+    start = [
+        "; 《今天吃什么？》WebGAL 版（自动生成，勿手改）",
+        ":今天吃什么？——校园膳食调查簿;",
+        "changeScene:act1.txt;",
+    ]
+    io.open(os.path.join(OUT, "start.txt"), "w", encoding="utf-8").write("\n".join(start) + "\n")
+    print("start.txt: 3 行（开场白 + 跳第一章）")
     return 0
 
 
