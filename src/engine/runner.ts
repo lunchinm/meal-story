@@ -47,11 +47,29 @@ export class Runner {
     this.goto(id ?? this.firstNodeId);
   }
 
-  private goto(id: string): void {
+  /** 回到上一句：不改 flag，只重看一遍上一句 */
+  back(): boolean {
+    const prev = state.history.pop();
+    if (!prev) return false;
+    state.nodeId = prev;
+    state.save();
+    this.entering = true;
+    this.goto(prev, true);
+    this.entering = false;
+    return true;
+  }
+
+  private entering = false;
+
+  private goto(id: string, silent = false): void {
     const node = this.nodes.get(id);
     if (!node) {
       this.stage.toast(`找不到节点：${id}`);
       return;
+    }
+    if (!silent && state.nodeId && state.nodeId !== id) {
+      state.history.push(state.nodeId);
+      if (state.history.length > 200) state.history.shift();
     }
     state.nodeId = id;
     state.save();

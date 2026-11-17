@@ -22,14 +22,33 @@ function h<K extends keyof HTMLElementTagNameMap>(
  * 剧情只给数据，stage 只负责画和收点击。
  */
 const PROP_IMAGE: Record<string, string> = {
-  poster: 'poster_meal',
-  tray: 'ch_banner_2',
-  menu: 'ch_banner_2',
+  poster: 'chat_poster',
+  tray: 'chat_tray',
+  menu: 'chat_menu',
   note: 'bg_class',
   product_front: 'ch_banner_3',
   product_back: 'ch_banner_3',
   nutrition: 'ch_banner_3',
 };
+
+/** 群聊头像：取角色常态立绘，CSS 裁成圆形 */
+const SPEAKER_ACTOR: Record<string, string> = {
+  米粒: 'mili',
+  周简: 'zhoujian',
+  许知夏: 'zhixia',
+  苏桃: 'sutao',
+  陆燃: 'luran',
+  罗师傅: 'luomaster',
+};
+
+/** 群聊里用假时间戳，按消息顺序往后走，读起来像真聊天 */
+function chatTime(index: number): string {
+  const base = 12 * 60 + 2;
+  const minute = base + Math.floor(index * 0.7);
+  const hh = String(Math.floor(minute / 60) % 24).padStart(2, '0');
+  const mm = String(minute % 60).padStart(2, '0');
+  return `${hh}:${mm}`;
+}
 
 const PROP_LABEL: Record<string, string> = {
   poster: '群里的宣传图',
@@ -90,6 +109,7 @@ export class Stage {
   private advanceAction?: () => void;
   private typeTimer: number | null = null;
   private log: LogEntry[] = [];
+  private chatEntries: Array<{ speaker: string; text: string; pic?: string; time: string }> = [];
   private uiHidden = false;
 
   onAutoSkipChange?: (auto: boolean, skip: boolean) => void;
@@ -172,6 +192,7 @@ export class Stage {
 
   title(hasSave: boolean, onStart: () => void, onContinue: () => void): void {
     this.clearAll();
+    this.root.classList.add('title-mode');
     this.setScene('title');
     this.setActor(undefined);
     const panel = h('div', 'title-screen');
@@ -215,15 +236,23 @@ export class Stage {
 
   /** 群聊：固定高度的手机界面，新消息自动落底 */
   private sayChat(node: SayNode, onNext: () => void): void {
+    this.root.classList.remove('title-mode');
     const seg = (node as unknown as { seg?: number }).seg ?? 0;
     const newThread = !this.lastWasChat || seg !== this.chatSeg;
     if (newThread) {
       this.chatSeg = seg;
-      this.chatLog = [];
+      this.chatEntries = [];
     }
     this.lastWasChat = true;
-    this.chatLog.push({ speaker: node.speaker ?? '旁白', text: node.text });
-    this.pushLog(node.speaker ?? '旁白', node.text, node.id);
+
+    const entry = {
+      speaker: node.speaker ?? '旁白',
+      text: node.text,
+      pic: node.prop ? PROP_IMAGE[node.prop as PropId] : undefined,
+      time: chatTime(this.chatEntries.length),
+    };
+    this.chatEntries.push(entry);
+    this.pushLog(entry.speaker, entry.text, node.id);
     state.readNodes.add(node.id);
     this.chatActive = true;
 
@@ -233,42 +262,24 @@ export class Stage {
     if (!phone) {
       phone = h('div', 'phone enter');
       const head = h('div', 'phone-head');
-      head.append(h('div', 'phone-title', '今天吃什么'), h('div', 'phone-sub', '群聊 · 5 人'));
+      const title = h('div', 'phone-title', '今天吃什么');
+      const sub = h('div', 'phone-sub', '群聊 · 5 人');
+      const headText = h('div', 'phone-head-text');
+      headText.append(title, sub);
+      head.append(h('div', 'phone-avatar-stack'), headText);
       body = h('div', 'phone-body');
       phone.append(head, body);
       this.uiLayer.append(phone);
-      // 重建时把这段的历史消息一起画出来
-      for (const old of this.chatLog.slice(0, -1)) {
-        const past = h('div', old.speaker === '你' ? 'msg me' : 'msg');
-        if (old.speaker !== '你') past.append(h('div', 'msg-name', old.speaker));
-        past.append(h('div', 'msg-text', old.text));
-        body.append(past);
+      // 重建时把这段历史完整画出来（图片消息也要保留）
+      for (const past of this.chatEntries.slice(0, -1)) {
+        body.append(this.buildChatRow(past, false));
       }
     } else {
       body = phone.querySelector('.phone-body') as HTMLElement;
       phone.querySelector('.phone-choices')?.remove();
     }
 
-    const msg = this.chatLog[this.chatLog.length - 1];
-    const row = h('div', msg.speaker === '你' ? 'msg me enter' : 'msg enter');
-    if (msg.speaker !== '你') row.append(h('div', 'msg-name', msg.speaker));
-    row.append(h('div', 'msg-text', msg.text));
-    if (node.prop) {
-      // 直接把图贴在消息里：点图放大，不再用文字按钮
-      const pic = h('button', 'msg-pic');
-      const src = PROP_IMAGE[node.prop as PropId];
-      const art = h('div', 'msg-pic-art');
-      if (src && backgrounds[src]) art.style.backgroundImage = `url(${backgrounds[src]})`;
-      pic.append(art);
-      pic.append(h('div', 'msg-pic-cap', `${PROP_LABEL[node.prop] ?? '图片'} · 点击看大图`));
-      pic.addEventListener('click', (event) => {
-        event.stopPropagation();
-        play('page');
-        this.showProp(node.prop as PropId);
-      });
-      row.append(pic);
-    }
-    body.append(row);
+    body.append(this.buildChatRow(entry, true));
     while (body.children.length > 60) body.firstElementChild?.remove();
     if (fresh) body.scrollTop = body.scrollHeight;
     else this.scrollChatToBottom(body);
@@ -285,6 +296,73 @@ export class Stage {
     this.scheduleAdvance();
   }
 
+  /** 一条聊天消息：头像 + 名字 + 时间 + 气泡（可带图片） */
+  private buildChatRow(entry: { speaker: string; text: string; pic?: string; time: string }, isNew: boolean): HTMLElement {
+    const mine = entry.speaker === '你';
+    const row = h('div', mine ? 'chat-row mine' : 'chat-row');
+    if (isNew) row.classList.add('enter');
+
+    if (!mine) {
+      const avatar = h('div', 'chat-avatar');
+      const actorId = SPEAKER_ACTOR[entry.speaker];
+      const url = actorId ? actors[`ch_${actorId}_normal`] : undefined;
+      if (url) avatar.style.backgroundImage = `url(${url})`;
+      else avatar.textContent = entry.speaker.slice(0, 1);
+      row.append(avatar);
+    }
+
+    const col = h('div', 'chat-col');
+    if (!mine) {
+      const meta = h('div', 'chat-meta');
+      meta.append(h('span', 'chat-name', entry.speaker), h('span', 'chat-time', entry.time));
+      col.append(meta);
+    } else {
+      col.append(h('div', 'chat-meta mine'), h('span', 'chat-time', entry.time));
+    }
+
+    const bubble = h('div', 'chat-bubble');
+    bubble.append(h('div', 'chat-text', entry.text));
+    if (entry.pic) {
+      const url = backgrounds[entry.pic];
+      const pic = h('button', 'chat-pic');
+      const img = document.createElement('img');
+      img.className = 'chat-pic-img';
+      img.loading = 'lazy';
+      if (url) img.src = url;
+      img.alt = entry.text.slice(0, 12);
+      pic.append(img);
+      pic.addEventListener('click', (event) => {
+        event.stopPropagation();
+        play('page');
+        if (url) this.openImage(url, entry.text);
+      });
+      bubble.append(pic);
+    }
+    col.append(bubble);
+    row.append(col);
+    return row;
+  }
+
+  /** 大图查看器 */
+  openImage(url: string, caption: string): void {
+    this.clearAutoTimer();
+    this.overlayLayer.innerHTML = '';
+    const viewer = h('div', 'image-viewer');
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = caption;
+    const cap = h('div', 'image-viewer-cap', `${caption}（点击任意处关闭）`);
+    viewer.append(img, cap);
+    viewer.addEventListener('click', (event) => {
+      event.stopPropagation();
+      this.overlayLayer.innerHTML = '';
+      this.overlayLayer.classList.remove('on');
+      this.scheduleAdvance();
+    });
+    this.overlayLayer.classList.add('on');
+    this.overlayLayer.append(viewer);
+  }
+
   /** 只有本来就在底部时才跟着滚，玩家上翻不打断 */
   private scrollChatToBottom(body: HTMLElement): void {
     const nearBottom = body.scrollHeight - body.scrollTop - body.clientHeight < 120;
@@ -296,6 +374,7 @@ export class Stage {
 
   say(node: SayNode, onNext: () => void): void {
     this.detachAdvance();
+    this.root.classList.remove('title-mode');
     this.pushLog(node.speaker ?? '旁白', node.text, node.id);
     const wasRead = state.readNodes.has(node.id);
     state.readNodes.add(node.id);
@@ -830,6 +909,7 @@ export class Stage {
 
   ending(node: EndingNode, onRestart: () => void): void {
     this.detachAdvance();
+    this.root.classList.add('title-mode');
     this.uiLayer.innerHTML = '';
     this.overlayLayer.innerHTML = '';
     this.setScene(node.image ? 'ending' : 'canteen');

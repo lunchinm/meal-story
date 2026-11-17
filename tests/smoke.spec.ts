@@ -14,7 +14,7 @@ test.describe('标题页', () => {
     await page.goto('/');
     await page.locator('.title-name-input').fill('林小满');
     await page.locator('.title-screen .btn-primary').click();
-    await expect(page.locator('.dialog .text, .msg-text').first()).toBeVisible();
+    await expect(page.locator('.dialog .text, .chat-text').first()).toBeVisible();
     const name = await page.evaluate(() => localStorage.getItem('meal_player_name'));
     expect(name).toBe('林小满');
   });
@@ -22,7 +22,7 @@ test.describe('标题页', () => {
   test('开始后右上工具条与静音按钮都在', async ({ page }) => {
     await page.goto('/');
     await page.locator('.title-screen .btn-primary').click();
-    await expect(page.locator('.hud-btn')).toHaveCount(4);
+    await expect(page.locator('.qm-btn')).toHaveCount(5);
     await expect(page.locator('.mute-btn')).toBeVisible();
   });
 });
@@ -32,6 +32,8 @@ test.describe('对话推进', () => {
     await page.goto('/?node=a1-45');
     const first = await page.locator('.dialog .text').innerText();
     await page.locator('.dialog').click();
+    await page.waitForTimeout(90);
+    await page.locator('.dialog').click().catch(() => {});
     await expect(page.locator('.dialog .text')).not.toHaveText(first);
   });
 
@@ -47,6 +49,8 @@ test.describe('存档', () => {
   test('推进后会写存档节点', async ({ page }) => {
     await page.goto('/?node=a1-45');
     await page.locator('.dialog').click();
+    await page.waitForTimeout(90);
+    await page.locator('.dialog').click().catch(() => {});
     await page.waitForTimeout(300);
     const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('meal_save_v1') || '{}').nodeId);
     expect(saved).toBeTruthy();

@@ -4,16 +4,16 @@ import { expect, test } from '@playwright/test';
 
 test('自动播放连续推进多句不停', async ({ page }) => {
   await page.goto('/?node=a1-10');
-  await page.locator('.hud-auto').click();
+  await page.locator('.qm-auto').click();
   const seen = new Set<string>();
   for (let i = 0; i < 12; i += 1) {
-    const text = await page.locator('.dialog .text, .msg-text').last().innerText().catch(() => '');
+    const text = await page.locator('.dialog .text, .chat-text').last().innerText().catch(() => '');
     if (text) seen.add(text);
     if (seen.size >= 4) break;
     await page.waitForTimeout(900);
   }
   expect(seen.size).toBeGreaterThanOrEqual(4);
-  await page.locator('.hud-auto').click();
+  await page.locator('.qm-auto').click();
 });
 
 test('快进能把已读的一段一次跳完', async ({ page }) => {
@@ -29,7 +29,7 @@ test('快进能把已读的一段一次跳完', async ({ page }) => {
   });
   expect(ids.length).toBeGreaterThan(0);
   await page.reload();
-  await page.locator('.hud-skip').click();
+  await page.locator('.qm-skip').click();
   await page.waitForTimeout(2500);
   const node = await page.evaluate(() => JSON.parse(localStorage.getItem('meal_save_v1') || '{}').nodeId);
   expect(node).not.toBe('a1-45');

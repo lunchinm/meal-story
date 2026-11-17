@@ -10,6 +10,9 @@ import bg_ch_banner_1 from '../assets/bg/ch_banner_1.webp';
 import bg_ch_banner_2 from '../assets/bg/ch_banner_2.webp';
 import bg_ch_banner_3 from '../assets/bg/ch_banner_3.webp';
 import bg_ch_banner_4 from '../assets/bg/ch_banner_4.webp';
+import bg_chat_menu from '../assets/bg/chat_menu.webp';
+import bg_chat_poster from '../assets/bg/chat_poster.webp';
+import bg_chat_tray from '../assets/bg/chat_tray.webp';
 import bg_ending_advanced from '../assets/bg/ending_advanced.webp';
 import bg_ending_hidden from '../assets/bg/ending_hidden.webp';
 import bg_ending_normal from '../assets/bg/ending_normal.webp';
@@ -25,6 +28,9 @@ export const backgrounds: Record<string, string> = {
   'ch_banner_2': bg_ch_banner_2,
   'ch_banner_3': bg_ch_banner_3,
   'ch_banner_4': bg_ch_banner_4,
+  'chat_menu': bg_chat_menu,
+  'chat_poster': bg_chat_poster,
+  'chat_tray': bg_chat_tray,
   'ending_advanced': bg_ending_advanced,
   'ending_hidden': bg_ending_hidden,
   'ending_normal': bg_ending_normal,

@@ -189,10 +189,10 @@ async function main() {
       // a1-50 是一段群聊的第一句，前面刚是当面场景
       await goto(cdp, 'a1-50');
       await waitFor(cdp, `!!document.querySelector('.phone')`, '群聊');
-      const first = await cdp.eval(`document.querySelectorAll('.phone .msg').length`);
+      const first = await cdp.eval(`document.querySelectorAll('.phone .chat-row').length`);
       assert(first <= 2, `新一段群聊不该带着旧消息，现在有 ${first} 条`);
       await click(cdp, '.phone', '推进一条');
-      const next = await cdp.eval(`document.querySelectorAll('.phone .msg').length`);
+      const next = await cdp.eval(`document.querySelectorAll('.phone .chat-row').length`);
       assert(next === first + 1, `同一段内应当累加：${first} → ${next}`);
       await shoot(cdp, '01c-chat-thread');
     }]);
@@ -220,7 +220,7 @@ async function main() {
       assert((await text(cdp, '.chapter-title')).includes('第一章'), '第一章章节卡不对');
       await shoot(cdp, '02-chapter1');
       await click(cdp, '.chapter-card', '跳过章节卡');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '第一章对白');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .chat-text')`, '第一章对白');
       await shoot(cdp, '03-first-line');
     }]);
 
@@ -252,24 +252,22 @@ async function main() {
       await shoot(cdp, '14-chat-choices');
       await click(cdp, '.quick', '第一个快捷回复');
       await sleep(400);
-      const mine = await cdp.eval(`document.querySelectorAll('.msg.me').length`);
+      const mine = await cdp.eval(`document.querySelectorAll('.chat-row.mine').length`);
       assert(mine >= 1, '点完没有出现玩家气泡');
     }]);
 
     steps.push(['群聊里的图片直接贴出、点图放大', async () => {
       await goto(cdp, 'a1-08');
-      await waitFor(cdp, `!!document.querySelector('.msg-pic')`, '图片气泡');
-      const art = await cdp.eval(`(() => {
-        const el = document.querySelector('.msg-pic-art');
-        return getComputedStyle(el).backgroundImage.slice(0, 30);
-      })()`);
-      assert(art.includes('url('), `图片气泡没有背景图：${art}`);
-      const chips = await cdp.eval(`document.querySelectorAll('.msg-chip').length`);
-      assert(chips === 0, '不该再出现“看一眼”文字按钮');
+      await waitFor(cdp, `!!document.querySelector('.chat-pic')`, '图片气泡');
+      const src = await cdp.eval(`document.querySelector('.chat-pic-img')?.getAttribute('src')?.slice(0, 20) ?? ''`);
+      assert(src.length > 0, '图片气泡没有加载图片');
+      const avatars = await cdp.eval(`document.querySelectorAll('.chat-avatar').length`);
+      assert(avatars >= 1, '群聊没有头像');
       await shoot(cdp, '22-chat-picture');
-      await click(cdp, '.msg-pic', '点图放大');
-      await waitFor(cdp, `!!document.querySelector('.prop-panel, .card-panel')`, '放大面板');
-      await shoot(cdp, '23-prop-zoom');
+      await click(cdp, '.chat-pic', '点图放大');
+      await waitFor(cdp, `!!document.querySelector('.image-viewer img')`, '大图查看器');
+      await shoot(cdp, '23-image-viewer');
+      await click(cdp, '.image-viewer', '关闭大图');
     }]);
 
     steps.push(['第一章：图上圈选', async () => {
@@ -285,7 +283,7 @@ async function main() {
       await click(cdp, '.poster-copy .spot:nth-child(2)', '取消价格');
       await click(cdp, '.poster-copy .spot:nth-child(3)', '免疫力拉满');
       await click(cdp, '.board-foot .btn-primary', '确定');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .chat-text')`, '过关对白');
     }]);
 
     steps.push(['第二章：配餐关', async () => {
@@ -309,7 +307,7 @@ async function main() {
       await click(cdp, '.food:nth-child(3)', '土豆丝');
       await click(cdp, '.food:nth-child(7)', '家常豆腐');
       await click(cdp, '.board-foot .btn-primary', '提交');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .chat-text')`, '过关对白');
     }]);
 
     steps.push(['第三章：同类对比（可转瓶身）', async () => {
@@ -333,7 +331,7 @@ async function main() {
       await sleep(250);
       await click(cdp, '.offer:nth-child(1)', '选柠檬茶');
       await click(cdp, '.board-foot .btn-primary', '选它');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .chat-text')`, '过关对白');
     }]);
 
     steps.push(['第四章：早餐关与结局', async () => {
@@ -343,7 +341,7 @@ async function main() {
       await click(cdp, '.food:nth-child(3)', '鸡蛋');
       await click(cdp, '.food:nth-child(4)', '牛奶');
       await click(cdp, '.board-foot .btn-primary', '提交');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '过关对白');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .chat-text')`, '过关对白');
     }]);
 
     steps.push(['第一章：物件点击探索', async () => {
@@ -364,7 +362,7 @@ async function main() {
       const summary = await text(cdp, '.explore-summary');
       assert(summary.length > 0, '重复点击没有给摘要');
       await click(cdp, '.board-foot .btn-primary', '和大家聊聊');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text, .record-chip')`, '回到主线');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .chat-text, .record-chip')`, '回到主线');
     }]);
 
     steps.push(['第一章：章末调查簿', async () => {
@@ -461,7 +459,7 @@ async function main() {
       await cdp.eval(`(() => { const el = document.querySelector('.title-name-input');
         el.value = '林小满'; el.dispatchEvent(new Event('input', { bubbles: true })); })()`);
       await click(cdp, '.title-screen .btn-primary', '开始调查');
-      await waitFor(cdp, `!!document.querySelector('.dialog .text, .msg-text')`, '进入正文');
+      await waitFor(cdp, `!!document.querySelector('.dialog .text, .chat-text')`, '进入正文');
       const saved = await cdp.eval(`localStorage.getItem('meal_player_name')`);
       assert(saved === '林小满', `名字没存下来：${saved}`);
     }]);

@@ -90,7 +90,7 @@ try {
   for (let i = 1; i <= maxSteps; i += 1) {
     const info = await cdp.eval(`(() => {
       const node = JSON.parse(localStorage.getItem('meal_save_v1') || '{}').nodeId;
-      const line = (document.querySelector('.dialog .text, .msg-text')?.innerText || '').slice(0, 26);
+      const line = (document.querySelector('.dialog .text, .chat-text')?.innerText || '').slice(0, 26);
       const ui = document.querySelector('.explore-card') ? 'explore'
         : document.querySelector('.nb-item') ? 'notebook'
         : document.querySelector('.food') ? 'plate'

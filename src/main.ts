@@ -59,57 +59,52 @@ function restart(): void {
 }
 
 
-/** 右上角工具条：自动、快进、回想、设置 */
+/** 文本框右下角的图标工具条：回退、回想、自动、快进、设置（Ren'Py 惯例位置） */
+const ICONS: Record<string, string> = {
+  back: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 4 11l5 5" /><path d="M4 11h9a6 6 0 0 1 0 12h-2" /></svg>',
+  log: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" /></svg>',
+  auto: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5l11 7-11 7z" /></svg>',
+  skip: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l8 7-8 7z" /><path d="M14 5l8 7-8 7z" /></svg>',
+  config:
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" /></svg>',
+};
+
 function mountHud(): void {
-  if (document.querySelector('.hud')) return;
-  const hud = document.createElement('div');
-  hud.className = 'hud';
+  if (document.querySelector('.quickmenu')) return;
+  const bar = document.createElement('div');
+  bar.className = 'quickmenu';
 
-  const auto = document.createElement('button');
-  auto.className = 'hud-btn hud-auto';
-  auto.textContent = '自动';
-  auto.title = '自动播放（A）';
-  auto.addEventListener('click', (event) => {
-    event.stopPropagation();
-    stage.toggleAuto();
+  const make = (key: string, label: string, onClick: () => void) => {
+    const btn = document.createElement('button');
+    btn.className = `qm-btn qm-${key}`;
+    btn.title = label;
+    btn.setAttribute('aria-label', label);
+    btn.innerHTML = ICONS[key];
+    btn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      onClick();
+    });
+    bar.append(btn);
+    return btn;
+  };
+
+  const back = make('back', '回退一句', () => {
+    if (!runner.back()) stage.toast('已经是最前面了');
   });
+  const log = make('log', '回想（L）', () => stage.openBacklog());
+  const auto = make('auto', '自动播放（A）', () => stage.toggleAuto());
+  const skip = make('skip', '快进已读（S）', () => stage.toggleSkip());
+  make('config', '设置', () => stage.openSettings());
 
-  const skip = document.createElement('button');
-  skip.className = 'hud-btn hud-skip';
-  skip.textContent = '快进';
-  skip.title = '快进已读（S）';
-  skip.addEventListener('click', (event) => {
-    event.stopPropagation();
-    stage.toggleSkip();
-  });
-
-  const log = document.createElement('button');
-  log.className = 'hud-btn hud-log';
-  log.textContent = '回想';
-  log.title = '回看对白（L）';
-  log.addEventListener('click', (event) => {
-    event.stopPropagation();
-    stage.openBacklog();
-  });
-
-  const config = document.createElement('button');
-  config.className = 'hud-btn hud-config';
-  config.textContent = '设置';
-  config.title = '音量与节奏';
-  config.addEventListener('click', (event) => {
-    event.stopPropagation();
-    stage.openSettings();
-  });
-
-  hud.append(auto, skip, log, config);
-  document.body.append(hud);
+  const stageEl = document.querySelector('.stage');
+  (stageEl ?? document.body).append(bar);
 
   stage.onAutoSkipChange = (isAuto, isSkip) => {
     auto.classList.toggle('on', isAuto);
     skip.classList.toggle('on', isSkip);
-    auto.textContent = isAuto ? '自动 ·开' : '自动';
-    skip.textContent = isSkip ? '快进 ·开' : '快进';
   };
+  void back;
+  void log;
 }
 
 /** 右上角的静音开关，录屏时也用得上 */
