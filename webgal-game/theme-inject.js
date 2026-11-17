@@ -82,6 +82,129 @@
   display: none !important;
 }
 
+/* ---------- 选项：居中纸标签，压在纸卡上方 ---------- */
+[class*="_chooseContainer"] {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 464px !important;
+  transform: translateX(-50%) !important;
+  width: 1120px !important;
+  height: auto !important;
+  max-height: 300px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 24px !important;
+  background: transparent !important;
+  z-index: 58 !important;
+  overflow: visible !important;
+}
+
+[class*="_Choose_item_outer"] {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  box-sizing: border-box !important;
+  padding: 28px 48px !important;
+  background: rgba(252, 248, 236, .97) !important;
+  border: 2px solid rgba(120, 104, 74, .42) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 10px 22px rgba(84, 70, 44, .22) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  font-family: 'Songti SC', 'SimSun', serif !important;
+  font-size: 36px !important;
+  color: #33402f !important;
+  cursor: pointer !important;
+  transition: transform .12s ease, border-color .12s ease !important;
+}
+
+[class*="_Choose_item_outer"]:hover {
+  transform: translateY(-1px) !important;
+  border-color: #2f4a34 !important;
+}
+
+[class*="_Choose_item_outer"] span,
+[class*="_Choose_item_outer"] div {
+  color: #33402f !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  font-family: 'Songti SC', 'SimSun', serif !important;
+  font-size: 36px !important;
+}
+/* 选项内部的次级容器一律透明，只留外层纸卡 */
+[class*="_Choose_item_outer"] > * {
+  background: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: 100% !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+[class*="_Choose_item_outer"] > * > * {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+/* ---------- 标题页：自绘书名 + 菜单 ---------- */
+#paper-title {
+  position: fixed;
+  inset: 0;
+  z-index: 58;
+  pointer-events: none;
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif;
+  display: none;
+}
+
+#paper-title .pt-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, rgba(247, 242, 228, .92) 0%, rgba(247, 242, 228, .72) 38%, rgba(247, 242, 228, .16) 68%, rgba(247, 242, 228, 0) 100%);
+}
+
+#paper-title .pt-lockup { position: absolute; left: 92px; top: 128px; }
+#paper-title .pt-name { font-size: 52px; letter-spacing: .06em; color: #2f3a2e; line-height: 1.15; }
+#paper-title .pt-sub { margin-top: 14px; font-size: 19px; letter-spacing: .34em; color: #6f7b63; }
+#paper-title .pt-rule { margin: 22px 0 6px; width: 168px; height: 1px; background: linear-gradient(90deg, #2f4a34, rgba(47, 74, 52, 0)); }
+
+#paper-title .pt-menu {
+  position: absolute;
+  left: 92px;
+  bottom: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  pointer-events: auto;
+}
+
+#paper-title .pt-menu button {
+  background: none;
+  border: none;
+  padding: 2px 0;
+  text-align: left;
+  font-family: inherit;
+  font-size: 20px;
+  letter-spacing: .16em;
+  color: #33402f;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: border-color .16s ease, letter-spacing .16s ease, color .16s ease;
+}
+
+#paper-title .pt-menu button:hover {
+  color: #2f4a34;
+  border-bottom-color: #2f4a34;
+  letter-spacing: .22em;
+}
 /* ---------- 背景做旧：整体轻微去饱和 + 暖化 ---------- */
 #paper-wash {
   position: fixed;
@@ -258,6 +381,12 @@
     var ui = document.getElementById('paper-ui');
     if (!ui) return;
 
+    // 标题页/鉴赏页没有文本框，这时把叠层收起来
+    var hasBox = !!document.querySelector('[class*="TextBox_Container"]');
+    ui.style.display = hasBox ? 'block' : 'none';
+    var washEl = document.getElementById('paper-wash');
+    if (washEl) washEl.style.display = hasBox ? 'block' : 'none';
+
     var state = readDialogue();
     var nameEl = ui.querySelector('.pu-name');
     var textEl = ui.querySelector('.pu-text');
@@ -278,6 +407,61 @@
       chapEl.style.display = 'block';
     }
   }
+
+
+  var MENU_LABELS = ['开始游戏', '继续游戏', '游戏选项', '读取存档', '鉴赏模式', '退出游戏'];
+
+  function buildTitle() {
+    var t = document.createElement('div');
+    t.id = 'paper-title';
+    t.innerHTML =
+      '<div class="pt-wash"></div>' +
+      '<div class="pt-lockup">' +
+      '  <div class="pt-name">今天吃什么？</div>' +
+      '  <div class="pt-sub">校园膳食调查簿</div>' +
+      '  <div class="pt-rule"></div>' +
+      '</div>' +
+      '<div class="pt-menu">' +
+      MENU_LABELS.map(function (l) { return '<button data-label="' + l + '">' + l + '</button>'; }).join('') +
+      '</div>';
+    document.body.appendChild(t);
+
+    t.querySelector('.pt-menu').addEventListener('click', function (ev) {
+      var btn = ev.target.closest('button');
+      if (!btn) return;
+      var want = btn.getAttribute('data-label');
+      var spans = document.querySelectorAll('span,div');
+      for (var i = 0; i < spans.length; i += 1) {
+        if (spans[i].children.length === 0 && (spans[i].textContent || '').trim() === want) {
+          spans[i].click();
+          return;
+        }
+      }
+    });
+    return t;
+  }
+
+  function syncTitle() {
+    var t = document.getElementById('paper-title') || buildTitle();
+    var inGame = !!document.querySelector('[class*="TextBox_Container"]');
+    t.style.display = inGame ? 'none' : 'block';
+
+    // 藏起 WebGAL 自己的标题菜单（保留可点击）
+    var nodes = document.querySelectorAll('span');
+    for (var i = 0; i < nodes.length; i += 1) {
+      var el = nodes[i];
+      if (el.children.length === 0 && MENU_LABELS.indexOf((el.textContent || '').trim()) >= 0) {
+        var holder = el.closest('div');
+        if (holder && holder.getAttribute('data-paper-hidden') !== '1') {
+          holder.setAttribute('data-paper-hidden', '1');
+          holder.style.opacity = '0';
+        }
+      }
+    }
+  }
+
+  setInterval(syncTitle, 320);
+  document.addEventListener('DOMContentLoaded', function () { buildTitle(); });
 
   addCss();
   document.addEventListener('DOMContentLoaded', function () { addCss(); buildUi(); });

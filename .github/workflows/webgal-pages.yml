@@ -1,10 +1,10 @@
 name: 构建并发布 WebGAL 版
 
-# 从 WebGAL 源码构建干净引擎，把我们的 game 目录塞进去，产物直推 gh-pages 分支。
-# 不用改仓库的 Pages 设置（仍走 branch 模式），随时可以退回单文件版本。
+# 从 WebGAL 源码构建干净引擎 → 换成我们的 game 目录 → 注入 A 纸质主题 → 推 gh-pages
+# 关键：注释掉编辑器同步（连不上会重置场景）
 
 on:
-  workflow_dispatch:   # 仅手动触发：确认构建可用后再考虑自动
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -36,6 +36,12 @@ jobs:
           node-version: '20'
       - run: corepack enable
 
+      - name: 关闭编辑器同步
+        working-directory: .webgal-src
+        run: |
+          sed -i 's/^\(\s*\)startPreviewSyncRuntime()/\1\/\/ startPreviewSyncRuntime()/' packages/webgal/src/Core/initializeScript.ts
+          grep -n "startPreviewSyncRuntime" packages/webgal/src/Core/initializeScript.ts || true
+
       - name: 安装依赖
         working-directory: .webgal-src
         run: yarn install --frozen-lockfile
@@ -55,14 +61,20 @@ jobs:
           cp assets/voice/*.mp3 "$SRC"/vocal/
           cp webgal-game/scene/*.txt "$SRC"/scene/
           cp webgal-game/config.txt "$SRC"/config.txt
+          cp webgal-game/userStyleSheet.css "$SRC"/userStyleSheet.css
           cp webgal-game/template/Stage/TextBox/textbox.scss "$SRC"/template/Stage/TextBox/
           cp webgal-game/template/Stage/Choose/choose.scss "$SRC"/template/Stage/Choose/
           cp webgal-game/template/UI/Title/title.scss "$SRC"/template/UI/Title/
-          echo "场景 $(ls "$SRC/scene" | wc -l) / 立绘 $(ls "$SRC/figure" | wc -l) / 配音 $(ls "$SRC/vocal" | wc -l)"
 
       - name: 构建引擎
         working-directory: .webgal-src
         run: yarn webgal:build
+
+      - name: 注入主题脚本
+        run: |
+          DIST=.webgal-src/packages/webgal/dist
+          cp webgal-game/theme-inject.js "$DIST"/theme-inject.js
+          python3 .github/inject_theme.py
 
       - name: 推到 gh-pages
         working-directory: .webgal-src/packages/webgal/dist
