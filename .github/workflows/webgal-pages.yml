@@ -55,6 +55,9 @@ jobs:
           cp assets/voice/*.mp3 "$SRC"/vocal/
           cp webgal-game/scene/*.txt "$SRC"/scene/
           cp webgal-game/config.txt "$SRC"/config.txt
+          cp webgal-game/template/Stage/TextBox/textbox.scss "$SRC"/template/Stage/TextBox/
+          cp webgal-game/template/Stage/Choose/choose.scss "$SRC"/template/Stage/Choose/
+          cp webgal-game/template/UI/Title/title.scss "$SRC"/template/UI/Title/
           echo "场景 $(ls "$SRC/scene" | wc -l) / 立绘 $(ls "$SRC/figure" | wc -l) / 配音 $(ls "$SRC/vocal" | wc -l)"
 
       - name: 构建引擎
