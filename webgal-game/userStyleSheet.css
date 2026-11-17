@@ -1,54 +1,11 @@
-/* ============ A 纸质调查簿 · 用户样式表（WebGAL 运行时加载） ============ */
-
-/* 文本框：奶油纸底 + 双线内框 */
-._TextBox_Background_p1zxt_43 {
-  background: linear-gradient(180deg, rgba(253,250,242,.96), rgba(247,242,229,.94)) !important;
-  border: 1px solid rgba(120,104,74,.45) !important;
-  border-radius: 4px !important;
-  box-shadow:
-    0 16px 36px rgba(84,70,44,.26),
-    inset 0 0 0 6px rgba(253,250,242,.96),
-    inset 0 0 0 7px rgba(120,104,74,.16) !important;
-  backdrop-filter: blur(2px);
-}
-
-._TextBox_main_p1zxt_18 {
-  padding: 30px 32px 26px !important;
-  min-height: 140px !important;
-}
-
-/* 正文：宋体、墨绿字 */
-._TextBox_textElement_Settled_p1zxt_97,
-._TextBox_textElement_start_p1zxt_97 {
+/* A 纸质调查簿：正文（模板把字拆成 span，逐个覆盖） */
+[class*="TextBox_Container"] span,
+[class*="TextBox_Container"] div {
+  font-size: 22px !important;
+  line-height: 1.9 !important;
+  letter-spacing: .03em !important;
   font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif !important;
-  color: #33402f !important;
-  font-size: 1.34rem !important;
-  line-height: 1.92 !important;
-  letter-spacing: .02em !important;
-}
-
-/* 说话人名牌（WebGAL 独立元素）：深绿纸签 */
-[class*="_name"], [class*="_showName"] {
-  background: #2f4a34 !important;
-  color: #f6f2e2 !important;
-  border-radius: 2px !important;
-  padding: 2px 14px !important;
-  font-family: 'Songti SC', 'SimSun', serif !important;
-  letter-spacing: .12em !important;
-  box-shadow: 0 6px 14px rgba(47,74,52,.3) !important;
-}
-
-/* 选项：纸标签 */
-._Choose_item_2h1u8_1, [class*="_Choose"] button {
-  background: rgba(252,248,236,.97) !important;
-  color: #33402f !important;
-  border: 1px solid rgba(120,104,74,.42) !important;
-  border-radius: 3px !important;
-  box-shadow: 0 10px 22px rgba(84,70,44,.2) !important;
-  font-family: 'Songti SC', 'SimSun', serif !important;
-}
-
-/* 底部快捷条：低对比墨绿 */
-[class*="_BottomControlPanel"], [class*="_quickMenu"] {
-  color: rgba(90,110,86,.85) !important;
+  color: #2f3a2f !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
 }

@@ -1,31 +1,155 @@
-/* A 纸质调查簿 · 文本框 */
+/* ============ A 纸质调查簿 · 文本框（WebGAL 模板 scss） ============ */
+
 .TextBox_main {
-  background: rgba(252, 249, 240, 0.93) !important;
-  border: 1px solid rgba(120, 104, 74, 0.42);
-  border-radius: 4px;
+  z-index: 3;
+  position: absolute;
+  min-height: 236px;
+  max-height: 300px;
+  bottom: 30px;
+  left: 44px;
+  right: 44px;
+  padding: 34px 46px 30px 46px;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  letter-spacing: 0.03em;
+  font-size: 22px;
+  line-height: 1.92;
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif;
+  font-weight: normal;
+  color: #2f3a2f;
+  border-radius: 5px;
+  border: 1px solid #b9a986;
   box-shadow:
-    0 14px 34px rgba(84, 70, 44, 0.24),
-    inset 0 0 0 6px rgba(252, 249, 240, 0.9),
-    inset 0 0 0 7px rgba(120, 104, 74, 0.16);
-  backdrop-filter: blur(2px);
-  padding: 26px 30px 22px;
+    0 16px 34px rgba(84, 70, 44, 0.28),
+    inset 0 0 0 5px rgba(249, 243, 227, 0.95),
+    inset 0 0 0 6px rgba(150, 130, 96, 0.42);
+  transition: left 0.33s;
+}
+
+.TextBox_main_miniavatarOff {
+  left: 44px;
+}
+
+/* 纸面 */
+.TextBox_Background {
+  z-index: 2;
+  background-color: #f5eeda;
+  background-image: linear-gradient(180deg, #faf4e4 0%, #efe5cc 100%);
+  mask-image: none;
+  -webkit-mask-image: none;
+  border-radius: 5px;
+}
+
+/* 正文三层：墨绿实心字 + 极淡白描边，保证纸面上清楚 */
+.outer {
+  position: absolute;
+  white-space: nowrap;
+  left: 0;
+  top: 0;
+  background-image: linear-gradient(180deg, #33402f 0%, #2b382b 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  z-index: 2;
+}
+
+.inner {
+  white-space: nowrap;
+  position: absolute;
+  left: 0;
+  top: 0;
+  -webkit-text-stroke: 0.06em rgba(255, 252, 244, 0.85);
+  text-shadow: none;
+  z-index: 1;
+}
+
+.zhanwei {
+  color: transparent;
+  white-space: nowrap;
+}
+
+.TextBox_textElement_Settled {
+  position: relative;
+  opacity: 1;
+  font-size: 22px;
+  line-height: 1.92;
+}
+
+.TextBox_textElement_start {
+  position: relative;
+  animation: TextDelayShow 800ms ease-out forwards;
+  opacity: 0;
+}
+
+/* 名字牌：深绿纸签 */
+.TextBox_showName {
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+  padding: 0 1.1em;
+  min-width: 0;
+  position: absolute;
+  left: 6px;
+  top: -20px;
+  height: 34px;
+  line-height: 34px;
+  border-radius: 2px;
+  z-index: 4;
+  border: none;
+  background: #2f4a34;
+  color: #f7f2e3;
+  box-shadow: 0 6px 14px rgba(47, 74, 52, 0.3);
+}
+
+.TextBox_ShowName_Background {
+  z-index: 2;
+  background: #2f4a34;
+  border: 0;
+  border-image: none;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  -webkit-mask-image: none;
+  mask-image: none;
+  border-radius: 2px;
+}
+
+/* 名字三层：浅色实心 */
+.outerName {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-image: linear-gradient(180deg, #fdf8ea 0%, #f3ead4 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  z-index: 2;
+}
+
+.innerName {
+  position: absolute;
+  left: 0;
+  top: 0;
+  -webkit-text-stroke: 0;
+  text-shadow: none;
+  z-index: 1;
+}
+
+@keyframes TextDelayShow {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* TEXT-SIZE-FORCE：WebGAL 用内联字号，必须 !important 才盖得住 */
+.outer, .inner, .zhanwei,
+.outerName, .innerName {
+  font-size: 22px !important;
+  line-height: 1.92 !important;
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif !important;
 }
 
 .TextBox_textElement_Settled,
 .TextBox_textElement_start {
-  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif;
-  color: #33402f;
-  font-size: 1.32rem;
-  line-height: 1.95;
-  letter-spacing: 0.02em;
-}
-
-.TextBox_showName {
-  background: #2f4a34;
-  color: #f6f2e2;
-  border-radius: 2px;
-  font-family: 'Songti SC', 'SimSun', serif;
-  letter-spacing: 0.1em;
-  box-shadow: 0 6px 14px rgba(47, 74, 52, 0.28);
-  padding: 0.28em 1.1em;
+  font-size: 22px !important;
 }
