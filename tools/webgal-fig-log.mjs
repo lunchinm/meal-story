@@ -1,0 +1,21 @@
+import { chromium } from '@playwright/test';
+const dist = 'C:/Users/MIC lunchinm/Desktop/学习资料/Vibe-Coding/合理膳食/WebGAL-src/packages/webgal/dist';
+const fs = await import('node:fs');
+fs.writeFileSync(dist + '/game/scene/start.txt', 'changeFigure:ch_mili_normal.webp -center;\n米粒:测试立绘;', 'utf8');
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1280, height: 720 } });
+p.on('console', (m) => console.log('[' + m.type() + ']', m.text().replace(/%c/g, '').slice(0, 180)));
+p.on('pageerror', (e) => console.log('[pageerror]', e.message.slice(0, 200)));
+const jsClick = (l) => p.evaluate((label) => {
+  const el = [...document.querySelectorAll('button,div,span')].filter((e) => e.textContent.trim() === label);
+  const t = el[el.length - 1]; if (t) (t.closest('button') ?? t).dispatchEvent(new MouseEvent('click', { bubbles: true }));
+}, l);
+await p.goto('http://127.0.0.1:8082/');
+await p.waitForTimeout(2000);
+await p.mouse.click(640, 360);
+await p.waitForTimeout(700);
+await jsClick('简体中文');
+await p.waitForTimeout(700);
+await jsClick('开始游戏');
+await p.waitForTimeout(3000);
+await b.close();
