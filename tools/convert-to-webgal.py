@@ -44,6 +44,7 @@ def convert_act(act: int) -> list[str]:
     lines: list[str] = []
     last_scene = None
     last_speaker = None
+    last_actor = None
     label_seq = 0
 
     for node in data:
@@ -63,7 +64,15 @@ def convert_act(act: int) -> list[str]:
                 lines.append(f"changeBg:{SCENE_BG.get(scene, 'bg_class.webp')};")
                 last_scene = scene
             if node.get("actor"):
-                lines.append(f"changeFigure:ch_{node['actor']}_{node.get('expr', 'normal')}.webp -center -id={node['actor']};")
+                actor = node["actor"]
+                if actor != last_actor:
+                    # 换人：先清场，避免立绘叠在一起
+                    lines.append("changeFigure:none -center;")
+                    last_actor = actor
+                lines.append(
+                    f"changeFigure:ch_{actor}_{node.get('expr', 'normal')}.webp -center "
+                    f'-transform={{"scale":{{"x":0.62,"y":0.62}},"position":{{"x":0,"y":150}}}};'
+                )
             speaker = node.get("speaker")
             text = node.get("text", "")
             if node.get("prop"):

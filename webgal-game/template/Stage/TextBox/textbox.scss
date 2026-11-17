@@ -1,110 +1,61 @@
-/* ============ A 纸质调查簿 · 文本框（WebGAL 模板 scss） ============ */
+/* ============ A 纸质调查簿（暗纸版）· 文本框 ============
+   保留 WebGAL 自己的文字层（白字+描边），只换容器：深牛皮纸底 + 纸边 + 圆角。 */
 
 .TextBox_main {
   z-index: 3;
   position: absolute;
-  min-height: 196px;
-  max-height: 240px;
-  bottom: 30px;
-  left: 44px;
-  right: 44px;
-  padding: 30px 46px 26px 46px;
+  min-height: 200px;
+  max-height: 260px;
+  bottom: 32px;
+  left: 46px;
+  right: 46px;
+  padding: 30px 44px 26px 44px;
   box-sizing: border-box;
   display: flex;
   flex-flow: column;
   align-items: flex-start;
-  letter-spacing: 0.03em;
-  font-size: 22px;
-  line-height: 1.92;
-  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif;
-  font-weight: normal;
-  color: #2f3a2f;
-  border-radius: 5px;
-  border: 1px solid #b9a986;
-  box-shadow:
-    0 16px 34px rgba(84, 70, 44, 0.28),
-    inset 0 0 0 5px rgba(249, 243, 227, 0.95),
-    inset 0 0 0 6px rgba(150, 130, 96, 0.42);
+  border-radius: 6px;
+  border: 1px solid rgba(214, 190, 148, 0.4);
   transition: left 0.33s;
 }
 
 .TextBox_main_miniavatarOff {
-  left: 44px;
+  left: 46px;
 }
 
-/* 纸面 */
 .TextBox_Background {
   z-index: 2;
-  background-color: #f5eeda;
-  background-image: linear-gradient(180deg, #faf4e4 0%, #efe5cc 100%);
+  background-color: rgba(46, 38, 28, 0.86);
+  background-image: linear-gradient(180deg, rgba(72, 58, 42, 0.9) 0%, rgba(38, 31, 23, 0.92) 100%);
   mask-image: none;
   -webkit-mask-image: none;
-  border-radius: 5px;
+  border-radius: 6px;
+  box-shadow:
+    0 18px 40px rgba(20, 14, 8, 0.45),
+    inset 0 0 0 1px rgba(214, 190, 148, 0.22);
 }
 
-/* 正文三层：墨绿实心字 + 极淡白描边，保证纸面上清楚 */
-.outer {
-  position: absolute;
-  white-space: nowrap;
-  left: 0;
-  top: 0;
-  background-image: linear-gradient(180deg, #33402f 0%, #2b382b 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  z-index: 2;
-}
-
-.inner {
-  white-space: nowrap;
-  position: absolute;
-  left: 0;
-  top: 0;
-  -webkit-text-stroke: 0.06em rgba(255, 252, 244, 0.85);
-  text-shadow: none;
-  z-index: 1;
-}
-
-.zhanwei {
-  color: transparent;
-  white-space: nowrap;
-}
-
-.TextBox_textElement_Settled {
-  position: relative;
-  opacity: 1;
-  font-size: 22px;
-  line-height: 1.92;
-}
-
-.TextBox_textElement_start {
-  position: relative;
-  animation: TextDelayShow 800ms ease-out forwards;
-  opacity: 0;
-}
-
-/* 名字牌：深绿纸签 */
 .TextBox_showName {
   font-size: 1rem;
   letter-spacing: 0.14em;
   padding: 0 1.1em;
   min-width: 0;
   position: absolute;
-  left: 6px;
-  top: -20px;
-  height: 34px;
-  line-height: 34px;
+  left: 8px;
+  top: -18px;
+  height: 32px;
+  line-height: 32px;
   border-radius: 2px;
-  z-index: 4;
+  z-index: 5;
   border: none;
-  background: #2f4a34;
-  color: #f7f2e3;
-  box-shadow: 0 6px 14px rgba(47, 74, 52, 0.3);
+  background: #efe6cf;
+  color: #2f3a2f;
+  box-shadow: 0 6px 16px rgba(20, 14, 8, 0.35);
 }
 
 .TextBox_ShowName_Background {
   z-index: 2;
-  background: #2f4a34;
+  background: #efe6cf;
   border: 0;
   border-image: none;
   box-shadow: none;
@@ -113,56 +64,4 @@
   -webkit-mask-image: none;
   mask-image: none;
   border-radius: 2px;
-}
-
-/* 名字三层：浅色实心 */
-.outerName {
-  position: absolute;
-  left: 0;
-  top: 0;
-  background-image: linear-gradient(180deg, #fdf8ea 0%, #f3ead4 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  z-index: 2;
-}
-
-.innerName {
-  position: absolute;
-  left: 0;
-  top: 0;
-  -webkit-text-stroke: 0;
-  text-shadow: none;
-  z-index: 1;
-}
-
-@keyframes TextDelayShow {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
-/* TEXT-SIZE-FORCE：WebGAL 用内联字号，必须 !important 才盖得住 */
-.outer, .inner, .zhanwei,
-.outerName, .innerName {
-  font-size: 26px !important;
-  line-height: 1.85 !important;
-  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif !important;
-}
-
-.TextBox_textElement_Settled,
-.TextBox_textElement_start {
-  font-size: 26px !important;
-  line-height: 1.85 !important;
-}
-/* SPAN-INK：正文逐字 span 的实际样式（emotion 类名不稳定，用父级结构选） */
-.text span,
-.readText span,
-.TextBox_textElement_Settled span,
-.TextBox_textElement_start span {
-  font-size: 26px !important;
-  line-height: 1.85 !important;
-  color: #2f3a2f !important;
-  -webkit-text-stroke: 0 !important;
-  text-shadow: none !important;
-  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif !important;
 }
