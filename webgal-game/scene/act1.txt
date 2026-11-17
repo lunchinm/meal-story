@@ -75,7 +75,25 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:none -center;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 周简:可能还没来得及升级。;
-; 互动节点（待迁移）：a1-explore [explore]
+:餐桌上能看的三个东西;
+label:exp_a1_explore_0;
+你:手指往上拖，图片下面只写了“网友分享，仅供参考”。;
+米粒:网友真忙，每天都在分享。;
+许知夏:这能说明它被转发过，没说明效果是怎么得出的。;
+jumpLabel:exp_a1_explore_out;
+label:exp_a1_explore_1;
+你:米饭、鸡肉、鸡蛋，还有两份蔬菜。;
+许知夏:有主食、肉蛋和蔬菜，可以用来讨论一顿饭的搭配。;
+米粒:那我买的是午饭，它怎么把早饭晚饭的功劳也领了？;
+jumpLabel:exp_a1_explore_out;
+label:exp_a1_explore_2;
+你:12\:40 社团借场地，13\:10 回教室，别忘了打印材料。;
+米粒:午饭再慢慢想——这条我划掉了，队太长就没时间了。;
+许知夏:你想解决的是每天选饭太费时间。;
+jumpLabel:exp_a1_explore_out;
+label:exp_a1_explore_menu;
+choose:手机上的宣传图:exp_a1_explore_0|米粒的餐盘:exp_a1_explore_1|被水杯压住的便签:exp_a1_explore_2|先看到这里:exp_a1_explore_out;
+label:exp_a1_explore_out;
 ; 记录：看过原图
 changeFigure:none -center;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
@@ -401,5 +419,14 @@ changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 苏桃:那我的相册可能比想象中长。;
 ; 记录：问过需求
-; 互动节点（待迁移）：a1-notebook [notebook]
+:这次核实了什么;
+:“一份承包全天营养”需要更多信息支持;
+:判断饮食是否合适，要结合食物种类、数量、其他餐次以及个人需要。;
+:（出处：《中国居民膳食指南（2022）》：食物多样、合理搭配）;
+:合理膳食与正常免疫功能有关;
+:多样、合理的饮食有助于获得充足营养。长期营养不足可能影响正常免疫功能。;
+:（出处：《中国居民膳食指南（2022）》相关条目）;
+:“七天免疫力拉满”缺乏可核实依据;
+:人体免疫功能复杂，不能依据宣传图片或一顿饭判断某人的“免疫力分数”。;
+:（出处：教学示例：现有资料未提供可核对的检测或研究依据）;
 changeScene:act2.txt;

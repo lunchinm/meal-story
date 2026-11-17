@@ -383,7 +383,18 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 changeFigure:none -center;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 周简:刚好十二。;
-; 互动节点（待迁移）：a2-plate [plate]
+:十二块、四个格子。主食先占一个，蔬菜和蛋白各留一个。;
+周简:我一天就这一顿能好好吃。;
+choose:米饭 + 青菜 + 番茄炒蛋（12 元）:plate_a2_plate_a|两份米饭 + 土豆丝（12 元）:plate_a2_plate_b|红烧肉 + 米饭（14 元）:plate_a2_plate_c;
+label:plate_a2_plate_a;
+:主食、蔬菜、蛋白都齐了，也没超预算。;
+jumpLabel:plate_a2_plate_end;
+label:plate_a2_plate_b;
+:两份主食叠在一起，蛋白和蔬菜都缺。;
+jumpLabel:plate_a2_plate_end;
+label:plate_a2_plate_c;
+:超了预算，蔬菜还是没有。;
+label:plate_a2_plate_end;
 changeFigure:none -center;
 changeFigure:ch_luomaster_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 罗师傅:这几个都在同一排窗口，买起来也快。;

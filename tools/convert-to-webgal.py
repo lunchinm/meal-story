@@ -117,6 +117,95 @@ def convert_act(act: int) -> list[str]:
             lines.append(f"; 记录：{node.get('label', '')}")
             continue
 
+        if kind == "plate":
+            tip = node.get("tip", "")
+            text = node.get("text", "")
+            if tip:
+                lines.append(say_line(None, tip))
+            if text:
+                lines.append(say_line(node.get("speaker"), text))
+            base = f"plate_{node['id']}".replace("-", "_")
+            lines.append(
+                "choose:"
+                "米饭 + 青菜 + 番茄炒蛋（12 元）:" + base + "_a|"
+                "两份米饭 + 土豆丝（12 元）:" + base + "_b|"
+                "红烧肉 + 米饭（14 元）:" + base + "_c;"
+            )
+            lines.append(f"label:{base}_a;")
+            lines.append(say_line(None, "主食、蔬菜、蛋白都齐了，也没超预算。"))
+            lines.append(f"jumpLabel:{base}_end;")
+            lines.append(f"label:{base}_b;")
+            lines.append(say_line(None, "两份主食叠在一起，蛋白和蔬菜都缺。"))
+            lines.append(f"jumpLabel:{base}_end;")
+            lines.append(f"label:{base}_c;")
+            lines.append(say_line(None, "超了预算，蔬菜还是没有。"))
+            lines.append(f"label:{base}_end;")
+            continue
+
+        if kind == "compare":
+            prompt = node.get("prompt", "")
+            if prompt:
+                lines.append(say_line(None, prompt))
+            for offer in node.get("offers", []):
+                lines.append(f"; 货架：{offer.get('name', '')}")
+                for row in offer.get("back", []):
+                    lines.append(say_line(None, row))
+            base = f"cmp_{node['id']}".replace("-", "_")
+            worse = node.get("worse", "")
+            names = [o.get("name", "") for o in node.get("offers", [])] or ["左边", "右边"]
+            opts = "|".join(f"{n} 更甜:{base}_{i}" for i, n in enumerate(names))
+            lines.append(f"choose:{opts};")
+            for i, offer in enumerate(node.get("offers", [])):
+                lines.append(f"label:{base}_{i};")
+                if offer.get("id") == worse:
+                    lines.append(say_line(None, offer.get("note", "")))
+                else:
+                    lines.append(say_line(None, "这瓶糖少一些，但主要还是喝水。"))
+                lines.append(f"jumpLabel:{base}_end;")
+            lines.append(f"label:{base}_end;")
+            continue
+
+        if kind == "explore":
+            title = node.get("title", "")
+            if title:
+                lines.append(say_line(None, title))
+            base = f"exp_{node['id']}".replace("-", "_")
+            items = node.get("items", [])
+            for idx, item in enumerate(items):
+                lines.append(f"label:{base}_{idx};")
+                for ln in item.get("lines", []):
+                    lines.append(say_line(ln.get("speaker"), ln.get("text", "")))
+                lines.append(f"jumpLabel:{base}_out;")
+            lines.append(f"label:{base}_menu;")
+            opts = "|".join(f"{it.get('label', '')}:{base}_{i}" for i, it in enumerate(items))
+            opts += "|先看到这里:" + base + "_out"
+            lines.append(f"choose:{opts};")
+            lines.append(f"label:{base}_out;")
+            continue
+
+        if kind == "notebook":
+            title = node.get("title", "")
+            if title:
+                lines.append(say_line(None, title))
+            for entry in node.get("entries", []):
+                lines.append(say_line(None, entry.get("label", "")))
+                lines.append(say_line(None, entry.get("text", "")))
+                src = entry.get("source", "")
+                if src:
+                    lines.append(say_line(None, f"（出处：{src}）"))
+            continue
+
+        if kind == "random":
+            pool = node.get("pool", [])
+            if pool:
+                base = f"rnd_{node['id']}".replace("-", "_")
+                opts = "|".join(f"遇到第 {i + 1} 种情况:{base}_{i}" for i, _ in enumerate(pool))
+                lines.append(f"choose:{opts};")
+                for i, item in enumerate(pool):
+                    lines.append(f"label:{base}_{i};")
+                    lines.append(f"jumpLabel:{item.get('next', '').replace('-', '_')};")
+            continue
+
         if kind == "branch":
             continue
 
