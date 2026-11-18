@@ -808,6 +808,26 @@
     }
   }
 
+  // 把「每个字重复 k 遍」的串还原（k = 2 或 3）
+  function dedupeLayers(str) {
+    if (!str) return str;
+    for (var k = 2; k <= 3; k += 1) {
+      if (str.length % k !== 0) continue;
+      var base = '';
+      var ok = true;
+      for (var i = 0; i < str.length; i += k) {
+        var c = str[i];
+        for (var j = 1; j < k; j += 1) {
+          if (str[i + j] !== c) { ok = false; break; }
+        }
+        if (!ok) break;
+        base += c;
+      }
+      if (ok && base) return base;
+    }
+    return str;
+  }
+
   function readDialogue() {
     var cont = document.querySelector('[class*="TextBox_Container"]');
     if (!cont) return { name: '', text: '' };
@@ -833,13 +853,13 @@
       else bodyChars.push(t);
     }
 
-    var nameText = nameChars.join('');
+    var nameText = dedupeLayers(nameChars.join(''));
     var half = nameText.length / 2;
     if (half > 0 && Number.isInteger(half) && nameText.slice(0, half) === nameText.slice(half)) {
       nameText = nameText.slice(0, half);
     }
 
-    return { name: nameText, text: bodyChars.join('') };
+    return { name: nameText, text: dedupeLayers(bodyChars.join('')) };
   }
 
 
