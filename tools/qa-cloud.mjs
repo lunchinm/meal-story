@@ -144,7 +144,7 @@ let changed = 0;
 for (let i = 0; i < 15; i += 1) {
   const t = Date.now();
   await page.keyboard.press('Space');  // 第一次：跳过打字机
-  await page.waitForTimeout(60);
+  await page.waitForTimeout(420);
   await page.keyboard.press('Space');  // 第二次：真正推进
   let got = null;
   for (let k = 0; k < 160; k += 1) {

@@ -448,6 +448,7 @@
       var btn = ev.target.closest('button');
       if (!btn) return;
       var want = btn.getAttribute('data-label');
+      if (btn.blur) btn.blur();  // 别让按钮吃焦点，否则之后按空格会重复触发它
       if (want === '流程图') { openFlow(); return; }
       var all = document.querySelectorAll('[class*="_singleButton"]');
       for (var k = 0; k < all.length; k += 1) {
