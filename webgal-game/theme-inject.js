@@ -216,6 +216,90 @@
   -webkit-backdrop-filter: saturate(.78) sepia(.14) brightness(1.05);
 }
 
+/* ---------- 原生语言选择层（App 直属，不在 title-enter 里） ---------- */
+[class*="_langWrapper"], [class*="_lang_"], [class*="_trans_1oupq"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* ---------- 原生开始层（PRESS THE SCREEN / LANGUAGE SELECT）整层隐藏 ---------- */
+.html-body__title-enter,
+[class*="title-enter"],
+[class*="languageSelect"],
+[class*="LANGUAGE"] {
+  display: none !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+
+/* ---------- 流程图画板 ---------- */
+#paper-flow {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(38, 30, 20, .45);
+  backdrop-filter: blur(3px);
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif;
+}
+
+#paper-flow.open { display: flex; }
+
+#paper-flow .pf-card {
+  width: 720px;
+  max-height: 78vh;
+  overflow: auto;
+  padding: 34px 40px 30px;
+  background: rgba(252, 249, 240, .97);
+  border: 1px solid rgba(120, 104, 74, .45);
+  border-radius: 5px;
+  box-shadow: 0 20px 50px rgba(20, 14, 8, .35), inset 0 0 0 5px rgba(252, 249, 240, .95), inset 0 0 0 6px rgba(120, 104, 74, .18);
+}
+
+#paper-flow h3 {
+  margin: 0 0 20px;
+  font-size: 22px;
+  letter-spacing: .12em;
+  color: #2f3a2e;
+  font-weight: normal;
+}
+
+#paper-flow .pf-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px dashed rgba(120, 104, 74, .3);
+  color: #33402f;
+  font-size: 17px;
+}
+
+#paper-flow .pf-row:last-child { border-bottom: none; }
+
+#paper-flow .pf-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #2f4a34; flex: 0 0 8px;
+}
+
+#paper-flow .pf-end .pf-dot { background: #a8442f; }
+
+#paper-flow .pf-close {
+  margin-top: 22px;
+  padding: 8px 20px;
+  background: #2f4a34;
+  color: #f7f2e3;
+  border: none;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 15px;
+  letter-spacing: .1em;
+  cursor: pointer;
+}
+
 /* ---------- 自绘叠层 ---------- */
 #paper-ui {
   position: fixed;
@@ -226,6 +310,8 @@
 }
 
 #paper-ui .pu-card {
+  pointer-events: auto;
+  cursor: pointer;
   position: absolute;
   left: 56px;
   right: 56px;
@@ -292,8 +378,8 @@
 `;
 
   function addCss() {
-    var old = document.getElementById('paper-ui-style');
-    if (old) old.remove();
+    // 只注入一次：早先每次删除重建 <style>，会强制整页重排，推进一次要好几秒
+    if (document.getElementById('paper-ui-style')) return;
     var tag = document.createElement('style');
     tag.id = 'paper-ui-style';
     tag.textContent = CSS;
@@ -327,6 +413,7 @@
     text.className = 'pu-text';
 
     card.appendChild(text);
+    card.addEventListener('click', function () { advanceByKey(); });
 
     // 右下角快捷图标：点它 = 点 WebGAL 藏起来的同名按钮
     var tools = document.createElement('div');
@@ -336,12 +423,32 @@
       '<button data-label="自动" title="自动"><svg viewBox="0 0 24 24"><path d="M7 5l11 7-11 7z"/></svg></button>' +
       '<button data-label="快进" title="快进"><svg viewBox="0 0 24 24"><path d="M5 5l8 7-8 7z"/><path d="M14 5l8 7-8 7z"/></svg></button>' +
       '<button data-label="存档" title="存档"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M9 4v5h6V4"/></svg></button>' +
-      '<button data-label="选项" title="设置"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></button>';
+      '<button data-label="选项" title="设置"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></svg></button>' +
+      '<button data-label="标题" title="回到标题"><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h12v-9"/></svg></button>' +
+      '<button data-label="全屏" title="全屏"><svg viewBox="0 0 24 24"><path d="M4 9V4h5"/><path d="M15 4h5v5"/><path d="M20 15v5h-5"/><path d="M9 20H4v-5"/></svg></button>' +
+      '<button data-label="流程图" title="流程图"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="4" rx="1"/><rect x="3" y="16" width="6" height="4" rx="1"/><rect x="15" y="16" width="6" height="4" rx="1"/><path d="M12 7v4M6 16v-2h12v2"/></svg></button>';
+
+    // 首次交互时唤醒被拦下的音频
+    var audioKicked = false;
+    function kickAudio() {
+      audioKicked = true;
+      document.querySelectorAll('audio').forEach(function (a) {
+        if (a.paused && a.currentSrc) {
+          var p = a.play();
+          if (p && p.catch) p.catch(function () {});
+        }
+      });
+    }
+    document.addEventListener('pointerdown', kickAudio, { once: false });
+    document.addEventListener('keydown', kickAudio, { once: false });
+    // 音频元素常常在点击之后才创建，交互过一次后持续兜底
+    setInterval(function () { if (audioKicked) kickAudio(); }, 1200);
 
     tools.addEventListener('click', function (ev) {
       var btn = ev.target.closest('button');
       if (!btn) return;
       var want = btn.getAttribute('data-label');
+      if (want === '流程图') { openFlow(); return; }
       var all = document.querySelectorAll('[class*="_singleButton"]');
       for (var k = 0; k < all.length; k += 1) {
         if ((all[k].textContent || '').trim() === want) { all[k].click(); return; }
@@ -354,6 +461,55 @@
     root.appendChild(card);
     root.appendChild(name);
     document.body.appendChild(root);
+  }
+
+
+  function removeTitleEnter() {
+    var nodes = document.querySelectorAll('.html-body__title-enter, [class*="title-enter"]');
+    for (var i = 0; i < nodes.length; i += 1) {
+      if (nodes[i].parentNode) nodes[i].parentNode.removeChild(nodes[i]);
+    }
+  }
+
+
+  var FLOW_ITEMS = [
+    ['第一章 · 套餐的秘密', false],
+    ['第二章 · 三种晚饭', false],
+    ['第三章 · 便利店的标签', false],
+    ['第四章 · 你写的那一版', false],
+    ['结局 · 照着吃', true],
+    ['结局 · 会挑着吃', true],
+    ['结局 · 把问题问回去', true],
+  ];
+
+  function openFlow() {
+    var el = document.getElementById('paper-flow');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'paper-flow';
+      var rows = FLOW_ITEMS.map(function (it) {
+        return '<div class="pf-row' + (it[1] ? ' pf-end' : '') + '"><span class="pf-dot"></span>' + it[0] + '</div>';
+      }).join('');
+      el.innerHTML = '<div class="pf-card"><h3>流程图</h3>' + rows +
+        '<button class="pf-close">返回</button></div>';
+      document.body.appendChild(el);
+      el.addEventListener('click', function (ev) {
+        if (ev.target === el || ev.target.className === 'pf-close') el.classList.remove('open');
+      });
+    }
+    el.classList.add('open');
+  }
+
+
+  // 纸卡点击 → 把点击转发到画面上方的推进热区
+  function advanceByKey() {
+    var x = Math.round(window.innerWidth / 2);
+    var y = Math.round(window.innerHeight * 0.35);
+    var target = document.elementFromPoint(x, y);
+    if (!target) return;
+    ['pointerdown', 'mousedown', 'pointerup', 'mouseup', 'click'].forEach(function (type) {
+      target.dispatchEvent(new MouseEvent(type, { bubbles: true, cancelable: true, clientX: x, clientY: y }));
+    });
   }
 
   function readDialogue() {
@@ -372,6 +528,13 @@
     var bodySpans = cont.querySelectorAll('[class*="outer_"]');
     var body = '';
     for (var j = 0; j < bodySpans.length; j += 1) body += bodySpans[j].textContent;
+
+    if (!body) {
+      // 新版本模板里逐字节点没有 outer_ 类名，正文是三层重复（外描边/内填充/占位）
+      var raw = (cont.innerText || '').replace(/\s+/g, '');
+      if (raw.length && raw.length % 3 === 0) body = raw.slice(0, raw.length / 3);
+      else body = raw;
+    }
 
     return { name: nameText, text: body };
   }
@@ -460,10 +623,10 @@
     }
   }
 
-  setInterval(syncTitle, 320);
+  setInterval(syncTitle, 600);
   document.addEventListener('DOMContentLoaded', function () { buildTitle(); });
 
   addCss();
   document.addEventListener('DOMContentLoaded', function () { addCss(); buildUi(); });
-  setInterval(function () { addCss(); buildUi(); sync(); }, 200);
+  setInterval(function () { addCss(); buildUi(); sync(); }, 180);
 })();

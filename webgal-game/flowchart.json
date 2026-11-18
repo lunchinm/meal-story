@@ -1,0 +1,145 @@
+{
+  "flowcharts": [
+    {
+      "id": "main",
+      "name": "今天吃什么？——校园膳食调查簿",
+      "type": "main",
+      "nodes": [
+        {
+          "id": "start",
+          "type": "root",
+          "position": {
+            "x": 0,
+            "y": 0
+          },
+          "data": {
+            "label": "开场 · 食堂二楼",
+            "sceneName": "start.txt",
+            "isRoot": true
+          }
+        },
+        {
+          "id": "act1",
+          "type": "chapter",
+          "position": {
+            "x": 0,
+            "y": 120
+          },
+          "data": {
+            "label": "第一章《套餐的秘密》",
+            "sceneName": "act1.txt"
+          }
+        },
+        {
+          "id": "act2",
+          "type": "chapter",
+          "position": {
+            "x": 0,
+            "y": 340
+          },
+          "data": {
+            "label": "第二章《三种晚饭》",
+            "sceneName": "act2.txt"
+          }
+        },
+        {
+          "id": "act3",
+          "type": "chapter",
+          "position": {
+            "x": 0,
+            "y": 560
+          },
+          "data": {
+            "label": "第三章《便利店的标签》",
+            "sceneName": "act3.txt"
+          }
+        },
+        {
+          "id": "act4",
+          "type": "chapter",
+          "position": {
+            "x": 0,
+            "y": 780
+          },
+          "data": {
+            "label": "第四章《你写的那一版》",
+            "sceneName": "act4.txt"
+          }
+        },
+        {
+          "id": "e_normal",
+          "type": "event",
+          "position": {
+            "x": 0,
+            "y": 880
+          },
+          "data": {
+            "label": "结局 · 照着吃",
+            "sceneName": "act4.txt"
+          }
+        },
+        {
+          "id": "e_advanced",
+          "type": "event",
+          "position": {
+            "x": 220,
+            "y": 880
+          },
+          "data": {
+            "label": "结局 · 会挑着吃",
+            "sceneName": "act4.txt"
+          }
+        },
+        {
+          "id": "e_hidden",
+          "type": "event",
+          "position": {
+            "x": 440,
+            "y": 880
+          },
+          "data": {
+            "label": "结局 · 把问题问回去",
+            "sceneName": "act4.txt"
+          }
+        }
+      ],
+      "edges": [
+        {
+          "id": "e-start-act1",
+          "source": "start",
+          "target": "act1"
+        },
+        {
+          "id": "e-act1-act2",
+          "source": "act1",
+          "target": "act2"
+        },
+        {
+          "id": "e-act2-act3",
+          "source": "act2",
+          "target": "act3"
+        },
+        {
+          "id": "e-act3-act4",
+          "source": "act3",
+          "target": "act4"
+        },
+        {
+          "id": "e-act4-e_normal",
+          "source": "act4",
+          "target": "e_normal"
+        },
+        {
+          "id": "e-act4-e_advanced",
+          "source": "act4",
+          "target": "e_advanced"
+        },
+        {
+          "id": "e-act4-e_hidden",
+          "source": "act4",
+          "target": "e_hidden"
+        }
+      ]
+    }
+  ]
+}

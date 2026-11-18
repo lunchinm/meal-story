@@ -11,6 +11,12 @@ import re
 
 MS = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
 OUT = os.path.join(MS, "webgal-game", "scene")
+
+# 配音清单：assets/voice/<节点id>.mp3
+VOICE_DIR = os.path.join(MS, "assets", "voice")
+VOICE_IDS = set()
+if os.path.isdir(VOICE_DIR):
+    VOICE_IDS = {os.path.splitext(f)[0] for f in os.listdir(VOICE_DIR) if f.endswith(".mp3")}
 SCENE_BG = {
     "class": "bg_class.webp",
     "canteen": "bg_canteen.webp",
@@ -33,10 +39,10 @@ def esc(text: str) -> str:
                 .replace(",", "\\,"))
 
 
-def say_line(speaker: str | None, text: str) -> str:
+def say_line(speaker: str | None, text: str, voice_id: str | None = None) -> str:
     body = esc(text)
-    # WebGAL 的字号是「用户设置」，默认偏小；脚本里逐句指定 large 最稳
-    return f"{speaker or ''}:{body};"
+    vocal = f" -vocal={voice_id}.mp3" if voice_id and voice_id in VOICE_IDS else ""
+    return f"{speaker or ''}:{body}{vocal};"
 
 
 def convert_act(act: int) -> list[str]:
@@ -54,6 +60,7 @@ def convert_act(act: int) -> list[str]:
             lines.append(f"; ==== {node.get('title', '')} ====")
             # 第一句必须是 say：否则 changeBg / changeFigure 会卡住整个脚本
             lines.append(f":{esc(node.get('title', '') or '第一章')};")
+            lines.append("bgm:bgm_loop.mp3 -volume=45;")
             if node.get("image"):
                 lines.append(f"changeBg:{node['image']}.webp;")
             continue
@@ -77,13 +84,26 @@ def convert_act(act: int) -> list[str]:
             text = node.get("text", "")
             if node.get("prop"):
                 lines.append(f"; 道具：{node['prop']}")
-            lines.append(say_line(None if speaker in (None, "旁白") else speaker, text))
+            lines.append(say_line(None if speaker in (None, "旁白") else speaker, text, node.get("id")))
             last_speaker = speaker
             continue
 
         if kind == "choice":
             options = node.get("options", [])
             if not options:
+                continue
+            if len(options) == 1:
+                # 只有一个选项时 WebGAL 的选项面板不出，直接当一句自白播
+                only = options[0]
+                reply = only.get("reply")
+                if reply:
+                    seq = reply if isinstance(reply, list) else [reply]
+                    for entry in seq:
+                        if isinstance(entry, str):
+                            lines.append(say_line(None, entry))
+                        else:
+                            lines.append(say_line(entry.get("speaker"), entry.get("text", "")))
+                lines.append(say_line(None, only.get("text", "")))
                 continue
             parts = []
             for index, option in enumerate(options):
