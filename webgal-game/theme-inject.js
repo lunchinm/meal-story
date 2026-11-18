@@ -829,7 +829,7 @@
   }
 
   function readDialogue() {
-    var cont = document.querySelector('[class*="TextBox_Container"]');
+    var cont = document.querySelector("#textBoxMain") || document.querySelector('[class*="TextBox_Container"]');
     if (!cont) return { name: '', text: '' };
 
     var nodes = [];
