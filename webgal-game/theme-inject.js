@@ -199,9 +199,9 @@
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: rgba(247, 242, 228, .16);
-  backdrop-filter: saturate(.78) sepia(.14) brightness(1.05);
-  -webkit-backdrop-filter: saturate(.78) sepia(.14) brightness(1.05);
+  background:
+    radial-gradient(120% 90% at 50% 42%, rgba(255, 250, 235, 0) 46%, rgba(74, 58, 34, .20) 100%),
+    rgba(247, 242, 228, .13);
 }
 
 /* ---------- 原生语言选择层（App 直属，不在 title-enter 里） ---------- */
@@ -639,10 +639,13 @@
 
     // 首次交互时唤醒被拦下的音频
     var audioKicked = false;
+    var kickedSet = new WeakSet();
     function kickAudio() {
       audioKicked = true;
       document.querySelectorAll('audio').forEach(function (a) {
+        if (kickedSet.has(a)) return;
         if (a.paused && a.currentSrc) {
+          kickedSet.add(a);
           var p = a.play();
           if (p && p.catch) p.catch(function () {});
         }
@@ -651,7 +654,12 @@
     document.addEventListener('pointerdown', kickAudio, { once: false });
     document.addEventListener('keydown', kickAudio, { once: false });
     // 音频元素常常在点击之后才创建，交互过一次后持续兜底
-    setInterval(function () { if (audioKicked) kickAudio(); }, 1200);
+    var kickTicks = 0;
+    var kickTimer = setInterval(function () {
+      kickTicks += 1;
+      if (audioKicked) kickAudio();
+      if (kickTicks > 20) clearInterval(kickTimer);
+    }, 1500);
 
     tools.addEventListener('click', function (ev) {
       var btn = ev.target.closest('button');
@@ -778,29 +786,49 @@
     return false;
   }
 
-  function readDialogue() {
-    var cont = document.querySelector('[class*="TextBox_Container"]');
-    if (!cont) return { name: '', text: '' };
+  var fillCls = '';
 
-    var nameChars = [];
-    var bodyChars = [];
+  function pickFillClass(cont) {
     var all = cont.querySelectorAll('*');
-
-    for (var i = 0; i < all.length; i += 1) {
+    var limit = Math.min(all.length, 120);
+    for (var i = 0; i < limit; i += 1) {
       var el = all[i];
       if (el.children.length) continue;
       var t = (el.textContent || '').trim();
       if (!t || t.length > 2) continue;
-
       var cs = window.getComputedStyle(el);
-      if (cs.visibility === 'hidden' || cs.display === 'none') continue;
-      if (parseFloat(cs.opacity) < 0.2) continue;
-
-      // 逐字三层只取填充层（background-clip:text）
       var isFill = cs.backgroundImage && cs.backgroundImage !== 'none';
       var isStroke = cs.webkitTextStrokeWidth && cs.webkitTextStrokeWidth !== '0px';
-      if (!isFill || isStroke) continue;
+      if (isFill && !isStroke) {
+        var list = el.className.toString().split(/\s+/).filter(Boolean);
+        for (var k = 0; k < list.length; k += 1) {
+          if (list[k].indexOf('css-') === 0) { fillCls = list[k]; return; }
+        }
+      }
+    }
+  }
 
+  function readDialogue() {
+    var cont = document.querySelector('[class*="TextBox_Container"]');
+    if (!cont) return { name: '', text: '' };
+
+    var nodes = [];
+    if (fillCls) {
+      nodes = cont.querySelectorAll('.' + fillCls);
+      if (!nodes.length) fillCls = '';
+    }
+    if (!fillCls) {
+      pickFillClass(cont);
+      nodes = fillCls ? cont.querySelectorAll('.' + fillCls) : [];
+    }
+
+    var nameChars = [];
+    var bodyChars = [];
+    for (var i = 0; i < nodes.length; i += 1) {
+      var el = nodes[i];
+      if (el.children.length) continue;
+      var t = (el.textContent || '').trim();
+      if (!t || t.length > 2) continue;
       if (el.closest(NAME_SEL)) nameChars.push(t);
       else bodyChars.push(t);
     }
@@ -897,6 +925,7 @@
   window.__chatImages = CHAT_IMAGES;
 
   var chatLines = [];
+  var chatLastTextAt = 0;
   var chatSig = '';
 
   var bgModeCache = '';
@@ -930,6 +959,16 @@
       if (nameEl) nameEl.style.display = state.name ? 'inline-block' : 'none';
       chatLines = [];
       chatSig = '';
+      return;
+    }
+
+    var nowTs = Date.now();
+    if (state.text) chatLastTextAt = nowTs;
+
+    // 兜底：进了聊天场景却一直读不到文字，回落成对话纸卡
+    if (!state.text && !chatLines.length && nowTs - (chatLastTextAt || 0) > 2500) {
+      panel.style.display = 'none';
+      if (card) card.style.display = '';
       return;
     }
 
@@ -1010,6 +1049,10 @@
   }
 
   function sync() {
+    try { syncInner(); } catch (e) { /* 单次失败不影响游戏 */ }
+  }
+
+  function syncInner() {
     buildUi();
     var ui = document.getElementById('paper-ui');
     if (!ui) return;
@@ -1103,5 +1146,6 @@
 
   addCss();
   document.addEventListener('DOMContentLoaded', function () { addCss(); buildUi(); });
-  setInterval(function () { addCss(); buildUi(); sync(); }, 180);
+  setInterval(function () { addCss(); buildUi(); sync(); }, 170);
 })();
+

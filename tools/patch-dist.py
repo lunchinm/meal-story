@@ -14,7 +14,7 @@ s = s.replace("loadIifePlugin('lib/live2d.min.js')", "Promise.resolve(null)")
 s = s.replace("loadIifePlugin('lib/live2dcubismcore.min.js')", "Promise.resolve(null)")
 
 if "theme-inject.js" not in s:
-    s = s.replace("</body>", '  <script src="theme-inject.js"></script>\n</body>')
+    s = s.replace("</body>", '  <script src="theme-inject.js?v=20261118c"></script>\n</body>')
 
 io.open(p, "w", encoding="utf-8").write(s)
 print("补丁完成：", p)
