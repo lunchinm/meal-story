@@ -469,6 +469,46 @@
 
 #paper-chat .pc-choices button:hover { border-color: #2f4a34; }
 
+
+#paper-chat .pc-thumb {
+  width: 240px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(120, 104, 74, .4);
+  box-shadow: 0 8px 18px rgba(84, 70, 44, .22);
+  cursor: zoom-in;
+  background: #fbf7ec;
+  line-height: 0;
+}
+
+#paper-chat .pc-thumb img {
+  width: 100%;
+  display: block;
+}
+
+/* 大图查看层 */
+#paper-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(28, 22, 14, .78);
+  backdrop-filter: blur(4px);
+  cursor: zoom-out;
+}
+
+#paper-viewer.open { display: flex; }
+
+#paper-viewer img {
+  max-width: 86vw;
+  max-height: 84vh;
+  border-radius: 8px;
+  border: 6px solid rgba(252, 249, 240, .96);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, .5);
+}
+
 /* ---------- 自绘叠层 ---------- */
 #paper-ui {
   position: fixed;
@@ -635,6 +675,14 @@
     chat.id = 'paper-chat';
     chat.innerHTML = '<div class="pc-head">校园膳食调查组</div><div class="pc-body"></div><div class="pc-choices"></div>';
     document.body.appendChild(chat);
+
+    if (!document.getElementById('paper-viewer')) {
+      var viewer = document.createElement('div');
+      viewer.id = 'paper-viewer';
+      viewer.innerHTML = '<img alt="查看大图">';
+      viewer.addEventListener('click', function () { viewer.classList.remove('open'); });
+      document.body.appendChild(viewer);
+    }
     root.appendChild(chapter);
     root.appendChild(tag);
     root.appendChild(card);
@@ -708,6 +756,27 @@
   }
 
   var NAME_SEL = '[class*="showname"], [class*="showName"], [class*="ShowName"], [class*="nameContainer"]';
+
+  var fillClass = '';       // 填充层的类名（探测一次）
+  var nameClassHint = '';
+
+  function detectFillClass(cont) {
+    var all = cont.querySelectorAll('*');
+    for (var i = 0; i < all.length && i < 60; i += 1) {
+      var el = all[i];
+      if (el.children.length) continue;
+      var t = (el.textContent || '').trim();
+      if (!t || t.length > 2) continue;
+      var cs = window.getComputedStyle(el);
+      var isFill = cs.backgroundImage && cs.backgroundImage !== 'none';
+      var isStroke = cs.webkitTextStrokeWidth && cs.webkitTextStrokeWidth !== '0px';
+      if (isFill && !isStroke) {
+        var cls = el.className.toString().split(/\s+/).filter(Boolean);
+        if (cls.length) { fillClass = cls[0]; return true; }
+      }
+    }
+    return false;
+  }
 
   function readDialogue() {
     var cont = document.querySelector('[class*="TextBox_Container"]');
@@ -812,14 +881,21 @@
   var chatLines = [];
   var chatSig = '';
 
+  var bgModeCache = '';
+  var bgScanAt = 0;
+
   function currentBg() {
-    var el = document.querySelector('[class*="bg"] img, img[class*="bg"], [class*="bg"]');
-    var cands = [].slice.call(document.querySelectorAll('img,div'));
-    for (var i = 0; i < cands.length; i += 1) {
+    var now = Date.now();
+    if (now - bgScanAt < 600) return bgModeCache;
+    bgScanAt = now;
+
+    var cands = document.querySelectorAll('[class*="bg"], img');
+    for (var i = 0; i < cands.length && i < 40; i += 1) {
       var e = cands[i];
       var src = e.tagName === 'IMG' ? (e.getAttribute('src') || '') : (getComputedStyle(e).backgroundImage || '');
-      if (src.indexOf('bg_chat') >= 0) return 'chat';
+      if (src.indexOf('bg_chat') >= 0) { bgModeCache = 'chat'; return 'chat'; }
     }
+    bgModeCache = '';
     return '';
   }
 
@@ -913,8 +989,8 @@
     var chapEl = ui.querySelector('.pu-chapter');
 
     syncChoices();
-    window.__paperLine = state.text || '';
-    window.__paperName = state.name || '';
+    if (state.text) window.__paperLine = state.text;
+    if (state.name) window.__paperName = state.name;
     if (state.text) textEl.textContent = state.text;
 
     if (state.name) {

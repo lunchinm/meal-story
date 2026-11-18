@@ -155,13 +155,26 @@ for (let i = 0; i < 90; i += 1) {
     await page.waitForTimeout(500);
     continue;
   }
+  // 连点保护：与上一次点击至少隔 350ms
+  const sinceLast = Date.now() - (globalThis.__lastClick || 0);
+  if (sinceLast < 950) await page.waitForTimeout(950 - sinceLast);  // 人类阅读节奏
+  globalThis.__lastClick = Date.now();
   const t = Date.now();
-  await page.keyboard.press('Space');
+  await page.mouse.click(640, 300);
   let got = null;
-  for (let k = 0; k < 160; k += 1) {
+  for (let k = 0; k < 60; k += 1) {
     await page.waitForTimeout(25);
     const now = await readLine();
     if (now && now !== prev) { got = now; break; }
+  }
+  if (!got) {
+    // 动画尾巴吞掉了一次点击，补一次（人类也这样点）
+    await page.mouse.click(640, 300);
+    for (let k = 0; k < 60; k += 1) {
+      await page.waitForTimeout(25);
+      const now = await readLine();
+      if (now && now !== prev) { got = now; break; }
+    }
   }
   lat.push(Date.now() - t);
   if (got) { changed += 1; prev = got; }
@@ -296,3 +309,4 @@ const md = ['# 云端回归结果', '', `- 目标：${url}`, `- 时间：${new D
 await writeFile(path.join(outDir, 'report.md'), md);
 console.log('SUMMARY', JSON.stringify(summary));
 await browser.close();
+

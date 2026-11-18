@@ -70,7 +70,7 @@ def convert_act(act: int) -> list[str]:
             lines.append(f":{esc(node.get('title', '') or '第一章')};")
             lines.append("bgm:bgm_loop.mp3 -volume=45;")
             if node.get("image"):
-                lines.append(f"changeBg:{node['image']}.webp -next;")
+                lines.append(f"changeBg:{node['image']}.webp -next -duration=350;")
             continue
 
         if kind == "say":
@@ -78,13 +78,13 @@ def convert_act(act: int) -> list[str]:
             if scene and scene != last_scene:
                 table = SCENE_BG_BY_ACT.get(act, {})
                 bg = table.get(scene) or SCENE_BG.get(scene, "bg_class.webp")
-                lines.append(f"changeBg:{bg} -next;")
+                lines.append(f"changeBg:{bg} -next -duration=350;")
                 last_scene = scene
             if node.get("actor"):
                 actor = node["actor"]
                 if actor != last_actor:
                     # 换人：先清场，避免立绘叠在一起
-                    lines.append("changeFigure:none -center -next;")
+                    lines.append("changeFigure:none -center -next -duration=350;")
                     last_actor = actor
                 lines.append(
                     f"changeFigure:ch_{actor}_{node.get('expr', 'normal')}.webp -center "
@@ -137,8 +137,8 @@ def convert_act(act: int) -> list[str]:
 
         if kind == "ending":
             bg = ENDBG.get(node.get("image", ""), "ending_normal.webp")
-            lines.append(f"changeBg:{bg} -next;")
-            lines.append("changeFigure:none -center -next;")
+            lines.append(f"changeBg:{bg} -next -duration=350;")
+            lines.append("changeFigure:none -center -next -duration=350;")
             lines.append(f"intro:{esc(node.get('title', '结局'))}|{esc(' '.join(node.get('body', [])))};")
             lines.append("end;")
             continue
@@ -148,7 +148,7 @@ def convert_act(act: int) -> list[str]:
             continue
 
         if kind == "plate":
-            lines.append("changeFigure:none -center -next;")
+            lines.append("changeFigure:none -center -next -duration=350;")
             lines.append('changeFigure:ui_tray.webp -center -transform={"scale":{"x":0.74,"y":0.74},"position":{"x":0,"y":-30}} -next;')
             tip = node.get("tip", "")
             text = node.get("text", "")
@@ -172,11 +172,11 @@ def convert_act(act: int) -> list[str]:
             lines.append(f"label:{base}_c;")
             lines.append(say_line(None, "超了预算，蔬菜还是没有。"))
             lines.append(f"label:{base}_end;")
-            lines.append("changeFigure:none -center -next;")
+            lines.append("changeFigure:none -center -next -duration=350;")
             continue
 
         if kind == "compare":
-            lines.append("changeFigure:none -center -next;")
+            lines.append("changeFigure:none -center -next -duration=350;")
             lines.append('changeFigure:ui_drinks.webp -center -transform={"scale":{"x":0.72,"y":0.72},"position":{"x":0,"y":-20}} -next;')
             prompt = node.get("prompt", "")
             if prompt:
@@ -198,13 +198,13 @@ def convert_act(act: int) -> list[str]:
                     lines.append(say_line(None, "这瓶糖少一些，但主要还是喝水。"))
                 lines.append(f"jumpLabel:{base}_end;")
             lines.append(f"label:{base}_end;")
-            lines.append("changeFigure:none -center -next;")
+            lines.append("changeFigure:none -center -next -duration=350;")
             continue
 
         if kind == "explore":
-            lines.append("changeFigure:none -center -next;")
+            lines.append("changeFigure:none -center -next -duration=350;")
             lines.append('changeFigure:ui_notebook.webp -center -transform={"scale":{"x":0.66,"y":0.66},"position":{"x":0,"y":-10}} -next;')
-            lines.append("changeFigure:none -center -next;")
+            lines.append("changeFigure:none -center -next -duration=350;")
             lines.append('changeFigure:ui_paper.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":0}} -next;')
             title = node.get("title", "")
             if title:
@@ -221,7 +221,7 @@ def convert_act(act: int) -> list[str]:
             opts += "|先看到这里:" + base + "_out"
             lines.append(f"choose:{opts};")
             lines.append(f"label:{base}_out;")
-            lines.append("changeFigure:none -center -next;")
+            lines.append("changeFigure:none -center -next -duration=350;")
             continue
 
         if kind == "notebook":
