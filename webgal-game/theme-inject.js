@@ -1031,6 +1031,7 @@
 
   var chatLines = [];
   var chatLastTextAt = 0;
+  var titleForcedUntil = 0;
   var chatSig = '';
 
   var bgModeCache = '';
@@ -1202,6 +1203,8 @@
   var MENU_LABELS = ['开始游戏', '继续游戏', '游戏选项', '读取存档', '鉴赏模式', '退出游戏'];
 
   function buildTitle() {
+    var existed = document.getElementById('paper-title');
+    if (existed) return existed;
     var t = document.createElement('div');
     t.id = 'paper-title';
     t.innerHTML =
@@ -1260,6 +1263,14 @@
     if (label === '标题' && window.__wgBackToTitle) {
       if (window.__wgClosePanels) window.__wgClosePanels();
       setTimeout(function () { window.__wgBackToTitle(); }, 120);
+      // 强制显示自绘标题，别等引擎底栏卸载
+      titleForcedUntil = Date.now() + 4000;
+      var t = document.getElementById('paper-title');
+      if (t) t.style.display = 'block';
+      var ui = document.getElementById('paper-ui');
+      if (ui) ui.style.display = 'none';
+      var chat = document.getElementById('paper-chat');
+      if (chat) chat.style.display = 'none';
       return true;
     }
     var btns = document.querySelectorAll('[class*="_singleButton"]');
@@ -1369,6 +1380,14 @@
     }
 
     var hasBar = document.querySelectorAll('[class*="_singleButton"]').length > 0;
+    if (Date.now() < titleForcedUntil) {
+      hideOwnChrome();
+      t.style.display = 'block';
+      var escS = document.getElementById('paper-esc');
+      if (escS) escS.style.display = 'none';
+      return;
+    }
+
     var atTitle = !hasBar || nativeTitleVisible();
     var inGame = hasBar && !atTitle;
     t.style.display = inGame ? 'none' : 'block';
