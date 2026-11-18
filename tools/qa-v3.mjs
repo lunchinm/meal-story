@@ -62,8 +62,16 @@ async function advance(n = 1, gap = 650) {
 }
 
 // ---------------- A 标题 ----------------
-await page.goto(URL_BASE + '?t=' + Date.now());
-await page.waitForTimeout(3000);
+await page.goto(URL_BASE + '?t=' + Date.now(), { timeout: 120000, waitUntil: 'domcontentloaded' });
+for (let i = 0; i < 40; i += 1) {
+  const ready = await page.evaluate(() => {
+    const t = document.getElementById('paper-title');
+    return !!t && getComputedStyle(t).display !== 'none' && document.querySelectorAll('#paper-title .pt-menu button').length >= 6;
+  });
+  if (ready) break;
+  await page.waitForTimeout(500);
+}
+await page.waitForTimeout(500);
 const titleInfo = await page.evaluate(() => {
   const t = document.getElementById('paper-title');
   return {

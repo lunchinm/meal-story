@@ -1032,6 +1032,8 @@
   var chatLines = [];
   var chatLastTextAt = 0;
   var titleForcedUntil = 0;
+  var gameStarted = false;
+  var stateSeenText = false;
   var chatSig = '';
 
   var bgModeCache = '';
@@ -1179,7 +1181,7 @@
     var chapEl = ui.querySelector('.pu-chapter');
 
     syncChoices();
-    if (state.text) window.__paperLine = state.text;
+    if (state.text) { stateSeenText = true; window.__paperLine = state.text; }
     if (state.name) window.__paperName = state.name;
     if (state.text) textEl.textContent = state.text;
 
@@ -1260,6 +1262,8 @@
   var BAR_LABELS = ['隐藏', '回想', '重播', '自动', '快进', '快速存档', '快速读档', '存档', '读档', '选项', '标题', '全屏'];
 
   function nativeAction(label) {
+    if (label === '开始游戏' || label === '继续游戏' || label === '读取存档') gameStarted = true;
+    if (label === '标题') gameStarted = false;
     if (label === '标题' && window.__wgBackToTitle) {
       if (window.__wgClosePanels) window.__wgClosePanels();
       setTimeout(function () { window.__wgBackToTitle(); }, 120);
@@ -1388,8 +1392,9 @@
       return;
     }
 
-    var atTitle = !hasBar || nativeTitleVisible();
-    var inGame = hasBar && !atTitle;
+    if (stateSeenText) gameStarted = true;
+    var atTitle = !gameStarted || nativeTitleVisible();
+    var inGame = gameStarted && !atTitle;
     t.style.display = inGame ? 'none' : 'block';
 
     var escBar = document.getElementById('paper-esc');
