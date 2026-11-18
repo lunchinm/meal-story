@@ -307,6 +307,7 @@ def main() -> int:
     start = [
         "; 《今天吃什么？》WebGAL 版（自动生成，勿手改）",
         ":今天吃什么？——校园膳食调查簿;",
+        "changeBg:bg_gingko.webp -next -duration=350;",
         "changeScene:act1.txt;",
     ]
     io.open(os.path.join(OUT, "start.txt"), "w", encoding="utf-8").write("\n".join(start) + "\n")
