@@ -558,7 +558,7 @@
       var rect = el.getBoundingClientRect();
       if (rect.width === 0 && rect.height === 0) continue;
 
-      if (splitY && rect.top < splitY - 6) nameChars.push(t);
+      if (splitY && rect.top < splitY + 22) nameChars.push(t);
       else bodyChars.push(t);
     }
 
