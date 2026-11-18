@@ -221,6 +221,8 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:原来喝完大瓶，反而会更多。 -vocal=a3-87.mp3;
 ; 互动节点（待迁移）：a3-milk [evidence]
+changeFigure:none -center -next;
+changeFigure:ui_drinks.webp -center -transform={"scale":{"x":0.72,"y":0.72},"position":{"x":0,"y":-20}} -next;
 :哪一瓶，整瓶喝下去含糖更多？;
 ; 货架：柠檬茶 500ml
 :每 100 毫升含糖 4 克;
@@ -238,6 +240,7 @@ label:cmp_a3_it_1;
 :这瓶糖少一些，但主要还是喝水。;
 jumpLabel:cmp_a3_it_end;
 label:cmp_a3_it_end;
+changeFigure:none -center -next;
 changeFigure:none -center -next;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:因为喝进去的总量也变了。 -vocal=a3-88.mp3;

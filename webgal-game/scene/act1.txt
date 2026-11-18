@@ -73,6 +73,10 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:none -center -next;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 周简:可能还没来得及升级。;
+changeFigure:none -center -next;
+changeFigure:ui_notebook.webp -center -transform={"scale":{"x":0.66,"y":0.66},"position":{"x":0,"y":-10}} -next;
+changeFigure:none -center -next;
+changeFigure:ui_paper.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":0}} -next;
 :餐桌上能看的三个东西;
 label:exp_a1_explore_0;
 你:手指往上拖，图片下面只写了“网友分享，仅供参考”。;
@@ -92,6 +96,7 @@ jumpLabel:exp_a1_explore_out;
 label:exp_a1_explore_menu;
 choose:手机上的宣传图:exp_a1_explore_0|米粒的餐盘:exp_a1_explore_1|被水杯压住的便签:exp_a1_explore_2|先看到这里:exp_a1_explore_out;
 label:exp_a1_explore_out;
+changeFigure:none -center -next;
 ; 记录：看过原图
 changeFigure:none -center -next;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;

@@ -144,7 +144,8 @@ let changed = 0;
 for (let i = 0; i < 90; i += 1) {
   // 遇到选项先选第一项，否则按空格推不动
   const pick = await page.evaluate(() => {
-    const el = document.querySelector('[class*="_Choose_item_outer"]');
+    const custom = document.querySelector('#paper-chat .pc-choices button, #paper-ui .pu-choices button');
+    const el = custom || document.querySelector('[class*="_Choose_item_outer"]');
     if (!el) return null;
     const b = el.getBoundingClientRect();
     return { x: b.x + b.width / 2, y: b.y + b.height / 2 };

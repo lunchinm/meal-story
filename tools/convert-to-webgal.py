@@ -148,6 +148,8 @@ def convert_act(act: int) -> list[str]:
             continue
 
         if kind == "plate":
+            lines.append("changeFigure:none -center -next;")
+            lines.append('changeFigure:ui_tray.webp -center -transform={"scale":{"x":0.74,"y":0.74},"position":{"x":0,"y":-30}} -next;')
             tip = node.get("tip", "")
             text = node.get("text", "")
             if tip:
@@ -170,9 +172,12 @@ def convert_act(act: int) -> list[str]:
             lines.append(f"label:{base}_c;")
             lines.append(say_line(None, "超了预算，蔬菜还是没有。"))
             lines.append(f"label:{base}_end;")
+            lines.append("changeFigure:none -center -next;")
             continue
 
         if kind == "compare":
+            lines.append("changeFigure:none -center -next;")
+            lines.append('changeFigure:ui_drinks.webp -center -transform={"scale":{"x":0.72,"y":0.72},"position":{"x":0,"y":-20}} -next;')
             prompt = node.get("prompt", "")
             if prompt:
                 lines.append(say_line(None, prompt))
@@ -193,9 +198,14 @@ def convert_act(act: int) -> list[str]:
                     lines.append(say_line(None, "这瓶糖少一些，但主要还是喝水。"))
                 lines.append(f"jumpLabel:{base}_end;")
             lines.append(f"label:{base}_end;")
+            lines.append("changeFigure:none -center -next;")
             continue
 
         if kind == "explore":
+            lines.append("changeFigure:none -center -next;")
+            lines.append('changeFigure:ui_notebook.webp -center -transform={"scale":{"x":0.66,"y":0.66},"position":{"x":0,"y":-10}} -next;')
+            lines.append("changeFigure:none -center -next;")
+            lines.append('changeFigure:ui_paper.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":0}} -next;')
             title = node.get("title", "")
             if title:
                 lines.append(say_line(None, title))
@@ -211,6 +221,7 @@ def convert_act(act: int) -> list[str]:
             opts += "|先看到这里:" + base + "_out"
             lines.append(f"choose:{opts};")
             lines.append(f"label:{base}_out;")
+            lines.append("changeFigure:none -center -next;")
             continue
 
         if kind == "notebook":

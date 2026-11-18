@@ -84,21 +84,9 @@
 
 /* ---------- 选项：居中纸标签，压在纸卡上方 ---------- */
 [class*="_chooseContainer"] {
+  z-index: 900 !important;
   position: fixed !important;
-  left: 50% !important;
-  right: auto !important;
-  top: auto !important;
-  bottom: 464px !important;
-  transform: translateX(-50%) !important;
-  width: 1120px !important;
-  height: auto !important;
-  max-height: 300px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 24px !important;
-  background: transparent !important;
-  z-index: 58 !important;
-  overflow: visible !important;
+  filter: none !important;
 }
 
 [class*="_Choose_item_outer"] {
@@ -109,14 +97,14 @@
   padding: 28px 48px !important;
   background: rgba(252, 248, 236, .97) !important;
   border: 2px solid rgba(120, 104, 74, .42) !important;
-  border-radius: 6px !important;
+  border-radius: 12px !important;
   box-shadow: 0 10px 22px rgba(84, 70, 44, .22) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   text-align: center !important;
   font-family: 'Songti SC', 'SimSun', serif !important;
-  font-size: 36px !important;
+  font-size: 78px !important;
   color: #33402f !important;
   cursor: pointer !important;
   transition: transform .12s ease, border-color .12s ease !important;
@@ -300,6 +288,187 @@
   cursor: pointer;
 }
 
+
+/* ---------- 选项 CHOOSE-V2：结构选择器（容器子元素） ---------- */
+[class*="_chooseContainer"] {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: 464px !important;
+  transform: translateX(-50%) !important;
+  width: 1120px !important;
+  height: auto !important;
+  max-height: 600px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 24px !important;
+  background: transparent !important;
+  z-index: 58 !important;
+  overflow: visible !important;
+}
+
+[class*="_chooseContainer"] > div {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 56px 96px !important;
+  background-image: linear-gradient(180deg, #fdfaf1, #f4ecda) !important;
+  background-color: #fbf7ec !important;
+  opacity: 1 !important;
+  border: 4px solid #b9a986 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 40px 80px rgba(84, 70, 44, .28) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  cursor: pointer !important;
+}
+
+[class*="_chooseContainer"] > div * {
+  color: #33402f !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif !important;
+  font-size: 36px !important;
+  line-height: 1.5 !important;
+  letter-spacing: .02em !important;
+  background: none !important;
+}
+
+[class*="_chooseContainer"] > div:hover {
+  border-color: #2f4a34 !important;
+}
+
+
+/* ---------- 自绘选项面板 ---------- */
+[class*="_chooseContainer"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+#paper-ui .pu-choices {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 232px;
+  width: 560px;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  pointer-events: auto;
+  z-index: 6;
+}
+
+#paper-ui .pu-choices button {
+  width: 100%;
+  padding: 14px 24px;
+  background-image: linear-gradient(180deg, #fdfaf1, #f4ecda);
+  color: #33402f;
+  border: 1px solid #b9a986;
+  border-radius: 3px;
+  box-shadow: 0 10px 22px rgba(84, 70, 44, .25);
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif;
+  font-size: 18px;
+  letter-spacing: .02em;
+  cursor: pointer;
+  transition: transform .12s ease, border-color .12s ease;
+}
+
+#paper-ui .pu-choices button:hover {
+  transform: translateY(-1px);
+  border-color: #2f4a34;
+}
+
+
+/* ---------- 群聊面板 ---------- */
+#paper-chat {
+  position: fixed;
+  right: 56px;
+  top: 44px;
+  width: 470px;
+  height: 540px;
+  display: none;
+  flex-direction: column;
+  background: rgba(252, 249, 240, .96);
+  border: 1px solid rgba(120, 104, 74, .45);
+  border-radius: 8px;
+  box-shadow: 0 18px 44px rgba(84, 70, 44, .3), inset 0 0 0 5px rgba(252, 249, 240, .95), inset 0 0 0 6px rgba(150, 130, 96, .3);
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif;
+  pointer-events: auto;
+  z-index: 56;
+  overflow: hidden;
+}
+
+#paper-chat .pc-head {
+  flex: 0 0 auto;
+  padding: 12px 18px;
+  font-size: 15px;
+  letter-spacing: .14em;
+  color: #6f7b63;
+  border-bottom: 1px dashed rgba(120, 104, 74, .35);
+}
+
+#paper-chat .pc-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#paper-chat .pc-row { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; }
+#paper-chat .pc-row.me { align-items: flex-end; }
+
+#paper-chat .pc-who {
+  font-size: 12px;
+  letter-spacing: .08em;
+  color: #8a8064;
+}
+
+#paper-chat .pc-bubble {
+  max-width: 330px;
+  padding: 9px 13px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #2f3a2e;
+  background-image: linear-gradient(180deg, #fdfaf1, #f4ecda);
+  border: 1px solid rgba(120, 104, 74, .35);
+  border-radius: 10px 10px 10px 3px;
+  box-shadow: 0 6px 14px rgba(84, 70, 44, .16);
+}
+
+#paper-chat .pc-row.me .pc-bubble {
+  background-image: linear-gradient(180deg, #e8efe2, #d9e5d2);
+  border-radius: 10px 10px 3px 10px;
+}
+
+#paper-chat .pc-choices {
+  flex: 0 0 auto;
+  padding: 10px 14px 14px;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px dashed rgba(120, 104, 74, .35);
+}
+
+#paper-chat .pc-choices button {
+  width: 100%;
+  padding: 10px 14px;
+  text-align: left;
+  background-image: linear-gradient(180deg, #fdfaf1, #f4ecda);
+  border: 1px solid #b9a986;
+  border-radius: 6px;
+  color: #33402f;
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+#paper-chat .pc-choices button:hover { border-color: #2f4a34; }
+
 /* ---------- 自绘叠层 ---------- */
 #paper-ui {
   position: fixed;
@@ -457,6 +626,15 @@
     });
 
     root.appendChild(tools);
+
+    var choices = document.createElement('div');
+    choices.className = 'pu-choices';
+    root.appendChild(choices);
+
+    var chat = document.createElement('div');
+    chat.id = 'paper-chat';
+    chat.innerHTML = '<div class="pc-head">校园膳食调查组</div><div class="pc-body"></div><div class="pc-choices"></div>';
+    document.body.appendChild(chat);
     root.appendChild(chapter);
     root.appendChild(tag);
     root.appendChild(card);
@@ -567,6 +745,129 @@
     return { name: nameText, text: bodyChars.join('') };
   }
 
+
+  var lastChoiceKey = '';
+
+  function syncChoices() {
+    var ui = document.getElementById('paper-ui');
+    if (!ui) return;
+    var box = ui.querySelector('.pu-choices');
+    if (!box) return;
+
+    var items = [...document.querySelectorAll('[class*="_chooseContainer"] > div')];
+    if (!items.length) {
+      box.style.display = 'none';
+      box.innerHTML = '';
+      lastChoiceKey = '';
+      return;
+    }
+
+    var labels = items.map(function (it) { return (it.innerText || '').replace(/\s+/g, '').trim(); });
+    var key = labels.join('|');
+    if (key !== lastChoiceKey) {
+      lastChoiceKey = key;
+      box.innerHTML = '';
+      labels.forEach(function (text, idx) {
+        var btn = document.createElement('button');
+        btn.textContent = text;
+        btn.addEventListener('click', function () {
+          var now = [...document.querySelectorAll('[class*="_chooseContainer"] > div')];
+          if (now[idx]) now[idx].click();
+        });
+        box.appendChild(btn);
+      });
+    }
+    box.style.display = 'flex';
+  }
+
+
+  var chatLines = [];
+  var chatSig = '';
+
+  function currentBg() {
+    var el = document.querySelector('[class*="bg"] img, img[class*="bg"], [class*="bg"]');
+    var cands = [].slice.call(document.querySelectorAll('img,div'));
+    for (var i = 0; i < cands.length; i += 1) {
+      var e = cands[i];
+      var src = e.tagName === 'IMG' ? (e.getAttribute('src') || '') : (getComputedStyle(e).backgroundImage || '');
+      if (src.indexOf('bg_chat') >= 0) return 'chat';
+    }
+    return '';
+  }
+
+  function syncChat(state) {
+    var panel = document.getElementById('paper-chat');
+    if (!panel) return;
+    var isChat = currentBg() === 'chat';
+    var card = document.querySelector('#paper-ui .pu-card');
+    var nameEl = document.querySelector('#paper-ui .pu-name');
+
+    if (!isChat) {
+      panel.style.display = 'none';
+      if (card) card.style.display = '';
+      if (nameEl) nameEl.style.display = state.name ? 'inline-block' : 'none';
+      chatLines = [];
+      chatSig = '';
+      return;
+    }
+
+    if (card) card.style.display = 'none';
+    if (nameEl) nameEl.style.display = 'none';
+    panel.style.display = 'flex';
+
+    if (chatLines.length && !chatLines[chatLines.length - 1].who && state.name) {
+      chatLines[chatLines.length - 1].who = state.name;
+    }
+
+    var sig = state.name + '|' + state.text;
+    if (state.text && sig !== chatSig) {
+      chatSig = sig;
+      chatLines.push({ who: state.name || '', text: state.text });
+      if (chatLines.length > 40) chatLines.shift();
+      var body = panel.querySelector('.pc-body');
+      body.innerHTML = '';
+      chatLines.forEach(function (ln) {
+        var row = document.createElement('div');
+        row.className = 'pc-row' + (ln.who === '你' ? ' me' : '');
+        if (ln.who) {
+          var who = document.createElement('div');
+          who.className = 'pc-who';
+          who.textContent = ln.who === '你' ? '你' : ln.who;
+          row.appendChild(who);
+        }
+        var bub = document.createElement('div');
+        bub.className = 'pc-bubble';
+        bub.textContent = ln.text;
+        row.appendChild(bub);
+        body.appendChild(row);
+      });
+      body.scrollTop = body.scrollHeight;
+    }
+
+    // 选项做成回复条
+    var items = [].slice.call(document.querySelectorAll('[class*="_chooseContainer"] > div'));
+    var box = panel.querySelector('.pc-choices');
+    if (items.length) {
+      box.style.display = 'flex';
+      if (box.dataset.key !== items.map(function (i) { return i.innerText; }).join('|')) {
+        box.dataset.key = items.map(function (i) { return i.innerText; }).join('|');
+        box.innerHTML = '';
+        items.forEach(function (it, idx) {
+          var btn = document.createElement('button');
+          btn.textContent = (it.innerText || '').replace(/\s+/g, ' ').trim();
+          btn.addEventListener('click', function () {
+            var now = [].slice.call(document.querySelectorAll('[class*="_chooseContainer"] > div'));
+            if (now[idx]) now[idx].click();
+          });
+          box.appendChild(btn);
+        });
+      }
+    } else {
+      box.style.display = 'none';
+      box.dataset.key = '';
+    }
+  }
+
   function sync() {
     buildUi();
     var ui = document.getElementById('paper-ui');
@@ -583,6 +884,7 @@
     var textEl = ui.querySelector('.pu-text');
     var chapEl = ui.querySelector('.pu-chapter');
 
+    syncChoices();
     window.__paperLine = state.text || '';
     window.__paperName = state.name || '';
     if (state.text) textEl.textContent = state.text;
@@ -593,6 +895,8 @@
     } else {
       nameEl.style.display = 'none';
     }
+
+    syncChat(state);
 
     var m = /^第([一二三四五六七八九十]+)章[《·\s]*([^》，。]*)[》]?/.exec(state.text || '');
     if (m) {
