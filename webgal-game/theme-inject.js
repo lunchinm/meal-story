@@ -878,6 +878,24 @@
   }
 
 
+/* CHAT_IMAGES_START */
+  var CHAT_IMAGES = {
+  "价格被裁掉了。这张图没有考虑我的感受。": "chat_poster.webp",
+  "对，我正站窗口前。菜牌写的是“午间搭配餐”。": "chat_menu.webp",
+  "去看看实物吧，顺便问问师傅。": "chat_tray.webp",
+  "米粒希望吃饭省时，建议需要结合课表和购买条件。": "chat_note.webp",
+  "正面有一头奶牛，还有一大杯白色的东西。": "chat_product_front.webp",
+  "看一下产品名称、配料表，再和奶的营养成分比较一下，会更清楚。": "chat_product_back.webp",
+  "可以。比较时先把“每100毫升”这一栏对齐。": "chat_nutrition.webp",
+  "酸奶我下午再看看，已经记在便签上了。": "chat_note.webp",
+  "这张图的原始出处仍然没核实。效果承诺也没有找到可核实的依据。": "chat_poster.webp",
+  "B的每100毫升比较多。": "chat_nutrition.webp",
+  "明天的课表和购买路线，还是之前那样吗？": "chat_note.webp",
+  "我的餐盘照片也算有用了。": "chat_tray.webp"
+};
+  /* CHAT_IMAGES_END */
+  window.__chatImages = CHAT_IMAGES;
+
   var chatLines = [];
   var chatSig = '';
 
@@ -889,8 +907,8 @@
     if (now - bgScanAt < 600) return bgModeCache;
     bgScanAt = now;
 
-    var cands = document.querySelectorAll('[class*="bg"], img');
-    for (var i = 0; i < cands.length && i < 40; i += 1) {
+    var cands = document.querySelectorAll('img, div');
+    for (var i = 0; i < cands.length && i < 600; i += 1) {
       var e = cands[i];
       var src = e.tagName === 'IMG' ? (e.getAttribute('src') || '') : (getComputedStyle(e).backgroundImage || '');
       if (src.indexOf('bg_chat') >= 0) { bgModeCache = 'chat'; return 'chat'; }
@@ -943,6 +961,25 @@
         bub.className = 'pc-bubble';
         bub.textContent = ln.text;
         row.appendChild(bub);
+
+        var imgName = (typeof CHAT_IMAGES !== 'undefined' && CHAT_IMAGES) ? CHAT_IMAGES[ln.text] : '';
+        if (imgName) {
+          var thumb = document.createElement('div');
+          thumb.className = 'pc-thumb';
+          var im = document.createElement('img');
+          im.onload = function () { body.scrollTop = body.scrollHeight; };
+          im.src = 'game/background/' + imgName;
+          im.alt = '聊天图片';
+          thumb.appendChild(im);
+          thumb.addEventListener('click', function () {
+            var viewer = document.getElementById('paper-viewer');
+            if (!viewer) return;
+            viewer.querySelector('img').src = 'game/background/' + imgName;
+            viewer.classList.add('open');
+          });
+          row.appendChild(thumb);
+        }
+
         body.appendChild(row);
       });
       body.scrollTop = body.scrollHeight;
