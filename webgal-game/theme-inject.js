@@ -512,31 +512,62 @@
     });
   }
 
+
+  // 例：苏苏苏桃桃桃 → 苏桃
+  function collapseTriples(raw) {
+    var out = '';
+    for (var i = 0; i < raw.length; i += 1) {
+      var ch = raw[i];
+      if (ch === raw[i + 1] && ch === raw[i + 2]) {
+        out += ch;
+        i += 2;
+      } else {
+        out += ch;
+      }
+    }
+    return out;
+  }
+
   function readDialogue() {
     var cont = document.querySelector('[class*="TextBox_Container"]');
     if (!cont) return { name: '', text: '' };
 
-    var nameSpans = cont.querySelectorAll('[class*="outerName"]');
-    var nameText = '';
-    for (var i = 0; i < nameSpans.length; i += 1) nameText += nameSpans[i].textContent;
-    nameText = nameText.trim();
+    var card = document.querySelector('#paper-ui .pu-card');
+    var splitY = card ? card.getBoundingClientRect().top : 0;
+
+    var nameChars = [];
+    var bodyChars = [];
+    var all = cont.querySelectorAll('*');
+
+    for (var i = 0; i < all.length; i += 1) {
+      var el = all[i];
+      if (el.children.length) continue;
+      var t = (el.textContent || '').trim();
+      if (!t || t.length > 2) continue;
+
+      var cs = window.getComputedStyle(el);
+      if (cs.visibility === 'hidden' || cs.display === 'none') continue;
+      if (parseFloat(cs.opacity) < 0.2) continue;
+
+      // 逐字三层里只取填充层（background-clip:text）
+      var isFill = cs.backgroundImage && cs.backgroundImage !== 'none';
+      var isStroke = cs.webkitTextStrokeWidth && cs.webkitTextStrokeWidth !== '0px';
+      if (!isFill || isStroke) continue;
+
+      var rect = el.getBoundingClientRect();
+      if (rect.width === 0 && rect.height === 0) continue;
+
+      if (splitY && rect.top < splitY - 6) nameChars.push(t);
+      else bodyChars.push(t);
+    }
+
+    var nameText = nameChars.join('');
     var half = nameText.length / 2;
     if (half > 0 && Number.isInteger(half) && nameText.slice(0, half) === nameText.slice(half)) {
       nameText = nameText.slice(0, half);
     }
 
-    var bodySpans = cont.querySelectorAll('[class*="outer_"]');
-    var body = '';
-    for (var j = 0; j < bodySpans.length; j += 1) body += bodySpans[j].textContent;
-
-    if (!body) {
-      // 新版本模板里逐字节点没有 outer_ 类名，正文是三层重复（外描边/内填充/占位）
-      var raw = (cont.innerText || '').replace(/\s+/g, '');
-      if (raw.length && raw.length % 3 === 0) body = raw.slice(0, raw.length / 3);
-      else body = raw;
-    }
-
-    return { name: nameText, text: body };
+    return { name: nameText, text: bodyChars.join('') };
   }
 
   function sync() {
@@ -555,6 +586,8 @@
     var textEl = ui.querySelector('.pu-text');
     var chapEl = ui.querySelector('.pu-chapter');
 
+    window.__paperLine = state.text || '';
+    window.__paperName = state.name || '';
     if (state.text) textEl.textContent = state.text;
 
     if (state.name) {

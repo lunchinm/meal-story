@@ -2,7 +2,7 @@
 :第四章《你的方案，能坚持吗》;
 bgm:bgm_loop.mp3 -volume=45;
 changeBg:ch_banner_4.webp;
-changeBg:bg_class.webp;
+changeBg:bg_club.webp;
 changeFigure:none -center;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:我的早八已经成为公共资料了？ -vocal=a4-01.mp3;
@@ -60,7 +60,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 changeFigure:none -center;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:这个要写。我寝室没冰箱，不能看见别人准备什么就原样抄。 -vocal=a4-24.mp3;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:普通早八我能去食堂，最远那间教室的早八就用备用方案。 -vocal=a4-25.mp3;
 你:那这张卡可以分成两种情况。;
@@ -111,7 +111,7 @@ changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0
 :米饭＋时蔬＋豆腐＋鸡蛋，共11元;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 周简:这个也一样是十一元。 -vocal=a4-45.mp3;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 changeFigure:none -center;
 changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 陆燃:可以换成鱼，窗口倒是帮我安排轮换了。 -vocal=a4-46.mp3;
@@ -200,7 +200,7 @@ changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0
 你:这些放在说明里。;
 :先把适用情况写清楚，再整理通用版本。;
 你:把之前的回访对象请来，再核对一下条件。;
-changeBg:bg_class.webp;
+changeBg:bg_club.webp;
 ; 道具：note
 你:明天的课表和购买路线，还是之前那样吗？;
 changeBg:bg_store.webp;
@@ -211,7 +211,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:就按我们之前选的组合。我想要拿得到、来得及坐下吃的，别安排需要我早上现做的。 -vocal=a4-83.mp3;
 你:明天还是训练日吗？;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 changeFigure:none -center;
 changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 陆燃:下午有训练。午饭能正常去食堂，晚饭时间也来得及。 -vocal=a4-85.mp3;
@@ -350,7 +350,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 changeFigure:none -center;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 周简:这样这张小票也算完成任务了。;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 changeFigure:none -center;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:哪一块是蔬菜来着？ -vocal=a4-143.mp3;
@@ -394,7 +394,7 @@ changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:none -center;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 许知夏:以后用起来遇到问题，还可以继续改。;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 changeFigure:none -center;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:今天吃什么？ -vocal=a4-159.mp3;
@@ -451,7 +451,7 @@ changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:none -center;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 苏桃:下一次用这套办法，照片应该又会不一样。;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 你:这一版，把你这次碰到的问题也写进去了。;
 changeFigure:none -center;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
@@ -559,7 +559,7 @@ label:c4_a4_revise_1;
 你:那这次先记通用总结。;
 jumpLabel:after_a4_revise;
 label:after_a4_revise;
-changeBg:bg_class.webp;
+changeBg:bg_club.webp;
 :通用总结写完了，个人方案这次没有改。 -vocal=a4-revise1.mp3;
 ; 记录：根据反馈完成修订
 ; 记录：已有使用说明

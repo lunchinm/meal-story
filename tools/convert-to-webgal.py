@@ -17,11 +17,19 @@ VOICE_DIR = os.path.join(MS, "assets", "voice")
 VOICE_IDS = set()
 if os.path.isdir(VOICE_DIR):
     VOICE_IDS = {os.path.splitext(f)[0] for f in os.listdir(VOICE_DIR) if f.endswith(".mp3")}
+# 场景 → 背景图，按章给不同氛围
 SCENE_BG = {
     "class": "bg_class.webp",
     "canteen": "bg_canteen.webp",
     "store": "bg_store.webp",
     "chat": "bg_chat.webp",
+}
+
+SCENE_BG_BY_ACT = {
+    1: {"canteen": "bg_canteen_sunny.webp", "store": "bg_store_afternoon.webp", "class": "bg_class.webp"},
+    2: {"canteen": "bg_canteen_night.webp", "store": "bg_store.webp", "class": "bg_class.webp"},
+    3: {"canteen": "bg_canteen.webp", "store": "bg_store_outside.webp", "class": "bg_class.webp"},
+    4: {"canteen": "bg_canteen_sunny.webp", "store": "bg_store.webp", "class": "bg_club.webp"},
 }
 ENDBG = {
     "ending_normal": "ending_normal.webp",
@@ -68,7 +76,9 @@ def convert_act(act: int) -> list[str]:
         if kind == "say":
             scene = node.get("scene")
             if scene and scene != last_scene:
-                lines.append(f"changeBg:{SCENE_BG.get(scene, 'bg_class.webp')};")
+                table = SCENE_BG_BY_ACT.get(act, {})
+                bg = table.get(scene) or SCENE_BG.get(scene, "bg_class.webp")
+                lines.append(f"changeBg:{bg};")
                 last_scene = scene
             if node.get("actor"):
                 actor = node["actor"]

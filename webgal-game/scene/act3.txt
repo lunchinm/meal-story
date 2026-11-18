@@ -49,7 +49,7 @@ changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:none -center;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 周简:目前桌上没有这个证据。 -vocal=a3-17.mp3;
-changeBg:bg_store.webp;
+changeBg:bg_store_outside.webp;
 changeFigure:none -center;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 苏桃:明天去便利店，我知道在哪排。 -vocal=a3-18.mp3;
@@ -189,7 +189,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 changeFigure:none -center;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 苏桃:那我昨天那瓶，还是记饮料。奶类另外安排。 -vocal=a3-74.mp3;
-changeBg:bg_store.webp;
+changeBg:bg_store_outside.webp;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 苏桃:我昨天想补奶类，今天就先看奶类货架。 -vocal=a3-75.mp3;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
@@ -407,7 +407,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:none -center;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 苏桃:昨天那组也有，鸡肉拍得很清楚。;
-changeBg:bg_store.webp;
+changeBg:bg_store_outside.webp;
 changeFigure:none -center;
 changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 陆燃:我提前来了，这次大家都看见了。 -vocal=a3-153.mp3;
@@ -469,7 +469,7 @@ changeFigure:none -center;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:赶课版一定要有。;
 你:那下一步，我们把这些信息做成真正能照着用的方案。;
-changeBg:bg_store.webp;
+changeBg:bg_store_outside.webp;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:这个是不是比较划算？ -vocal=a3-175.mp3;
 changeFigure:none -center;
@@ -561,7 +561,7 @@ changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 你:构图还是挺好的。;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 苏桃:这句我也存一下。;
-changeBg:bg_store.webp;
+changeBg:bg_store_outside.webp;
 你:还要拍标签吗？;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 苏桃:拍我们为什么买这些。 -vocal=a3-215.mp3;

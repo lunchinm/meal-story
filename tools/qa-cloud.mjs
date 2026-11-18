@@ -36,6 +36,8 @@ page.on('response', (r) => {
 const shot = (n) => page.screenshot({ path: path.join(shots, n + '.png') });
 const visibleText = () => page.evaluate(() => document.body.innerText.replace(/\s+/g, ' '));
 const readLine = () => page.evaluate(() => {
+  // 自绘 UI 暴露的当前行最可靠
+  if (window.__paperLine) return window.__paperLine;
   const c = document.querySelector('[class*="TextBox_Container"]');
   if (!c) return null;
   const spans = [...c.querySelectorAll('[class*="outer_"]')].map((s) => s.textContent).join('');
@@ -125,7 +127,7 @@ rec('B-01', '开始后 5 秒内出现第一句对白', prev ? '通过' : '不通
 let clickOk = 0;
 for (let i = 0; i < 3; i += 1) {
   const before = prev;
-  await page.mouse.click(640, 600);
+  await page.mouse.click(640, 300);
   let hit = false;
   for (let k = 0; k < 80; k += 1) {
     await page.waitForTimeout(25);
@@ -141,7 +143,9 @@ const lat = [];
 let changed = 0;
 for (let i = 0; i < 15; i += 1) {
   const t = Date.now();
-  await page.keyboard.press('Space');
+  await page.keyboard.press('Space');  // 第一次：跳过打字机
+  await page.waitForTimeout(60);
+  await page.keyboard.press('Space');  // 第二次：真正推进
   let got = null;
   for (let k = 0; k < 160; k += 1) {
     await page.waitForTimeout(25);

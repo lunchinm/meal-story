@@ -120,7 +120,7 @@ changeFigure:ch_mili_happy.webp -center -transform={"scale":{"x":0.62,"y":0.62},
 changeFigure:none -center;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 许知夏:我说的是先吃饭。 -vocal=a1-34.mp3;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 你:师傅，这份套餐是你们新出的？;
 changeFigure:none -center;
 changeFigure:ch_luomaster_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
@@ -171,7 +171,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 米粒:我问转给我的同学。;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:这张图有原链接吗？;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:暂时追到这里了。 -vocal=a1-56.mp3;
 changeFigure:none -center;
@@ -290,7 +290,7 @@ label:after_a1_98;
 changeFigure:none -center;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 苏桃:主要是后者。说最近大家都在感冒，想买来预防。 -vocal=a1-100.mp3;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 changeFigure:none -center;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 许知夏:那要先把预期说清楚。合理膳食有助于支持正常免疫功能，但不能保证吃这份套餐就不得病。 -vocal=a1-101.mp3;
@@ -327,7 +327,7 @@ changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:none -center;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:你先出现，我们再讨论够不够。;
-changeBg:bg_canteen.webp;
+changeBg:bg_canteen_sunny.webp;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
 米粒:那我有个更实际的问题。 -vocal=a1-118.mp3;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}};
