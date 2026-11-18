@@ -141,11 +141,21 @@ rec('B-02', '鼠标点击对话区能推进对白', envDirty ? '待复测' : (cl
 
 const lat = [];
 let changed = 0;
-for (let i = 0; i < 15; i += 1) {
+for (let i = 0; i < 90; i += 1) {
+  // 遇到选项先选第一项，否则按空格推不动
+  const pick = await page.evaluate(() => {
+    const el = document.querySelector('[class*="_Choose_item_outer"]');
+    if (!el) return null;
+    const b = el.getBoundingClientRect();
+    return { x: b.x + b.width / 2, y: b.y + b.height / 2 };
+  });
+  if (pick) {
+    await page.mouse.click(pick.x, pick.y);
+    await page.waitForTimeout(500);
+    continue;
+  }
   const t = Date.now();
-  await page.keyboard.press('Space');  // 第一次：跳过打字机
-  await page.waitForTimeout(420);
-  await page.keyboard.press('Space');  // 第二次：真正推进
+  await page.keyboard.press('Space');
   let got = null;
   for (let k = 0; k < 160; k += 1) {
     await page.waitForTimeout(25);

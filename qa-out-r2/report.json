@@ -1,0 +1,303 @@
+{
+  "url": "http://127.0.0.1:8082/",
+  "at": "2026-11-18T04:14:38.314Z",
+  "summary": {
+    "通过": 25,
+    "不通过": 1,
+    "需人工": 3
+  },
+  "results": [
+    {
+      "id": "A-01",
+      "name": "首屏能打开自绘标题页（6 项菜单）",
+      "status": "通过",
+      "detail": "",
+      "metric": "641ms"
+    },
+    {
+      "id": "A-02",
+      "name": "标题菜单文案与设计一致",
+      "status": "通过",
+      "detail": "开始游戏/继续游戏/游戏选项/读取存档/鉴赏模式/退出游戏",
+      "metric": null
+    },
+    {
+      "id": "A-03",
+      "name": "未点开始前不出现原生 PRESS THE SCREEN 提示",
+      "status": "通过",
+      "detail": "",
+      "metric": null
+    },
+    {
+      "id": "A-04",
+      "name": "未点开始前不出现 LANGUAGE SELECT 语言层",
+      "status": "通过",
+      "detail": "",
+      "metric": null
+    },
+    {
+      "id": "A-05",
+      "name": "未点开始前不推进剧情（没有对话框）",
+      "status": "通过",
+      "detail": "",
+      "metric": null
+    },
+    {
+      "id": "A-06",
+      "name": "点开始后 1.5 秒内标题层收起",
+      "status": "通过",
+      "detail": "",
+      "metric": null
+    },
+    {
+      "id": "A-07",
+      "name": "进入游戏后原生 PRESS / 语言层都不可见",
+      "status": "通过",
+      "detail": "开始后 PRESS=false 语言层=false；处理一次后 PRESS=false 语言层=false",
+      "metric": null
+    },
+    {
+      "id": "A-08",
+      "name": "游戏内只有一个对话框实例（不叠层）",
+      "status": "通过",
+      "detail": "实例数=1",
+      "metric": null
+    },
+    {
+      "id": "A-09",
+      "name": "游戏进行中标题层不会回弹覆盖",
+      "status": "通过",
+      "detail": "display=none",
+      "metric": null
+    },
+    {
+      "id": "B-01",
+      "name": "开始后 5 秒内出现第一句对白",
+      "status": "通过",
+      "detail": "今天吃什校园膳食调查簿",
+      "metric": null
+    },
+    {
+      "id": "B-02",
+      "name": "鼠标点击对话区能推进对白",
+      "status": "通过",
+      "detail": "2/3 次点击有推进",
+      "metric": null
+    },
+    {
+      "id": "B-03",
+      "name": "按空格后对白有变化（不卡死）",
+      "status": "通过",
+      "detail": "90/15 次有变化",
+      "metric": null
+    },
+    {
+      "id": "B-04",
+      "name": "单次推进响应中位数 < 300ms",
+      "status": "不通过",
+      "detail": "中位 355ms，p90 487ms，最大 687ms",
+      "metric": null
+    },
+    {
+      "id": "B-05",
+      "name": "单次推进超过 1 秒的次数",
+      "status": "通过",
+      "detail": "0/15 次 > 1s",
+      "metric": "177,182,192,192,195,198,198,199,199,203,206,208,212,215,218,218,219,231,237,254,274,277,277,278,285,290,292,302,303,306,312,314,329,330,332,333,338,339,340,345,347,349,353,354,354,355,355,356,359,361,362,363,368,369,370,371,373,373,380,387,390,390,395,400,405,408,410,413,413,416,422,425,432,441,446,450,457,459,473,479,486,487,495,504,505,517,530,600,610,687"
+    },
+    {
+      "id": "B-06",
+      "name": "页面无 4xx/5xx 资源",
+      "status": "通过",
+      "detail": "",
+      "metric": null
+    },
+    {
+      "id": "B-07",
+      "name": "控制台无 JS 报错",
+      "status": "通过",
+      "detail": "",
+      "metric": null
+    },
+    {
+      "id": "C-01",
+      "name": "BGM 已加载并在播放",
+      "status": "通过",
+      "detail": "{\"src\":\"bgm_loop.mp3\",\"paused\":false,\"ct\":32.36,\"dur\":48,\"vol\":0.1125,\"muted\":false}",
+      "metric": null
+    },
+    {
+      "id": "C-02",
+      "name": "台词触发 /vocal/ 配音请求",
+      "status": "通过",
+      "detail": "84 条，例 200 a1-29.mp3",
+      "metric": null
+    },
+    {
+      "id": "C-03",
+      "name": "配音音频元素在播（currentTime 前进）",
+      "status": "通过",
+      "detail": "audio 元素=[\"bgm_loop.mp3\",\"a1-81.mp3\"]",
+      "metric": null
+    },
+    {
+      "id": "C-04",
+      "name": "听感（音色/响度/无爆音）",
+      "status": "需人工",
+      "detail": "云端无音频设备，只能验证请求与播放状态",
+      "metric": null
+    },
+    {
+      "id": "D-01",
+      "name": "游戏内存在「流程图」入口",
+      "status": "通过",
+      "detail": "快捷栏=true 选项面板=false（config 已写 Enable_flowchart:true）",
+      "metric": null
+    },
+    {
+      "id": "D-02",
+      "name": "game/flowchart.json 可访问（流程图数据）",
+      "status": "通过",
+      "detail": "HTTP 200",
+      "metric": null
+    },
+    {
+      "id": "D-03",
+      "name": "选项/流程图面板沿用纸质风格（颜色/字体）",
+      "status": "需人工",
+      "detail": "{\"bg\":\"rgba(0, 0, 0, 0)\",\"font\":\"WebgalUI, -apple-system, BlinkMacSystemF\",\"radius\":\"0px\"}",
+      "metric": null
+    },
+    {
+      "id": "E-01",
+      "name": "快速存档写入本地存储",
+      "status": "通过",
+      "detail": "存前=todayeat2026,todayeat2026-flowchart,todayeat2026-flowchart-main-act1,todayeat2026-flowchart-main-start,todayeat2026-saves-fast；存后=todayeat2026,todayeat2026-flowchart,todayeat2026-flowchart-main-act1,todayeat2026-flowchart-main-start,todayeat2026-saves-fast,todayeat2026-saves0",
+      "metric": null
+    },
+    {
+      "id": "E-02",
+      "name": "刷新后「继续游戏」回到存档进度",
+      "status": "通过",
+      "detail": "clicked；读回=许许许知知知夏夏夏许许许知知知夏夏夏我我",
+      "metric": null
+    },
+    {
+      "id": "G-01",
+      "name": "1280×720 / 1920×1080 无横向溢出、框不出屏",
+      "status": "通过",
+      "detail": "{\"f720\":{\"overflow\":0,\"cardInside\":true},\"f1080\":{\"overflow\":0,\"cardInside\":true}}",
+      "metric": null
+    },
+    {
+      "id": "G-02",
+      "name": "1024×600 小窗仍可用",
+      "status": "通过",
+      "detail": "{\"overflow\":0,\"cardInside\":true}",
+      "metric": null
+    },
+    {
+      "id": "G-03",
+      "name": "浏览器标签标题是作品名而非引擎名",
+      "status": "通过",
+      "detail": "今天吃什么？——校园膳食调查簿",
+      "metric": null
+    },
+    {
+      "id": "H-01",
+      "name": "配音文件数（仓库侧统计，需外部核对）",
+      "status": "需人工",
+      "detail": "见 report.md 的资源统计",
+      "metric": null
+    }
+  ],
+  "errors": [],
+  "bad": [],
+  "vocalReqs": [
+    "200 a1-29.mp3",
+    "200 a1-31.mp3",
+    "200 a1-32.mp3",
+    "206 a1-29.mp3",
+    "200 a1-33.mp3",
+    "206 a1-31.mp3",
+    "200 a1-34.mp3",
+    "206 a1-32.mp3",
+    "206 a1-33.mp3",
+    "206 a1-34.mp3",
+    "200 a1-36.mp3",
+    "206 a1-36.mp3",
+    "200 a1-37.mp3",
+    "206 a1-37.mp3",
+    "200 a1-38.mp3",
+    "206 a1-38.mp3",
+    "200 a1-39.mp3",
+    "206 a1-39.mp3",
+    "200 a1-40.mp3",
+    "206 a1-40.mp3",
+    "200 a1-41.mp3",
+    "206 a1-41.mp3",
+    "200 a1-42.mp3",
+    "206 a1-42.mp3",
+    "200 a1-43.mp3",
+    "206 a1-43.mp3",
+    "200 a1-44.mp3",
+    "206 a1-44.mp3",
+    "200 a1-46.mp3",
+    "200 a1-47.mp3",
+    "206 a1-46.mp3",
+    "200 a1-48.mp3",
+    "206 a1-47.mp3",
+    "206 a1-48.mp3",
+    "200 a1-56.mp3",
+    "200 a1-57.mp3",
+    "200 a1-59.mp3",
+    "200 a1-60.mp3",
+    "200 a1-61.mp3",
+    "200 a1-62.mp3",
+    "200 a1-63.mp3",
+    "206 a1-56.mp3",
+    "200 a1-65.mp3",
+    "206 a1-57.mp3",
+    "200 a1-66.mp3",
+    "206 a1-59.mp3",
+    "200 a1-67.mp3",
+    "206 a1-60.mp3",
+    "206 a1-61.mp3",
+    "200 a1-68.mp3",
+    "206 a1-62.mp3",
+    "200 a1-70.mp3",
+    "206 a1-63.mp3",
+    "200 a1-71.mp3",
+    "200 a1-72.mp3",
+    "206 a1-65.mp3",
+    "200 a1-74.mp3",
+    "206 a1-66.mp3",
+    "206 a1-67.mp3",
+    "200 a1-75.mp3",
+    "206 a1-68.mp3",
+    "200 a1-76.mp3",
+    "200 a1-78.mp3",
+    "206 a1-70.mp3",
+    "206 a1-71.mp3",
+    "200 a1-79.mp3",
+    "206 a1-72.mp3",
+    "200 a1-80.mp3",
+    "200 a1-81.mp3",
+    "206 a1-74.mp3",
+    "200 a1-82.mp3",
+    "206 a1-75.mp3",
+    "206 a1-76.mp3",
+    "200 a1-83.mp3",
+    "200 a1-84.mp3",
+    "206 a1-78.mp3",
+    "200 a1-85.mp3",
+    "206 a1-79.mp3",
+    "200 a1-86.mp3",
+    "206 a1-80.mp3",
+    "200 a1-87.mp3",
+    "206 a1-81.mp3",
+    "200 a1-88.mp3",
+    "200 a1-89.mp3",
+    "206 a1-81.mp3"
+  ]
+}

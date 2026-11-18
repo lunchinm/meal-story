@@ -70,7 +70,7 @@ def convert_act(act: int) -> list[str]:
             lines.append(f":{esc(node.get('title', '') or '第一章')};")
             lines.append("bgm:bgm_loop.mp3 -volume=45;")
             if node.get("image"):
-                lines.append(f"changeBg:{node['image']}.webp;")
+                lines.append(f"changeBg:{node['image']}.webp -next;")
             continue
 
         if kind == "say":
@@ -78,17 +78,17 @@ def convert_act(act: int) -> list[str]:
             if scene and scene != last_scene:
                 table = SCENE_BG_BY_ACT.get(act, {})
                 bg = table.get(scene) or SCENE_BG.get(scene, "bg_class.webp")
-                lines.append(f"changeBg:{bg};")
+                lines.append(f"changeBg:{bg} -next;")
                 last_scene = scene
             if node.get("actor"):
                 actor = node["actor"]
                 if actor != last_actor:
                     # 换人：先清场，避免立绘叠在一起
-                    lines.append("changeFigure:none -center;")
+                    lines.append("changeFigure:none -center -next;")
                     last_actor = actor
                 lines.append(
                     f"changeFigure:ch_{actor}_{node.get('expr', 'normal')}.webp -center "
-                    f'-transform={{"scale":{{"x":0.62,"y":0.62}},"position":{{"x":0,"y":150}}}};'
+                    f'-transform={{"scale":{{"x":0.62,"y":0.62}},"position":{{"x":0,"y":150}}}} -next;'
                 )
             speaker = node.get("speaker")
             text = node.get("text", "")
@@ -137,8 +137,8 @@ def convert_act(act: int) -> list[str]:
 
         if kind == "ending":
             bg = ENDBG.get(node.get("image", ""), "ending_normal.webp")
-            lines.append(f"changeBg:{bg};")
-            lines.append("changeFigure:none -center;")
+            lines.append(f"changeBg:{bg} -next;")
+            lines.append("changeFigure:none -center -next;")
             lines.append(f"intro:{esc(node.get('title', '结局'))}|{esc(' '.join(node.get('body', [])))};")
             lines.append("end;")
             continue

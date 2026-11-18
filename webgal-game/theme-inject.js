@@ -529,12 +529,11 @@
     return out;
   }
 
+  var NAME_SEL = '[class*="showname"], [class*="showName"], [class*="ShowName"], [class*="nameContainer"]';
+
   function readDialogue() {
     var cont = document.querySelector('[class*="TextBox_Container"]');
     if (!cont) return { name: '', text: '' };
-
-    var card = document.querySelector('#paper-ui .pu-card');
-    var splitY = card ? card.getBoundingClientRect().top : 0;
 
     var nameChars = [];
     var bodyChars = [];
@@ -550,15 +549,12 @@
       if (cs.visibility === 'hidden' || cs.display === 'none') continue;
       if (parseFloat(cs.opacity) < 0.2) continue;
 
-      // 逐字三层里只取填充层（background-clip:text）
+      // 逐字三层只取填充层（background-clip:text）
       var isFill = cs.backgroundImage && cs.backgroundImage !== 'none';
       var isStroke = cs.webkitTextStrokeWidth && cs.webkitTextStrokeWidth !== '0px';
       if (!isFill || isStroke) continue;
 
-      var rect = el.getBoundingClientRect();
-      if (rect.width === 0 && rect.height === 0) continue;
-
-      if (splitY && rect.top < splitY + 22) nameChars.push(t);
+      if (el.closest(NAME_SEL)) nameChars.push(t);
       else bodyChars.push(t);
     }
 
