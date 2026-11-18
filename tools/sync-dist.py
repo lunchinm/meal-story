@@ -33,6 +33,7 @@ shutil.copy2(os.path.join(ROOT, "webgal-game", "theme-inject.js"), os.path.join(
 
 idx = os.path.join(DIST, "index.html")
 s = io.open(idx, encoding="utf-8").read()
+s = s.replace("background: black;", "background: #f6efe0;")
 s = s.replace("loadIifePlugin('lib/live2d.min.js')", "Promise.resolve(null)")
 s = s.replace("loadIifePlugin('lib/live2dcubismcore.min.js')", "Promise.resolve(null)")
 if "theme-inject.js" not in s:

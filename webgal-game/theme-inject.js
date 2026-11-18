@@ -591,6 +591,20 @@
   pointer-events: none !important;
 }
 
+
+#paper-chat .pc-send {
+  width: 100%;
+  text-align: left;
+  padding: 10px 14px;
+  background-image: linear-gradient(180deg, #e8efe2, #d9e5d2);
+  border: 1px solid #9fb597;
+  border-radius: 10px;
+  color: #2f3a2e;
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+
 /* ---------- 自绘叠层 ---------- */
 #paper-ui {
   position: fixed;
@@ -932,6 +946,11 @@
   }
 
   function halfRepeat(str) {
+    if (!str) return str;
+    // 全同字符（你你 / 苏苏）→ 一个字
+    var same = true;
+    for (var i = 1; i < str.length; i += 1) if (str[i] !== str[0]) { same = false; break; }
+    if (same) return str[0];
     if (str.length >= 4 && str.length % 2 === 0) {
       var h = str.length / 2;
       if (str.slice(0, h) === str.slice(h)) return str.slice(0, h);
@@ -1054,6 +1073,7 @@
 
   var chatLines = [];
   var chatLastTextAt = 0;
+  var pendingReply = null;
   var titleForcedUntil = 0;
   var gameStarted = false;
   var stateSeenText = false;
@@ -1080,7 +1100,10 @@
   function syncChat(state) {
     var panel = document.getElementById('paper-chat');
     if (!panel) return;
-    var isChat = currentBg() === 'chat';
+    var isChat;
+    if (typeof CHAT_TEXTS !== 'undefined' && state.text && CHAT_TEXTS[state.text]) isChat = true;
+    else if (typeof CHAT_TEXTS !== 'undefined' && state.text) isChat = false;
+    else isChat = currentBg() === 'chat';
     var card = document.querySelector('#paper-ui .pu-card');
     var nameEl = document.querySelector('#paper-ui .pu-name');
 
@@ -1114,17 +1137,28 @@
     var sig = state.name + '|' + state.text;
     if (state.text && sig !== chatSig) {
       chatSig = sig;
-      chatLines.push({ who: state.name || '', text: state.text });
+      // 先把上一条挂起的「我」的回复落地
+      if (pendingReply) {
+        chatLines.push(pendingReply);
+        pendingReply = null;
+      }
+      var mineNow = state.name === '你' || (typeof MY_TEXTS !== 'undefined' && MY_TEXTS[state.text]);
+      if (mineNow) {
+        pendingReply = { who: '你', text: state.text };
+      } else {
+        chatLines.push({ who: state.name || '', text: state.text });
+      }
       if (chatLines.length > 40) chatLines.shift();
       var body = panel.querySelector('.pc-body');
       body.innerHTML = '';
       chatLines.forEach(function (ln) {
         var row = document.createElement('div');
-        row.className = 'pc-row' + (ln.who === '你' ? ' me' : '');
+        var isMine = ln.who === '你' || (typeof MY_TEXTS !== 'undefined' && MY_TEXTS[ln.text]);
+        row.className = 'pc-row' + (isMine ? ' me' : '');
         if (ln.who) {
           var who = document.createElement('div');
           who.className = 'pc-who';
-          who.textContent = ln.who === '你' ? '你' : ln.who;
+          who.textContent = isMine ? '我' : ln.who;
           row.appendChild(who);
         }
         var bub = document.createElement('div');
@@ -1154,6 +1188,31 @@
         body.appendChild(row);
       });
       body.scrollTop = body.scrollHeight;
+    }
+
+    // 「我」的待发送回复：底部一条纸签，点了才变绿气泡
+    var replyBox = panel.querySelector('.pc-choices');
+    if (pendingReply) {
+      replyBox.style.display = 'flex';
+      if (replyBox.dataset.reply !== pendingReply.text) {
+        replyBox.dataset.reply = pendingReply.text;
+        replyBox.dataset.key = '';
+        replyBox.innerHTML = '';
+        var sendBtn = document.createElement('button');
+        sendBtn.className = 'pc-send';
+        sendBtn.textContent = pendingReply.text;
+        sendBtn.addEventListener('click', function () {
+          if (!pendingReply) return;
+          chatLines.push(pendingReply);
+          pendingReply = null;
+          replyBox.dataset.reply = '';
+          replyBox.innerHTML = '';
+          replyBox.style.display = 'none';
+          chatSig = '';
+        });
+        replyBox.appendChild(sendBtn);
+      }
+      return;
     }
 
     // 选项做成回复条
@@ -1224,6 +1283,40 @@
     }
   }
 
+
+
+  // 主题就绪前的启动幕：挡住原生黑屏 / 设置页 / 旧素材闪现
+  (function bootScreen() {
+    var css = document.createElement('style');
+    css.id = 'paper-boot-style';
+    css.textContent = ''
+      + 'html,body{background:#f6efe0 !important;}'
+      + '#paper-boot{position:fixed;inset:0;z-index:99999;background:'
+      + 'radial-gradient(120% 90% at 50% 30%, #fdfaf1 40%, #efe6d2 100%);'
+      + 'display:flex;align-items:center;justify-content:center;'
+      + "font-family:'Songti SC','SimSun','Noto Serif SC',serif;color:#2f3a2e;"
+      + 'transition:opacity .35s ease;}'
+      + '#paper-boot .pb-in{text-align:center;letter-spacing:.3em;}'
+      + '#paper-boot .pb-t{font-size:26px;letter-spacing:.12em;}'
+      + '#paper-boot .pb-s{margin-top:12px;font-size:13px;color:#8a8064;letter-spacing:.3em;}';
+    (document.head || document.documentElement).appendChild(css);
+
+    var cover = document.createElement('div');
+    cover.id = 'paper-boot';
+    cover.innerHTML = '<div class="pb-in"><div class="pb-t">今天吃什么？</div>'
+      + '<div class="pb-s">校 园 膳 食 调 查 簿</div></div>';
+    (document.body || document.documentElement).appendChild(cover);
+
+    window.__paperBootDone = function () {
+      var el = document.getElementById('paper-boot');
+      if (!el || el.dataset.closing === '1') return;
+      el.dataset.closing = '1';
+      el.style.opacity = '0';
+      setTimeout(function () { if (el && el.parentNode) el.parentNode.removeChild(el); }, 420);
+    };
+    // 兜底：最多挡 9 秒
+    setTimeout(function () { if (window.__paperBootDone) window.__paperBootDone(); }, 9000);
+  })();
 
   var MENU_LABELS = ['开始游戏', '继续游戏', '游戏选项', '读取存档', '鉴赏模式', '退出游戏'];
 
@@ -1420,6 +1513,7 @@
 
   function syncTitle() {
     var t = document.getElementById('paper-title') || buildTitle();
+    if (window.__paperBootDone) window.__paperBootDone();
 
     // 原生菜单优先：菜单开着时，自绘的一切都收起
     if (nativePanelOpen()) {

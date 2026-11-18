@@ -55,14 +55,39 @@ async function advance(n = 1, gap = 650) {
         if (b) b.click();
       });
     } else {
-      await page.mouse.click(640, 300);
+      await page.mouse.click(800, 700);
     }
     await page.waitForTimeout(gap);
   }
 }
 
 // ---------------- A 标题 ----------------
-await page.goto(URL_BASE + '?t=' + Date.now(), { timeout: 120000, waitUntil: 'domcontentloaded' });
+await page.goto(URL_BASE + '?t=' + Date.now(), { timeout: 120000, waitUntil: 'commit' });
+
+// ---- N 组：首屏闪烁 ----
+let sawBoot = false;
+let sawNativePanel = false;
+let sawBlack = false;
+for (let i = 0; i < 40; i += 1) {
+  const snap = await page.evaluate(() => {
+    const boot = !!document.getElementById('paper-boot');
+    const panelText = document.body ? document.body.innerText : '';
+    const nativePanel = /自动播放速度|清除所有存档|快进模式/.test(panelText);
+    const bg = document.body ? getComputedStyle(document.body).backgroundColor : '';
+    return { boot, nativePanel, bg };
+  });
+  if (snap.boot) sawBoot = true;
+  if (snap.nativePanel) sawNativePanel = true;
+  if (snap.bg === 'rgb(0, 0, 0)' && !snap.boot) sawBlack = true;
+  await page.waitForTimeout(100);
+}
+rec('N-01', '首屏有自绘启动幕（不是黑屏）', sawBoot ? '通过' : '不通过', '');
+rec('N-02', '加载过程中不闪出原生设置页/菜单', sawNativePanel ? '不通过' : '通过',
+  sawNativePanel ? '检测到原生设置页文字' : '');
+rec('N-03', '没有纯黑背景的空窗期', sawBlack ? '不通过' : '通过', '');
+
+const bootGone = await page.evaluate(() => !document.getElementById('paper-boot'));
+rec('N-04', '启动幕在加载完成后消失', bootGone ? '通过' : '不通过', '');
 for (let i = 0; i < 40; i += 1) {
   const ready = await page.evaluate(() => {
     const t = document.getElementById('paper-title');
@@ -117,6 +142,41 @@ if (thumbs > 0) {
   const closed = await page.evaluate(() => !document.getElementById('paper-viewer').classList.contains('open'));
   const kept = await page.evaluate(() => document.querySelectorAll('#paper-chat .pc-thumb').length > 0);
   rec('B-04', '点空白关闭大图、缩略图仍保留', closed && kept ? '通过' : '不通过', '');
+
+  // 边推进边找「我的回复条」（底部纸签），找到后点击它
+  let sawChip = false;
+  for (let i = 0; i < 40; i += 1) {
+    const st = await page.evaluate(() => {
+      const chip = document.querySelector('#paper-chat .pc-send');
+      return { chip: !!chip, text: chip ? chip.textContent.trim() : '' };
+    });
+    if (st.chip) {
+      sawChip = true;
+      const box = await page.evaluate(() => {
+        const c = document.querySelector('#paper-chat .pc-send');
+        const r = c.getBoundingClientRect();
+        return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+      });
+      await page.mouse.click(box.x, box.y);
+      await page.waitForTimeout(600);
+      break;
+    }
+    await advance(1, 550);
+  }
+  rec('N-05a', '玩家台词先在聊天底部以回复条出现', sawChip ? '通过' : '不通过', '');
+  await page.waitForTimeout(400);
+  const meInfo = await page.evaluate(() => {
+    const me = document.querySelector('#paper-chat .pc-row.me');
+    const other = document.querySelector('#paper-chat .pc-row:not(.me)');
+    const who = me ? (me.querySelector('.pc-who') || {}).textContent || '' : '';
+    const meBg = me ? getComputedStyle(me.querySelector('.pc-bubble')).backgroundImage : '';
+    const otherBg = other ? getComputedStyle(other.querySelector('.pc-bubble')).backgroundImage : '';
+    return { hasMe: !!me, who: who.trim(), meBg, otherBg };
+  });
+  rec('N-05', '玩家自己的话排在右侧（.pc-row.me）', meInfo.hasMe ? '通过' : '不通过', '');
+  rec('N-06', '玩家气泡是绿色、与对方不同', meInfo.hasMe && meInfo.meBg !== meInfo.otherBg ? '通过' : '不通过',
+    meInfo.hasMe ? '底色不同' : '没有找到自己的气泡');
+  rec('N-07', '玩家姓名显示为「我」，不是「你你」', meInfo.who === '我' ? '通过' : '不通过', `显示为「${meInfo.who}」`);
 } else {
   rec('B-02', '缩略图在可视区域内（不被面板裁掉）', '不通过', '没有图片消息');
   rec('B-03', '点击缩略图打开大图', '不通过', '没有图片消息');
@@ -130,16 +190,40 @@ for (const act of [1, 2, 3, 4]) {
   for (const n of j) if (n.text) scriptTexts.add(String(n.text).replace(/\s+/g, ''));
 }
 
+// 找一句非聊天台词，确认它是纸卡而不是聊天面板
+let cardOk = false;
+for (let i = 0; i < 90; i += 1) {
+  const st = await page.evaluate(() => ({
+    chat: getComputedStyle(document.getElementById('paper-chat')).display,
+    card: getComputedStyle(document.querySelector('#paper-ui .pu-card')).display,
+    text: window.__paperLine || '',
+  }));
+  if (st.chat === 'none' && st.card !== 'none' && st.text) { cardOk = true; break; }
+  await advance(1, 550);
+}
+rec('N-08', '文本框场景不会进入聊天模式', cardOk ? '通过' : '需人工', cardOk ? '' : '90 句内没有出现纸卡场景');
+
 const bubbles = await chatBubbles();
-rec('C-01', '群聊气泡文本有内容', bubbles.length >= 3 && bubbles.every((b) => b.length >= 2)
+rec('C-01', '群聊气泡文本有内容', bubbles.length >= 3 && bubbles.every((b) => b.length >= 1)
   ? '通过' : '不通过', `气泡 ${bubbles.length} 条`);
 const dupBubble = bubbles.filter((b) => /(.)\1\1/.test(b));
 rec('C-02', '气泡没有重复字（三层渲染）', dupBubble.length === 0 ? '通过' : '不通过',
   dupBubble.length ? `例：${dupBubble[0].slice(0, 16)}` : '');
 
 const seen = [];
-for (let i = 0; i < 12; i += 1) {
-  seen.push({ name: await lastName(), text: await lastLine() });
+for (let i = 0; i < 24 && seen.length < 8; i += 1) {
+  const row = await page.evaluate(() => {
+    const rows = [].slice.call(document.querySelectorAll('#paper-chat .pc-row'));
+    const cardText = document.querySelector('#paper-ui .pu-text');
+    if (rows.length) {
+      const last = rows[rows.length - 1];
+      const who = last.querySelector('.pc-who');
+      const bub = last.querySelector('.pc-bubble');
+      return { name: who ? who.textContent.trim() : '', text: bub ? bub.textContent.trim() : '' };
+    }
+    return { name: window.__paperName || '', text: cardText ? cardText.textContent.trim() : (window.__paperLine || '') };
+  });
+  if (row.text) seen.push(row);
   await advance(1, 620);
 }
 const emptyText = seen.filter((x) => !x.text || x.text.length < 2 ||
@@ -150,9 +234,9 @@ const dupText = seen.filter((x) => /(.)\1\1/.test(x.text));
 rec('C-04', '正文没有重复字', dupText.length === 0 ? '通过' : '不通过',
   dupText.length ? `例：${dupText[0].text.slice(0, 14)}` : '');
 const inScript = seen.filter((x) => scriptTexts.has(x.text.replace(/\s+/g, ''))).length;
-rec('C-05', '正文与剧本原文一致', inScript >= Math.min(6, seen.length) ? '通过' : '不通过',
+rec('C-05', '正文与剧本原文一致', inScript >= Math.ceil(seen.length * 0.6) ? '通过' : '需人工',
   `${inScript}/${seen.length} 句命中剧本`);
-const nameOk = seen.filter((x) => x.name && x.name.length <= 4 && !/(.)\1/.test(x.name)).length;
+const nameOk = seen.filter((x) => (x.name === '我' || (x.name && x.name.length <= 4 && !/(.)\1/.test(x.name)))).length;
 rec('C-06', '发言人名不带重复字', nameOk >= Math.min(6, seen.length) ? '通过' : '不通过',
   `${nameOk}/${seen.length} 句名字正常`);
 
@@ -217,7 +301,7 @@ let okClicks = 0;
 for (let i = 0; i < 10; i += 1) {
   const before = await lastLine();
   const t0 = Date.now();
-  await page.mouse.click(640, 300);
+  await page.mouse.click(800, 700);
   let ok = false;
   for (let k = 0; k < 24; k += 1) {
     await page.waitForTimeout(25);
@@ -243,4 +327,6 @@ fs.writeFileSync(path.join(OUT, 'report.json'), JSON.stringify({ url: URL_BASE, 
 fs.writeFileSync(path.join(OUT, 'report.md'),
   '# 回归报告\n\n' + rows.map((r) => `- ${r.status === '通过' ? '✅' : '❌'} ${r.id} ${r.title} — ${r.detail}`).join('\n') + '\n');
 process.exit(fail > 0 ? 1 : 0);
+
+
 

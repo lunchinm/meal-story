@@ -10,3 +10,6 @@ Thumbs.db
 *.tmp.wav
 test-results/
 playwright-report/
+
+.env
+.env.local
