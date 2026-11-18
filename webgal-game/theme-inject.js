@@ -412,6 +412,7 @@
 
 #paper-chat .pc-body {
   flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   padding: 14px 16px;
   display: flex;
@@ -843,6 +844,7 @@
     }
 
     var texts = [];
+    var nodeList = [];
     var goesName = [];
     for (var i = 0; i < nodes.length; i += 1) {
       var el = nodes[i];
@@ -850,6 +852,7 @@
       var t = (el.textContent || '').trim();
       if (!t || t.length > 2) continue;
       texts.push(t);
+      nodeList.push(el);
       goesName.push(!!el.closest(NAME_SEL));
     }
 
@@ -866,12 +869,35 @@
       if (ok) { period = k; break; }
     }
 
-    var nameChars = [];
     var bodyChars = [];
+    var bodyNodes = [];
     for (var m = 0; m < texts.length; m += 1) {
       if (m % period !== 0) continue;
-      if (goesName[m]) nameChars.push(texts[m]);
-      else bodyChars.push(texts[m]);
+      bodyChars.push(texts[m]);
+      bodyNodes.push(nodeList[m]);
+    }
+
+    // 名牌：正文上方那一行单字
+    var bodyTop = Infinity;
+    for (var bi = 0; bi < bodyNodes.length; bi += 1) {
+      var br = bodyNodes[bi].getBoundingClientRect();
+      if (br.height && br.top < bodyTop) bodyTop = br.top;
+    }
+
+    var nameChars = [];
+    if (bodyTop !== Infinity) {
+      var cands = cont.querySelectorAll('*');
+      var picked = [];
+      for (var ci = 0; ci < cands.length; ci += 1) {
+        var ce = cands[ci];
+        if (ce.children.length) continue;
+        var ct = (ce.textContent || '').trim();
+        if (!ct || ct.length > 4) continue;
+        var cr = ce.getBoundingClientRect();
+        if (!cr.height) continue;
+        if (cr.top < bodyTop - 8) picked.push(ct);
+      }
+      nameChars = picked;
     }
 
     var nameText = dedupeLayers(nameChars.join(''));
