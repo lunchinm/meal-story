@@ -6,14 +6,16 @@ p = ".webgal-src/packages/webgal/dist/index.html"
 s = io.open(p, encoding="utf-8").read()
 
 s = s.replace("background: black;", "background: #f6efe0;")
+s = s.replace("background-color: black;", "background-color: #f6efe0;")
 s = s.replace("loadIifePlugin('lib/live2d.min.js')", "Promise.resolve(null)")
 s = s.replace("loadIifePlugin('lib/live2dcubismcore.min.js')", "Promise.resolve(null)")
 
 if "theme-inject.js" not in s:
-    s = s.replace("</body>", '  <script src="theme-inject.js?v=20261119i"></script>\n</body>')
+    s = s.replace("</body>", '  <script src="theme-inject.js?v=20261119j"></script>\n</body>')
 
 io.open(p, "w", encoding="utf-8").write(s)
 print("注入完成；live2d 调用剩余:", s.count("loadIifePlugin('lib/live2d"))
+
 
 
 
