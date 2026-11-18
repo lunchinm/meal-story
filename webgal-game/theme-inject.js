@@ -177,7 +177,10 @@
 #paper-title .pt-menu button {
   background: none;
   border: none;
-  padding: 2px 0;
+  padding: 8px 12px;
+  margin-left: -12px;
+  min-height: 40px;
+  cursor: pointer;
   text-align: left;
   font-family: inherit;
   font-size: 20px;
@@ -582,6 +585,12 @@
   box-shadow: inset 0 0 0 1px rgba(150, 130, 96, .28) !important;
 }
 
+
+/* ---------- 隐藏的原生标题层不许吃点击 ---------- */
+[class*="title-enter"], [class*="_langWrapper"], [class*="_lang_"], [class*="_trans_1oupq"] {
+  pointer-events: none !important;
+}
+
 /* ---------- 自绘叠层 ---------- */
 #paper-ui {
   position: fixed;
@@ -753,6 +762,7 @@
     chat.id = 'paper-chat';
     chat.innerHTML = '<div class="pc-head">校园膳食调查组</div><div class="pc-body"></div><div class="pc-choices"></div>';
     document.body.appendChild(chat);
+    stopOwnEvents(chat);
 
     if (!document.getElementById('paper-viewer')) {
       var viewer = document.createElement('div');
@@ -760,11 +770,14 @@
       viewer.innerHTML = '<img alt="查看大图">';
       viewer.addEventListener('click', function () { viewer.classList.remove('open'); });
       document.body.appendChild(viewer);
+      stopOwnEvents(viewer);
     }
     root.appendChild(chapter);
     root.appendChild(tag);
     root.appendChild(card);
     root.appendChild(name);
+    stopOwnEvents(root);
+    stopOwnEvents(tools);
     document.body.appendChild(root);
   }
 
@@ -924,6 +937,16 @@
       if (str.slice(0, h) === str.slice(h)) return str.slice(0, h);
     }
     return str;
+  }
+
+
+  // 自绘面板内的点击不要再冒泡到 document（否则引擎会当成点击画面推进剧情）
+  function stopOwnEvents(node) {
+    if (!node || node.dataset.paperStopped === '1') return;
+    node.dataset.paperStopped = '1';
+    ['pointerdown', 'pointerup', 'mousedown', 'mouseup', 'click'].forEach(function (t) {
+      node.addEventListener(t, function (ev) { ev.stopPropagation(); }, false);
+    });
   }
 
   function readDialogue() {
@@ -1204,6 +1227,25 @@
 
   var MENU_LABELS = ['开始游戏', '继续游戏', '游戏选项', '读取存档', '鉴赏模式', '退出游戏'];
 
+
+  // 标题菜单：允许点在行与行之间也能命中最近的一行
+  function menuRowHit(menu) {
+    if (!menu) return;
+    menu.addEventListener('click', function (ev) {
+      if (ev.target.closest('button')) return;   // 命中按钮就交给按钮自己
+      var btns = [].slice.call(menu.querySelectorAll('button'));
+      var y = ev.clientY;
+      var best = null;
+      var bestD = 1e9;
+      btns.forEach(function (b) {
+        var r = b.getBoundingClientRect();
+        var d = Math.abs((r.top + r.bottom) / 2 - y);
+        if (d < bestD) { bestD = d; best = b; }
+      });
+      if (best && bestD < 48) best.click();
+    });
+  }
+
   function buildTitle() {
     var existed = document.getElementById('paper-title');
     if (existed) return existed;
@@ -1220,6 +1262,7 @@
       MENU_LABELS.map(function (l) { return '<button data-label="' + l + '">' + l + '</button>'; }).join('') +
       '</div>';
     document.body.appendChild(t);
+    menuRowHit(t.querySelector('.pt-menu'));
 
     t.querySelector('.pt-menu').addEventListener('click', function (ev) {
       var btn = ev.target.closest('button');
@@ -1323,6 +1366,7 @@
     bar.appendChild(back);
     bar.appendChild(title);
     document.body.appendChild(bar);
+    stopOwnEvents(bar);
     return bar;
   }
 
@@ -1424,6 +1468,13 @@
         if (holder && holder.getAttribute('data-paper-hidden') !== '1') {
           holder.setAttribute('data-paper-hidden', '1');
           holder.style.opacity = '0';
+          holder.style.pointerEvents = 'none';
+        }
+        // 祖先也一起禁掉，避免外层容器继续接收点击
+        var up = holder && holder.parentElement;
+        for (var k = 0; up && k < 3; k += 1) {
+          up.style.pointerEvents = 'none';
+          up = up.parentElement;
         }
       }
     }

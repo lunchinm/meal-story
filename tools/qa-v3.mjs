@@ -19,7 +19,7 @@ function rec(id, title, status, detail = '') {
 }
 
 const browser = await chromium.launch();
-const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1280, height: 720 } });
+const ctx = await browser.newContext({ serviceWorkers: 'block', viewport: { width: 1600, height: 1000 } });
 const page = await ctx.newPage();
 
 const consoleErrors = [];
@@ -103,10 +103,14 @@ if (thumbs > 0) {
     return { x: r.x + r.width / 2, y: r.y + r.height / 2, inView: r.top > 0 && r.bottom <= window.innerHeight + 1 };
   });
   rec('B-02', '缩略图在可视区域内（不被面板裁掉）', box.inView ? '通过' : '不通过', '');
+  const beforeLine = await lastLine();
   await page.mouse.click(box.x, box.y);
   await page.waitForTimeout(700);
   const opened = await page.evaluate(() => document.getElementById('paper-viewer').classList.contains('open'));
   rec('B-03', '点击缩略图打开大图', opened ? '通过' : '不通过', '');
+  const afterLine = await lastLine();
+  rec('B-05', '点缩略图不会顺带推进剧情', beforeLine === afterLine ? '通过' : '不通过',
+    beforeLine === afterLine ? '' : `剧情被推进：${beforeLine.slice(0, 10)} → ${afterLine.slice(0, 10)}`);
   await shot('B-image-big');
   await page.mouse.click(60, 60);
   await page.waitForTimeout(500);
@@ -239,3 +243,4 @@ fs.writeFileSync(path.join(OUT, 'report.json'), JSON.stringify({ url: URL_BASE, 
 fs.writeFileSync(path.join(OUT, 'report.md'),
   '# 回归报告\n\n' + rows.map((r) => `- ${r.status === '通过' ? '✅' : '❌'} ${r.id} ${r.title} — ${r.detail}`).join('\n') + '\n');
 process.exit(fail > 0 ? 1 : 0);
+
