@@ -842,15 +842,36 @@
       nodes = fillCls ? cont.querySelectorAll('.' + fillCls) : [];
     }
 
-    var nameChars = [];
-    var bodyChars = [];
+    var texts = [];
+    var goesName = [];
     for (var i = 0; i < nodes.length; i += 1) {
       var el = nodes[i];
       if (el.children.length) continue;
       var t = (el.textContent || '').trim();
       if (!t || t.length > 2) continue;
-      if (el.closest(NAME_SEL)) nameChars.push(t);
-      else bodyChars.push(t);
+      texts.push(t);
+      goesName.push(!!el.closest(NAME_SEL));
+    }
+
+    // 探测层数：节点序列以 k 为周期重复（线上构建同一类名会命中 2 层）
+    var period = 1;
+    for (var k = 2; k <= 3; k += 1) {
+      if (texts.length < k * 2) continue;
+      var ok = true;
+      var upto = Math.min(texts.length, k * 4);
+      for (var j = k; ok && j < upto; j += 1) {
+        var groupStart = Math.floor(j / k) * k;   // 同一组内的第一个
+        if (texts[j] !== texts[groupStart]) ok = false;
+      }
+      if (ok) { period = k; break; }
+    }
+
+    var nameChars = [];
+    var bodyChars = [];
+    for (var m = 0; m < texts.length; m += 1) {
+      if (m % period !== 0) continue;
+      if (goesName[m]) nameChars.push(texts[m]);
+      else bodyChars.push(texts[m]);
     }
 
     var nameText = dedupeLayers(nameChars.join(''));
