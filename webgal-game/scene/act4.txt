@@ -571,7 +571,7 @@ label:c4_a4_revise_1;
 jumpLabel:after_a4_revise;
 label:after_a4_revise;
 changeBg:bg_club.webp -next -duration=350;
-:通用总结写完了，个人方案这次没有改。 -vocal=a4-revise1.mp3;
+:通用总结写完了，个人方案这次没有改。;
 ; 记录：根据反馈完成修订
 ; 记录：已有使用说明
 ; 记录：完成指南

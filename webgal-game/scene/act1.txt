@@ -197,7 +197,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:嗯，有出处才方便查。 -vocal=a1-61.mp3;
-:目前只有转发截图，效果承诺的来源尚未查明。 -vocal=a1-62.mp3;
+:目前只有转发截图，效果承诺的来源尚未查明。;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:我觉得它至少长得挺有营养的。 -vocal=a1-63.mp3;
@@ -221,7 +221,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:明白。那我先把这顿吃明白。 -vocal=a1-71.mp3;
-:判断一日饮食，需要结合各餐、食物种类与数量。 -vocal=a1-72.mp3;
+:判断一日饮食，需要结合各餐、食物种类与数量。;
 你:你下午这么赶？;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:对，所以我才看到“承包”两个字就心动了。 -vocal=a1-74.mp3;
@@ -241,7 +241,7 @@ changeFigure:none -center -next;
 changeFigure:ui_note.webp -center -transform={"scale":{"x":0.5,"y":0.5},"position":{"x":0,"y":-60}} -next;
 changeBg:bg_club.webp -next -duration=350;
 ; 道具：note
-:米粒希望吃饭省时，建议需要结合课表和购买条件。 -vocal=a1-80.mp3;
+:米粒希望吃饭省时，建议需要结合课表和购买条件。;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:我刚把图放大看了，没找到能核实效果的出处。 -vocal=a1-81.mp3;
 changeFigure:none -center -next -duration=350;

@@ -97,7 +97,8 @@ function main() {
   let missing = 0;
   for (const node of nodes.values()) {
     if (node.type !== 'say') continue;
-    const silent = node.channel === 'chat' || node.speaker === '你';
+    // 旁白已决定不配音（2026-11-18），与群聊、玩家心声同列
+    const silent = node.channel === 'chat' || node.speaker === '你' || node.speaker === '旁白';
     if (silent) {
       if (voices.has(node.id)) warnings.push(`${node.id} 是群聊/心声，却有配音`);
       continue;

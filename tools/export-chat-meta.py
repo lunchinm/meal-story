@@ -50,7 +50,7 @@ if START in s:
     j = s.index(END) + len(END)
     s = s[:i] + block + s[j:]
 else:
-    s = s.replace("  /* CHAT_IMAGES_START */", block + "\n\n  /* CHAT_IMAGES_START */", 1)
+    s = s.replace("  var MENU_LABELS", block + "\n\n  var MENU_LABELS", 1)
 
 io.open(TP, "w", encoding="utf-8").write(s)
 print(f"聊天台词 {len(chat)} 条，其中玩家的话 {len(mine)} 条")

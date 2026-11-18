@@ -1,0 +1,13 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ serviceWorkers: 'block', viewport: { width: 1600, height: 1000 } });
+const p = await ctx.newPage();
+await p.goto('http://127.0.0.1:8090/?t=' + Date.now());
+await p.waitForTimeout(4000);
+await p.evaluate(() => document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]').click());
+await p.waitForTimeout(6000);
+await p.mouse.click(800, 700);
+await p.waitForTimeout(1800);
+const html = await p.evaluate(() => { const c = document.querySelector('[class*="_chooseContainer"]'); return c ? c.outerHTML.slice(0, 500) : 'none'; });
+console.log(html);
+await b.close();

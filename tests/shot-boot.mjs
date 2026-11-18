@@ -1,0 +1,12 @@
+import { chromium } from '@playwright/test';
+const out = 'C:/Users/MIC lunchinm/Desktop/学习资料/Vibe-Coding/合理膳食/文档/out';
+const b = await chromium.launch();
+const ctx = await b.newContext({ serviceWorkers: 'block', viewport: { width: 1280, height: 720 } });
+const p = await ctx.newPage();
+p.goto('https://lunchinm.github.io/meal-story/?boot=' + Date.now(), { waitUntil: 'commit', timeout: 120000 }).catch(() => {});
+await p.waitForTimeout(900);
+await p.screenshot({ path: out + '/boot-early.png' });
+await p.waitForTimeout(6000);
+await p.screenshot({ path: out + '/boot-after.png' });
+console.log('ok');
+await b.close();

@@ -39,7 +39,7 @@ if START in s:
     j = s.index(END) + len(END)
     s = s[:i] + block + s[j:]
 else:
-    s = s.replace("  var chatLines = [];", block + "\n\n  var chatLines = [];", 1)
+    s = s.replace("  var MENU_LABELS", block + "\n\n  var MENU_LABELS", 1)
 
 io.open(TP, "w", encoding="utf-8").write(s)
 print("写入映射条数:", len(mapping))

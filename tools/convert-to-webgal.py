@@ -77,7 +77,10 @@ def esc(text: str) -> str:
 
 def say_line(speaker: str | None, text: str, voice_id: str | None = None) -> str:
     body = esc(text)
-    vocal = f" -vocal={voice_id}.mp3" if voice_id and voice_id in VOICE_IDS else ""
+    vocal = ""
+    if voice_id and voice_id in VOICE_IDS:
+        if os.path.exists(os.path.join(VOICE_DIR, voice_id + ".mp3")):
+            vocal = f" -vocal={voice_id}.mp3"
     return f"{speaker or ''}:{body}{vocal};"
 
 
@@ -130,7 +133,8 @@ def convert_act(act: int) -> list[str]:
             text = node.get("text", "")
             if node.get("prop"):
                 lines.append(f"; 道具：{node['prop']}")
-            lines.append(say_line(None if speaker in (None, "旁白") else speaker, text, node.get("id")))
+            voice = None if node.get("channel") == "chat" else node.get("id")  # 群聊不配音
+            lines.append(say_line(None if speaker in (None, "旁白") else speaker, text, voice))
             last_speaker = speaker
             continue
 

@@ -537,7 +537,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:对。这里按每份算，吃几份还要换算。 -vocal=a3-198.mp3;
 你:麻烦补一下产品名称、营养成分表和净含量，我们先看看具体是什么。;
-旁白:好，我晚点拍。;
+同学:好，我晚点拍。;
 许知夏:可以查看营养信息，但单凭含有维生素C，也不能保证喝了就不生病。;
 :先让她补一张完整标签。;
 changeBg:bg_dorm_night.webp -next -duration=350;
