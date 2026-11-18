@@ -485,6 +485,8 @@
 #paper-chat .pc-thumb img {
   width: 100%;
   display: block;
+  aspect-ratio: 544 / 396;
+  object-fit: cover;
 }
 
 /* 大图查看层 */
@@ -1084,6 +1086,7 @@
             viewer.classList.add('open');
           });
           row.appendChild(thumb);
+          setTimeout(function () { body.scrollTop = body.scrollHeight; }, 120);
         }
 
         body.appendChild(row);
