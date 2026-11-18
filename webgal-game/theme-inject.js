@@ -485,8 +485,6 @@
 #paper-chat .pc-thumb img {
   width: 100%;
   display: block;
-  aspect-ratio: 544 / 396;
-  object-fit: cover;
 }
 
 /* 大图查看层 */
