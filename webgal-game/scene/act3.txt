@@ -1,8 +1,8 @@
 ; ==== 第三章《翻到包装背面》 ====
 :第三章《翻到包装背面》;
 bgm:bgm_loop.mp3 -volume=45;
-changeBg:ch_banner_3.webp -next -duration=350;
-changeBg:bg_class.webp -next -duration=350;
+changeBg:bg_store_blue.webp -next -duration=350;
+changeBg:bg_club.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:你在给它找角度？ -vocal=a3-01.mp3;
@@ -12,9 +12,13 @@ changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:我一直把它记在奶那一栏。 -vocal=a3-03.mp3;
 你:先看看它具体是什么。;
+changeFigure:none -center -next;
+changeFigure:ui_product_front.webp -center -transform={"scale":{"x":0.5,"y":0.5},"position":{"x":0,"y":-60}} -next;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 ; 道具：product_front
 苏桃:正面有一头奶牛，还有一大杯白色的东西。 -vocal=a3-05.mp3;
+changeFigure:none -center -next;
+changeFigure:ui_product_back.webp -center -transform={"scale":{"x":0.5,"y":0.5},"position":{"x":0,"y":-60}} -next;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 ; 道具：product_back
@@ -49,10 +53,12 @@ changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 周简:目前桌上没有这个证据。 -vocal=a3-17.mp3;
-changeBg:bg_store_outside.webp -next -duration=350;
+changeBg:bg_store_blue.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:明天去便利店，我知道在哪排。 -vocal=a3-18.mp3;
+changeFigure:none -center -next;
+changeFigure:ui_nutrition.webp -center -transform={"scale":{"x":0.5,"y":0.5},"position":{"x":0,"y":-60}} -next;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 ; 道具：nutrition
@@ -83,7 +89,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 米粒:我直接去便利店拿昨天选好的，没站在货架前想半天。 -vocal=a3-29.mp3;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:昨晚把能按包装要求常温保存的东西准备好了，早上拿起来就走。 -vocal=a3-30.mp3;
-changeBg:bg_canteen.webp -next -duration=350;
+changeBg:bg_canteen_noon.webp -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:今天食堂排队不长。星期三赶课那天，我就用备用方案。 -vocal=a3-31.mp3;
 你:来得及吃吗？份量感觉怎么样？;
@@ -92,6 +98,8 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:好，记下实际情况就行。 -vocal=a3-34.mp3;
+changeFigure:none -center -next;
+changeFigure:ui_note.webp -center -transform={"scale":{"x":0.5,"y":0.5},"position":{"x":0,"y":-60}} -next;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 ; 道具：note
@@ -189,7 +197,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:那我昨天那瓶，还是记饮料。奶类另外安排。 -vocal=a3-74.mp3;
-changeBg:bg_store_outside.webp -next -duration=350;
+changeBg:bg_store_blue.webp -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:我昨天想补奶类，今天就先看奶类货架。 -vocal=a3-75.mp3;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -222,7 +230,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 米粒:原来喝完大瓶，反而会更多。 -vocal=a3-87.mp3;
 ; 互动节点（待迁移）：a3-milk [evidence]
 changeFigure:none -center -next -duration=350;
-changeFigure:ui_drinks.webp -center -transform={"scale":{"x":0.72,"y":0.72},"position":{"x":0,"y":-20}} -next;
+changeFigure:ui_product_front.webp -center -transform={"scale":{"x":0.72,"y":0.72},"position":{"x":0,"y":-20}} -next;
 :哪一瓶，整瓶喝下去含糖更多？;
 ; 货架：柠檬茶 500ml
 :每 100 毫升含糖 4 克;
@@ -354,7 +362,7 @@ changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 你:小组的采购还差什么信息？;
 你:先问问有没有不能吃的，或者不方便保存的。;
 :先问问有没有不能吃的，或者不方便保存的。;
-changeBg:bg_chat.webp -next -duration=350;
+changeBg:bg_dorm_night.webp -next -duration=350;
 你:下午准备带一点吃的。大家有没有明确不能吃的食物，或者需要避开的配料？;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -410,7 +418,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:昨天那组也有，鸡肉拍得很清楚。;
-changeBg:bg_store_outside.webp -next -duration=350;
+changeBg:bg_store_blue.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 陆燃:我提前来了，这次大家都看见了。 -vocal=a3-153.mp3;
@@ -439,7 +447,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:对。充足、多样的营养有助于支持正常免疫功能，某一项数字或一句包装宣传不能保证健康效果。 -vocal=a3-162.mp3;
-changeBg:bg_chat.webp -next -duration=350;
+changeBg:bg_dorm_night.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_luomaster_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 罗师傅:窗口菜单我整理好了。明天有几样会换，你们写建议时可以用。;
@@ -472,7 +480,7 @@ changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:赶课版一定要有。;
 你:那下一步，我们把这些信息做成真正能照着用的方案。;
-changeBg:bg_store_outside.webp -next -duration=350;
+changeBg:bg_store_blue.webp -next -duration=350;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:这个是不是比较划算？ -vocal=a3-175.mp3;
 changeFigure:none -center -next -duration=350;
@@ -532,7 +540,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 旁白:好，我晚点拍。;
 许知夏:可以查看营养信息，但单凭含有维生素C，也不能保证喝了就不生病。;
 :先让她补一张完整标签。;
-changeBg:bg_chat.webp -next -duration=350;
+changeBg:bg_dorm_night.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:这回我们知道先要什么了。上次追截图追了好几层。;
@@ -564,7 +572,7 @@ changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 你:构图还是挺好的。;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:这句我也存一下。;
-changeBg:bg_store_outside.webp -next -duration=350;
+changeBg:bg_store_blue.webp -next -duration=350;
 你:还要拍标签吗？;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:拍我们为什么买这些。 -vocal=a3-215.mp3;

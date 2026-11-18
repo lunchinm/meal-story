@@ -1,0 +1,69 @@
+# -*- coding: utf-8 -*-
+"""CI 里对 WebGAL 源码打的三处补丁（必须和本地保持一致）：
+   1) 打字机尾巴归零 + 默认文字速度 120（点一下就能推进）
+   2) 暴露 window.__wgBackToTitle（自绘 UI 回标题）
+   3) 暴露 window.__wgClosePanels（关掉原生各面板）
+"""
+import io
+import os
+import sys
+
+SRC = sys.argv[1] if len(sys.argv) > 1 else "packages/webgal/src"
+
+
+def patch(path, pairs):
+    p = os.path.join(SRC, path)
+    if not os.path.exists(p):
+        print("跳过（不存在）：", p)
+        return
+    s = io.open(p, encoding="utf-8").read()
+    changed = False
+    for old, new in pairs:
+        if old in s:
+            s = s.replace(old, new)
+            changed = True
+    if changed:
+        io.open(p, "w", encoding="utf-8").write(s)
+        print("已改：", path)
+    else:
+        print("无变化：", path)
+
+
+def append(path, text, marker):
+    p = os.path.join(SRC, path)
+    if not os.path.exists(p):
+        print("跳过（不存在）：", p)
+        return
+    s = io.open(p, encoding="utf-8").read()
+    if marker in s:
+        print("已存在：", path)
+        return
+    s += text
+    io.open(p, "w", encoding="utf-8").write(s)
+    print("已追加：", path)
+
+
+# 1) 打字机
+patch("hooks/useTextOptions.ts", [
+    ("return startRange + (100 - data) * step;", "return Math.max(0, startRange + (100 - data) * step);"),
+])
+patch("store/userDataReducer.ts", [
+    ("textSpeed: 50,", "textSpeed: 120,"),
+    ("textSpeed: 100,", "textSpeed: 120,"),
+])
+
+# 2)(3) 暴露给自绘 UI
+append("Core/controller/gamePlay/backToTitle.ts", """
+// 自绘 UI：回标题
+if (typeof window !== 'undefined') {
+  (window as any).__wgBackToTitle = backToTitle;
+  (window as any).__wgClosePanels = () => {
+    const dispatch = webgalStore.dispatch;
+    (['showMenuPanel', 'showBacklog', 'showFlowchart', 'showSave', 'showLoad', 'showConfig'] as string[]).forEach((c) => {
+      try { dispatch(setVisibility({ component: c as any, visibility: false })); } catch (e) { /* 忽略不存在的组件名 */ }
+    });
+  };
+}
+""", "__wgBackToTitle")
+
+print("引擎补丁完成")

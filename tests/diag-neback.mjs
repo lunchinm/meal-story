@@ -1,0 +1,23 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ serviceWorkers: 'block', viewport: { width: 1280, height: 720 } });
+const p = await ctx.newPage();
+await p.goto('http://127.0.0.1:8082/?t=' + Date.now());
+await p.waitForTimeout(2500);
+await p.evaluate(() => document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]').click());
+await p.waitForTimeout(6000);
+await p.evaluate(() => document.querySelector('#paper-ui .pu-tools button[data-label="选项"]').click());
+await p.waitForTimeout(1200);
+const step1 = await p.evaluate(() => {
+  const els = [...document.querySelectorAll('*')].filter((e) => e.children.length === 0);
+  const labels = {};
+  els.forEach((e) => { const t = (e.textContent || '').trim(); if (t && t.length <= 4) labels[t] = (labels[t] || 0) + 1; });
+  return Object.keys(labels).slice(0, 40);
+});
+console.log('菜单内短文本:', JSON.stringify(step1).slice(0, 400));
+const r = await p.evaluate(() => { const e = document.querySelector('#paper-esc button'); const b = e.getBoundingClientRect(); return { x: b.x + b.width / 2, y: b.y + b.height / 2 }; });
+await p.mouse.click(r.x, r.y);
+await p.waitForTimeout(1500);
+const after = await p.evaluate(() => ({ ui: getComputedStyle(document.getElementById('paper-ui')).display, esc: getComputedStyle(document.getElementById('paper-esc')).display }));
+console.log('点返回后:', JSON.stringify(after));
+await b.close();

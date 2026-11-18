@@ -17,24 +17,52 @@ VOICE_DIR = os.path.join(MS, "assets", "voice")
 VOICE_IDS = set()
 if os.path.isdir(VOICE_DIR):
     VOICE_IDS = {os.path.splitext(f)[0] for f in os.listdir(VOICE_DIR) if f.endswith(".mp3")}
-# 场景 → 背景图，按章给不同氛围
+# 场景 → 背景图（全部来自 galgame 素材，按章节换氛围）
+PROP_FIG = {
+    "poster": "ui_poster.webp",
+    "menu": "ui_menu.webp",
+    "tray": "ui_tray.webp",
+    "note": "ui_note.webp",
+    "product_front": "ui_product_front.webp",
+    "product_back": "ui_product_back.webp",
+    "nutrition": "ui_nutrition.webp",
+}
+
 SCENE_BG = {
-    "class": "bg_class.webp",
-    "canteen": "bg_canteen.webp",
-    "store": "bg_store.webp",
-    "chat": "bg_chat.webp",
+    "class": "bg_club.webp",
+    "canteen": "bg_canteen_sun.webp",
+    "store": "bg_store_afternoon.webp",
+    "chat": "bg_dorm_night.webp",
 }
 
 SCENE_BG_BY_ACT = {
-    1: {"canteen": "bg_canteen_sunny.webp", "store": "bg_store_afternoon.webp", "class": "bg_class.webp"},
-    2: {"canteen": "bg_canteen_night.webp", "store": "bg_store.webp", "class": "bg_class.webp"},
-    3: {"canteen": "bg_canteen.webp", "store": "bg_store_outside.webp", "class": "bg_class.webp"},
-    4: {"canteen": "bg_canteen_sunny.webp", "store": "bg_store.webp", "class": "bg_club.webp"},
+    1: {"chat": "bg_dorm_night.webp", "canteen": "bg_canteen_sun.webp",
+        "store": "bg_store_afternoon.webp", "class": "bg_club.webp"},
+    2: {"chat": "bg_desk_warm.webp", "canteen": "bg_canteen_night.webp",
+        "store": "bg_store_sun.webp", "class": "bg_club.webp"},
+    3: {"chat": "bg_dorm_night.webp", "canteen": "bg_canteen_noon.webp",
+        "store": "bg_store_blue.webp", "class": "bg_club.webp"},
+    4: {"chat": "bg_desk_warm.webp", "canteen": "bg_canteen_sun.webp",
+        "store": "bg_store_outside.webp", "class": "bg_club.webp"},
 }
+
+# 章节封面 / 结局插画也来自 galgame
+IMAGE_BG = {
+    "ch_banner_1": "bg_canteen_sun.webp",
+    "ch_banner_2": "bg_canteen_night.webp",
+    "ch_banner_3": "bg_store_blue.webp",
+    "ch_banner_4": "bg_gingko.webp",
+    "poster_meal": "bg_notebook.webp",
+    "ending_normal": "bg_canteen_sun.webp",
+    "ending_advanced": "bg_gingko.webp",
+    "ending_hidden": "bg_notebook.webp",
+}
+
+# 结局背景（兜底也用 galgame 素材）
 ENDBG = {
-    "ending_normal": "ending_normal.webp",
-    "ending_advanced": "ending_advanced.webp",
-    "ending_hidden": "ending_hidden.webp",
+    "ending_normal": "bg_canteen_sun.webp",
+    "ending_advanced": "bg_gingko.webp",
+    "ending_hidden": "bg_notebook.webp",
 }
 
 
@@ -70,10 +98,18 @@ def convert_act(act: int) -> list[str]:
             lines.append(f":{esc(node.get('title', '') or '第一章')};")
             lines.append("bgm:bgm_loop.mp3 -volume=45;")
             if node.get("image"):
-                lines.append(f"changeBg:{node['image']}.webp -next -duration=350;")
+                lines.append(f"changeBg:{IMAGE_BG.get(node['image'], 'bg_canteen_sun.webp')} -next -duration=350;")
             continue
 
         if kind == "say":
+            prop = node.get("prop")
+            if prop and prop in PROP_FIG:
+                lines.append("changeFigure:none -center -next;")
+                lines.append(
+                    f'changeFigure:{PROP_FIG[prop]} -center '
+                    f'-transform={{"scale":{{"x":0.5,"y":0.5}},"position":{{"x":0,"y":-60}}}} -next;'
+                )
+
             scene = node.get("scene")
             if scene and scene != last_scene:
                 table = SCENE_BG_BY_ACT.get(act, {})
@@ -177,7 +213,7 @@ def convert_act(act: int) -> list[str]:
 
         if kind == "compare":
             lines.append("changeFigure:none -center -next -duration=350;")
-            lines.append('changeFigure:ui_drinks.webp -center -transform={"scale":{"x":0.72,"y":0.72},"position":{"x":0,"y":-20}} -next;')
+            lines.append('changeFigure:ui_product_front.webp -center -transform={"scale":{"x":0.72,"y":0.72},"position":{"x":0,"y":-20}} -next;')
             prompt = node.get("prompt", "")
             if prompt:
                 lines.append(say_line(None, prompt))
@@ -203,9 +239,9 @@ def convert_act(act: int) -> list[str]:
 
         if kind == "explore":
             lines.append("changeFigure:none -center -next -duration=350;")
-            lines.append('changeFigure:ui_notebook.webp -center -transform={"scale":{"x":0.66,"y":0.66},"position":{"x":0,"y":-10}} -next;')
+            lines.append('changeFigure:ui_note.webp -center -transform={"scale":{"x":0.66,"y":0.66},"position":{"x":0,"y":-10}} -next;')
             lines.append("changeFigure:none -center -next -duration=350;")
-            lines.append('changeFigure:ui_paper.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":0}} -next;')
+            lines.append('changeFigure:ui_poster.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":0}} -next;')
             title = node.get("title", "")
             if title:
                 lines.append(say_line(None, title))

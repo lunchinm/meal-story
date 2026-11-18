@@ -1,8 +1,8 @@
 ; ==== 第一章《套餐的秘密》 ====
 :第一章《套餐的秘密》;
 bgm:bgm_loop.mp3 -volume=45;
-changeBg:ch_banner_1.webp -next -duration=350;
-changeBg:bg_chat.webp -next -duration=350;
+changeBg:bg_canteen_sun.webp -next -duration=350;
+changeBg:bg_dorm_night.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 周简:食堂二楼，谁来？;
@@ -23,6 +23,8 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:看起来挺上镜。;
+changeFigure:none -center -next;
+changeFigure:ui_poster.webp -center -transform={"scale":{"x":0.5,"y":0.5},"position":{"x":0,"y":-60}} -next;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 ; 道具：poster
@@ -64,6 +66,8 @@ changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 周简:先记下来，等会儿问。;
 你:这份菜我好像在二楼见过。;
+changeFigure:none -center -next;
+changeFigure:ui_menu.webp -center -transform={"scale":{"x":0.5,"y":0.5},"position":{"x":0,"y":-60}} -next;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 ; 道具：menu
 周简:对，我正站窗口前。菜牌写的是“午间搭配餐”。;
@@ -74,9 +78,9 @@ changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 周简:可能还没来得及升级。;
 changeFigure:none -center -next -duration=350;
-changeFigure:ui_notebook.webp -center -transform={"scale":{"x":0.66,"y":0.66},"position":{"x":0,"y":-10}} -next;
+changeFigure:ui_note.webp -center -transform={"scale":{"x":0.66,"y":0.66},"position":{"x":0,"y":-10}} -next;
 changeFigure:none -center -next -duration=350;
-changeFigure:ui_paper.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":0}} -next;
+changeFigure:ui_poster.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":0}} -next;
 :餐桌上能看的三个东西;
 label:exp_a1_explore_0;
 你:手指往上拖，图片下面只写了“网友分享，仅供参考”。;
@@ -98,6 +102,8 @@ choose:手机上的宣传图:exp_a1_explore_0|米粒的餐盘:exp_a1_explore_1|�
 label:exp_a1_explore_out;
 changeFigure:none -center -next -duration=350;
 ; 记录：看过原图
+changeFigure:none -center -next;
+changeFigure:ui_tray.webp -center -transform={"scale":{"x":0.5,"y":0.5},"position":{"x":0,"y":-60}} -next;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 ; 道具：tray
@@ -109,7 +115,7 @@ changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:来了。;
 你:马上到。;
-changeBg:bg_class.webp -next -duration=350;
+changeBg:bg_club.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:菜基本一样，就是西兰花没有照片里站得那么整齐。 -vocal=a1-29.mp3;
@@ -125,7 +131,7 @@ changeFigure:ch_mili_happy.webp -center -transform={"scale":{"x":0.62,"y":0.62},
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:我说的是先吃饭。 -vocal=a1-34.mp3;
-changeBg:bg_canteen_sunny.webp -next -duration=350;
+changeBg:bg_canteen_sun.webp -next -duration=350;
 你:师傅，这份套餐是你们新出的？;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_luomaster_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -163,7 +169,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:看来我们今天省下了选菜时间，花在研究广告上了。 -vocal=a1-48.mp3;
 你:至少终于知道自己在忙什么。;
-changeBg:bg_chat.webp -next -duration=350;
+changeBg:bg_dorm_night.webp -next -duration=350;
 你:下面只写了“网友分享”。;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:网友真忙，每天都在分享。;
@@ -176,7 +182,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 米粒:我问转给我的同学。;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:这张图有原链接吗？;
-changeBg:bg_canteen_sunny.webp -next -duration=350;
+changeBg:bg_canteen_sun.webp -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:暂时追到这里了。 -vocal=a1-56.mp3;
 changeFigure:none -center -next -duration=350;
@@ -231,7 +237,9 @@ changeFigure:ch_mili_happy.webp -center -transform={"scale":{"x":0.62,"y":0.62},
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:记住了。 -vocal=a1-79.mp3;
-changeBg:bg_class.webp -next -duration=350;
+changeFigure:none -center -next;
+changeFigure:ui_note.webp -center -transform={"scale":{"x":0.5,"y":0.5},"position":{"x":0,"y":-60}} -next;
+changeBg:bg_club.webp -next -duration=350;
 ; 道具：note
 :米粒希望吃饭省时，建议需要结合课表和购买条件。 -vocal=a1-80.mp3;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -295,7 +303,7 @@ label:after_a1_98;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:主要是后者。说最近大家都在感冒，想买来预防。 -vocal=a1-100.mp3;
-changeBg:bg_canteen_sunny.webp -next -duration=350;
+changeBg:bg_canteen_sun.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:那要先把预期说清楚。合理膳食有助于支持正常免疫功能，但不能保证吃这份套餐就不得病。 -vocal=a1-101.mp3;
@@ -319,7 +327,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 你:“承包全天营养”和“七天免疫力拉满”，目前没有找到可核实的依据。单看这张图，也没法判断一天的营养需要是否得到满足。;
 你:平时食物多样、搭配合理，有助于获得充足营养、支持正常免疫功能。选这份午饭可以结合份量和自己的需要考虑，其他餐也要一起安排。;
 你:另外，吃这份套餐不能保证预防感冒。;
-changeBg:bg_chat.webp -next -duration=350;
+changeBg:bg_dorm_night.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:收到。我转给她，也让她先别按那个效果买七天。;
@@ -332,7 +340,7 @@ changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:你先出现，我们再讨论够不够。;
-changeBg:bg_canteen_sunny.webp -next -duration=350;
+changeBg:bg_canteen_sun.webp -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:那我有个更实际的问题。 -vocal=a1-118.mp3;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -352,7 +360,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:我们可以从明天开始拍完整一点。 -vocal=a1-126.mp3;
-changeBg:bg_chat.webp -next -duration=350;
+changeBg:bg_dorm_night.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 苏桃:我可以负责拍摄规范。;

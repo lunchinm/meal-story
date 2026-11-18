@@ -510,6 +510,78 @@
   box-shadow: 0 26px 60px rgba(0, 0, 0, .5);
 }
 
+
+/* ---------- 原生菜单纸质化 ---------- */
+[class*="_Menu"] , [class*="Config"] , [class*="Save"] , [class*="Load"] , [class*="Backlog"] , [class*="Flowchart"] {
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif !important;
+}
+
+[class*="_Menu"] span, [class*="Config"] span, [class*="Save"] span,
+[class*="Load"] span, [class*="Backlog"] span, [class*="Flowchart"] span,
+[class*="_Menu"] div, [class*="Config"] div, [class*="Save"] div,
+[class*="Load"] div, [class*="Backlog"] div, [class*="Flowchart"] div {
+  color: #33402f !important;
+  -webkit-text-stroke: 0 !important;
+  text-shadow: none !important;
+}
+
+[class*="_MenuButton"], [class*="MenuItem"], [class*="Config"] button, [class*="Save"] button {
+  background-image: linear-gradient(180deg, #fdfaf1, #f2e9d6) !important;
+  border: 1px solid #b9a986 !important;
+  border-radius: 4px !important;
+  color: #2f3a2e !important;
+}
+
+
+/* ---------- 菜单里的纸片小工具条 ---------- */
+#paper-esc {
+  position: fixed;
+  top: 22px;
+  right: 26px;
+  z-index: 9600;
+  display: none;
+  gap: 10px;
+  font-family: 'Songti SC', 'SimSun', 'Noto Serif SC', serif;
+}
+
+#paper-esc button {
+  padding: 8px 18px;
+  background-image: linear-gradient(180deg, #fdfaf1, #f2e9d6);
+  border: 1px solid #b9a986;
+  border-radius: 4px;
+  box-shadow: 0 6px 14px rgba(84, 70, 44, .22);
+  color: #2f3a2e;
+  font-family: inherit;
+  font-size: 15px;
+  letter-spacing: .08em;
+  cursor: pointer;
+}
+
+#paper-esc button:hover { border-color: #2f4a34; }
+
+
+/* ---------- 菜单页米色底 ---------- */
+#paper-menubg {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: none;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 30%, rgba(255, 252, 244, .96) 40%, rgba(240, 232, 214, .97) 100%);
+}
+
+
+/* ---------- 原生各菜单页：米色纸底 ---------- */
+[class*="_Options_main_"], [class*="_Options_page_container_"],
+[class*="_Save_main_"], [class*="_Save_page_"],
+[class*="_Backlog_main_"], [class*="_Flowchart_main_"],
+[class*="_MenuPanel_"], [class*="_Menu_main_"] {
+  background:
+    radial-gradient(120% 90% at 50% 20%, rgba(255, 252, 244, .985) 45%, rgba(243, 235, 220, .99) 100%) !important;
+  box-shadow: inset 0 0 0 1px rgba(150, 130, 96, .28) !important;
+}
+
 /* ---------- 自绘叠层 ---------- */
 #paper-ui {
   position: fixed;
@@ -668,10 +740,7 @@
       var want = btn.getAttribute('data-label');
       if (btn.blur) btn.blur();  // 别让按钮吃焦点，否则之后按空格会重复触发它
       if (want === '流程图') { openFlow(); return; }
-      var all = document.querySelectorAll('[class*="_singleButton"]');
-      for (var k = 0; k < all.length; k += 1) {
-        if ((all[k].textContent || '').trim() === want) { all[k].click(); return; }
-      }
+      nativeAction(want);
     });
 
     root.appendChild(tools);
@@ -829,84 +898,53 @@
     return str;
   }
 
+  // 把「每 k 个一组、组内相同」的节点序列压成 1 层
+  function flattenLayers(list) {
+    if (!list.length) return '';
+    for (var k = 2; k <= 4; k += 1) {
+      if (list.length < k * 2) continue;
+      var ok = true;
+      var upto = Math.min(list.length, k * 3);
+      for (var i = k; ok && i < upto; i += 1) {
+        var g = Math.floor(i / k) * k;
+        if (list[i] !== list[g]) ok = false;
+      }
+      if (ok) {
+        var out = '';
+        for (var j = 0; j < list.length; j += k) out += list[j];
+        return halfRepeat(out);
+      }
+    }
+    return halfRepeat(list.join(''));
+  }
+
+  function halfRepeat(str) {
+    if (str.length >= 4 && str.length % 2 === 0) {
+      var h = str.length / 2;
+      if (str.slice(0, h) === str.slice(h)) return str.slice(0, h);
+    }
+    return str;
+  }
+
   function readDialogue() {
-    var cont = document.querySelector("#textBoxMain") || document.querySelector('[class*="TextBox_Container"]');
+    var cont = document.querySelector('#textBoxMain') || document.querySelector('[class*="TextBox_Container"]');
     if (!cont) return { name: '', text: '' };
 
-    var nodes = [];
-    if (fillCls) {
-      nodes = cont.querySelectorAll('.' + fillCls);
-      if (!nodes.length) fillCls = '';
-    }
-    if (!fillCls) {
-      pickFillClass(cont);
-      nodes = fillCls ? cont.querySelectorAll('.' + fillCls) : [];
-    }
+    var nameChars = [];
+    var bodyChars = [];
+    var all = cont.querySelectorAll('*');
 
-    var texts = [];
-    var nodeList = [];
-    var goesName = [];
-    for (var i = 0; i < nodes.length; i += 1) {
-      var el = nodes[i];
+    for (var i = 0; i < all.length; i += 1) {
+      var el = all[i];
       if (el.children.length) continue;
       var t = (el.textContent || '').trim();
-      if (!t || t.length > 2) continue;
-      texts.push(t);
-      nodeList.push(el);
-      goesName.push(!!el.closest(NAME_SEL));
+      if (!t || t.length > 4) continue;
+      var cls = el.className.toString();
+      if (cls.indexOf('showname') >= 0) nameChars.push(t);
+      else bodyChars.push(t);
     }
 
-    // 探测层数：节点序列以 k 为周期重复（线上构建同一类名会命中 2 层）
-    var period = 1;
-    for (var k = 2; k <= 3; k += 1) {
-      if (texts.length < k * 2) continue;
-      var ok = true;
-      var upto = Math.min(texts.length, k * 4);
-      for (var j = k; ok && j < upto; j += 1) {
-        var groupStart = Math.floor(j / k) * k;   // 同一组内的第一个
-        if (texts[j] !== texts[groupStart]) ok = false;
-      }
-      if (ok) { period = k; break; }
-    }
-
-    var bodyChars = [];
-    var bodyNodes = [];
-    for (var m = 0; m < texts.length; m += 1) {
-      if (m % period !== 0) continue;
-      bodyChars.push(texts[m]);
-      bodyNodes.push(nodeList[m]);
-    }
-
-    // 名牌：正文上方那一行单字
-    var bodyTop = Infinity;
-    for (var bi = 0; bi < bodyNodes.length; bi += 1) {
-      var br = bodyNodes[bi].getBoundingClientRect();
-      if (br.height && br.top < bodyTop) bodyTop = br.top;
-    }
-
-    var nameChars = [];
-    if (bodyTop !== Infinity) {
-      var cands = cont.querySelectorAll('*');
-      var picked = [];
-      for (var ci = 0; ci < cands.length; ci += 1) {
-        var ce = cands[ci];
-        if (ce.children.length) continue;
-        var ct = (ce.textContent || '').trim();
-        if (!ct || ct.length > 4) continue;
-        var cr = ce.getBoundingClientRect();
-        if (!cr.height) continue;
-        if (cr.top < bodyTop - 8) picked.push(ct);
-      }
-      nameChars = picked;
-    }
-
-    var nameText = dedupeLayers(nameChars.join(''));
-    var half = nameText.length / 2;
-    if (half > 0 && Number.isInteger(half) && nameText.slice(0, half) === nameText.slice(half)) {
-      nameText = nameText.slice(0, half);
-    }
-
-    return { name: nameText, text: dedupeLayers(bodyChars.join('')) };
+    return { name: flattenLayers(nameChars), text: flattenLayers(bodyChars) };
   }
 
 
@@ -1007,7 +1045,7 @@
     for (var i = 0; i < cands.length && i < 600; i += 1) {
       var e = cands[i];
       var src = e.tagName === 'IMG' ? (e.getAttribute('src') || '') : (getComputedStyle(e).backgroundImage || '');
-      if (src.indexOf('bg_chat') >= 0) { bgModeCache = 'chat'; return 'chat'; }
+      if (src.indexOf('bg_chat') >= 0 || src.indexOf('bg_dorm') >= 0 || src.indexOf('bg_desk') >= 0) { bgModeCache = 'chat'; return 'chat'; }
     }
     bgModeCache = '';
     return '';
@@ -1117,7 +1155,10 @@
   }
 
   function sync() {
-    try { syncInner(); } catch (e) { /* 单次失败不影响游戏 */ }
+    try {
+      if (nativePanelOpen()) { hideOwnChrome(); return; }
+      syncInner();
+    } catch (e) { /* 单次失败不影响游戏 */ }
   }
 
   function syncInner() {
@@ -1190,10 +1231,165 @@
     return t;
   }
 
+
+  // 原生的全屏菜单是否打开（选项 / 存档 / 读档 / 流程图 / 回想）
+  function nativePanelOpen() {
+    var probes = ['[class*="Config"]', '[class*="Save"]', '[class*="Load"]',
+                  '[class*="Backlog"]', '[class*="Flowchart"]', '[class*="_Menu"]'];
+    var vw = window.innerWidth, vh = window.innerHeight;
+    for (var p = 0; p < probes.length; p += 1) {
+      var nodes = document.querySelectorAll(probes[p]);
+      for (var i = 0; i < nodes.length; i += 1) {
+        var r = nodes[i].getBoundingClientRect();
+        var cs = getComputedStyle(nodes[i]);
+        if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.05) continue;
+        if (r.width * r.height > vw * vh * 0.3) return true;
+      }
+    }
+    return false;
+  }
+
+
+  function ownOverlay(node) {
+    return !!(node.closest && (node.closest('#paper-ui') || node.closest('#paper-esc') || node.closest('#paper-title') || node.closest('#paper-chat')));
+  }
+
+  var BAR_LABELS = ['隐藏', '回想', '重播', '自动', '快进', '快速存档', '快速读档', '存档', '读档', '选项', '标题', '全屏'];
+
+  function nativeAction(label) {
+    if (label === '标题' && window.__wgBackToTitle) {
+      if (window.__wgClosePanels) window.__wgClosePanels();
+      setTimeout(function () { window.__wgBackToTitle(); }, 120);
+      return true;
+    }
+    var btns = document.querySelectorAll('[class*="_singleButton"]');
+    // 1) 按底栏文字子节点匹配
+    for (var i = 0; i < btns.length; i += 1) {
+      var t = btns[i].querySelector('[class*="button_text"]');
+      if (t && (t.textContent || '').trim() === label) { btns[i].click(); return true; }
+    }
+    // 2) 按固定顺序兜底
+    var idx = BAR_LABELS.indexOf(label);
+    if (idx >= 0 && btns[idx]) { btns[idx].click(); return true; }
+    // 3) 菜单页面里的文字按钮（选项/存档等页面自带按钮）
+    var leaves = document.querySelectorAll('div, span, button');
+    for (var j = 0; j < leaves.length; j += 1) {
+      var el = leaves[j];
+      if (el.children.length || ownOverlay(el)) continue;
+      if ((el.textContent || '').trim() === label) { el.click(); return true; }
+    }
+    return false;
+  }
+
+  function buildEscBar() {
+    if (document.getElementById('paper-esc')) return document.getElementById('paper-esc');
+    var bar = document.createElement('div');
+    bar.id = 'paper-esc';
+    var back = document.createElement('button');
+    back.textContent = '返回';
+    back.addEventListener('click', function () {
+      if (!nativeAction('返回')) {
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
+      }
+    });
+    var title = document.createElement('button');
+    title.textContent = '标题';
+    title.addEventListener('click', function () {
+      // 原生底栏在菜单里不挂载：先 Esc 关菜单，再走工具栏的「标题」
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
+      setTimeout(function () {
+        var ui = document.getElementById('paper-ui');
+        if (ui) ui.style.display = '';
+        var btn = document.querySelector('#paper-ui .pu-tools button[data-label="标题"]');
+        if (btn) btn.click();
+        else nativeAction('标题');
+      }, 800);
+    });
+    bar.appendChild(back);
+    bar.appendChild(title);
+    document.body.appendChild(bar);
+    return bar;
+  }
+
+
+  function menuBg(show) {
+    var bg = document.getElementById('paper-menubg');
+    if (!bg) {
+      bg = document.createElement('div');
+      bg.id = 'paper-menubg';
+      document.body.appendChild(bg);
+    }
+    bg.style.display = show ? 'block' : 'none';
+  }
+
+  function hideOwnChrome() {
+    var ui = document.getElementById('paper-ui');
+    var chat = document.getElementById('paper-chat');
+    var t = document.getElementById('paper-title');
+    if (ui) ui.style.display = 'none';
+    if (chat) chat.style.display = 'none';
+    if (t) t.style.display = 'none';
+    var esc = buildEscBar();
+    if (esc) esc.style.display = 'flex';
+    menuBg(false);
+  }
+
+  function showOwnChrome() {
+    var ui = document.getElementById('paper-ui');
+    if (ui) ui.style.display = '';
+    var esc = document.getElementById('paper-esc');
+    if (esc) esc.style.display = 'none';
+    menuBg(false);
+  }
+
+
+  function nativeTitleVisible() {
+    var probes = ['开始游戏', '继续游戏'];
+    var els = document.querySelectorAll('div, span');
+    for (var i = 0; i < els.length; i += 1) {
+      var el = els[i];
+      if (el.children.length) continue;
+      var t = (el.textContent || '').trim();
+      if (probes.indexOf(t) < 0) continue;
+      if (ownOverlay(el)) continue;
+      var r = el.getBoundingClientRect();
+      var cs = getComputedStyle(el);
+      if (r.width > 20 && cs.display !== 'none' && cs.visibility !== 'hidden' && parseFloat(cs.opacity) > 0.05) return true;
+    }
+    return false;
+  }
+
   function syncTitle() {
     var t = document.getElementById('paper-title') || buildTitle();
-    var inGame = !!document.querySelector('[class*="TextBox_Container"]');
+
+    // 原生菜单优先：菜单开着时，自绘的一切都收起
+    if (nativePanelOpen()) {
+      hideOwnChrome();
+      return;
+    }
+
+    var hasBar = document.querySelectorAll('[class*="_singleButton"]').length > 0;
+    var atTitle = !hasBar || nativeTitleVisible();
+    var inGame = hasBar && !atTitle;
     t.style.display = inGame ? 'none' : 'block';
+
+    var escBar = document.getElementById('paper-esc');
+    if (escBar) escBar.style.display = inGame && nativePanelOpen() ? 'flex' : 'none';
+
+    if (inGame) {
+      showOwnChrome();
+    } else {
+      // 回到标题：清空聊天记录，避免残留面板
+      chatLines = [];
+      chatSig = '';
+      chatLastTextAt = 0;
+      var chatBox = document.getElementById('paper-chat');
+      if (chatBox) {
+        chatBox.style.display = 'none';
+        var body = chatBox.querySelector('.pc-body');
+        if (body) body.innerHTML = '';
+      }
+    }
 
     // 藏起 WebGAL 自己的标题菜单（保留可点击）
     var nodes = document.querySelectorAll('span');

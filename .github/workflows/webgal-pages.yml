@@ -41,23 +41,8 @@ jobs:
           sed -i 's/^\(\s*\)startPreviewSyncRuntime()/\1\/\/ startPreviewSyncRuntime()/' packages/webgal/src/Core/initializeScript.ts
           grep -n "startPreviewSyncRuntime" packages/webgal/src/Core/initializeScript.ts || true
 
-      - name: 打字机归零（与本地一致）
-        working-directory: .webgal-src
-        run: |
-          python3 - <<'PY'
-          import io
-          p1 = 'packages/webgal/src/hooks/useTextOptions.ts'
-          s = io.open(p1, encoding='utf-8').read()
-          s = s.replace('return startRange + (100 - data) * step;',
-                        'return Math.max(0, startRange + (100 - data) * step);')
-          io.open(p1, 'w', encoding='utf-8').write(s)
-
-          p2 = 'packages/webgal/src/store/userDataReducer.ts'
-          s2 = io.open(p2, encoding='utf-8').read()
-          s2 = s2.replace('textSpeed: 50,', 'textSpeed: 120,').replace('textSpeed: 100,', 'textSpeed: 120,')
-          io.open(p2, 'w', encoding='utf-8').write(s2)
-          print('typewriter patched')
-          PY
+      - name: 引擎补丁（打字机归零 / 回标题 API / 关面板 API）
+        run: python3 .github/patch-engine.py .webgal-src/packages/webgal/src
 
       - name: 安装依赖
         working-directory: .webgal-src

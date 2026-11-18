@@ -1,7 +1,7 @@
 ; ==== 第二章《餐盘之外》 ====
 :第二章《餐盘之外》;
 bgm:bgm_loop.mp3 -volume=45;
-changeBg:ch_banner_2.webp -next -duration=350;
+changeBg:bg_canteen_night.webp -next -duration=350;
 changeBg:bg_canteen_night.webp -next -duration=350;
 你:今天挺早。;
 changeFigure:none -center -next -duration=350;
@@ -93,7 +93,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 你:如果多留十分钟，能去食堂吗？;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:有时候可以。星期三早八不太行，路更远。 -vocal=a2-m16.mp3;
-changeBg:bg_store.webp -next -duration=350;
+changeBg:bg_store_sun.webp -next -duration=350;
 你:那普通早八走食堂，星期三留一个便利店方案。;
 changeBg:bg_canteen_night.webp -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -124,7 +124,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:牛奶和面包我今晚放好，水果明早带。 -vocal=a2-m27.mp3;
-changeBg:bg_store.webp -next -duration=350;
+changeBg:bg_store_sun.webp -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:我明天直接去买，少站在货架前犹豫一轮。 -vocal=a2-m28.mp3;
 changeBg:bg_canteen_night.webp -next -duration=350;
