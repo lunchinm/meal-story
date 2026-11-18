@@ -748,13 +748,41 @@
 
   var lastChoiceKey = '';
 
+
+  // 从引擎选项容器里取条目
+  function readChoiceItems() {
+    var cont = document.querySelector('[class*="_chooseContainer"]');
+    if (!cont) return [];
+
+    var all = [].slice.call(cont.querySelectorAll('div')).map(function (d) {
+      return { el: d, t: (d.innerText || '').replace(/\s+/g, '') };
+    }).filter(function (o) { return o.t.length >= 2 && o.t.length <= 40; });
+
+    // 剔除「文本包含别的候选」的外层容器
+    var leaves = all.filter(function (o) {
+      return !all.some(function (p) { return p !== o && p.t.length < o.t.length && o.t.indexOf(p.t) >= 0; });
+    });
+
+    // 同文本只留一个；再按尺寸过滤（动画早期尺寸为 0 的先跳过）
+    var seen = {};
+    var out = [];
+    leaves.forEach(function (o) {
+      if (seen[o.t]) return;
+      seen[o.t] = 1;
+      var r = o.el.getBoundingClientRect();
+      if (r.height < 20 || r.width < 80) return;
+      out.push(o.el);
+    });
+    return out;
+  }
+
   function syncChoices() {
     var ui = document.getElementById('paper-ui');
     if (!ui) return;
     var box = ui.querySelector('.pu-choices');
     if (!box) return;
 
-    var items = [...document.querySelectorAll('[class*="_chooseContainer"] > div')];
+    var items = readChoiceItems();
     if (!items.length) {
       box.style.display = 'none';
       box.innerHTML = '';
@@ -771,7 +799,7 @@
         var btn = document.createElement('button');
         btn.textContent = text;
         btn.addEventListener('click', function () {
-          var now = [...document.querySelectorAll('[class*="_chooseContainer"] > div')];
+          var now = readChoiceItems();
           if (now[idx]) now[idx].click();
         });
         box.appendChild(btn);
@@ -845,7 +873,7 @@
     }
 
     // 选项做成回复条
-    var items = [].slice.call(document.querySelectorAll('[class*="_chooseContainer"] > div'));
+    var items = readChoiceItems();
     var box = panel.querySelector('.pc-choices');
     if (items.length) {
       box.style.display = 'flex';
@@ -856,7 +884,7 @@
           var btn = document.createElement('button');
           btn.textContent = (it.innerText || '').replace(/\s+/g, ' ').trim();
           btn.addEventListener('click', function () {
-            var now = [].slice.call(document.querySelectorAll('[class*="_chooseContainer"] > div'));
+            var now = readChoiceItems();
             if (now[idx]) now[idx].click();
           });
           box.appendChild(btn);
