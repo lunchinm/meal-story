@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-"""按剧本导出「逐句清单」给运行时用——不再靠背景图/猜测判断界面。
+"""按剧本导出「逐句清单」给运行时用——按节点 id 索引（文本键保留兜底）。
 
-剧本里每句 say 都有明确字段：
+剧本字段：
   channel: chat（群聊，无配音） / stage（文本框，有配音） / 空（= stage）
-  speaker: 角色名，或「旁白」
-  card:    k1/k2/k3 —— 知识卡台词
-  seg:     段落序号
-  scene:   场景（决定背景）
+  speaker / card(k1..k3) / seg / scene
 
-导出成 LINEMETA["speaker|text"] = {c: 0/1(是否聊天), k: 卡片级, s: 段落}
+导出两块：
+  LINE_BY_ID[id]        = {c, k, s, sp, snd}
+  LINE_META["sp|text"]  = {c, k, s}          ← 兼容旧逻辑（文本兜底）
 """
 import io
 import json
@@ -16,38 +15,48 @@ import json
 ROOT = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
 TP = ROOT + r"\webgal-game\theme-inject.js"
 
-meta = {}
-chat_count = stage_count = card_count = 0
+by_id = {}
+by_text = {}
+
 for a in (1, 2, 3, 4):
-    for n in json.load(io.open(f"{ROOT}/content/act{a}.json", encoding="utf-8")):
-        if n["type"] != "say":
-            continue
-        text = (n.get("text") or "").strip()
-        if not text:
-            continue
-        speaker = (n.get("speaker") or "").strip()
-        channel = n.get("channel") or "stage"
-        is_chat = 1 if channel == "chat" else 0
-        if is_chat:
-            chat_count += 1
-        else:
-            stage_count += 1
-        card = n.get("card")
-        if card:
-            card_count += 1
-        key = speaker + "|" + text
-        meta[key] = {"c": is_chat, "k": card or "", "s": n.get("seg") or ""}
+    nodes = json.load(io.open(f"{ROOT}/content/act{a}.json", encoding="utf-8"))
+    scene = None
+    for n in nodes:
+        if n.get("scene"):
+            scene = n["scene"]
+        if n["type"] == "say":
+            text = (n.get("text") or "").strip()
+            if not text:
+                continue
+            sp = (n.get("speaker") or "").strip()
+            is_chat = 1 if n.get("channel") == "chat" else 0
+            by_id[n["id"]] = {"c": is_chat, "k": n.get("card") or "", "s": n.get("seg") or "", "sp": sp}
+            by_text[sp + "|" + text] = {"c": is_chat, "k": n.get("card") or "", "s": n.get("seg") or ""}
+        elif n["type"] == "choice":
+            is_chat = 1 if scene == "chat" else 0
+            opts = n.get("options") or []
+            if len(opts) == 1:
+                by_id[n["id"] + "-pick"] = {"c": is_chat, "k": "", "s": "", "sp": "你", "snd": 1}
+            else:
+                for i in range(len(opts)):
+                    by_id[f'{n["id"]}-c{i}'] = {"c": is_chat, "k": "", "s": "", "sp": "你", "snd": 0}
 
 s = io.open(TP, encoding="utf-8").read()
-START, END = "/* LINEMETA_START */", "/* LINEMETA_END */"
-block = (START + "\n  var LINE_META = " + json.dumps(meta, ensure_ascii=False) + ";\n  " + END)
 
-if START in s:
-    i = s.index(START)
-    j = s.index(END) + len(END)
-    s = s[:i] + block + s[j:]
-else:
-    s = s.replace("  var MENU_LABELS", block + "\n\n  var MENU_LABELS", 1)
+def put(start_tag, end_tag, payload):
+    global s
+    block = start_tag + "\n  " + payload + "\n  " + end_tag
+    if start_tag in s:
+        i = s.index(start_tag)
+        j = s.index(end_tag) + len(end_tag)
+        s = s[:i] + block + s[j:]
+    else:
+        s = s.replace("  var MENU_LABELS", block + "\n\n  var MENU_LABELS", 1)
+
+put("/* LINEID_START */", "/* LINEID_END */",
+    "var LINE_BY_ID = " + json.dumps(by_id, ensure_ascii=False) + ";")
+put("/* LINEMETA_START */", "/* LINEMETA_END */",
+    "var LINE_META = " + json.dumps(by_text, ensure_ascii=False) + ";")
 
 io.open(TP, "w", encoding="utf-8").write(s)
-print(f"逐句清单：聊天 {chat_count} 句 / 文本框 {stage_count} 句 / 知识卡 {card_count} 句，共 {len(meta)} 条键")
+print(f"按 id：{len(by_id)} 条；按文本兜底：{len(by_text)} 条")

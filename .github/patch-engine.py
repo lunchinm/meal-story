@@ -59,9 +59,17 @@ if (typeof window !== 'undefined') {
   (window as any).__wgBackToTitle = backToTitle;
   (window as any).__wgClosePanels = () => {
     const dispatch = webgalStore.dispatch;
-    (['showMenuPanel', 'showBacklog', 'showFlowchart', 'showSave', 'showLoad', 'showConfig'] as string[]).forEach((c) => {
-      try { dispatch(setVisibility({ component: c as any, visibility: false })); } catch (e) { /* 忽略不存在的组件名 */ }
+    // 真实存在的组件名：showMenuPanel(含选项/存档/读档) / showBacklog / showFlowchart
+    (['showMenuPanel', 'showBacklog', 'showFlowchart'] as string[]).forEach((c) => {
+      try { dispatch(setVisibility({ component: c as any, visibility: false })); } catch (e) { /* ignore */ }
     });
+    (window as any).__isMenuOpen = false;
+  };
+  (window as any).__wgTextBox = (show: boolean) => {
+    try { webgalStore.dispatch(setVisibility({ component: 'showTextBox' as any, visibility: !!show })); } catch (e) { /* ignore */ }
+  };
+  (window as any).__wgQuickBar = (show: boolean) => {
+    try { webgalStore.dispatch(setVisibility({ component: 'showControls' as any, visibility: !!show })); } catch (e) { /* ignore */ }
   };
 }
 """, "__wgBackToTitle")
@@ -101,6 +109,13 @@ if (typeof window !== 'undefined') {
       if (v) { v.pause(); v.currentTime = 0; }
     } catch (e) { /* ignore */ }
   };
+  (window as any).__wgGetVar = (key: string) => {
+    try {
+      const vars = (stageStateManager.getViewStageState() as any).GameVar || {};
+      const v = vars[key];
+      return v && typeof v === 'object' ? (v as any).value : v;
+    } catch (e) { return undefined; }
+  };
 }
 """, "__wgNext")
 
@@ -134,6 +149,14 @@ patch("Core/controller/gamePlay/startContinueGame.ts", [
     WebGAL.flowchartManager.waitForCurrentSceneDialog();
     continueSentence();
   });"""),
+])
+
+
+
+# 5) 开场默认背景（避免第一句整屏黑）
+patch("Core/controller/gamePlay/startContinueGame.ts", [
+    ("export const startGame = () => {\n  resetStage(true);",
+     "export const startGame = () => {\n  resetStage(true);\n  try { stageStateManager.setStageAndCommit('bgName', assetSetter('bg_gingko.webp', fileType.background)); } catch (e) { /* ignore */ }  // __wgDefaultBg"),
 ])
 
 print("引擎补丁完成")

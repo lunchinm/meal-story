@@ -101,6 +101,13 @@ def convert_act(act: int) -> list[str]:
 
         if kind == "chapter":
             lines.append(f"label:act{act};")
+            JUMP_TABLE.append({
+                "label": f"act{act}",
+                "act": act,
+                "seg": 0,
+                "text": node.get("title", "")[:20],
+                "scene": "chapter",
+            })
             lines.append(f"; ==== {node.get('title', '')} ====")
             # 第一句必须是 say：否则 changeBg / changeFigure 会卡住整个脚本
             lines.append(f":{esc(node.get('title', '') or '第一章')};")
@@ -126,7 +133,7 @@ def convert_act(act: int) -> list[str]:
                 lines.append("changeFigure:none -center -next;")
                 lines.append(
                     f'changeFigure:{PROP_FIG[prop]} -center '
-                    f'-transform={{"scale":{{"x":0.5,"y":0.5}},"position":{{"x":0,"y":-60}}}} -next;'
+                    f'-transform={{"scale":{{"x":0.3,"y":0.3}},"position":{{"x":260,"y":300}}}} -next;'
                 )
 
             scene = node.get("scene")
@@ -149,6 +156,7 @@ def convert_act(act: int) -> list[str]:
             text = node.get("text", "")
             if node.get("prop"):
                 lines.append(f"; 道具：{node['prop']}")
+            lines.append(f"setVar:line={node.get('id')};")
             voice = None if node.get("channel") == "chat" else node.get("id")  # 群聊不配音
             lines.append(say_line(None if speaker in (None, "旁白") else speaker, text, voice))
             last_speaker = speaker
@@ -162,6 +170,7 @@ def convert_act(act: int) -> list[str]:
                 # 单选项：引擎不渲染单选项面板，这里让「玩家说这句」成为独立一句，
                 # 由自绘 UI 做成底部回复条（点击发送后再推进）
                 only = options[0]
+                lines.append(f"setVar:line={node.get('id')}-pick;")
                 lines.append(say_line("你", only.get("text", "")))
                 reply = only.get("reply")
                 if reply:
@@ -180,6 +189,7 @@ def convert_act(act: int) -> list[str]:
             for index, option in enumerate(options):
                 label = f"c{act}_{node['id']}_{index}".replace("-", "_")
                 lines.append(f"label:{label};")
+                lines.append(f"setVar:line={node.get('id')}-c{index};")
                 lines.append(say_line("你", option.get("text", "")))
                 reply = option.get("reply")
                 if reply:

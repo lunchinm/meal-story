@@ -165,6 +165,11 @@ if (thumbs > 0) {
   }
   rec('N-05a', '玩家台词先在聊天底部以回复条出现', sawChip ? '通过' : '不通过', '');
   await page.waitForTimeout(400);
+  // 玩家消息可能由纸签点击触发，也可能在下一句到来时自动落地：等一会儿
+  for (let i = 0; i < 40; i += 1) {
+    if (await page.evaluate(() => !!document.querySelector('#paper-chat .pc-row.me'))) break;
+    await advance(1, 550);
+  }
   const meInfo = await page.evaluate(() => {
     const me = document.querySelector('#paper-chat .pc-row.me');
     const other = document.querySelector('#paper-chat .pc-row:not(.me)');

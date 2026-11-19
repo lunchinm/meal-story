@@ -1,5 +1,12 @@
 [
  {
+  "label": "act1",
+  "act": 1,
+  "seg": 0,
+  "text": "第一章《套餐的秘密》",
+  "scene": "chapter"
+ },
+ {
   "label": "seg1_1",
   "act": 1,
   "seg": 1,
@@ -33,6 +40,20 @@
   "seg": 5,
   "text": "那我有个更实际的问题。",
   "scene": "canteen"
+ },
+ {
+  "label": "act2",
+  "act": 2,
+  "seg": 0,
+  "text": "第二章《餐盘之外》",
+  "scene": "chapter"
+ },
+ {
+  "label": "act3",
+  "act": 3,
+  "seg": 0,
+  "text": "第三章《翻到包装背面》",
+  "scene": "chapter"
  },
  {
   "label": "seg3_6",
@@ -89,6 +110,13 @@
   "seg": 13,
   "text": "还要拍标签吗？",
   "scene": "store"
+ },
+ {
+  "label": "act4",
+  "act": 4,
+  "seg": 0,
+  "text": "第四章《你的方案，能坚持吗》",
+  "scene": "chapter"
  },
  {
   "label": "seg4_14",
