@@ -6,8 +6,8 @@
   window.__paperUiLoaded = true;
 
   var CSS = `
-/* ---------- WebGAL 原生文本框：视觉隐藏，保留点击 ---------- */
-[class*="TextBox_Container"] {
+/* ---------- 舞台原生文本框：视觉隐藏（设置页内嵌预览不受影响） ---------- */
+[class*="MainStage"] [class*="TextBox_Container"], #textBoxMain {
   opacity: 0 !important;
   pointer-events: auto !important;
 }
@@ -602,8 +602,8 @@
 }
 
 
-/* ---------- 原生对话框不吃点击（否则点空白会重播语音） ---------- */
-[class*="TextBox_Container"] {
+/* ---------- 舞台对话框不吃点击（否则点空白会重播语音） ---------- */
+[class*="MainStage"] [class*="TextBox_Container"], #textBoxMain {
   pointer-events: none !important;
 }
 
@@ -1015,6 +1015,17 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
 #paper-task .pt-endbtns{display:flex;gap:12px;justify-content:center;margin-top:22px}
 #paper-task .pt-endbtns button{padding:9px 22px;background:#2f4a34;color:#fcf9f0;border:none;border-radius:4px;font-family:inherit;font-size:15px;cursor:pointer}
 #paper-task .pt-endbtns button.ghost{background:transparent;color:#33402f;border:1px solid #b9a986}
+/* ---- 鉴赏：整页大气 ---- */
+#paper-appreciation{position:fixed;inset:0;z-index:99985;display:none;overflow-y:auto;background:radial-gradient(120% 90% at 50% 20%,#fdfaf1 40%,#efe6d2 100%);font-family:'Songti SC','SimSun','Noto Serif SC',serif;color:#2f3a2e;padding:48px 8vw}
+#paper-appreciation .pa-head{display:flex;align-items:baseline;justify-content:space-between;border-bottom:1px solid #b9a986;padding-bottom:16px;margin-bottom:26px}
+#paper-appreciation .pa-title{font-size:30px;letter-spacing:.2em}
+#paper-appreciation .pa-close{padding:8px 20px;background:transparent;border:1px solid #b9a986;border-radius:4px;color:#33402f;font-family:inherit;font-size:14px;cursor:pointer}
+#paper-appreciation .pa-sec{font-size:14px;letter-spacing:.3em;color:#6f7b63;margin:22px 0 12px}
+#paper-appreciation .pa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+#paper-appreciation .pa-card{background:rgba(252,249,240,.95);border:1px solid rgba(120,104,74,.42);border-radius:6px;padding:18px 18px;cursor:pointer;transition:.15s;box-shadow:0 4px 12px rgba(84,70,44,.12)}
+#paper-appreciation .pa-card:hover{border-color:#2f4a34;transform:translateY(-2px)}
+#paper-appreciation .pa-card .t{font-size:17px;margin-bottom:6px}
+#paper-appreciation .pa-card .s{font-size:12px;color:#8a8064}
 `;
   function addCss() {
     // 只注入一次：早先每次删除重建 <style>，会强制整页重排，推进一次要好几秒
@@ -1830,12 +1841,51 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
     });
   }
 
+  // 鉴赏：整页，含章节回顾 + 互动节点
+  var APPRECIATION_NODES = [
+    ['t_a1_explore', 'act1.txt', '翻阅 · 餐桌三样', '互动'],
+    ['t_a1_it', 'act1.txt', '核实 · 宣传图圈画', '互动'],
+    ['t_a2_plate', 'act2.txt', '配餐 · 十二元午饭', '互动'],
+    ['t_a3_it', 'act3.txt', '对比 · 瓶身含糖', '互动'],
+    ['t_a3_milk', 'act3.txt', '核实 · 牛奶还是饮品', '互动'],
+    ['t_a4_it', 'act4.txt', '配餐 · 赶课日方案', '互动'],
+  ];
+  function buildAppreciation() {
+    if (document.getElementById('paper-appreciation')) return;
+    var a = document.createElement('div');
+    a.id = 'paper-appreciation';
+    a.innerHTML = '<div class="pa-head"><div class="pa-title">鉴赏 · 回顾</div><button class="pa-close">返回</button></div>' +
+      '<div class="pa-sec">章节回顾</div><div class="pa-grid" id="pa-chapters"></div>' +
+      '<div class="pa-sec">互动节点</div><div class="pa-grid" id="pa-nodes"></div>';
+    document.body.appendChild(a);
+    stopOwnEvents(a);
+    a.querySelector('.pa-close').addEventListener('click', function () { a.style.display = 'none'; });
+    loadJumpList(function (list) {
+      var ch = a.querySelector('#pa-chapters');
+      list.filter(function (it) { return it.seg === 0; }).forEach(function (it) {
+        var c = document.createElement('div'); c.className = 'pa-card';
+        c.innerHTML = '<div class="t">第 ' + it.act + ' 章</div><div class="s">' + esc(it.text || '') + '</div>';
+        c.addEventListener('click', function () { a.style.display = 'none'; jumpTo(it.label, 'act' + it.act + '.txt'); });
+        ch.appendChild(c);
+      });
+    });
+    var nd = a.querySelector('#pa-nodes');
+    APPRECIATION_NODES.forEach(function (n) {
+      var c = document.createElement('div'); c.className = 'pa-card';
+      c.innerHTML = '<div class="t">' + esc(n[2]) + '</div><div class="s">' + esc(n[3]) + '</div>';
+      c.addEventListener('click', function () { a.style.display = 'none'; jumpTo(n[0], n[1]); });
+      nd.appendChild(c);
+    });
+  }
+  function openAppreciation() { buildAppreciation(); var a = document.getElementById('paper-appreciation'); if (a) a.style.display = 'block'; }
+
   function buildJumpPanel() {
     var btn = document.getElementById('paper-jump-btn');
     if (!btn) {
       btn = document.createElement('button');
       btn.id = 'paper-jump-btn';
       btn.textContent = '跳关';
+      btn.style.display = 'none'; // 跳关已并入鉴赏
       document.body.appendChild(btn);
       stopOwnEvents(btn);
       btn.addEventListener('click', openJump);
@@ -2086,8 +2136,9 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
   function sync() {
     try {
       // 原生面板（设置/存档/回想/流程图）打开时收起自绘层，让原生面板完整显示；
-      // 判定来自引擎 GUI 状态，不会误伤标题页或关闭态图层。
-      if (nativePanelOpen()) { hideOwnChrome(); return; }
+      // 标题页不在此列（返回标题后需显示纸质标题）。
+      var gg = null; try { gg = window.__wgGui && window.__wgGui(); } catch (e) { /* ignore */ }
+      if (nativePanelOpen() && !(gg && gg.title)) { hideOwnChrome(); return; }
       syncInner();
     } catch (e) { /* 单次失败不影响游戏 */ }
   }
@@ -2315,7 +2366,7 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
       if (want === '开始游戏') { chapterDismissed = ''; showPress(); return; }
       if (want === '继续游戏' || want === '读取存档') { gameStarted = true; if (window.__wgOpenMenuTag) { window.__wgOpenMenuTag(1); return; } }
       if (want === '游戏选项') { if (window.__wgOpenMenuTag) { window.__wgOpenMenuTag(2); return; } }
-      if (want === '鉴赏模式') { openJump(); return; }
+      if (want === '鉴赏模式') { openAppreciation(); return; }
       if (want === '退出游戏') { splashDone = false; var sp = document.getElementById('paper-splash'); if (sp) sp.style.display = 'flex'; gameStarted = false; return; }
       var spans = document.querySelectorAll('span,div');
       for (var i = 0; i < spans.length; i += 1) {
@@ -2434,8 +2485,9 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
     if (ui) ui.style.display = 'none';
     if (chat) chat.style.display = 'none';
     if (t) t.style.display = 'none';
-    var esc = buildEscBar();
-    if (esc) esc.style.display = 'flex';
+    // 原生面板自带返回/标题，不再叠加自绘 esc 条
+    var esc = document.getElementById('paper-esc');
+    if (esc) esc.style.display = 'none';
     menuBg(false);
   }
 
@@ -2494,9 +2546,17 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
     // 原生标题菜单始终隐藏（我们仍用程序点击它的条目）
     hideNativeTitleMenu();
 
-    if (stateSeenText) gameStarted = true;
-    var hasGameDom = stateSeenText || !!document.querySelector('[class*="chooseContainer"], [class*="TextBox_Container"]');
-    var atTitle = !gameStarted || (!hasGameDom && nativeTitleVisible());
+    // 引擎已回到标题（含设置里"返回标题"确认）且无游戏 DOM 时，重置状态并收起残留面板
+    var g = null; try { g = window.__wgGui && window.__wgGui(); } catch (e) { /* ignore */ }
+    var hasGameDom = !!document.querySelector('[class*="chooseContainer"], [class*="TextBox_Container"]');
+    if (g && g.title) {
+      gameStarted = false; stateSeenText = false;
+      if (window.__wgClosePanels) window.__wgClosePanels();
+    }
+
+    if (stateSeenText || hasGameDom) gameStarted = true;
+    // 以引擎 GUI.title 为标题页的权威信号，避免 DOM 误判
+    var atTitle = (g && g.title) ? true : (!gameStarted || (!hasGameDom && nativeTitleVisible()));
     var inGame = gameStarted && !atTitle;
     if (document.body) document.body.classList.toggle('paper-at-title', !inGame);
 
