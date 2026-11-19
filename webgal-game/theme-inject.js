@@ -979,6 +979,42 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
 @keyframes paperIn{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:900px){#paper-chat{right:20px;top:20px;width:calc(100vw - 40px);height:55vh}#paper-ui .pu-card{left:20px;right:20px;bottom:30px;padding:20px}#paper-ui .pu-text{font-size:18px;line-height:1.8}#paper-task{left:20px;top:24px;width:calc(100vw - 96px)}#paper-title .pt-lockup{left:40px;top:80px}#paper-title .pt-name{font-size:40px}#paper-title .pt-menu{left:40px;bottom:48px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ---- 选项：对齐参考版的细纸条，不臃肿 ---- */
+[class*="_chooseContainer"]{position:fixed!important;left:50%!important;right:auto!important;top:auto!important;bottom:32vh!important;transform:translateX(-50%)!important;width:min(600px,86vw)!important;max-height:none!important;display:flex!important;flex-direction:column!important;gap:12px!important;background:transparent!important;opacity:1!important;z-index:60!important;overflow:visible!important}
+[class*="_chooseContainer"]>div{width:100%!important;background:transparent!important;background-image:none!important;border:none!important;box-shadow:none!important;display:flex!important;flex-direction:column!important;gap:12px!important;padding:0!important;margin:0!important}
+[class*="_Choose_item_outer"]{width:100%!important;height:auto!important;min-height:0!important;box-sizing:border-box!important;padding:12px 20px!important;margin:0!important;background:rgba(252,249,240,.95)!important;background-image:none!important;border:1px solid rgba(120,104,74,.42)!important;border-radius:4px!important;box-shadow:0 4px 12px rgba(84,70,44,.18)!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;font-size:16px!important;color:#33402f!important;cursor:pointer!important}
+[class*="_Choose_item_outer"] *{font-size:16px!important;color:#33402f!important;background:none!important;border:none!important;box-shadow:none!important;padding:0!important;margin:0!important;-webkit-text-stroke:0!important;text-shadow:none!important}
+#paper-ui .pu-choices button{font-size:16px!important;padding:0 20px!important;display:flex!important;align-items:center!important;justify-content:center!important;background:rgba(252,249,240,.95)!important;border:1px solid rgba(120,104,74,.42)!important;border-radius:4px!important;box-shadow:0 4px 12px rgba(84,70,44,.18)!important;color:#33402f!important}
+/* ---- 确认横幅纸质化 ---- */
+#globalDialogContainer [class*="GlobalDialog_main"]{background:rgba(24,20,12,.45)!important;color:#33402f!important;font-family:'Songti SC','SimSun',serif!important}
+#globalDialogContainer [class*="glabalDialog_container"]{height:auto!important;border-image:none!important;border-top:1px solid #b9a986!important;border-bottom:1px solid #b9a986!important}
+#globalDialogContainer [class*="glabalDialog_container_inner"]{background:rgba(252,249,240,.97)!important;padding:26px 40px!important}
+#globalDialogContainer [class*="title"]{color:#2f3a2e!important;text-shadow:none!important;font-size:24px!important}
+#globalDialogContainer [class*="button"]{color:#2f4a34!important;text-shadow:none!important;background:#f4ecda!important;border:1px solid #b9a986!important;border-radius:4px!important;font-size:16px!important}
+#globalDialogContainer [class*="button"]:hover{background:#e9dfc8!important;color:#2f4a34!important;transform:none!important}
+/* ---- 回想关闭态恒隐藏，防换场景闪现 ---- */
+[class*="Backlog_main_out"]{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+/* ---- 流程图纸质化 ---- */
+[class*="Flowchart_main"]:not([class*="out"]){background:radial-gradient(120% 90% at 50% 20%,rgba(255,252,244,.98) 45%,rgba(243,235,220,.99) 100%)!important;font-family:'Songti SC','SimSun',serif!important}
+[class*="Flowchart_main"]:not([class*="out"]) *{font-family:'Songti SC','SimSun',serif!important}
+/* ---- 选菜画布铺展 ---- */
+#paper-task .pt-dishgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+#paper-task .pt-dish{background:#fffdf7;border:1px solid #b9a986;border-radius:6px;padding:8px 6px;text-align:center;cursor:pointer;transition:.15s}
+#paper-task .pt-dish:hover{border-color:#2f4a34;transform:translateY(-2px)}
+#paper-task .pt-dish img{width:100%;height:64px;object-fit:contain;display:block}
+#paper-task .pt-dish .dn{font-size:13px;color:#33402f;margin-top:4px}
+#paper-task .pt-dish .dp{font-size:12px;color:#6f7b63}
+#paper-task .pt-tray{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+#paper-task .pt-slot{min-height:70px;border:1px dashed #a89b7d;border-radius:6px;background:#f7f1e3;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:4px}
+#paper-task .pt-slot img{max-width:100%;max-height:60px;object-fit:contain}
+/* ---- 对比选项可点 ---- */
+#paper-task .pt-offer{border:1px solid #b9a986;border-radius:6px;background:#fffdf7;padding:10px 14px;margin-bottom:8px;cursor:pointer;transition:.15s}
+#paper-task .pt-offer:hover{border-color:#2f4a34;background:#f4ecda}
+#paper-task .pt-offer.picked{border-color:#2f4a34;background:#dfe9d8}
+/* ---- 结局按钮 ---- */
+#paper-task .pt-endbtns{display:flex;gap:12px;justify-content:center;margin-top:22px}
+#paper-task .pt-endbtns button{padding:9px 22px;background:#2f4a34;color:#fcf9f0;border:none;border-radius:4px;font-family:inherit;font-size:15px;cursor:pointer}
+#paper-task .pt-endbtns button.ghost{background:transparent;color:#33402f;border:1px solid #b9a986}
 `;
   function addCss() {
     // 只注入一次：早先每次删除重建 <style>，会强制整页重排，推进一次要好几秒
@@ -1756,6 +1792,7 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
   function jumpTo(label, scene) {
     var p = document.getElementById('paper-jump');
     if (p) p.style.display = 'none';
+    chapterDismissed = '';
     window.__wgDebugStart = { scene: scene || 'start.txt', label: label };
     // 回到标题，等标题真的出现后再开局，走到目标 label
     titleForcedUntil = Date.now() + 8000;   // 让自绘标题在这段时间里保持可见
@@ -1777,6 +1814,22 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
     setTimeout(tick, 400);
   }
 
+  function openJump() {
+    var p = document.getElementById('paper-jump');
+    if (!p) return;
+    if (p.style.display === 'block') { p.style.display = 'none'; return; }
+    loadJumpList(function (list) {
+      p.innerHTML = '<div class="pj-h">鉴赏 · 按章节回顾</div>';
+      list.filter(function (it) { return it.seg === 0; }).forEach(function (it) {
+        var b = document.createElement('button');
+        b.textContent = '第 ' + it.act + ' 章 · ' + (it.text || '');
+        b.addEventListener('click', function () { jumpTo(it.label, 'act' + it.act + '.txt'); });
+        p.appendChild(b);
+      });
+      p.style.display = 'block';
+    });
+  }
+
   function buildJumpPanel() {
     var btn = document.getElementById('paper-jump-btn');
     if (!btn) {
@@ -1785,21 +1838,7 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
       btn.textContent = '跳关';
       document.body.appendChild(btn);
       stopOwnEvents(btn);
-      btn.addEventListener('click', function () {
-        var p = document.getElementById('paper-jump');
-        if (!p) return;
-        if (p.style.display === 'block') { p.style.display = 'none'; return; }
-        loadJumpList(function (list) {
-          p.innerHTML = '<div class="pj-h">按章节跳转</div>';
-          list.filter(function (it) { return it.seg === 0; }).forEach(function (it) {
-            var b = document.createElement('button');
-            b.textContent = '第 ' + it.act + ' 章 · ' + (it.text || '');
-            b.addEventListener('click', function () { jumpTo(it.label, 'act' + it.act + '.txt'); });
-            p.appendChild(b);
-          });
-          p.style.display = 'block';
-        });
-      });
+      btn.addEventListener('click', openJump);
     }
     var panel = document.getElementById('paper-jump');
     if (!panel) {
@@ -1820,8 +1859,10 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
     return el;
   }
 
-  var FOOD_NAMES={rice:'米饭 2 元',noodle:'面条 5 元',potato:'土豆丝 3 元',greens:'青菜 3 元',tomato_egg:'番茄炒蛋 4 元',pork:'红烧肉 6 元',tofu:'豆腐 3 元',egg:'鸡蛋 2 元'};
+  var FOOD_NAMES={rice:'米饭',noodle:'面条',potato:'土豆丝',greens:'青菜',tomato_egg:'番茄炒蛋',pork:'红烧肉',tofu:'豆腐',egg:'鸡蛋'};
   var FOOD_PRICE={rice:2,noodle:5,potato:3,greens:3,tomato_egg:4,pork:6,tofu:3,egg:2};
+  var DISH_IMG={rice:'dish_rice',noodle:'dish_noodle',potato:'dish_potato',greens:'dish_greens',tomato_egg:'dish_tomato_egg',pork:'dish_pork',tofu:'dish_tofu',egg:'dish_egg'};
+  function dishSrc(k){return 'game/figure/'+(DISH_IMG[k]||'dish_rice')+'.webp';}
   var taskStates={};
   function bindTask(panel,data){
     if(!data||panel.dataset.bound===data.id)return;
@@ -1829,13 +1870,43 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
     var st=taskStates[data.id]||(taskStates[data.id]={picked:[],selected:[],read:[]});
     if(data.kind==='plate'){
       function redraw(){
-        panel.querySelectorAll('.pt-slot').forEach(function(el,i){el.textContent=FOOD_NAMES[st.picked[i]]||('空格 '+(i+1));});
+        panel.querySelectorAll('.pt-slot').forEach(function(el,i){
+          var k=st.picked[i];
+          el.innerHTML=k?'<img src="'+dishSrc(k)+'" alt="'+esc(FOOD_NAMES[k]||'')+'">':'';
+        });
         var price=st.picked.reduce(function(a,x){return a+(FOOD_PRICE[x]||0);},0);
         var status=panel.querySelector('.pt-status'); if(status)status.textContent='已选 '+st.picked.length+' 格 · 合计 '+price+' 元 / '+data.budget+' 元';
       }
+      redraw();
       panel.querySelectorAll('[data-food]').forEach(function(b){b.onclick=function(){if(st.picked.length<(Number(data.slots)||4))st.picked.push(b.dataset.food);redraw();};});
       panel.querySelectorAll('[data-slot]').forEach(function(b){b.onclick=function(){st.picked.splice(Number(b.dataset.slot),1);redraw();};});
-      var done=panel.querySelector('.pt-done'); if(done)done.onclick=function(){var price=st.picked.reduce(function(a,x){return a+(FOOD_PRICE[x]||0);},0);var good=st.picked.some(function(x){return ['rice','noodle'].includes(x);})&&st.picked.some(function(x){return ['greens','potato'].includes(x);})&&st.picked.some(function(x){return ['tomato_egg','pork','tofu','egg'].includes(x);});panel.querySelector('.pt-status').textContent=!st.picked.length?'餐盘还是空的，先选几样。':price>data.budget?'超出预算了，点格子撤下一样再调整。':good?'主食、蔬菜、蛋白都有了，这份搭配可以落地。':'再看看：主食、蔬菜和蛋白是否都留了一格？';};
+      var done=panel.querySelector('.pt-done'); if(done)done.onclick=function(){
+        var price=st.picked.reduce(function(a,x){return a+(FOOD_PRICE[x]||0);},0);
+        var good=st.picked.some(function(x){return ['rice','noodle'].includes(x);})&&st.picked.some(function(x){return ['greens','potato'].includes(x);})&&st.picked.some(function(x){return ['tomato_egg','pork','tofu','egg'].includes(x);});
+        var msg=!st.picked.length?'餐盘还是空的，先选几样。':price>data.budget?'超出预算了，点格子撤下一样再调整。':good?'主食、蔬菜、蛋白都有了，这份搭配可以落地。':'再看看：主食、蔬菜和蛋白是否都留了一格？';
+        panel.querySelector('.pt-status').textContent=msg;
+        if(st.picked.length&&price<=data.budget&&good){var items=readChoiceItems();if(items[0])items[0].click();}
+      };
+    }
+    if(data.kind==='compare'){
+      panel.querySelectorAll('[data-offer]').forEach(function(b){
+        b.onclick=function(){
+          panel.querySelectorAll('.pt-offer').forEach(function(x){x.classList.remove('picked');});
+          b.classList.add('picked');
+          var i=Number(b.dataset.offer);
+          var items=readChoiceItems();
+          if(items[i])items[i].click();
+          var s=panel.querySelector('.pt-status');if(s)s.textContent='已选择：'+(data.offers[i]&&data.offers[i].name||'');
+        };
+      });
+    }
+    if(data.kind==='ending'){
+      panel.querySelectorAll('[data-end]').forEach(function(b){
+        b.onclick=function(){
+          if(b.dataset.end==='title'){if(window.__wgBackToTitle)window.__wgBackToTitle();}
+          else{chapterDismissed='';if(window.__wgStart)window.__wgStart();}
+        };
+      });
     }
     if(data.kind==='evidence')panel.querySelectorAll('.pl').forEach(function(b,i){b.style.cursor='pointer';b.onclick=function(){b.classList.toggle('hi');var s=panel.querySelector('.pt-evidence-status');if(s)s.textContent='已标记 '+panel.querySelectorAll('.pl.hi').length+' 处 · 再想想哪些说法需要依据';};});
     if(data.kind==='explore')panel.querySelectorAll('li').forEach(function(li){li.style.cursor='pointer';li.onclick=function(){li.style.color='#2f4a34';li.style.fontWeight='bold';};});
@@ -1852,18 +1923,18 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
     if (data.hint) html += '<div class="pt-hint">' + esc(data.hint) + '</div>';
 
     if (data.kind === 'plate') {
-      html += '<div class="pt-sec">预算 ' + esc(data.budget) + ' 元 · ' + esc(data.slots) + ' 个格子 · 点菜品放入餐盘</div>';
-      html += '<div class="pt-tray">' + Array.from({length:Number(data.slots)||4},function(_,i){return '<button class="pt-slot" data-slot="'+i+'">空格 '+(i+1)+'</button>';}).join('') + '</div>';
-      html += '<div class="pt-chips">' + (data.cards || []).map(function (c) {
-        return '<button class="pt-chip" data-food="'+esc(c)+'">'+esc(FOOD_NAMES[c]||c)+'</button>';
+      html += '<div class="pt-sec">预算 ' + esc(data.budget) + ' 元 · ' + esc(data.slots) + ' 格 · 点菜放入餐盘，点格子撤下</div>';
+      html += '<div class="pt-tray">' + Array.from({length:Number(data.slots)||4},function(_,i){return '<button class="pt-slot" data-slot="'+i+'"></button>';}).join('') + '</div>';
+      html += '<div class="pt-dishgrid">' + (data.cards || []).map(function (c) {
+        return '<div class="pt-dish" data-food="'+esc(c)+'"><img src="'+dishSrc(c)+'" alt=""><div class="dn">'+esc(FOOD_NAMES[c]||c)+'</div><div class="dp">'+(FOOD_PRICE[c]||0)+' 元</div></div>';
       }).join('') + '</div><div class="pt-status">先选主食，再搭配蔬菜和蛋白。</div><button class="pt-done">就这样搭配</button>';
     } else if (data.kind === 'compare') {
-      html += '<div class="pt-sec">货架上的两瓶</div>';
-      html += (data.offers || []).map(function (o) {
-        return '<div class="pt-poster" style="margin-bottom:8px"><div class="pl">' + esc(o.name) + '</div>'
+      html += '<div class="pt-sec">货架上的两瓶 · 点选你认为整瓶含糖更多的一瓶</div>';
+      html += (data.offers || []).map(function (o, i) {
+        return '<div class="pt-offer" data-offer="'+i+'"><div class="pl"><b>' + esc(o.name) + '</b></div>'
           + '<div class="pl">正面：' + esc(o.front) + '</div>'
-          + '<div class="pl">背面：' + esc(o.back || '') + '</div></div>';
-      }).join('');
+          + '<div class="pl">背面：' + esc(Array.isArray(o.back)?o.back.join(' / '):(o.back || '')) + '</div></div>';
+      }).join('') + '<div class="pt-status">点击一个选项作出判断。</div>';
     } else if (data.kind === 'explore') {
       html += '<ul>' + (data.items || []).map(function (i) {
         return '<li>' + esc(i.label) + ' — ' + esc(i.summary) + '</li>';
@@ -1883,6 +1954,7 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
       if (data.action) html += '<div class="pt-action">明天可以做的一件事：' + esc(data.action) + '</div>';
       if ((data.unlocks || []).length) html += '<div class="pt-sec">解锁</div><div class="pt-chips">'
         + data.unlocks.map(function (u) { return '<span class="pt-chip">' + esc(u) + '</span>'; }).join('') + '</div>';
+      html += '<div class="pt-endbtns"><button data-end="title">返回标题</button><button data-end="again" class="ghost">再玩一次</button></div>';
     }
 
     panel.innerHTML = html;
@@ -2240,9 +2312,11 @@ body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*
       if (!btn) return;
       var want = btn.getAttribute('data-label');
 
-      if (want === '开始游戏') { showPress(); return; }
+      if (want === '开始游戏') { chapterDismissed = ''; showPress(); return; }
       if (want === '继续游戏' || want === '读取存档') { gameStarted = true; if (window.__wgOpenMenuTag) { window.__wgOpenMenuTag(1); return; } }
       if (want === '游戏选项') { if (window.__wgOpenMenuTag) { window.__wgOpenMenuTag(2); return; } }
+      if (want === '鉴赏模式') { openJump(); return; }
+      if (want === '退出游戏') { splashDone = false; var sp = document.getElementById('paper-splash'); if (sp) sp.style.display = 'flex'; gameStarted = false; return; }
       var spans = document.querySelectorAll('span,div');
       for (var i = 0; i < spans.length; i += 1) {
         if (spans[i].children.length === 0 && (spans[i].textContent || '').trim() === want) {
