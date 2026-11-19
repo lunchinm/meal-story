@@ -1,0 +1,13 @@
+import { chromium } from "playwright";
+const b=await chromium.launch(); const p=await b.newPage({viewport:{width:1600,height:1000}});
+const go=async(label,scene,name)=>{ await p.evaluate(([s,l])=>{window.__wgDebugStart={scene:s,label:l};},[scene,label]);
+  await p.evaluate(()=>{const s=document.getElementById("paper-splash");if(s&&getComputedStyle(s).display!=="none")s.click();}); await p.waitForTimeout(300);
+  await p.evaluate(()=>{const t=document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]');if(t)t.click();}); await p.waitForTimeout(400);
+  await p.evaluate(()=>{const pr=document.getElementById("paper-press");if(pr&&getComputedStyle(pr).display!=="none")pr.click();}); await p.waitForTimeout(5000);
+  await p.screenshot({path:"artifacts/ae-"+name+".png"}); };
+await p.goto("http://127.0.0.1:8081/?t="+Date.now(),{waitUntil:"commit"}); await p.waitForTimeout(6000);
+await go("t_a2_plate","act2.txt","plate");
+await go("t_a3_it","act3.txt","compare");
+await go("t_a2_hub0","act2.txt","choose");
+await go("t_e_normal","act4.txt","ending");
+await b.close();
