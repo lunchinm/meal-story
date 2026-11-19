@@ -34,8 +34,11 @@ shutil.copy2(os.path.join(ROOT, "webgal-game", "theme-inject.js"), os.path.join(
 idx = os.path.join(DIST, "index.html")
 s = io.open(idx, encoding="utf-8").read()
 base = ('<style id="paper-base-bg">html,body{background:#f6efe0 !important;}</style>')
+preload = ('<style id="paper-preload">html,body{background:#f6efe0 !important}#root{opacity:0 !important}</style>')
 if "paper-base-bg" not in s:
     s = s.replace("<head>", "<head>" + base, 1)
+if "paper-preload" not in s:
+    s = s.replace("</head>", preload + "</head>", 1)
 s = s.replace("background: black;", "background: #f6efe0;")
 s = s.replace("background-color: black;", "background-color: #f6efe0;")
 s = s.replace("loadIifePlugin('lib/live2d.min.js')", "Promise.resolve(null)")
