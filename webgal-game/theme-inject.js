@@ -1266,9 +1266,17 @@
     var p = document.getElementById('paper-jump');
     if (p) p.style.display = 'none';
     window.__wgDebugStart = { scene: scene || 'start.txt', label: label };
-    // 回到标题再开局，走到目标 label
+    // 回到标题，等标题真的出现后再开局，走到目标 label
     if (gameStarted && window.__wgBackToTitle) window.__wgBackToTitle();
-    setTimeout(function () { nativeAction('开始游戏'); }, 900);
+    var tries = 0;
+    var tick = function () {
+      tries += 1;
+      var t = document.getElementById('paper-title');
+      var visible = t && getComputedStyle(t).display !== 'none';
+      if (visible) { nativeAction('开始游戏'); return; }
+      if (tries < 60) setTimeout(tick, 250);
+    };
+    setTimeout(tick, 400);
   }
 
   function buildJumpPanel() {
