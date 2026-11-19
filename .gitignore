@@ -6,7 +6,7 @@ Thumbs.db
 .vscode/
 .idea/
 .artifacts/
-*.tmp.wav
+artifacts/
 *.tmp.wav
 test-results/
 playwright-report/
