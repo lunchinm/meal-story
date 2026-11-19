@@ -16,3 +16,6 @@ playwright-report/
 
 qa-*/
 tests/*.png
+
+__pycache__/
+*.pyc
