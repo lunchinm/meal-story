@@ -63,6 +63,7 @@ jobs:
           cp assets/voice/*.mp3 "$SRC"/vocal/
           cp webgal-game/scene/*.txt "$SRC"/scene/
           cp webgal-game/config.txt "$SRC"/config.txt
+          cp webgal-game/jump.json "$SRC"/jump.json
           cp webgal-game/userStyleSheet.css "$SRC"/userStyleSheet.css
           cp webgal-game/template/Stage/TextBox/textbox.scss "$SRC"/template/Stage/TextBox/
           cp webgal-game/template/Stage/Choose/choose.scss "$SRC"/template/Stage/Choose/

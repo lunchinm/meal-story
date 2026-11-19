@@ -33,3 +33,17 @@ Playwright 失败时会留 `test-results/` 下的截图、录屏与 trace，用
 
 - `npm run preview` 会被 Playwright 自动拉起，但 `test:play` 需要先手动起一个（`npm run preview -- --port 4174`）
 - 单文件构建产物在 `dist/index.html`，测试跑的是 `vite preview` 的那份，改完记得 `npm run build`
+
+## 五、测试节奏（2026-11-19 定）
+
+改一处就跑一遍 80 条全量是浪费——一轮几十步大半时间在这里。按下面分档：
+
+| 场景 | 跑什么 | 预算 |
+| --- | --- | --- |
+| 改样式 / 文案 / 单点逻辑 | `npm run test:static` + 相关那一条 spec（`--grep`） | < 20 秒 |
+| 改交互 / 引擎接入 / 转换器 | `npm run test:e2e`（22 条）+ `test:static` | < 1 分钟 |
+| 连续改了 3 处以上，或准备提交 | 上一档 + `test:play` 整局跑一遍 | < 5 分钟 |
+| 里程碑 / 发布线上前 | `tools/qa-cloud.mjs` 全量 80 条 + 线上实跑 | 一次性 |
+
+规则：**全量只在「发布前」和「连续改动累积」两处跑**，中间过程用上一档兜住。
+线上版本问题用 qa-cloud 的截图证据说话，不要每改一行就重跑全量。
