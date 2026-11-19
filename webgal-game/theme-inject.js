@@ -924,6 +924,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
   var CSS_V2 = `
 /* 标题页背景：直接由主题绘制，避免引擎备用灰底/黑色遮罩在不同构建下不一致 */
 [class*="Title_backup_background"]{display:none!important}
+[class*="Title_main"],[class*="Title_background"],[class*="Title_backup_background"]{opacity:0!important;pointer-events:none!important}
+[class*="Loading_main"],[class*="Loading_container"],#loading{display:none!important}
 #paper-title{background:url('game/background/bg_desk_warm.webp') center/cover no-repeat #f6efe0!important}
 #paper-ui .pu-card{cursor:pointer;animation:paperIn .24s ease}
 #paper-task{width:min(650px,calc(100vw - 112px));max-height:68vh;padding:24px 28px;pointer-events:auto}
@@ -1994,6 +1996,11 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     (document.body || document.documentElement).appendChild(cover);
 
     window.__paperBootDone = function () {
+      var t = document.getElementById('paper-title');
+      var titleShown = t && getComputedStyle(t).display !== 'none';
+      var pre = document.getElementById('paper-preload');
+      // 只有纸质标题已经盖住画面，才允许原生层显形，避免启动闪屏
+      if (pre && titleShown && pre.parentNode) pre.parentNode.removeChild(pre);
       var el = document.getElementById('paper-boot');
       if (!el || el.dataset.closing === '1') return;
       el.dataset.closing = '1';
@@ -2104,6 +2111,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 
 
   // 原生的全屏菜单是否打开（选项 / 存档 / 读档 / 流程图 / 回想）
+  // 注意：原生标题页里也有 _Menu_ 结构，必须排除，否则会把纸质标题误收起来。
   function nativePanelOpen() {
     var probes = ['[class*="Config"]', '[class*="Options"]', '[class*="Save"]', '[class*="Load"]',
                   '[class*="Backlog"]', '[class*="Flowchart"]', '[class*="_Menu"]'];
@@ -2111,8 +2119,11 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     for (var p = 0; p < probes.length; p += 1) {
       var nodes = document.querySelectorAll(probes[p]);
       for (var i = 0; i < nodes.length; i += 1) {
-        var r = nodes[i].getBoundingClientRect();
-        var cs = getComputedStyle(nodes[i]);
+        var node = nodes[i];
+        if (node.closest('[class*="Title"], [class*="title"]')) continue;
+        if (node.closest('#paper-title')) continue;
+        var r = node.getBoundingClientRect();
+        var cs = getComputedStyle(node);
         if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.05) continue;
         if (r.width * r.height > vw * vh * 0.3) return true;
       }
@@ -2243,35 +2254,62 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     return false;
   }
 
+  function hideNativeTitleMenu() {
+    var nodes = document.querySelectorAll('span');
+    for (var i = 0; i < nodes.length; i += 1) {
+      var el = nodes[i];
+      if (el.children.length === 0 && MENU_LABELS.indexOf((el.textContent || '').trim()) >= 0) {
+        var holder = el.closest('div');
+        if (holder && holder.getAttribute('data-paper-hidden') !== '1') {
+          holder.setAttribute('data-paper-hidden', '1');
+          holder.style.opacity = '0';
+          holder.style.pointerEvents = 'none';
+        }
+        var up = holder && holder.parentElement;
+        for (var k = 0; up && k < 3; k += 1) {
+          up.style.pointerEvents = 'none';
+          up = up.parentElement;
+        }
+      }
+    }
+  }
+
   function syncTitle() {
     buildJumpPanel();
     buildNotebook();
     buildNav();
     try { if (window.__wgQuickBar) window.__wgQuickBar(true); } catch (e) {}
     var t = document.getElementById('paper-title') || buildTitle();
-    if (window.__paperBootDone) window.__paperBootDone();
 
-    // 原生菜单优先：菜单开着时，自绘的一切都收起
-    if (nativePanelOpen()) {
-      hideOwnChrome();
-      return;
-    }
-
-    var hasBar = document.querySelectorAll('[class*="_singleButton"]').length > 0;
-    if (Date.now() < titleForcedUntil) {
-      hideOwnChrome();
-      t.style.display = 'block';
-      var escS = document.getElementById('paper-esc');
-      if (escS) escS.style.display = 'none';
-      return;
-    }
+    // 原生标题菜单始终隐藏（我们仍用程序点击它的条目）
+    hideNativeTitleMenu();
 
     if (stateSeenText) gameStarted = true;
     var hasGameDom = stateSeenText || !!document.querySelector('[class*="chooseContainer"], [class*="TextBox_Container"]');
     var atTitle = !gameStarted || (!hasGameDom && nativeTitleVisible());
-
     var inGame = gameStarted && !atTitle;
+
+    // 只有真正进入游戏后，原生菜单/回想/流程图才优先；标题页不参与这个判定
+    if (inGame && nativePanelOpen()) {
+      hideOwnChrome();
+      if (window.__paperBootDone) window.__paperBootDone();
+      return;
+    }
+
+    if (Date.now() < titleForcedUntil) {
+      hideOwnChrome();
+      t.style.display = 'block';
+      var escS0 = document.getElementById('paper-esc');
+      if (escS0) escS0.style.display = 'none';
+      if (window.__paperBootDone) window.__paperBootDone();
+      return;
+    }
+
     t.style.display = inGame ? 'none' : 'block';
+    if (!inGame) {
+      var preEl = document.getElementById('paper-preload');
+      if (preEl && preEl.parentNode) preEl.parentNode.removeChild(preEl);
+    }
 
     var escBar = document.getElementById('paper-esc');
     if (escBar) escBar.style.display = inGame && nativePanelOpen() ? 'flex' : 'none';
@@ -2291,25 +2329,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       }
     }
 
-    // 藏起 WebGAL 自己的标题菜单（保留可点击）
-    var nodes = document.querySelectorAll('span');
-    for (var i = 0; i < nodes.length; i += 1) {
-      var el = nodes[i];
-      if (el.children.length === 0 && MENU_LABELS.indexOf((el.textContent || '').trim()) >= 0) {
-        var holder = el.closest('div');
-        if (holder && holder.getAttribute('data-paper-hidden') !== '1') {
-          holder.setAttribute('data-paper-hidden', '1');
-          holder.style.opacity = '0';
-          holder.style.pointerEvents = 'none';
-        }
-        // 祖先也一起禁掉，避免外层容器继续接收点击
-        var up = holder && holder.parentElement;
-        for (var k = 0; up && k < 3; k += 1) {
-          up.style.pointerEvents = 'none';
-          up = up.parentElement;
-        }
-      }
-    }
+    // 纸质标题已经就位，再撤掉启动幕，避免 PRESS/加载页闪出
+    if (window.__paperBootDone) window.__paperBootDone();
   }
 
   setInterval(syncTitle, 600);
