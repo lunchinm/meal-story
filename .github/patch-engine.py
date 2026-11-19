@@ -153,7 +153,45 @@ def main():
         ("textSpeed: 100,", "textSpeed: 120,"),
     ])
 
-    # 2) 出口
+    # 2) 回退：复用原生回想快照，改为 async 且跳转前停自动/快进
+    patch("Core/controller/storage/jumpFromBacklog.ts", [
+        (
+            "import { stopAllPerform } from '@/Core/controller/gamePlay/stopAllPerform';",
+            "import { stopAllPerform } from '@/Core/controller/gamePlay/stopAllPerform';\n"
+            "import { stopAuto } from '@/Core/controller/gamePlay/autoPlay';\n"
+            "import { stopFast } from '@/Core/controller/gamePlay/fastSkip';",
+        ),
+        (
+            "export const jumpFromBacklog = (index: number, refetchScene = true) => {",
+            "export const jumpFromBacklog = async (index: number, refetchScene = true) => {",
+        ),
+        (
+            "  if (refetchScene)\n"
+            "    sceneFetcher(backlogFile.saveScene.sceneUrl).then((rawScene) => {\n"
+            "      WebGAL.sceneManager.sceneData.currentScene = sceneParser(\n"
+            "        rawScene,\n"
+            "        backlogFile.saveScene.sceneName,\n"
+            "        backlogFile.saveScene.sceneUrl,\n"
+            "      );\n"
+            "      WebGAL.sceneManager.settledScenes.add(WebGAL.sceneManager.sceneData.currentScene.sceneUrl); // 放入已加载场景列表，避免递归加载相同场景\n"
+            "    });",
+            "  if (refetchScene) {\n"
+            "    const rawScene = await sceneFetcher(backlogFile.saveScene.sceneUrl);\n"
+            "    WebGAL.sceneManager.sceneData.currentScene = sceneParser(\n"
+            "      rawScene,\n"
+            "      backlogFile.saveScene.sceneName,\n"
+            "      backlogFile.saveScene.sceneUrl,\n"
+            "    );\n"
+            "    WebGAL.sceneManager.settledScenes.add(WebGAL.sceneManager.sceneData.currentScene.sceneUrl);\n"
+            "  }",
+        ),
+        (
+            "  // 强制停止所有演出\n  stopAllPerform();",
+            "  // 强制停止所有演出与自动/快进\n  stopAuto();\n  stopFast();\n  stopAllPerform();",
+        ),
+    ])
+
+    # 3) 出口
     ensure_imports()
     p = _p("Core/controller/gamePlay/backToTitle.ts")
     if os.path.exists(p):
