@@ -1,0 +1,12 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ serviceWorkers: 'block', viewport: { width: 1600, height: 1000 } });
+const p = await ctx.newPage();
+p.on('pageerror', (e) => console.log('ERR', e.message.slice(0, 100)));
+await p.goto('http://127.0.0.1:8123/?t=' + Date.now());
+await p.waitForTimeout(4500);
+await p.evaluate(() => { window.__wgDebugStart = { scene: 'act3.txt', label: 'seg3_2' }; });
+await p.evaluate(() => document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]').click());
+await p.waitForTimeout(9000);
+console.log('跳到 act3/seg2:', (await p.evaluate(() => window.__paperLine || '')).slice(0, 20));
+await b.close();

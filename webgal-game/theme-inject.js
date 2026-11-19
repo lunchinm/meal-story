@@ -1262,18 +1262,13 @@
       .catch(function () { cb([]); });
   }
 
-  function jumpTo(label) {
-    var doJump = function () {
-      if (window.__wgJump) window.__wgJump(label);
-      var p = document.getElementById('paper-jump');
-      if (p) p.style.display = 'none';
-    };
-    if (!gameStarted) {
-      nativeAction('开始游戏');
-      setTimeout(doJump, 1500);
-    } else {
-      doJump();
-    }
+  function jumpTo(label, scene) {
+    var p = document.getElementById('paper-jump');
+    if (p) p.style.display = 'none';
+    window.__wgDebugStart = { scene: scene || 'start.txt', label: label };
+    // 回到标题再开局，走到目标 label
+    if (gameStarted && window.__wgBackToTitle) window.__wgBackToTitle();
+    setTimeout(function () { nativeAction('开始游戏'); }, 900);
   }
 
   function buildJumpPanel() {
@@ -1301,7 +1296,7 @@
             }
             var b = document.createElement('button');
             b.textContent = it.label + ' · ' + (it.text || '');
-            b.addEventListener('click', function () { jumpTo(it.label); });
+            b.addEventListener('click', function () { jumpTo(it.label, 'act' + it.act + '.txt'); });
             p.appendChild(b);
           });
           p.style.display = 'block';

@@ -104,4 +104,36 @@ if (typeof window !== 'undefined') {
 }
 """, "__wgNext")
 
+
+
+# 4) 调试跳关：startGame 支持 __wgDebugStart
+patch("Core/controller/gamePlay/startContinueGame.ts", [
+    ("""  const sceneUrl: string = assetSetter('start.txt', fileType.scene);
+  // 场景写入到运行时
+  sceneFetcher(sceneUrl).then((rawScene) => {
+    WebGAL.sceneManager.sceneData.currentScene = sceneParser(rawScene, 'start.txt', sceneUrl);
+    WebGAL.flowchartManager.waitForCurrentSceneDialog();
+    // 开始第一条语句
+    continueSentence();
+  });""", """  const dbg = (window as any).__wgDebugStart as { scene?: string; label?: string } | undefined;
+  const targetFile = dbg && dbg.scene ? dbg.scene : 'start.txt';
+  const sceneUrl: string = assetSetter(targetFile, fileType.scene);
+  sceneFetcher(sceneUrl).then((rawScene) => {
+    WebGAL.sceneManager.sceneData.currentScene = sceneParser(rawScene, targetFile, sceneUrl);
+    if (dbg && dbg.label) {
+      const list = WebGAL.sceneManager.sceneData.currentScene.sentenceList;
+      for (let i = 0; i < list.length; i += 1) {
+        const sn = list[i] as any;
+        if (String(sn.content) === String(dbg.label)) {
+          WebGAL.sceneManager.sceneData.currentSentenceId = i;
+          break;
+        }
+      }
+      (window as any).__wgDebugStart = undefined;
+    }
+    WebGAL.flowchartManager.waitForCurrentSceneDialog();
+    continueSentence();
+  });"""),
+])
+
 print("引擎补丁完成")
