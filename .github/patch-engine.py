@@ -49,6 +49,8 @@ def ensure_imports():
         add.append("import { jumpFromBacklog as __wgJumpFromBacklog } from '@/Core/controller/storage/jumpFromBacklog';")
     if "__wgStartGame" not in head:
         add.append("import { startGame as __wgStartGame } from '@/Core/controller/gamePlay/startContinueGame';")
+    if "__wgSetOptionData" not in head:
+        add.append("import { setOptionData as __wgSetOptionData } from '@/store/userDataReducer';")
     if "__wgStopAuto" not in head:
         add.append("import { stopAuto as __wgStopAuto } from '@/Core/controller/gamePlay/autoPlay';")
         add.append("import { stopFast as __wgStopFast } from '@/Core/controller/gamePlay/fastSkip';")
@@ -114,6 +116,9 @@ if (typeof window !== 'undefined') {
   };
   (window as any).__wgUser = () => {
     try { return (webgalStore.getState() as any).userData; } catch (e) { return null; }
+  };
+  (window as any).__wgSetOption = (key: string, value: any) => {
+    try { webgalStore.dispatch(__wgSetOptionData({ key: key as any, value })); return true; } catch (e) { return false; }
   };
   (window as any).__wgStopAllPlay = () => {
     try { __wgStopAuto(); } catch (e) { /* ignore */ }

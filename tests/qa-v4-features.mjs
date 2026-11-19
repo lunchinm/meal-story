@@ -104,14 +104,14 @@ if (hasBtn) {
   await p.evaluate(() => document.getElementById('paper-jump-btn').click());
   await p.waitForTimeout(700);
   const clicked = await p.evaluate(() => {
-    const btn = [...document.querySelectorAll('#paper-jump button')].find((x) => x.textContent.startsWith('seg3_6'));
+    const btn = [...document.querySelectorAll('#paper-jump button')].find((x) => x.textContent.startsWith('第 3 章'));
     if (!btn) return false;
     btn.click();
     return true;
   });
   await p.waitForTimeout(17000);
   const line = await p.evaluate(() => window.__paperLine || '');
-  rec('J-02', '跳关能直接到指定段落', clicked && line.includes('你在给它找角度'), line.slice(0, 20));
+  rec('J-02', '跳关能直接到指定章节', clicked && line.includes('第三章'), line.slice(0, 20));
 }
 
 rec('G-01', '控制台无报错', errors.length === 0, errors.slice(0, 2).join(' | '));

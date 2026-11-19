@@ -926,20 +926,31 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 [class*="Title_backup_background"]{display:none!important}
 [class*="Title_main"],[class*="Title_background"],[class*="Title_backup_background"]{opacity:0!important;pointer-events:none!important}
 [class*="Loading_main"],[class*="Loading_container"],#loading{display:none!important}
-#paper-title{background:url('game/background/bg_gingko.webp') center/cover no-repeat #f6efe0!important}
+#paper-title{background:radial-gradient(120% 90% at 50% 30%,#fdfaf1 40%,#efe6d2 100%)!important}
+/* 标题页时禁止背景舞台接收点击，避免点空白误触推进/卡死 */
+body.paper-at-title #root [class*="MainStage"],body.paper-at-title #root [class*="FullScreenPerform"],body.paper-at-title #root [class*="TextBox"]{pointer-events:none!important}
+#paper-title .pt-wash{background:linear-gradient(100deg,rgba(247,242,228,.5) 0%,rgba(247,242,228,.2) 60%,rgba(247,242,228,0) 100%)!important}
 /* 启动封面 / 进入确认： intentional 的点击流程，而非闪现 */
 #paper-splash,#paper-press{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-family:'Songti SC','SimSun','Noto Serif SC',serif;color:#2f3a2e;background:radial-gradient(120% 90% at 50% 30%,#fdfaf1 40%,#efe6d2 100%);cursor:pointer}
 #paper-splash .ps-kicker{font-size:15px;letter-spacing:.5em;color:#6f7b63;margin-bottom:18px}
 #paper-splash .ps-title{font-size:44px;letter-spacing:.12em}
 #paper-splash .ps-sub{margin-top:14px;font-size:16px;letter-spacing:.3em;color:#6f7b63}
 #paper-splash .ps-hint,#paper-press .pp-hint{margin-top:46px;font-size:13px;letter-spacing:.3em;color:#8a8064;animation:paperBlink 1.6s ease-in-out infinite}
-#paper-press{background:rgba(24,20,12,.55);backdrop-filter:blur(3px);color:#f6f2e2}
-#paper-press .pp-title{font-size:26px;letter-spacing:.4em}
-#paper-press .pp-hint{color:#d8d2c0}
+#paper-press{background:radial-gradient(120% 90% at 50% 30%,#fdfaf1 40%,#efe6d2 100%);color:#2f3a2e}
+#paper-press .pp-title{font-size:26px;letter-spacing:.4em;color:#2f3a2e}
+#paper-press .pp-hint{color:#8a8064}
 @keyframes paperBlink{0%,100%{opacity:.35}50%{opacity:1}}
-/* 原生提示横幅纸质化 */
-[class*="GlobalDialog"],[class*="globalDialog"]{font-family:'Songti SC','SimSun',serif!important}
-[class*="GlobalDialog"] [class*="content"],[class*="toast"],[class*="Toast"]{background:#fcf9f0!important;color:#33402f!important;border:1px solid #b9a986!important;border-radius:4px!important;font-family:'Songti SC','SimSun',serif!important}
+/* 章节幕：符合纸质设计的章节卡，点击继续 */
+#paper-chapter{position:fixed;inset:0;z-index:99980;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:rgba(24,20,12,.45);backdrop-filter:blur(3px);cursor:pointer;font-family:'Songti SC','SimSun','Noto Serif SC',serif}
+#paper-chapter .pc-card{background:rgba(252,249,240,.97);border:1px solid rgba(120,104,74,.45);border-radius:6px;box-shadow:0 20px 50px rgba(20,14,8,.35),inset 0 0 0 5px rgba(252,249,240,.95),inset 0 0 0 6px rgba(120,104,74,.18);padding:44px 70px;max-width:70vw}
+#paper-chapter .pc-kicker{font-size:13px;letter-spacing:.4em;color:#6f7b63;margin-bottom:16px}
+#paper-chapter .pc-title{font-size:34px;letter-spacing:.1em;color:#2f3a2e}
+#paper-chapter .pc-hint{margin-top:26px;font-size:12px;letter-spacing:.3em;color:#8a8064;animation:paperBlink 1.6s ease-in-out infinite}
+/* 原生提示/确认横幅纸质化 */
+[class*="GlobalDialog"],[class*="globalDialog"],[class*="GlobalDialog_main"]{font-family:'Songti SC','SimSun',serif!important;background:rgba(252,249,240,.97)!important;background-image:none!important;color:#33402f!important;border-top:1px solid #b9a986!important;border-bottom:1px solid #b9a986!important;box-shadow:0 10px 30px rgba(84,70,44,.25)!important}
+[class*="GlobalDialog"] *{color:#33402f!important;text-shadow:none!important;-webkit-text-stroke:0!important;font-family:'Songti SC','SimSun',serif!important}
+[class*="GlobalDialog"] [class*="button"],[class*="GlobalDialog"] [class*="option"]{background:#f4ecda!important;border:1px solid #b9a986!important;border-radius:4px!important;color:#2f4a34!important}
+[class*="toast"],[class*="Toast"]{background:#fcf9f0!important;color:#33402f!important;border:1px solid #b9a986!important;border-radius:4px!important;font-family:'Songti SC','SimSun',serif!important}
 #paper-ui .pu-card{cursor:pointer;animation:paperIn .24s ease}
 #paper-task{width:min(650px,calc(100vw - 112px));max-height:68vh;padding:24px 28px;pointer-events:auto}
 #paper-task .pt-title{font-size:24px;border-bottom:1px solid #b9a986;padding-bottom:12px}
@@ -1423,6 +1434,30 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     if (t) t.style.display = 'none';
   }
 
+  // 章节幕
+  var chapterDismissed = '';
+  function buildChapter() {
+    if (document.getElementById('paper-chapter')) return;
+    var c = document.createElement('div');
+    c.id = 'paper-chapter';
+    c.innerHTML = '<div class="pc-card"><div class="pc-kicker">校园膳食调查簿</div><div class="pc-title"></div><div class="pc-hint">点 击 继 续</div></div>';
+    c.addEventListener('click', function () {
+      chapterDismissed = c.dataset.text || '';
+      c.style.display = 'none';
+      if (window.__wgNext) window.__wgNext();
+    });
+    document.body.appendChild(c);
+    stopOwnEvents(c);
+  }
+  function showChapter(text) {
+    buildChapter();
+    var c = document.getElementById('paper-chapter');
+    if (!c) return;
+    c.dataset.text = text;
+    c.querySelector('.pc-title').textContent = text;
+    c.style.display = 'flex';
+  }
+
   // 按剧本清单判定：channel=chat 才进聊天；旁白/章节/场景描写走文本框
   // 优先按剧本节点 id 判定（转换器用 setVar:line=<id> 写进引擎变量），文本只做兜底
   // 台词首字符埋的不可见标记：\u200b=群聊，\u200c=文本框
@@ -1755,18 +1790,10 @@ body.paper-chat-mode [class*="TextBox_Container"] {
         if (!p) return;
         if (p.style.display === 'block') { p.style.display = 'none'; return; }
         loadJumpList(function (list) {
-          p.innerHTML = '<div class="pj-h">跳转（调试用）</div>';
-          var act = null;
-          list.forEach(function (it) {
-            if (it.act !== act) {
-              act = it.act;
-              var h = document.createElement('div');
-              h.className = 'pj-act';
-              h.textContent = '第 ' + act + ' 章';
-              p.appendChild(h);
-            }
+          p.innerHTML = '<div class="pj-h">按章节跳转</div>';
+          list.filter(function (it) { return it.seg === 0; }).forEach(function (it) {
             var b = document.createElement('button');
-            b.textContent = it.label + ' · ' + (it.text || '');
+            b.textContent = '第 ' + it.act + ' 章 · ' + (it.text || '');
             b.addEventListener('click', function () { jumpTo(it.label, 'act' + it.act + '.txt'); });
             p.appendChild(b);
           });
@@ -2014,6 +2041,9 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       var ud = window.__wgUser && window.__wgUser();
       var o = ud && ud.optionData;
       if (!o || !textEl) return;
+      // 保持文字瞬时 + 新句打断旧配音（覆盖本地旧设置）
+      if (o.textSpeed !== 120 && window.__wgSetOption) window.__wgSetOption('textSpeed', 120);
+      if (o.voiceInterruption !== 0 && window.__wgSetOption) window.__wgSetOption('voiceInterruption', 0);
       var sizes = [18, 21, 25];
       var px = sizes[o.textSize] || 21;
       if (textEl.dataset.px !== String(px)) { textEl.style.fontSize = px + 'px'; textEl.dataset.px = String(px); }
@@ -2075,6 +2105,12 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     if (m) {
       chapEl.textContent = '第' + m[1] + '章 · ' + m[2].replace(/[《》]/g, '').trim();
       chapEl.style.display = 'block';
+      if (chapterDismissed !== state.text) {
+        showChapter(state.text);
+        var cc2 = ui.querySelector('.pu-card'); var nn2 = ui.querySelector('.pu-name');
+        if (cc2) cc2.style.display = 'none';
+        if (nn2) nn2.style.display = 'none';
+      }
     }
   }
 
@@ -2388,6 +2424,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     var hasGameDom = stateSeenText || !!document.querySelector('[class*="chooseContainer"], [class*="TextBox_Container"]');
     var atTitle = !gameStarted || (!hasGameDom && nativeTitleVisible());
     var inGame = gameStarted && !atTitle;
+    if (document.body) document.body.classList.toggle('paper-at-title', !inGame);
 
     // 原生面板（设置/存档/回想/流程图）打开时收起自绘层，避免纸卡叠在面板上
     if (inGame && nativePanelOpen()) {
@@ -2436,10 +2473,21 @@ body.paper-chat-mode [class*="TextBox_Container"] {
   setInterval(syncTitle, 600);
   document.addEventListener('DOMContentLoaded', function () { buildTitle(); });
 
+  // 引擎默认：文字瞬时显示（单击即推进）、新句打断旧配音，避免双击/串音
+  function applyEngineDefaults() {
+    try {
+      if (window.__wgSetOption) {
+        window.__wgSetOption('textSpeed', 120);
+        window.__wgSetOption('voiceInterruption', 0);
+      }
+    } catch (e) { /* ignore */ }
+  }
+
   addCss();
   buildSplash();
   buildPress();
-  document.addEventListener('DOMContentLoaded', function () { addCss(); buildUi(); buildSplash(); buildPress(); });
+  applyEngineDefaults();
+  document.addEventListener('DOMContentLoaded', function () { addCss(); buildUi(); buildSplash(); buildPress(); applyEngineDefaults(); });
   setInterval(function () { addCss(); buildUi(); sync(); }, 170);
 })();
 
