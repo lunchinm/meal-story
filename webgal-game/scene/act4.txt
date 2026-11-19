@@ -791,6 +791,7 @@ setVar:line=a4-trial-c2;
 jumpLabel:after_a4_trial;
 label:after_a4_trial;
 ; 记录：个人条件便签完成
+setVar:rec=19;
 choose:改：把不方便的地方换掉:c4_a4_revise_0|先不改，通用版已经够用:c4_a4_revise_1;
 label:c4_a4_revise_0;
 setVar:line=a4-revise-c0;
@@ -807,17 +808,26 @@ changeBg:bg_club.webp -next -duration=350;
 setVar:line=a4-revise1;
 :通用总结写完了，个人方案这次没有改。;
 ; 记录：根据反馈完成修订
+setVar:rec=20;
 ; 记录：已有使用说明
+setVar:rec=21;
 ; 记录：完成指南
+setVar:rec=22;
 ; 记录：完成通用试行总结
+setVar:rec=23;
+setVar:branch=e4_end;
+jumpLabel:t_e_normal;
+label:t_e_normal;
 changeBg:bg_canteen_sun.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 intro:我会选了|你完成了一份有依据的校园膳食指南，先发布了通用版。 查看信息、合理搭配、考虑实际需要，开始用在日常选择里。;
 end;
+label:t_e_advanced;
 changeBg:bg_gingko.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 intro:换一家食堂，也会选|指南完成，也做了试行，写下了通用总结。 换一份没见过的菜单，你还能说出哪里要补、哪里可以省。;
 end;
+label:t_e_hidden;
 changeBg:bg_notebook.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 intro:先问清楚，再给建议|你按具体的人核对条件，做完便签，又按反馈改了方案。 给的是能执行的方案，不是要求。;

@@ -1,0 +1,21 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ serviceWorkers: 'block', viewport: { width: 1600, height: 1000 } });
+const p = await ctx.newPage();
+await p.goto('http://127.0.0.1:8123/?t=' + Date.now());
+await p.waitForTimeout(4200);
+await p.evaluate(() => document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]').click());
+await p.waitForTimeout(6500);
+for (let i = 0; i < 5; i += 1) { await p.mouse.click(800, 700); await p.waitForTimeout(600); }
+console.log('nav:', await p.evaluate(() => [...document.querySelectorAll('#paper-nav button')].map((x) => x.textContent).join('/')));
+const before = await p.evaluate(() => window.__paperLine || '');
+await p.evaluate(() => [...document.querySelectorAll('#paper-nav button')].find((x) => x.textContent === '上一句').click());
+await p.waitForTimeout(1200);
+console.log('回退后:', before.slice(0,10), '→', (await p.evaluate(() => window.__paperLine || '')).slice(0,10));
+await p.evaluate(() => window.__wgOpenBacklog && window.__wgOpenBacklog());
+await p.waitForTimeout(900);
+console.log('回想打开:', await p.evaluate(() => !!document.querySelector('[class*="Backlog"]')));
+console.log('直接调 __wgClosePanels:', await p.evaluate(() => { const r = window.__wgClosePanels ? window.__wgClosePanels() : 'missing'; return r === undefined ? 'called' : r; }));
+await p.waitForTimeout(900);
+console.log('关闭后还有 Backlog:', await p.evaluate(() => !!document.querySelector('[class*="Backlog"]')));
+await b.close();

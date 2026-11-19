@@ -843,10 +843,15 @@ setVar:line=a3-purpose-c2;
 jumpLabel:after_a3_purpose;
 label:after_a3_purpose;
 ; 记录：按实际份量采购
+setVar:rec=10;
 ; 记录：共同确认清单
+setVar:rec=11;
 ; 记录：再次核对完整信息
+setVar:rec=12;
 ; 记录：看过贮存条件
+setVar:rec=13;
 ; 记录：看过苏桃的照片变化
+setVar:rec=14;
 choose:先问一句：买给谁、什么时候喝:c3_a3_ask_0|先按平时习惯拿，回头再调整:c3_a3_ask_1;
 label:c3_a3_ask_0;
 setVar:line=a3-ask-c0;
@@ -860,28 +865,34 @@ setVar:line=a3-ask-c1;
 你:先按老习惯拿两瓶，回头不合适再说。;
 jumpLabel:after_a3_ask;
 label:after_a3_ask;
-choose:遇到第 1 种情况:rnd_a3_random_0|遇到第 2 种情况:rnd_a3_random_1|遇到第 3 种情况:rnd_a3_random_2;
-label:rnd_a3_random_0;
-jumpLabel:a3_r1_1;
-label:rnd_a3_random_1;
-jumpLabel:a3_r2_1;
-label:rnd_a3_random_2;
-jumpLabel:a3_r3_1;
+; 随机事件：R1
+setVar:rnd=a3-random;
+jumpLabel:t_a3_r1_1;
+label:t_a3_r1_1;
 setVar:line=a3-r1-1;
 米粒:这张促销牌写着“指定饮料，第二件半价”。 -vocal=a3-r1-1.mp3;
 setVar:line=a3-r1-2;
 周简:得先知道我们本来要买几件。多买一件放着，也是钱。 -vocal=a3-r1-2.mp3;
+label:t_a3_r2_1;
 setVar:line=a3-r2-1;
 苏桃:这袋是家庭装，拆开可以分三份。 -vocal=a3-r2-1.mp3;
 setVar:line=a3-r2-2;
 许知夏:分装以后要看每份的量，别把一袋当成一次的量。 -vocal=a3-r2-2.mp3;
+label:t_a3_r3_1;
 setVar:line=a3-r3-1;
 苏桃:这张只拍到半个瓶身，背面完全没拍到。 -vocal=a3-r3-1.mp3;
 setVar:line=a3-r3-2;
 你:那就再拍一张完整的，正面背面都要。;
 ; 记录：偶遇记录：第二件半价
+setVar:rec=15;
 ; 记录：偶遇记录：一袋分三份
+setVar:rec=16;
 ; 记录：偶遇记录：瓶身只拍到一半
+setVar:rec=17;
+label:t_a3_hidden_gate;
+setVar:branch=a3-hidden-gate;
+jumpLabel:t_a3_meets;
+label:t_a3_photo1;
 setVar:line=a3-photo1;
 苏桃:结账以后她没急着走，拿起手机拍了一张购物清单。 -vocal=a3-photo1.mp3;
 setVar:line=a3-photo2;
@@ -889,6 +900,8 @@ setVar:line=a3-photo2;
 setVar:line=a3-photo3;
 你:过几天翻相册，才知道当时为什么这样选。这张留给第四章。;
 ; 记录：调查簿增加“购买理由”照片
+setVar:rec=18;
+label:t_a3_meets;
 :偶遇记录;
 :R1 第二件半价;
 :促销要看本来要买几件；多买一件放着，也是钱。;
@@ -899,4 +912,6 @@ setVar:line=a3-photo3;
 :R3 瓶身只拍到一半;
 :只拍到半个瓶身，看不到配料和营养表，等于没拍到。;
 :（出处：教学示例）;
+setVar:branch=e3_end;
+jumpLabel:t_a4_00;
 changeScene:act4.txt;

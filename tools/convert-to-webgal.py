@@ -85,10 +85,33 @@ def say_line(speaker: str | None, text: str, voice_id: str | None = None) -> str
 
 
 JUMP_TABLE = []
+REC_MAP = {}
+BRANCH_MAP = {}
+import random as _random
+
+
+def _san(node_id: str) -> str:
+    return str(node_id).replace('-', '_')
 
 
 def convert_act(act: int) -> list[str]:
     data = json.load(io.open(os.path.join(MS, "content", f"act{act}.json"), encoding="utf-8"))
+
+    # 预扫：所有 branch / random 的落点节点，需要在它们前面打 label
+    targets = set()
+    for n in data:
+        if n["type"] == "branch":
+            if n.get("fallback"):
+                targets.add(n["fallback"])
+            for r in (n.get("rules") or []):
+                if r.get("next"):
+                    targets.add(r["next"])
+        elif n["type"] == "random":
+            for it in (n.get("pool") or []):
+                if it.get("next"):
+                    targets.add(it["next"])
+            if n.get("next"):
+                targets.add(n["next"])
     lines: list[str] = []
     last_scene = None
     last_speaker = None
@@ -98,6 +121,8 @@ def convert_act(act: int) -> list[str]:
 
     for node in data:
         kind = node["type"]
+        if node.get("id") in targets:
+            lines.append(f"label:t_{_san(node['id'])};")
 
         if kind == "chapter":
             lines.append(f"label:act{act};")
@@ -212,7 +237,10 @@ def convert_act(act: int) -> list[str]:
             continue
 
         if kind == "record":
+            idx = len(REC_MAP) + 1
+            REC_MAP[str(idx)] = {"flag": node.get("flag", ""), "label": node.get("label", "")}
             lines.append(f"; 记录：{node.get('label', '')}")
+            lines.append(f"setVar:rec={idx};")
             continue
 
         if kind == "plate":
@@ -306,6 +334,13 @@ def convert_act(act: int) -> list[str]:
 
         if kind == "random":
             pool = node.get("pool", [])
+            BRANCH_MAP["random:" + node["id"]] = {"pool": [p.get("next") for p in pool]}
+            if pool:
+                pick = pool[_random.randrange(len(pool))]
+                lines.append(f"; 随机事件：{pick.get('id', '')}")
+                lines.append(f"setVar:rnd={node['id']};")
+                lines.append(f"jumpLabel:t_{_san(pick.get('next'))};")
+                continue
             if pool:
                 base = f"rnd_{node['id']}".replace("-", "_")
                 opts = "|".join(f"遇到第 {i + 1} 种情况:{base}_{i}" for i, _ in enumerate(pool))
@@ -316,6 +351,10 @@ def convert_act(act: int) -> list[str]:
             continue
 
         if kind == "branch":
+            BRANCH_MAP[node["id"]] = {"rules": node.get("rules") or [], "fallback": node.get("fallback", "")}
+            lines.append(f"setVar:branch={node['id']};")
+            if node.get("fallback"):
+                lines.append(f"jumpLabel:t_{_san(node['fallback'])};")
             continue
 
         # plate / evidence / compare / explore / notebook / random 暂略
@@ -345,6 +384,9 @@ def main() -> int:
     io.open(os.path.join(OUT, "start.txt"), "w", encoding="utf-8").write("\n".join(start) + "\n")
     print("start.txt: 3 行（开场白 + 跳第一章）")
     json.dump(JUMP_TABLE, io.open(os.path.join(MS, "webgal-game", "jump.json"), "w", encoding="utf-8"),
+              ensure_ascii=False, indent=1)
+    json.dump({"rec": REC_MAP, "branch": BRANCH_MAP},
+              io.open(os.path.join(MS, "webgal-game", "story-meta.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
     print("跳转表：", len(JUMP_TABLE), "个节点")
     return 0

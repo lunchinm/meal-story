@@ -1,0 +1,20 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ serviceWorkers: 'block', viewport: { width: 1600, height: 1000 } });
+const p = await ctx.newPage();
+await p.goto('http://127.0.0.1:8123/?t=' + Date.now());
+await p.waitForTimeout(4200);
+await p.evaluate(() => document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]').click());
+await p.waitForTimeout(6500);
+for (let i = 0; i < 5; i += 1) { await p.mouse.click(800, 700); await p.waitForTimeout(600); }
+console.log('exports:', await p.evaluate(() => ({ rewind: typeof window.__wgRewind, close: typeof window.__wgClosePanels, openBacklog: typeof window.__wgOpenBacklog })));
+const before = await p.evaluate(() => window.__paperLine || '');
+const r = await p.evaluate(() => window.__wgRewind(1));
+await p.waitForTimeout(1200);
+console.log('rewind 返回:', r, '|', before.slice(0,10), '→', (await p.evaluate(() => window.__paperLine || '')).slice(0,10));
+await p.evaluate(() => window.__wgOpenBacklog());
+await p.waitForTimeout(800);
+await p.keyboard.press('Escape');
+await p.waitForTimeout(900);
+console.log('Escape 后还有 Backlog:', await p.evaluate(() => !!document.querySelector('[class*="Backlog"]')));
+await b.close();

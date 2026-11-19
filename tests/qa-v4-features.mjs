@@ -59,8 +59,21 @@ rec('R-01', '群聊里玩家台词先以回复条出现', !!chip, chip ? chip.t.
 
 if (chip) {
   const before = await p.evaluate(() => window.__paperLine || '');
-  await p.mouse.click(chip.x, chip.y);
-  await p.waitForTimeout(1600);
+  // 慢网络下纸签可能被重建：重测坐标并最多点 3 次
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const cur = await p.evaluate(() => {
+      const c = document.querySelector('#paper-chat .pc-send');
+      if (!c) return null;
+      const r = c.getBoundingClientRect();
+      return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+    });
+    if (!cur) break;
+    await p.mouse.click(cur.x, cur.y);
+    await p.waitForTimeout(700);
+    const gone = await p.evaluate(() => !document.querySelector('#paper-chat .pc-send'));
+    if (gone) break;
+  }
+  await p.waitForTimeout(1200);
   const after = await p.evaluate(() => ({
     chip: !!document.querySelector('#paper-chat .pc-send'),
     me: [...document.querySelectorAll('#paper-chat .pc-row.me .pc-bubble')].map((x) => x.textContent.trim()),

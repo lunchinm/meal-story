@@ -71,6 +71,42 @@ if (typeof window !== 'undefined') {
   (window as any).__wgQuickBar = (show: boolean) => {
     try { webgalStore.dispatch(setVisibility({ component: 'showControls' as any, visibility: !!show })); } catch (e) { /* ignore */ }
   };
+  (window as any).__wgOpenMenu = (tag: string) => {
+    try {
+      webgalStore.dispatch(setMenuPanelTag(tag as any));
+      webgalStore.dispatch(setVisibility({ component: 'showMenuPanel' as any, visibility: true }));
+      return true;
+    } catch (e) { return false; }
+  };
+  (window as any).__wgOpenBacklog = () => {
+    try { webgalStore.dispatch(setVisibility({ component: 'showBacklog' as any, visibility: true })); return true; } catch (e) { return false; }
+  };
+  (window as any).__wgOpenFlowchart = () => {
+    try { webgalStore.dispatch(setVisibility({ component: 'showFlowchart' as any, visibility: true })); return true; } catch (e) { return false; }
+  };
+  (window as any).__wgVocalSrc = () => {
+    try {
+      const st: any = stageStateManager.getViewStageState();
+      return st && st.playVocal ? st.playVocal : '';
+    } catch (e) { return ''; }
+  };
+  (window as any).__wgRewind = (steps = 1) => {
+    try {
+      const sm = WebGAL.sceneManager.sceneData;
+      const list = sm.currentScene.sentenceList as any[];
+      let need = Math.max(1, steps);
+      let i = sm.currentSentenceId - 1;
+      while (i >= 0 && need > 0) {
+        if (list[i] && list[i].command === 'say') need -= 1;
+        if (need === 0) break;
+        i -= 1;
+      }
+      if (i < 0) return false;
+      sm.currentSentenceId = i;
+      __wgContinueSentence();
+      return true;
+    } catch (e) { return false; }
+  };
 }
 """, "__wgBackToTitle")
 
@@ -78,7 +114,7 @@ if (typeof window !== 'undefined') {
 # 3) 调试与交互出口
 append("Core/controller/gamePlay/backToTitle.ts", """
 // 自绘 UI：主动推进 / 跳 label / 停配音
-import { nextSentence as __wgNextSentence } from '@/Core/controller/gamePlay/nextSentence';
+import { nextSentence as __wgNextSentence, continueSentence as __wgContinueSentence } from '@/Core/controller/gamePlay/nextSentence';
 import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';
 import { changeScene as __wgChangeScene } from '@/Core/controller/scene/changeScene';
 
@@ -157,6 +193,17 @@ patch("Core/controller/gamePlay/startContinueGame.ts", [
 patch("Core/controller/gamePlay/startContinueGame.ts", [
     ("export const startGame = () => {\n  resetStage(true);",
      "export const startGame = () => {\n  resetStage(true);\n  try { stageStateManager.setStageAndCommit('bgName', assetSetter('bg_gingko.webp', fileType.background)); } catch (e) { /* ignore */ }  // __wgDefaultBg"),
+])
+
+
+# 6) 给 backToTitle.ts 补 import（自绘层出口需要 stageStateManager / WebGAL / setMenuPanelTag）
+patch("Core/controller/gamePlay/backToTitle.ts", [
+    ("import { webgalStore } from '@/store/store';",
+     "import { webgalStore } from '@/store/store';\n"
+     "import { stageStateManager } from '@/Core/Modules/stage/stageStateManager';\n"
+     "import { WebGAL } from '@/Core/WebGAL';"),
+    ("import { setVisibility } from '@/store/GUIReducer';",
+     "import { setVisibility, setMenuPanelTag } from '@/store/GUIReducer';"),
 ])
 
 print("引擎补丁完成")

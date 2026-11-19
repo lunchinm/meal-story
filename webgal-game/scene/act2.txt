@@ -112,6 +112,7 @@ setVar:line=a2-m06-pick;
 许知夏:那就有可以搭配的东西。我们按这条路线安排。;
 米粒:很好，我的早餐终于开始尊重地理位置了。;
 ; 记录：米粒方案：顺路购买
+setVar:rec=3;
 setVar:line=a2-m08;
 你:有些东西可以前一天就放进包里。;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -130,6 +131,7 @@ setVar:line=a2-m12;
 setVar:line=a2-m13;
 你:那我们就挑符合你保存条件的。;
 ; 记录：米粒方案：提前准备
+setVar:rec=4;
 setVar:line=a2-m15;
 你:如果多留十分钟，能去食堂吗？;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -147,6 +149,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 setVar:line=a2-m19;
 许知夏:先定一个能坚持的调整，也给赶时间的日子留后手。 -vocal=a2-m19.mp3;
 ; 记录：米粒方案：食堂＋备用
+setVar:rec=5;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 setVar:line=a2-m21;
@@ -242,6 +245,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 setVar:line=a2-m46;
 米粒:放心，我现在连两块饼干都有户口。 -vocal=a2-m46.mp3;
 ; 记录：这一段看完了
+setVar:rec=6;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 setVar:line=a2-l01;
@@ -420,6 +424,7 @@ changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 setVar:line=a2-l45;
 陆燃:你别说，表一下就显得很满。 -vocal=a2-l45.mp3;
 ; 记录：这一段看完了
+setVar:rec=7;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 setVar:line=a2-z01;
@@ -626,6 +631,10 @@ changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0
 setVar:line=a2-z50;
 周简:样本不够，暂时不能发布。 -vocal=a2-z50.mp3;
 ; 记录：这一段看完了
+setVar:rec=8;
+setVar:branch=a2-hub1;
+jumpLabel:t_a2_hub2;
+label:t_a2_hub2;
 choose:看米粒的早餐记录:c2_a2_hub2_0|看陆燃的餐盘记录:c2_a2_hub2_1|看周简的预算记录:c2_a2_hub2_2;
 label:c2_a2_hub2_0;
 setVar:line=a2-hub2-c0;
@@ -640,6 +649,7 @@ setVar:line=a2-hub2-c2;
 你:看周简的预算记录;
 jumpLabel:after_a2_hub2;
 label:after_a2_hub2;
+label:t_a2_c01;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 setVar:line=a2-c01;
@@ -723,4 +733,7 @@ setVar:line=a2-note-c2;
 jumpLabel:after_a2_note;
 label:after_a2_note;
 ; 记录：给明天留了一张便签
+setVar:rec=9;
+setVar:branch=e2_end;
+jumpLabel:t_a3_00;
 changeScene:act3.txt;

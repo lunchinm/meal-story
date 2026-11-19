@@ -128,6 +128,7 @@ choose:手机上的宣传图:exp_a1_explore_0|米粒的餐盘:exp_a1_explore_1|�
 label:exp_a1_explore_out;
 changeFigure:none -center -next -duration=350;
 ; 记录：看过原图
+setVar:rec=1;
 changeFigure:none -center -next;
 changeFigure:ui_tray.webp -center -transform={"scale":{"x":0.3,"y":0.3},"position":{"x":260,"y":300}} -next;
 changeFigure:none -center -next -duration=350;
@@ -591,6 +592,7 @@ changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 setVar:line=a1-155;
 苏桃:那我的相册可能比想象中长。;
 ; 记录：问过需求
+setVar:rec=2;
 :这次核实了什么;
 :“一份承包全天营养”需要更多信息支持;
 :判断饮食是否合适，要结合食物种类、数量、其他餐次以及个人需要。;
@@ -601,4 +603,6 @@ setVar:line=a1-155;
 :“七天免疫力拉满”缺乏可核实依据;
 :人体免疫功能复杂，不能依据宣传图片或一顿饭判断某人的“免疫力分数”。;
 :（出处：教学示例：现有资料未提供可核对的检测或研究依据）;
+setVar:branch=e1_end;
+jumpLabel:t_a2_00;
 changeScene:act2.txt;
