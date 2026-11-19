@@ -36,11 +36,15 @@ const chatBubbles = () => page.evaluate(() =>
 
 async function startGame() {
   await page.waitForTimeout(2200);
+  await page.evaluate(() => { const s = document.getElementById('paper-splash'); if (s && getComputedStyle(s).display !== 'none') s.click(); });
+  await page.waitForTimeout(400);
   const ok = await page.evaluate(() => {
     const b = document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]');
     if (b) { b.click(); return true; }
     return false;
   });
+  await page.waitForTimeout(600);
+  await page.evaluate(() => { const pr = document.getElementById('paper-press'); if (pr && getComputedStyle(pr).display !== 'none') pr.click(); });
   await page.waitForTimeout(6500);
   return ok;
 }

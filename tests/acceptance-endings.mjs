@@ -5,7 +5,11 @@ const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
 await page.goto('http://127.0.0.1:8081/?t=' + Date.now(), { waitUntil: 'commit' });
 await page.waitForTimeout(4000);
 await page.evaluate(() => { window.__wgDebugStart = { scene: 'act4.txt', label: 't_a4_publish' }; });
+await page.evaluate(() => { const s = document.getElementById('paper-splash'); if (s && getComputedStyle(s).display !== 'none') s.click(); });
+await page.waitForTimeout(300);
 await page.evaluate(() => document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]').click());
+await page.waitForTimeout(500);
+await page.evaluate(() => { const pr = document.getElementById('paper-press'); if (pr && getComputedStyle(pr).display !== 'none') pr.click(); });
 await page.waitForTimeout(4000);
 const want = {
   normal: '先发布通用版',

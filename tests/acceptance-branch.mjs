@@ -5,7 +5,11 @@ page.on('pageerror', e => console.log('PAGEERR', e.message.slice(0, 300)));
 await page.goto('http://127.0.0.1:8081/?t=' + Date.now(), { waitUntil: 'commit' });
 await page.waitForTimeout(4000);
 await page.evaluate(() => { window.__wgDebugStart = { scene: 'act3.txt', label: 't_a3_ask' }; });
+await page.evaluate(() => { const s = document.getElementById('paper-splash'); if (s && getComputedStyle(s).display !== 'none') s.click(); });
+await page.waitForTimeout(300);
 await page.evaluate(() => document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]').click());
+await page.waitForTimeout(500);
+await page.evaluate(() => { const pr = document.getElementById('paper-press'); if (pr && getComputedStyle(pr).display !== 'none') pr.click(); });
 for (let i = 0; i < 16; i++) { await page.waitForTimeout(500); const t = await page.evaluate(() => getComputedStyle(document.getElementById('paper-title')).display); if (t === 'none') break; }
 await page.waitForTimeout(1500);
 console.log('boot state', await page.evaluate(() => ({
