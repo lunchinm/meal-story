@@ -202,6 +202,31 @@ def ensure_imports():
     if not os.path.exists(p):
         return
     src = io.open(p, encoding="utf-8").read()
+    lines_to_add = []
+    # 用「import 语句」判断，而不是标识符
+    if "import { stageStateManager }" not in src and "stageStateManager } from '@/Core/Modules/stage/stageStateManager'" not in src:
+        lines_to_add.append("import { stageStateManager } from '@/Core/Modules/stage/stageStateManager';")
+    if "import { WebGAL }" not in src:
+        lines_to_add.append("import { WebGAL } from '@/Core/WebGAL';")
+    if "setMenuPanelTag }" not in src and "import { setMenuPanelTag }" not in src:
+        lines_to_add.append("import { setMenuPanelTag } from '@/store/GUIReducer';")
+    if "nextSentence as __wgNextSentence" not in src.split("export const")[0]:
+        lines_to_add.append("import { nextSentence as __wgNextSentence, continueSentence as __wgContinueSentence } from '@/Core/controller/gamePlay/nextSentence';")
+    if "jumpToLabel as __wgJumpToLabel" not in src.split("export const")[0]:
+        lines_to_add.append("import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';")
+    if "changeScene as __wgChangeScene" not in src.split("export const")[0]:
+        lines_to_add.append("import { changeScene as __wgChangeScene } from '@/Core/controller/scene/changeScene';")
+    if lines_to_add:
+        src = "\n".join(lines_to_add) + "\n" + src
+        io.open(p, "w", encoding="utf-8").write(src)
+        print("已补齐 import:", len(lines_to_add), "行")
+
+
+ensure_imports():
+    p = os.path.join(SRC, "Core/controller/gamePlay/backToTitle.ts")
+    if not os.path.exists(p):
+        return
+    src = io.open(p, encoding="utf-8").read()
     need = {
         "stageStateManager": "import { stageStateManager } from '@/Core/Modules/stage/stageStateManager';",
         "WebGAL": "import { WebGAL } from '@/Core/WebGAL';",
