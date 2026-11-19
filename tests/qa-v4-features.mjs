@@ -1,9 +1,9 @@
-// 新增行为回归：回复条发送、跳关、语音切换
+// 新增行为回归：回复条发送 / 跳关 / 语音切换
 import { chromium } from '@playwright/test';
+import fs from 'node:fs';
 
 const BASE = process.argv[2] || 'http://127.0.0.1:8123/';
 const OUT = process.argv[3] || 'qa-v4';
-import fs from 'node:fs';
 fs.mkdirSync(OUT, { recursive: true });
 
 const rows = [];
@@ -18,38 +18,32 @@ const p = await ctx.newPage();
 const errors = [];
 p.on('pageerror', (e) => errors.push(e.message));
 
+const startAt = async (scene, label) => {
+  await p.evaluate(([sc, lb]) => { window.__wgDebugStart = { scene: sc, label: lb }; }, [scene, label]);
+  const bt = await p.evaluate(() => {
+    const t = document.getElementById('paper-title');
+    if (!t || getComputedStyle(t).display === 'none') return false;
+    const btn = t.querySelector('.pt-menu button[data-label="开始游戏"]');
+    if (btn) { btn.click(); return true; }
+    return false;
+  });
+  if (!bt) {
+    await p.evaluate(() => window.__wgBackToTitle && window.__wgBackToTitle());
+    await p.waitForTimeout(1200);
+    await p.evaluate(() => {
+      const t = document.getElementById('paper-title');
+      const btn = t && t.querySelector('.pt-menu button[data-label="开始游戏"]');
+      if (btn) btn.click();
+    });
+  }
+  await p.waitForTimeout(9000);
+};
+
 await p.goto(BASE + '?t=' + Date.now(), { waitUntil: 'domcontentloaded', timeout: 120000 });
 await p.waitForTimeout(4500);
 
-// J-01 跳关面板存在
-const hasBtn = await p.evaluate(() => !!document.getElementById('paper-jump-btn'));
-rec('J-01', '调试跳关按钮存在', hasBtn);
-
-// J-02 跳到 act3 / seg3_6
-const jumped = await (async () => {
-  if (!hasBtn) return '';
-  await p.evaluate(() => document.getElementById('paper-jump-btn').click());
-  await p.waitForTimeout(600);
-  const ok = await p.evaluate(() => {
-    const b = [...document.querySelectorAll('#paper-jump button')].find((x) => x.textContent.startsWith('seg3_6'));
-    if (!b) return false;
-    b.click();
-    return true;
-  });
-  if (!ok) return '';
-  await p.waitForTimeout(11000);
-  return await p.evaluate(() => window.__paperLine || '');
-})();
-rec('J-02', '跳关能直接到指定段落', jumped.includes('你在给它找角度'), jumped.slice(0, 20));
-
-// R-01 回复条：点一下消失、出现绿气泡、剧情推进
-await p.evaluate(() => { window.__wgDebugStart = { scene: 'act1.txt', label: 'seg1_3' }; });
-await p.evaluate(() => {
-  const t = document.getElementById('paper-title');
-  const btn = t && t.querySelector('.pt-menu button[data-label="开始游戏"]');
-  if (btn) btn.click();
-});
-await p.waitForTimeout(9000);
+// ---------- 回复条 ----------
+await startAt('act1.txt', 'seg1_3');
 
 let chip = null;
 for (let i = 0; i < 40 && !chip; i += 1) {
@@ -71,26 +65,37 @@ if (chip) {
     chip: !!document.querySelector('#paper-chat .pc-send'),
     me: [...document.querySelectorAll('#paper-chat .pc-row.me .pc-bubble')].map((x) => x.textContent.trim()),
     line: window.__paperLine || '',
+    vocalPaused: (() => { const v = document.getElementById('currentVocal'); return v ? (v.paused || v.currentTime === 0) : true; })(),
   }));
   rec('R-02', '点回复条后回复条消失', !after.chip);
   rec('R-03', '点回复条后出现右侧绿色气泡', after.me.includes(chip.t), '气泡 ' + after.me.length + ' 条');
   rec('R-04', '点回复条后剧情自动推进', after.line !== before, `${before.slice(0, 8)} → ${after.line.slice(0, 10)}`);
+  rec('V-01', '切到玩家台词时上一句配音已停', after.vocalPaused);
 }
 
-// R-05 同一句不会重复出现两次
 const dup = await p.evaluate(() => {
   const texts = [...document.querySelectorAll('#paper-chat .pc-row .pc-bubble')].map((x) => x.textContent.trim());
   return texts.length - new Set(texts).size;
 });
 rec('R-05', '同一句不会重复出现', dup === 0, '重复 ' + dup + ' 条');
 
-// V-01 玩家台词时上一句配音已停
-const vocal = await p.evaluate(() => {
-  const v = document.getElementById('currentVocal');
-  if (!v) return { ok: true, note: '无音频元素' };
-  return { ok: v.paused || v.currentTime === 0, note: 'paused=' + v.paused };
-});
-rec('V-01', '玩家台词时上一句配音已停止', vocal.ok, vocal.note);
+// ---------- 跳关 ----------
+const hasBtn = await p.evaluate(() => !!document.getElementById('paper-jump-btn'));
+rec('J-01', '调试跳关按钮存在', hasBtn);
+
+if (hasBtn) {
+  await p.evaluate(() => document.getElementById('paper-jump-btn').click());
+  await p.waitForTimeout(700);
+  const clicked = await p.evaluate(() => {
+    const btn = [...document.querySelectorAll('#paper-jump button')].find((x) => x.textContent.startsWith('seg3_6'));
+    if (!btn) return false;
+    btn.click();
+    return true;
+  });
+  await p.waitForTimeout(11000);
+  const line = await p.evaluate(() => window.__paperLine || '');
+  rec('J-02', '跳关能直接到指定段落', clicked && line.includes('你在给它找角度'), line.slice(0, 20));
+}
 
 rec('G-01', '控制台无报错', errors.length === 0, errors.slice(0, 2).join(' | '));
 

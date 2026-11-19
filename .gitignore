@@ -13,3 +13,6 @@ playwright-report/
 
 .env
 .env.local
+
+qa-*/
+tests/*.png
