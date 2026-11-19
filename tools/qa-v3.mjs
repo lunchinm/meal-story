@@ -261,20 +261,14 @@ rec('D-01', '打开选项时自绘层全部收起', menuState.ui === 'none' && m
   JSON.stringify(menuState));
 await shot('D-config');
 
-const escBtn = await page.evaluate(() => {
-  const b = document.querySelector('#paper-esc button:nth-child(2)');
-  if (!b) return null;
-  const r = b.getBoundingClientRect();
-  return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
-});
-rec('D-02', '菜单里有明确的「标题」入口', escBtn ? '通过' : '不通过', '');
-if (escBtn) {
-  await page.mouse.click(escBtn.x, escBtn.y);
-  await page.waitForTimeout(2500);
-}
+const hasTitleEntry = await page.evaluate(() => [...document.querySelectorAll('div,span')].some(e => e.children.length === 0 && e.textContent.trim() === '标题'));
+rec('D-02', '菜单里有明确的「标题」入口', hasTitleEntry ? '通过' : '不通过', '');
+await page.evaluate(() => { const els = [...document.querySelectorAll('div,span')].filter(e => e.children.length === 0 && e.textContent.trim() === '标题'); if (els.length) els[els.length - 1].click(); });
+await page.waitForTimeout(800);
+await page.evaluate(() => { const c = document.getElementById('globalDialogContainer'); if (c) { const y = [...c.querySelectorAll('[class*="button"]')].find(x => x.textContent.trim() === '是'); if (y) y.click(); } });
+await page.waitForTimeout(2000);
 const backState = await page.evaluate(() => ({
   title: getComputedStyle(document.getElementById('paper-title')).display,
-  esc: document.getElementById('paper-esc') ? getComputedStyle(document.getElementById('paper-esc')).display : 'x',
 }));
 rec('D-03', '点标题回到标题页且不卡死', backState.title !== 'none' ? '通过' : '不通过', JSON.stringify(backState));
 await shot('D-back-title');

@@ -102,7 +102,7 @@ def convert(act, data):
             out.append(say(n.get('speaker'),key))
             if n.get('next'): out.append(target(n['next']))
         elif k=='ending':
-            out += [f'setVar:ending={nid};',f'changeBg:{IMAGE_BG.get(n.get("image"),"bg_gingko.webp")} -next -duration=700;','changeFigure:none -center -next -duration=350;',say(None,n.get('title')),'end;']
+            out += [f'setVar:ending={nid};',f'changeBg:{IMAGE_BG.get(n.get("image"),"bg_gingko.webp")} -next -duration=700;','changeFigure:none -center -next -duration=350;',say(None,n.get('title'))]
     return [x for x in out if x]
 def main():
     OUT.mkdir(parents=True,exist_ok=True); choice_flags=[]; all_data={}
@@ -110,7 +110,7 @@ def main():
         data=json.loads((MS/f'content/act{a}.json').read_text(encoding='utf-8')); all_data[a]=data
         body=convert(a,data)
         if a<4: body.append(f'changeScene:act{a+1}.txt;')
-        else: body.append('end;')
+        # 第四章结尾不写 end;，避免原生结束页盖过自绘结算卡
         (OUT/f'act{a}.txt').write_text('\n'.join(body)+'\n',encoding='utf-8')
         choice_flags += [o['flag'] for n in data if n['type']=='choice' for o in n.get('options',[]) if o.get('flag')]
     (OUT/'start.txt').write_text(':今天吃什么？——校园膳食调查簿;\nchangeBg:bg_gingko.webp -next -duration=500;\nchangeScene:act1.txt;\n',encoding='utf-8')
