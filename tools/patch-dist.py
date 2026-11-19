@@ -14,13 +14,14 @@ s = s.replace("loadIifePlugin('lib/live2d.min.js')", "Promise.resolve(null)")
 s = s.replace("loadIifePlugin('lib/live2dcubismcore.min.js')", "Promise.resolve(null)")
 
 if "theme-inject.js" not in s:
-    s = s.replace("</body>", '  <script src="theme-inject.js?v=20261119m"></script>\n</body>')
+    s = s.replace("</body>", '  <script src="theme-inject.js?v=20261119s"></script>\n</body>')
 
 io.open(p, "w", encoding="utf-8").write(s)
 print("补丁完成：", p)
 print("  theme-inject 已挂:", "theme-inject.js" in s)
 print("  live2d 已禁:", "Promise.resolve(null)" in s)
 print("  长度", before, "→", len(s))
+
 
 
 
