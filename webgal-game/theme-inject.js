@@ -1267,6 +1267,7 @@
     if (p) p.style.display = 'none';
     window.__wgDebugStart = { scene: scene || 'start.txt', label: label };
     // 回到标题，等标题真的出现后再开局，走到目标 label
+    titleForcedUntil = Date.now() + 8000;   // 让自绘标题在这段时间里保持可见
     if (gameStarted && window.__wgBackToTitle) window.__wgBackToTitle();
     var tries = 0;
     var tick = function () {

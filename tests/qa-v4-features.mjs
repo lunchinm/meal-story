@@ -92,7 +92,7 @@ if (hasBtn) {
     btn.click();
     return true;
   });
-  await p.waitForTimeout(11000);
+  await p.waitForTimeout(17000);
   const line = await p.evaluate(() => window.__paperLine || '');
   rec('J-02', '跳关能直接到指定段落', clicked && line.includes('你在给它找角度'), line.slice(0, 20));
 }
@@ -104,3 +104,4 @@ const pass = rows.filter((r) => r.status === '通过').length;
 console.log(`\nSUMMARY ${JSON.stringify({ 通过: pass, 不通过: rows.length - pass, 总计: rows.length })}`);
 await b.close();
 process.exit(rows.some((r) => r.status === '不通过') ? 1 : 0);
+
