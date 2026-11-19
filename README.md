@@ -1,109 +1,59 @@
 # 今天吃什么？——校园膳食调查簿
 
-“合理膳食 · 免疫基石”创意宣传大赛初赛的交互作品。
-网页互动短篇：对话 + 餐盘搭配 + 看标签，四章、三种结局、单次 10—14 分钟。
+“合理膳食 · 免疫基石”创意宣传大赛作品 · 四川大学华西临床医学院
+网页互动叙事（校园膳食调查）：四章、三种结局，含群聊、看图核实、配餐、瓶身对比、调查簿等互动。
 
 **在线试玩**：https://lunchinm.github.io/meal-story/
 
-## 跑起来
+技术形态：**WebGAL 4.6.7（静态 SPA）+ 自绘纸质「调查簿」UI + 构建期剧本转换**。
+（早期用自研 HTML 原型，已废弃并清除，仓库现在只有 WebGAL 版本。）
 
-```bash
-npm install      # 第一次
-npm run dev      # 本地开发，浏览器打开 http://localhost:5173
-npm run build    # 打包成一个 dist/index.html，双击就能玩
+## 先读这三份
+
+| 文档 | 用途 |
+|---|---|
+| [docs/说明文档.md](docs/说明文档.md) | 项目是什么、三分钟跑起来、目录、剧本模型、界面规则、构建发布 |
+| [docs/交付文档.md](docs/交付文档.md) | 交付清单、验收步骤、素材来源、怎么改内容、交接要点 |
+| [docs/问题文档.md](docs/问题文档.md) | 已知问题与优先级、已修复问题留档 |
+| [docs/设计说明.md](docs/设计说明.md) | 按剧本展开的设计细节（分层规则、互动节点、状态分支） |
+| docs/archive/ | 历史过程文档（试玩记录、剧本对照审查、进度、旧规范） |
+
+## 快速开始
+
+```powershell
+cd ..\WebGAL-src ; yarn webgal:build      # 首次：先跑 .github/patch-engine.py 打引擎补丁
+cd ..\meal-story
+python tools\sync-dist.py local           # 同步内容进 dist
+python tools\serve.py                     # 默认 8080，可 PORT=8123
 ```
 
-`npm run build` 会把 JS、CSS、剧情全部打进一个文件，离线可用，交付时直接压缩上传。
+## 改剧本（写手看这段）
 
-## 目录
+剧情全在 `content/act1..4.json`（816 节点 / 12 种类型），改完跑：
 
-```
-meal-story/
-├─ index.html
-├─ src/
-│  ├─ main.ts          入口：标题页、启动、键盘推进
-│  ├─ state.ts         存档（localStorage）、flag、已选食物卡
-│  ├─ engine/
-│  │  ├─ types.ts      节点类型定义（先看这里）
-│  │  ├─ loader.ts     把 content/*.json 读进来
-│  │  └─ runner.ts     按 id 走剧情，分发到各节点
-│  ├─ ui/
-│  │  ├─ stage.ts      对话框、选项、结局卡、toast
-│  │  └─ styles.css    全部样式，1280×720 基准
-│  └─ modules/
-│     ├─ plate.ts      餐盘关：预算、类别、同类过量
-│     └─ evidence.ts   证据关：点选需要核实的说法
-├─ content/
-│  ├─ act1.json        第一章《套餐的秘密》
-│  ├─ act2.json        第二章《餐盘之外》
-│  ├─ act3.json        第三章《翻到包装背面》
-│  ├─ act4.json        第四章《你的方案，能坚持吗》+ 三个结局
-│  ├─ cards.json       10 张食物卡（名称、类别、份量、模拟价格）
-│  └─ knowledge.json   知识卡与来源
-├─ assets/             背景 bg/、立绘 ch/、食物卡 food/、音效 sfx/、语音 voice/、字体 font/
-├─ docs/               素材清单 ASSETS.md、开发计划 ROADMAP.md、文件结构 STRUCTURE.md
-└─ tools/              e2e.mjs 自动化测试
+```powershell
+python tools\convert-to-webgal.py
+python tools\export-line-meta.py
+python tools\export-chat-meta.py
+python tools\export-ui-data.py
+python tools\export-story-meta.py
+python tools\sync-dist.py <新版本号>
 ```
 
-素材从哪来、用了什么依据，看 [docs/ASSETS.md](docs/ASSETS.md)；接下来要做什么，看 [docs/ROADMAP.md](docs/ROADMAP.md)。
+节点字段与界面规则见 `docs/说明文档.md` 第 4、5 节。**不要手改** `webgal-game/scene/*.txt`（生成物）。
 
-## 改剧情（写手看这段）
+## 发布前必做
 
-剧情全在 `content/*.json`，不用碰代码。一个节点长这样：
+1. 把 `.github/inject_theme.py` 与 `tools/patch-dist.py` 里的 `theme-inject.js?v=` 改成新版本号（不改等于没发布）
+2. 确认 `git commit` 真的成功（这台机器常出现 `.git/index.lock` 占用导致静默失败）
+3. 触发 `构建并发布 WebGAL 版` 工作流，等 CI 绿
 
-```json
-{ "id": "a1-01", "type": "say", "speaker": "旁白", "text": "一句话。", "next": "a1-02" }
+## 轻量回归
+
+```powershell
+node tools\qa-v3.mjs http://127.0.0.1:8123/ --out qa-1      # 32 条
+node tests\qa-v4-features.mjs http://127.0.0.1:8123/ qa-2   # 9 条
 ```
 
-节点类型（七种，branch 分流结局、chapter 是章节卡）：
-
-| type | 用途 | 关键字段 |
-| --- | --- | --- |
-| `say` | 一句对白／旁白 | `speaker`、`text`、`scene`、`actor`、`expr`、`card`、`hint`、`next` |
-| `choice` | 三选一左右的分支 | `question`、`hint`、`options[{ text, next, flag }]` |
-| `plate` | 餐盘关 | `budget`、`slots`、`cards`、`check`、`hint`、`tip`、`next` |
-| `evidence` | 证据判断 | `claims[{ text, suspect, reason }]`、`need`、`hint`、`next` |
-| `chapter` | 章节卡 | `title`、`subtitle`、`next` |
-| `branch` | 按 flag 分流结局 | `rules[{ flags, all, next }]`、`fallback` |
-| `ending` | 结局 | `title`、`body[]`、`action` |
-
-规则：
-
-- `next` 指向下一个节点的 `id`，写完必须存在，否则会弹出“找不到节点”。
-- 选择别给默认项：每个 option 都得是学生真会考虑的做法，加一句 `hint` 说明看什么。
-- 科普结论写在对白里一句话，依据写进 `knowledge.json`，来源别省。
-- 不写“免疫力＋20”“吃一顿就生病”这类因果。
-
-## 改界面（技术看这段）
-
-- 舞台固定 16:9，内容区 1280×720，所有尺寸在 `styles.css` 的 `.stage` 里。
-- 加一种节点：在 `types.ts` 里加接口，`runner.ts` 里加一个 `case`，模块放 `src/modules/`。
-- 两个互动关卡的判定逻辑各在自己的文件里，互不影响，两个人可以并行改。
-- 判定不许设唯一答案；餐盘试到第三次还不达标就放行，别让玩家卡死。
-
-## 素材
-
-`assets/` 里只有成品资源，直接引用，不含任何生成流程：
-
-- `bg/`：5 张场景背景（1280×720 webp）
-- `ch/`：4 个角色 × 3 种表情，透明底半身立绘（webp）
-- `food/`：10 张食物卡（webp）
-- `sfx/`：点击、翻页、过关、失败、结局音与一段背景垫音
-- `voice/`：13 句对白配音，文件名就是剧情节点 id；`manifest.json` 是可查的清单
-
-要用新素材，按同名同尺寸替换即可，代码不用改。
-
-## 自动化测试（改完必跑）
-
-```bash
-npm run preview -- --port 4174 --strictPort   # 终端 A
-npm run e2e                                    # 终端 B
-```
-
-`tools/e2e.mjs` 用 Chrome DevTools Protocol 发真实鼠标事件，跑 14 步：标题 → 四章 → 两处配餐 → 两处证据 → 知识卡 → 三个结局 → 1024×720 视口检查。
-点不到或被遮挡会直接报出上层元素，控制台有一条报错就整轮失败。
-
-## 还没做的
-
-- 图上的区域圈选（现在是点选说法，够用，验收也认这个）。
-- 手机端适配（只保证桌面 16:9 浏览器）。
+> 这两套只覆盖“有没有内容”，查不出语义错误（界面串台、发言人错配、重复）。
+> 语义问题仍需人肉试玩，参考 `docs/archive/试玩记录.md`。
