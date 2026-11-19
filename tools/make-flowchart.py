@@ -18,9 +18,9 @@ chapters = [
 ]
 
 endings = [
-    ("e_normal", "结局 · 照着吃", "act4.txt", 0, 880),
-    ("e_advanced", "结局 · 会挑着吃", "act4.txt", 220, 880),
-    ("e_hidden", "结局 · 把问题问回去", "act4.txt", 440, 880),
+    ("e_normal", "结局 · 我会选了", "act4.txt", 0, 880),
+    ("e_advanced", "结局 · 换一家食堂，也会选", "act4.txt", 220, 880),
+    ("e_hidden", "结局 · 先问清楚，再给建议", "act4.txt", 440, 880),
 ]
 
 nodes = [{

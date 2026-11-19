@@ -45,6 +45,11 @@ def ensure_imports():
         add.append("import { setMenuPanelTag } from '@/store/GUIReducer';")
     if "__wgNextSentence" not in head:
         add.append("import { nextSentence as __wgNextSentence, continueSentence as __wgContinueSentence } from '@/Core/controller/gamePlay/nextSentence';")
+    if "__wgJumpFromBacklog" not in head:
+        add.append("import { jumpFromBacklog as __wgJumpFromBacklog } from '@/Core/controller/storage/jumpFromBacklog';")
+    if "__wgStopAuto" not in head:
+        add.append("import { stopAuto as __wgStopAuto } from '@/Core/controller/gamePlay/autoPlay';")
+        add.append("import { stopFast as __wgStopFast } from '@/Core/controller/gamePlay/fastSkip';")
     if "__wgJumpToLabel" not in head:
         add.append("import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';")
     if "__wgChangeScene" not in head:
@@ -88,18 +93,23 @@ if (typeof window !== 'undefined') {
   (window as any).__wgQuickBar = (show: boolean) => {
     try { webgalStore.dispatch(setVisibility({ component: 'showControls' as any, visibility: !!show })); } catch (e) { /* ignore */ }
   };
+  (window as any).__wgStopAllPlay = () => {
+    try { __wgStopAuto(); } catch (e) { /* ignore */ }
+    try { __wgStopFast(); } catch (e) { /* ignore */ }
+  };
   (window as any).__wgOpenMenu = (tag: string) => {
     try {
+      (window as any).__wgStopAllPlay();
       webgalStore.dispatch(setMenuPanelTag(tag as any));
       webgalStore.dispatch(setVisibility({ component: 'showMenuPanel' as any, visibility: true }));
       return true;
     } catch (e) { return false; }
   };
   (window as any).__wgOpenBacklog = () => {
-    try { webgalStore.dispatch(setVisibility({ component: 'showBacklog' as any, visibility: true })); return true; } catch (e) { return false; }
+    try { (window as any).__wgStopAllPlay(); webgalStore.dispatch(setVisibility({ component: 'showBacklog' as any, visibility: true })); return true; } catch (e) { return false; }
   };
   (window as any).__wgOpenFlowchart = () => {
-    try { webgalStore.dispatch(setVisibility({ component: 'showFlowchart' as any, visibility: true })); return true; } catch (e) { return false; }
+    try { (window as any).__wgStopAllPlay(); webgalStore.dispatch(setVisibility({ component: 'showFlowchart' as any, visibility: true })); return true; } catch (e) { return false; }
   };
   (window as any).__wgStopVocal = () => {
     try {
@@ -122,18 +132,10 @@ if (typeof window !== 'undefined') {
   };
   (window as any).__wgRewind = (steps = 1) => {
     try {
-      const sm = WebGAL.sceneManager.sceneData;
-      const list = sm.currentScene.sentenceList as any[];
-      let need = Math.max(1, steps);
-      let i = sm.currentSentenceId - 1;
-      while (i >= 0 && need > 0) {
-        if (list[i] && list[i].command === 'say') need -= 1;
-        if (need === 0) break;
-        i -= 1;
-      }
-      if (i < 0) return false;
-      sm.currentSentenceId = i;
-      __wgContinueSentence();
+      const list = WebGAL.backlogManager.getBacklog();
+      const index = list.length - 1 - Math.max(1, steps);
+      if (index < 0) return false;
+      __wgJumpFromBacklog(index);
       return true;
     } catch (e) { return false; }
   };
@@ -151,7 +153,45 @@ def main():
         ("textSpeed: 100,", "textSpeed: 120,"),
     ])
 
-    # 2) 出口
+    # 2) 回退：复用原生回想快照，改为 async 且跳转前停自动/快进
+    patch("Core/controller/storage/jumpFromBacklog.ts", [
+        (
+            "import { stopAllPerform } from '@/Core/controller/gamePlay/stopAllPerform';",
+            "import { stopAllPerform } from '@/Core/controller/gamePlay/stopAllPerform';\n"
+            "import { stopAuto } from '@/Core/controller/gamePlay/autoPlay';\n"
+            "import { stopFast } from '@/Core/controller/gamePlay/fastSkip';",
+        ),
+        (
+            "export const jumpFromBacklog = (index: number, refetchScene = true) => {",
+            "export const jumpFromBacklog = async (index: number, refetchScene = true) => {",
+        ),
+        (
+            "  if (refetchScene)\n"
+            "    sceneFetcher(backlogFile.saveScene.sceneUrl).then((rawScene) => {\n"
+            "      WebGAL.sceneManager.sceneData.currentScene = sceneParser(\n"
+            "        rawScene,\n"
+            "        backlogFile.saveScene.sceneName,\n"
+            "        backlogFile.saveScene.sceneUrl,\n"
+            "      );\n"
+            "      WebGAL.sceneManager.settledScenes.add(WebGAL.sceneManager.sceneData.currentScene.sceneUrl); // 放入已加载场景列表，避免递归加载相同场景\n"
+            "    });",
+            "  if (refetchScene) {\n"
+            "    const rawScene = await sceneFetcher(backlogFile.saveScene.sceneUrl);\n"
+            "    WebGAL.sceneManager.sceneData.currentScene = sceneParser(\n"
+            "      rawScene,\n"
+            "      backlogFile.saveScene.sceneName,\n"
+            "      backlogFile.saveScene.sceneUrl,\n"
+            "    );\n"
+            "    WebGAL.sceneManager.settledScenes.add(WebGAL.sceneManager.sceneData.currentScene.sceneUrl);\n"
+            "  }",
+        ),
+        (
+            "  // 强制停止所有演出\n  stopAllPerform();",
+            "  // 强制停止所有演出与自动/快进\n  stopAuto();\n  stopFast();\n  stopAllPerform();",
+        ),
+    ])
+
+    # 3) 出口
     ensure_imports()
     p = _p("Core/controller/gamePlay/backToTitle.ts")
     if os.path.exists(p):

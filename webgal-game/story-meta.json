@@ -116,13 +116,6 @@
    "rules": [],
    "fallback": "a3-00"
   },
-  "random:a3-random": {
-   "pool": [
-    "a3-r1-1",
-    "a3-r2-1",
-    "a3-r3-1"
-   ]
-  },
   "a3-hidden-gate": {
    "rules": [
     {
@@ -158,5 +151,25 @@
    ],
    "fallback": "e_normal"
   }
- }
+ },
+ "choiceFlags": [
+  "rec:回访周简",
+  "rec:回访米粒",
+  "rec:回访陆燃",
+  "rec:当前午餐方案：双方案",
+  "rec:当前午餐方案：清蒸鱼",
+  "rec:当前午餐方案：豆腐鸡蛋",
+  "rec:想省心",
+  "rec:核对无蔗糖配料",
+  "rec:根据反馈完成修订",
+  "rec:苏桃购买目的：喜欢口味",
+  "rec:苏桃购买目的：尚未细问",
+  "rec:苏桃购买目的：补充奶类",
+  "rec:选择发布通用版",
+  "rec:选择试行及试行对象",
+  "rec:采购前询问需求",
+  "trial:lu",
+  "trial:mili",
+  "trial:zhou"
+ ]
 }

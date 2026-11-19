@@ -74,7 +74,7 @@
             "y": 880
           },
           "data": {
-            "label": "结局 · 照着吃",
+            "label": "结局 · 我会选了",
             "sceneName": "act4.txt"
           }
         },
@@ -86,7 +86,7 @@
             "y": 880
           },
           "data": {
-            "label": "结局 · 会挑着吃",
+            "label": "结局 · 换一家食堂，也会选",
             "sceneName": "act4.txt"
           }
         },
@@ -98,7 +98,7 @@
             "y": 880
           },
           "data": {
-            "label": "结局 · 把问题问回去",
+            "label": "结局 · 先问清楚，再给建议",
             "sceneName": "act4.txt"
           }
         }
