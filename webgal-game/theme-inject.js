@@ -922,8 +922,9 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 `;
 
   var CSS_V2 = `
-/* 标题页背景：隐藏引擎的灰色备用底，保留真实标题插画 */
+/* 标题页背景：直接由主题绘制，避免引擎备用灰底/黑色遮罩在不同构建下不一致 */
 [class*="Title_backup_background"]{display:none!important}
+#paper-title{background:url('game/background/bg_desk_warm.webp') center/cover no-repeat #f6efe0!important}
 #paper-ui .pu-card{cursor:pointer;animation:paperIn .24s ease}
 #paper-task{width:min(650px,calc(100vw - 112px));max-height:68vh;padding:24px 28px;pointer-events:auto}
 #paper-task .pt-title{font-size:24px;border-bottom:1px solid #b9a986;padding-bottom:12px}
