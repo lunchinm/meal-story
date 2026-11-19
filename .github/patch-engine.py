@@ -219,8 +219,7 @@ def ensure_imports():
         changed = True
     # setMenuPanelTag 合并到 GUIReducer 的 import
     if "setMenuPanelTag" not in src:
-        src = src.replace("import { setVisibility } from '@/store/GUIReducer';",
-                          "import { setVisibility, setMenuPanelTag } from '@/store/GUIReducer';", 1)
+        src = "import { setMenuPanelTag } from '@/store/GUIReducer';\n" + src
         changed = True
     if changed:
         io.open(p, "w", encoding="utf-8").write(src)
