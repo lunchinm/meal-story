@@ -14,7 +14,7 @@ from PIL import Image as PILImage
 
 ROOT = Path(r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story")
 XLSX = Path(r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\文档\今天吃什么_审核反馈表.xlsx")
-VERSION = "20261119ab"
+VERSION = "20261119af"
 
 wb = load_workbook(XLSX, data_only=False)
 cover, audio, res, bug, sug = wb.worksheets[:5]
@@ -96,6 +96,8 @@ for kind, sub in buckets:
 for f in sorted((ROOT / "assets" / "bg").glob("chat_*.webp")):
     if f.name in chat_files and (f.name not in acts_by_file):
         used.append(("图片消息", "bg", f))
+for f in sorted((ROOT / "assets" / "ch").glob("dish_*.webp")):
+    used.append(("菜品", "ch", f))
 
 thumb_dir = Path(tempfile.mkdtemp(prefix="meal-thumbs-"))
 SPECS = {
@@ -103,12 +105,15 @@ SPECS = {
     "立绘": "900px 高 / 透明 webp",
     "道具 / UI": "透明 webp / 建议 800px",
     "图片消息": "544×384 / webp",
+    "菜品": "透明 webp / 配餐互动",
 }
 rows = []
 for idx, (kind, sub, f) in enumerate(used, 1):
     acts = sorted(acts_by_file.get(f.name, []))
     if kind == "图片消息":
         where = "群聊图片消息"
+    elif kind == "菜品":
+        where = "配餐互动（两次选菜）"
     elif not acts:
         where = "全篇通用"
     elif kind == "立绘":
@@ -156,12 +161,20 @@ bugs = [
      "WebGAL 自带 Service Worker 缓存旧入口，刷新仍是旧版", "构建时强制注销 SW 并清理缓存", "已修复"],
     ["BUG-005", "环境 / 扩展", "Edge 装了沉浸式翻译等扩展", "一般",
      "翻译扩展注入样式，把自绘层撑到异常高度，只剩原生文本框", "关闭该站自动翻译或用无痕窗口", "已定位（环境）"],
-    ["BUG-006", "音频覆盖", "第二至四章文本台词", "一般",
-     "579 句文本台词中 132 句缺配音，构建时自动跳过 vocal", "补齐对应节点 mp3", "待补"],
+    ["BUG-006", "音频覆盖", "旁白 / 玩家句", "一般",
+     "132 句无配音均为旁白/玩家（设计不配音）；六角色文本句均已绑定 mp3", "如需旁白配音再批量生成", "设计如此"],
     ["BUG-007", "素材", "核实 / 配餐 / 瓶身 / 结局", "一般",
-     "四类正式美术仍为纸质自绘或文字占位", "按资源表规格补图并替换", "待补"],
+     "四类正式美术仍为纸质自绘或文字占位（配餐已接菜品切图）", "按资源表规格补图并替换", "待补"],
     ["BUG-008", "跳关", "act2 全部节点", "轻微",
      "第二章无 seg，只能按整章跳转，无法按段核对", "补 seg 后重跑转换与导出", "待处理"],
+    ["BUG-009", "返回标题", "设置→返回标题→是", "严重",
+     "backToTitle 后菜单未关、状态未重置，纸质标题被收起", "GUI.title 权威判定+关闭残留面板", "已修复"],
+    ["BUG-010", "结局", "剧情结束", "严重",
+     "结尾 end; 触发原生结束页盖过自绘结算卡", "移除 end;，结局卡持久+返回/重玩", "已修复"],
+    ["BUG-011", "设置预览", "系统/显示栏", "一般",
+     "全局隐藏文本框误伤设置内嵌预览", "隐藏范围限定舞台", "已修复"],
+    ["BUG-012", "鉴赏/跳关", "标题→鉴赏", "一般",
+     "旧跳关小页未删、缺互动节点", "整页鉴赏含章节+6 互动节点，隐藏旧跳关", "已修复"],
 ]
 for i, row in enumerate(bugs, 2):
     write_row(bug, i, row, bug_styles)

@@ -20,4 +20,4 @@ tests/*.png
 __pycache__/
 *.pyc
 
-分享/*.zip
+release/*.zip
