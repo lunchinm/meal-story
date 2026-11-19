@@ -20,6 +20,8 @@ p.on('pageerror', (e) => errors.push(e.message));
 
 const startAt = async (scene, label) => {
   await p.evaluate(([sc, lb]) => { window.__wgDebugStart = { scene: sc, label: lb }; }, [scene, label]);
+  await p.evaluate(() => { const s = document.getElementById('paper-splash'); if (s && getComputedStyle(s).display !== 'none') s.click(); });
+  await p.waitForTimeout(300);
   const bt = await p.evaluate(() => {
     const t = document.getElementById('paper-title');
     if (!t || getComputedStyle(t).display === 'none') return false;
@@ -36,6 +38,8 @@ const startAt = async (scene, label) => {
       if (btn) btn.click();
     });
   }
+  await p.waitForTimeout(500);
+  await p.evaluate(() => { const pr = document.getElementById('paper-press'); if (pr && getComputedStyle(pr).display !== 'none') pr.click(); });
   await p.waitForTimeout(9000);
 };
 

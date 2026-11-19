@@ -926,7 +926,20 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 [class*="Title_backup_background"]{display:none!important}
 [class*="Title_main"],[class*="Title_background"],[class*="Title_backup_background"]{opacity:0!important;pointer-events:none!important}
 [class*="Loading_main"],[class*="Loading_container"],#loading{display:none!important}
-#paper-title{background:url('game/background/bg_desk_warm.webp') center/cover no-repeat #f6efe0!important}
+#paper-title{background:url('game/background/bg_gingko.webp') center/cover no-repeat #f6efe0!important}
+/* 启动封面 / 进入确认： intentional 的点击流程，而非闪现 */
+#paper-splash,#paper-press{position:fixed;inset:0;z-index:99990;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-family:'Songti SC','SimSun','Noto Serif SC',serif;color:#2f3a2e;background:radial-gradient(120% 90% at 50% 30%,#fdfaf1 40%,#efe6d2 100%);cursor:pointer}
+#paper-splash .ps-kicker{font-size:15px;letter-spacing:.5em;color:#6f7b63;margin-bottom:18px}
+#paper-splash .ps-title{font-size:44px;letter-spacing:.12em}
+#paper-splash .ps-sub{margin-top:14px;font-size:16px;letter-spacing:.3em;color:#6f7b63}
+#paper-splash .ps-hint,#paper-press .pp-hint{margin-top:46px;font-size:13px;letter-spacing:.3em;color:#8a8064;animation:paperBlink 1.6s ease-in-out infinite}
+#paper-press{background:rgba(24,20,12,.55);backdrop-filter:blur(3px);color:#f6f2e2}
+#paper-press .pp-title{font-size:26px;letter-spacing:.4em}
+#paper-press .pp-hint{color:#d8d2c0}
+@keyframes paperBlink{0%,100%{opacity:.35}50%{opacity:1}}
+/* 原生提示横幅纸质化 */
+[class*="GlobalDialog"],[class*="globalDialog"]{font-family:'Songti SC','SimSun',serif!important}
+[class*="GlobalDialog"] [class*="content"],[class*="toast"],[class*="Toast"]{background:#fcf9f0!important;color:#33402f!important;border:1px solid #b9a986!important;border-radius:4px!important;font-family:'Songti SC','SimSun',serif!important}
 #paper-ui .pu-card{cursor:pointer;animation:paperIn .24s ease}
 #paper-task{width:min(650px,calc(100vw - 112px));max-height:68vh;padding:24px 28px;pointer-events:auto}
 #paper-task .pt-title{font-size:24px;border-bottom:1px solid #b9a986;padding-bottom:12px}
@@ -1016,7 +1029,9 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       var want = '';
       try { want = (window.__wgVocalSrc && window.__wgVocalSrc()) || ''; } catch (e) { want = ''; }
       var vocalEl = document.getElementById('currentVocal');
-      if (want && vocalEl && !kickedSet.has(vocalEl) && vocalEl.paused && vocalEl.currentTime < 0.2) {
+      var wantBase = want ? want.split('/').pop() : '';
+      var srcMatch = vocalEl && wantBase && vocalEl.src && vocalEl.src.indexOf(wantBase) >= 0;
+      if (want && srcMatch && !kickedSet.has(vocalEl) && vocalEl.paused && vocalEl.currentTime < 0.2) {
         kickedSet.add(vocalEl);
         var pv = vocalEl.play();
         if (pv && pv.catch) pv.catch(function () {});
@@ -1030,6 +1045,16 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     }
     document.addEventListener('pointerdown', kickAudio, { once: false });
     document.addEventListener('keydown', kickAudio, { once: false });
+    // 推进时立即停上一句配音，避免“我”/无配音句听到上一个角色的声音
+    function stopVocalOnAdvance(ev) {
+      var t = ev.target;
+      if (t && t.closest && t.closest('button, #paper-ui .pu-tools, #paper-chat .pc-choices, #paper-nav, #paper-title, #paper-splash, #paper-press, #paper-task, #paper-notebook')) return;
+      try { if (window.__wgStopVocal) window.__wgStopVocal(); } catch (e) { /* ignore */ }
+    }
+    document.addEventListener('pointerdown', stopVocalOnAdvance, true);
+    document.addEventListener('keydown', function (ev) {
+      if (ev.key === ' ' || ev.key === 'Enter') stopVocalOnAdvance(ev);
+    }, true);
     // 音频元素常常在点击之后才创建，交互过一次后持续兜底
     var kickTicks = 0;
     var kickTimer = setInterval(function () {
@@ -1044,6 +1069,9 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       var want = btn.getAttribute('data-label');
       if (btn.blur) btn.blur();  // 别让按钮吃焦点，否则之后按空格会重复触发它
       if (want === '流程图') { openFlow(); return; }
+      if (want === '存档' && window.__wgOpenMenuTag) { window.__wgOpenMenuTag(0); return; }
+      if (want === '选项' && window.__wgOpenMenuTag) { window.__wgOpenMenuTag(2); return; }
+      if (want === '回想' && window.__wgOpenBacklog) { window.__wgOpenBacklog(); return; }
       nativeAction(want);
     });
 
@@ -1349,6 +1377,51 @@ body.paper-chat-mode [class*="TextBox_Container"] {
   var lastPushedKey = '';
   var sentKeys = {};
   var pushedIds = {};
+  var splashDone = false;
+  var pressPending = false;
+
+  // 启动封面：合理膳食 · 免疫基石 → 点击 → 标题
+  function buildSplash() {
+    if (document.getElementById('paper-splash')) return;
+    var s = document.createElement('div');
+    s.id = 'paper-splash';
+    s.innerHTML = '<div class="ps-kicker">四川大学华西临床医学院 · 创意宣传作品</div>' +
+      '<div class="ps-title">合理膳食 · 免疫基石</div>' +
+      '<div class="ps-sub">今天吃什么？——校园膳食调查簿</div>' +
+      '<div class="ps-hint">点 击 任 意 处 继 续</div>';
+    s.addEventListener('click', function () {
+      splashDone = true;
+      s.style.display = 'none';
+    });
+    document.body.appendChild(s);
+    stopOwnEvents(s);
+  }
+
+  // 进入确认：标题 → 开始游戏 → PRESS → 点击 → 正文
+  function buildPress() {
+    if (document.getElementById('paper-press')) return;
+    var p = document.createElement('div');
+    p.id = 'paper-press';
+    p.style.display = 'none';
+    p.innerHTML = '<div class="pp-title">PRESS THE SCREEN</div>' +
+      '<div class="pp-hint">点 击 屏 幕 · 开 始 调 查</div>';
+    p.addEventListener('click', function () {
+      pressPending = false;
+      p.style.display = 'none';
+      if (window.__wgStart) window.__wgStart();
+    });
+    document.body.appendChild(p);
+    stopOwnEvents(p);
+  }
+  function showPress() {
+    buildPress();
+    pressPending = true;
+    gameStarted = true;
+    var p = document.getElementById('paper-press');
+    if (p) p.style.display = 'flex';
+    var t = document.getElementById('paper-title');
+    if (t) t.style.display = 'none';
+  }
 
   // 按剧本清单判定：channel=chat 才进聊天；旁白/章节/场景描写走文本框
   // 优先按剧本节点 id 判定（转换器用 setVar:line=<id> 写进引擎变量），文本只做兜底
@@ -1404,7 +1477,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       if (on) document.body.classList.add('paper-chat-mode');
       else document.body.classList.remove('paper-chat-mode');
     }
-    try { if (window.__wgTextBox) window.__wgTextBox(!on); } catch (e) { /* ignore */ }
+    // 原生文本框始终由 CSS 隐藏，不再切换其可见性，避免模式切换闪屏
   }
 
   function pushBubble(who, text, id) {
@@ -1804,6 +1877,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     var nameEl = document.querySelector('#paper-ui .pu-name');
 
     var info = lineInfo(state.name, state.raw || state.text);
+    // 过渡帧（无标记且无正文）保持当前模式，避免群聊/文本来回闪
+    if (!info && !(state.raw || state.text || '').length) return;
     var isChat = !!(info && info.c === 1);
 
     if (!isChat) {
@@ -1911,7 +1986,9 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 
   function sync() {
     try {
-      // 不再因为检测到原生面板就收起自绘层：原生面板自己会盖在上面。
+      // 原生面板（设置/存档/回想/流程图）打开时收起自绘层，让原生面板完整显示；
+      // 判定来自引擎 GUI 状态，不会误伤标题页或关闭态图层。
+      if (nativePanelOpen()) { hideOwnChrome(); return; }
       syncInner();
     } catch (e) { /* 单次失败不影响游戏 */ }
   }
@@ -1930,13 +2007,34 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     }
   }
 
+  // 让设置页的字号/字体/文本框不透明度真正作用于自绘纸卡
+  var FONT_FAMILIES = ["'Songti SC','SimSun','Noto Serif SC',serif", "'Source Han Serif CN','Noto Serif SC',serif", "'OPPOSans R','Microsoft YaHei',sans-serif", "'Resource Han Rounded CN','Microsoft YaHei',sans-serif"];
+  function applyUserSettings(ui, textEl) {
+    try {
+      var ud = window.__wgUser && window.__wgUser();
+      var o = ud && ud.optionData;
+      if (!o || !textEl) return;
+      var sizes = [18, 21, 25];
+      var px = sizes[o.textSize] || 21;
+      if (textEl.dataset.px !== String(px)) { textEl.style.fontSize = px + 'px'; textEl.dataset.px = String(px); }
+      var fam = FONT_FAMILIES[o.textboxFont] || FONT_FAMILIES[0];
+      if (textEl.dataset.fam !== String(o.textboxFont)) { textEl.style.fontFamily = fam; textEl.dataset.fam = String(o.textboxFont); }
+      var card = ui.querySelector('.pu-card');
+      var op = (typeof o.textboxOpacity === 'number' ? o.textboxOpacity : 75) / 100;
+      if (card && card.dataset.op !== String(op)) {
+        card.style.background = 'rgba(252,249,240,' + Math.max(0.35, Math.min(1, op + 0.2)) + ')';
+        card.dataset.op = String(op);
+      }
+    } catch (e) { /* ignore */ }
+  }
+
   function syncInner() {
     buildUi();
     var ui = document.getElementById('paper-ui');
     if (!ui) return;
 
-    // 标题页/鉴赏页没有文本框，这时把叠层收起来
-    var hasBox = !!document.querySelector('[class*="TextBox_Container"]');
+    // 标题页/鉴赏页没有文本框/选项，这时把叠层收起来
+    var hasBox = !!document.querySelector('[class*="TextBox_Container"], [class*="chooseContainer"]');
     ui.style.display = hasBox ? 'block' : 'none';
     var washEl = document.getElementById('paper-wash');
     if (washEl) washEl.style.display = hasBox ? 'block' : 'none';
@@ -1954,6 +2052,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     if (state.text) { stateSeenText = true; window.__paperLine = state.text; }
     if (state.name) window.__paperName = state.name;
     if (state.text) textEl.textContent = state.text;
+    applyUserSettings(ui, textEl);
 
     if (state.name) {
       nameEl.textContent = state.name;
@@ -1963,6 +2062,14 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     }
 
     syncChat(state);
+
+    // 选项在场且无正文时，不显示空白纸卡
+    var choosing = !!document.querySelector('[class*="chooseContainer"]');
+    if (choosing && !(state.text || '').length) {
+      var cc = ui.querySelector('.pu-card'); var nn = ui.querySelector('.pu-name');
+      if (cc) cc.style.display = 'none';
+      if (nn) nn.style.display = 'none';
+    }
 
     var m = /^第([一二三四五六七八九十]+)章[《·\s]*([^》，。]*)[》]?/.exec(state.text || '');
     if (m) {
@@ -2097,8 +2204,9 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       if (!btn) return;
       var want = btn.getAttribute('data-label');
 
-      if (want === '开始游戏' || want === '继续游戏' || want === '读取存档') gameStarted = true;
-      if (want === '开始游戏' && window.__wgStart) { window.__wgStart(); return; }
+      if (want === '开始游戏') { showPress(); return; }
+      if (want === '继续游戏' || want === '读取存档') { gameStarted = true; if (window.__wgOpenMenuTag) { window.__wgOpenMenuTag(1); return; } }
+      if (want === '游戏选项') { if (window.__wgOpenMenuTag) { window.__wgOpenMenuTag(2); return; } }
       var spans = document.querySelectorAll('span,div');
       for (var i = 0; i < spans.length; i += 1) {
         if (spans[i].children.length === 0 && (spans[i].textContent || '').trim() === want) {
@@ -2111,26 +2219,15 @@ body.paper-chat-mode [class*="TextBox_Container"] {
   }
 
 
-  // 原生的全屏菜单是否打开（选项 / 存档 / 读档 / 流程图 / 回想）
-  // 注意：原生标题页里也有 _Menu_ 结构，必须排除，否则会把纸质标题误收起来。
+  // 原生全屏面板是否打开：直接读引擎 GUI 状态，避免 DOM 启发式误判
+  // （关闭态的回想/标题层不再被当成“打开的面板”）。
   function nativePanelOpen() {
-    var probes = ['[class*="Config"]', '[class*="Options"]', '[class*="Save"]', '[class*="Load"]',
-                  '[class*="Backlog"]', '[class*="Flowchart"]', '[class*="_Menu"]'];
-    var vw = window.innerWidth, vh = window.innerHeight;
-    for (var p = 0; p < probes.length; p += 1) {
-      var nodes = document.querySelectorAll(probes[p]);
-      for (var i = 0; i < nodes.length; i += 1) {
-        var node = nodes[i];
-        if (node.closest('[class*="Title"], [class*="title"]')) continue;
-        if (node.closest('#paper-title')) continue;
-        var cn = String(node.className || '');
-        if (cn.indexOf('main_out') >= 0 || cn.indexOf('IndexHide') >= 0) continue;
-        var r = node.getBoundingClientRect();
-        var cs = getComputedStyle(node);
-        if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.05) continue;
-        if (r.width * r.height > vw * vh * 0.3) return true;
+    try {
+      if (window.__wgGui) {
+        var g = window.__wgGui();
+        if (g) return !!(g.menu || g.backlog || g.flowchart);
       }
-    }
+    } catch (e) { /* fall through */ }
     return false;
   }
 
@@ -2292,8 +2389,12 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     var atTitle = !gameStarted || (!hasGameDom && nativeTitleVisible());
     var inGame = gameStarted && !atTitle;
 
-    // 原生面板打开时不再整体收起自绘层：面板本身会盖在上面，
-    // 收起反而会在某些窗口尺寸下把游戏画面变成空白。
+    // 原生面板（设置/存档/回想/流程图）打开时收起自绘层，避免纸卡叠在面板上
+    if (inGame && nativePanelOpen()) {
+      hideOwnChrome();
+      if (window.__paperBootDone) window.__paperBootDone();
+      return;
+    }
 
     if (Date.now() < titleForcedUntil) {
       hideOwnChrome();
@@ -2336,7 +2437,9 @@ body.paper-chat-mode [class*="TextBox_Container"] {
   document.addEventListener('DOMContentLoaded', function () { buildTitle(); });
 
   addCss();
-  document.addEventListener('DOMContentLoaded', function () { addCss(); buildUi(); });
+  buildSplash();
+  buildPress();
+  document.addEventListener('DOMContentLoaded', function () { addCss(); buildUi(); buildSplash(); buildPress(); });
   setInterval(function () { addCss(); buildUi(); sync(); }, 170);
 })();
 

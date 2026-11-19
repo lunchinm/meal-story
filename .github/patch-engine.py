@@ -98,6 +98,23 @@ if (typeof window !== 'undefined') {
   (window as any).__wgStart = () => {
     try { __wgStartGame(); return true; } catch (e) { return false; }
   };
+  (window as any).__wgGui = () => {
+    try {
+      const g = webgalStore.getState().GUI;
+      return { menu: g.showMenuPanel, backlog: g.showBacklog, flowchart: g.showFlowchart, title: g.showTitle, starter: g.showStarter, tag: g.currentMenuTag, panic: g.showPanicOverlay };
+    } catch (e) { return null; }
+  };
+  (window as any).__wgOpenMenuTag = (n: number) => {
+    try {
+      (window as any).__wgStopAllPlay();
+      webgalStore.dispatch(setMenuPanelTag(n as any));
+      webgalStore.dispatch(setVisibility({ component: 'showMenuPanel' as any, visibility: true }));
+      return true;
+    } catch (e) { return false; }
+  };
+  (window as any).__wgUser = () => {
+    try { return (webgalStore.getState() as any).userData; } catch (e) { return null; }
+  };
   (window as any).__wgStopAllPlay = () => {
     try { __wgStopAuto(); } catch (e) { /* ignore */ }
     try { __wgStopFast(); } catch (e) { /* ignore */ }
