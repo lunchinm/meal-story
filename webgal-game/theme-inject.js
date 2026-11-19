@@ -42,7 +42,7 @@
   border-radius: 8px;
   background: transparent;
   color: #5b6b4f;
-  opacity: .55;
+  opacity: .9;
   cursor: pointer;
   transition: opacity .15s ease, transform .15s ease;
 }
@@ -811,6 +811,39 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 }
 #paper-toast.show { opacity: 1; }
 
+
+/* ---------- 原生快捷栏保留；我们只在它左侧补两个同风格图标 ---------- */
+#paper-esc { display: none !important; }
+#paper-nav {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 40;
+  opacity: .55;
+  transition: opacity .2s;
+}
+#paper-nav:hover { opacity: 1; }
+#paper-nav { bottom: auto !important; right: auto !important; height: 26px !important; align-items: center; }
+
+#paper-nav button {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #4a4433;
+  background: rgba(252,249,240,.86);
+  border: 1px solid rgba(150,130,96,.55);
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#paper-nav button svg { width: 20px; height: 20px; }
+#paper-nav button:hover { color: #2f4a34; }
+
 /* ---------- 自绘叠层 ---------- */
 #paper-ui {
   position: fixed;
@@ -1199,7 +1232,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       else bodyChars.push(t);
     }
 
-    return { name: flattenLayers(nameChars), text: flattenLayers(bodyChars) };
+    var raw = flattenLayers(bodyChars);
+    return { name: flattenLayers(nameChars), raw: raw, text: stripMarker(raw) };
   }
 
 
@@ -1283,7 +1317,30 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 
   // 按剧本清单判定：channel=chat 才进聊天；旁白/章节/场景描写走文本框
   // 优先按剧本节点 id 判定（转换器用 setVar:line=<id> 写进引擎变量），文本只做兜底
+  // 台词首字符埋的不可见标记：\u200b=群聊，\u200c=文本框
+  function markerOf(text) {
+    if (!text) return '';
+    var ch = text.charAt(0);
+    if (ch === '\u200b') return 'chat';
+    if (ch === '\u200c') return 'stage';
+    return '';
+  }
+
+  function stripMarker(text) {
+    if (!text) return text;
+    var ch = text.charAt(0);
+    if (ch === '\u200b' || ch === '\u200c') return text.slice(1);
+    return text;
+  }
+
   function lineInfo(name, text) {
+    // 1) 台词里的不可见标记（最可靠，不依赖引擎变量）
+    var mk = markerOf(text);
+    if (mk) {
+      var mine = (name || '') === '你';
+      if (mk === 'chat') return { c: 1, k: '', s: '', sp: name || '', snd: mine ? 1 : 0, id: '' };
+      return { c: 0, k: '', s: '', sp: name || '', snd: 0, id: '' };
+    }
     var lid = '';
     try { if (window.__wgGetVar) lid = window.__wgGetVar('line') || ''; } catch (e) { lid = ''; }
     if (lid && typeof LINE_BY_ID !== 'undefined' && LINE_BY_ID && LINE_BY_ID[lid]) {
@@ -1453,40 +1510,73 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     }
   }
 
+  // 把「上一句 / 调查簿」做成原生快捷栏里的图标（复用原生按钮样式与尺寸）
+  var ICON_BACK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 4 12l5 6"/><path d="M4 12h11a5 5 0 0 1 0 10h-2"/></svg>';
+  var ICON_NOTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>';
+
+  function injectNativeButton(proto, label, icon, handler) {
+    var bar = proto.parentElement;
+    if (!bar) return;
+    if (bar.querySelector('[data-paper-btn="' + label + '"]')) return;
+    var btn = proto.cloneNode(true);
+    btn.setAttribute('data-paper-btn', label);
+    btn.removeAttribute('aria-label');
+    var txt = btn.querySelector('[class*="button_text"]');
+    if (txt) txt.textContent = '';
+    btn.setAttribute('title', label);
+    var svg = btn.querySelector('svg');
+    if (svg) {
+      var holder = document.createElement('span');
+      holder.innerHTML = icon;
+      svg.parentNode.replaceChild(holder.firstChild, svg);
+    }
+    btn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      handler();
+    });
+    bar.appendChild(btn);
+  }
+
+  var ICON_BACK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 4 12l5 6"/><path d="M4 12h11a5 5 0 0 1 0 10h-2"/></svg>';
+  var ICON_NOTE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>';
+
   function buildNav() {
-    if (document.getElementById('paper-nav')) return;
-    var bar = document.createElement('div');
-    bar.id = 'paper-nav';
-    var items = [
-      ['上一句', function () { window.__wgRewind && window.__wgRewind(1); }],
-      ['存档', function () { window.__wgOpenMenu && window.__wgOpenMenu('Save'); }],
-      ['读档', function () { window.__wgOpenMenu && window.__wgOpenMenu('Load'); }],
-      ['回想', function () { window.__wgOpenBacklog && window.__wgOpenBacklog(); }],
-      ['流程图', function () { window.__wgOpenFlowchart && window.__wgOpenFlowchart(); }],
-      ['调查簿', function () {
+    var nav = document.getElementById('paper-nav');
+    if (!nav) {
+      nav = document.createElement('div');
+      nav.id = 'paper-nav';
+      var b1 = document.createElement('button');
+      b1.innerHTML = ICON_BACK;
+      b1.title = '上一句';
+      b1.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        if (window.__wgRewind) window.__wgRewind(1);
+      });
+      var b2 = document.createElement('button');
+      b2.innerHTML = ICON_NOTE;
+      b2.title = '调查簿';
+      b2.addEventListener('click', function (ev) {
+        ev.stopPropagation();
         var box = document.getElementById('paper-notebook');
         if (!box) return;
         box.style.display = (box.style.display === 'block') ? 'none' : 'block';
         renderNotebook();
-      }],
-      ['设置', function () { window.__wgOpenMenu && window.__wgOpenMenu('Option'); }],
-      ['标题', function () { nativeAction('标题'); }],
-      ['返回', function () {
-        if (window.__wgClosePanels) window.__wgClosePanels();
-        setTimeout(function () {
-          var still = document.querySelector('[class*="_Backlog_main_"], [class*="_Options_main_"], [class*="_Flowchart_"], [class*="_Save_main_"], [class*="_Load_main_"]');
-          if (still) document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
-        }, 120);
-      }]
-    ];
-    items.forEach(function (it) {
-      var b = document.createElement('button');
-      b.textContent = it[0];
-      b.addEventListener('click', it[1]);
-      bar.appendChild(b);
-    });
-    document.body.appendChild(bar);
-    stopOwnEvents(bar);
+      });
+      nav.appendChild(b1);
+      nav.appendChild(b2);
+      document.body.appendChild(nav);
+      stopOwnEvents(nav);
+    }
+    // 贴在纸卡右上角（原生底栏的坐标在缩放容器里不可靠，不去碰它）
+    var card = document.querySelector('#paper-ui .pu-card');
+    var chat = document.getElementById('paper-chat');
+    var anchor = (chat && chat.style.display !== 'none') ? chat : card;
+    if (!anchor) { nav.style.display = 'none'; return; }
+    var r = anchor.getBoundingClientRect();
+    if (!r.width) { nav.style.display = 'none'; return; }
+    nav.style.display = 'flex';
+    nav.style.left = Math.round(r.right - 74) + 'px';
+    nav.style.top = Math.round(r.top + 10) + 'px';
   }
 
   // ---------------- 调试跳关 ----------------
@@ -1628,7 +1718,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     var card = document.querySelector('#paper-ui .pu-card');
     var nameEl = document.querySelector('#paper-ui .pu-name');
 
-    var info = lineInfo(state.name, state.text);
+    var info = lineInfo(state.name, state.raw || state.text);
     var isChat = !!(info && info.c === 1);
 
     if (!isChat) {
@@ -1771,6 +1861,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     renderTask(state.text || '');
     guardVocal(state.name, state.text|| '');
     syncStoryVars();
+    buildNav();
     if (state.text) { stateSeenText = true; window.__paperLine = state.text; }
     if (state.name) window.__paperName = state.name;
     if (state.text) textEl.textContent = state.text;
@@ -2071,7 +2162,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     buildJumpPanel();
     buildNotebook();
     buildNav();
-    try { if (window.__wgQuickBar) window.__wgQuickBar(false); } catch (e) {}
+    try { if (window.__wgQuickBar) window.__wgQuickBar(true); } catch (e) {}
     var t = document.getElementById('paper-title') || buildTitle();
     if (window.__paperBootDone) window.__paperBootDone();
 

@@ -182,6 +182,8 @@ def convert_act(act: int) -> list[str]:
             if node.get("prop"):
                 lines.append(f"; 道具：{node['prop']}")
             lines.append(f"setVar:line={node.get('id')};")
+            marker = "\u200b" if node.get("channel") == "chat" else "\u200c"
+            text = marker + text
             voice = None if node.get("channel") == "chat" else node.get("id")  # 群聊不配音
             lines.append(say_line(None if speaker in (None, "旁白") else speaker, text, voice))
             last_speaker = speaker
