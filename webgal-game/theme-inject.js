@@ -2123,6 +2123,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
         var node = nodes[i];
         if (node.closest('[class*="Title"], [class*="title"]')) continue;
         if (node.closest('#paper-title')) continue;
+        var cn = String(node.className || '');
+        if (cn.indexOf('main_out') >= 0 || cn.indexOf('IndexHide') >= 0) continue;
         var r = node.getBoundingClientRect();
         var cs = getComputedStyle(node);
         if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) < 0.05) continue;
