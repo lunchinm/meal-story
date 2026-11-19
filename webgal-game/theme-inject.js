@@ -938,6 +938,14 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 #paper-notebook li{margin:14px 0;padding-left:8px;border-bottom:1px dashed #c8bda5;padding-bottom:12px}
 #paper-notebook .pn-empty{color:#8a8064;line-height:2;padding:22px 0}
 #paper-title .pt-name{font-size:58px}
+#paper-title .pt-desc{margin-top:18px;max-width:560px;font-size:16px;line-height:1.9;color:#6f7b63;letter-spacing:.04em}
+#paper-title .pt-foot{position:absolute;left:92px;right:92px;bottom:34px;font-size:12px;color:#8a8064;letter-spacing:.16em;display:flex;justify-content:space-between}
+#paper-task.pt-ending{left:50%;top:50%;transform:translate(-50%,-50%);width:min(760px,86vw);max-height:80vh;text-align:center;padding:38px 46px}
+#paper-task.pt-ending .pt-title{font-size:32px;border-bottom:0;letter-spacing:.08em}
+#paper-task.pt-ending .pt-body{font-size:17px;line-height:2.1;margin:18px 0}
+#paper-task.pt-ending .pt-action{margin-top:22px;padding-top:16px;border-top:1px dashed #b9a986;font-size:16px}
+#paper-task.pt-ending .pt-chips{justify-content:center;margin-top:8px}
+#paper-task.pt-ending .pt-sec{margin-top:22px}
 #paper-task button:focus-visible,#paper-notebook button:focus-visible{outline:2px solid #2f4a34;outline-offset:3px}
 @keyframes paperIn{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:900px){#paper-chat{right:20px;top:20px;width:calc(100vw - 40px);height:55vh}#paper-ui .pu-card{left:20px;right:20px;bottom:30px;padding:20px}#paper-ui .pu-text{font-size:18px;line-height:1.8}#paper-task{left:20px;top:24px;width:calc(100vw - 96px)}#paper-title .pt-lockup{left:40px;top:80px}#paper-title .pt-name{font-size:40px}#paper-title .pt-menu{left:40px;bottom:48px}}
@@ -1774,6 +1782,13 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 
     panel.innerHTML = html;
     panel.style.display = 'block';
+    panel.classList.toggle('pt-ending', data.kind === 'ending');
+    if (data.kind === 'ending') {
+      var cardEl = document.querySelector('#paper-ui .pu-card');
+      var nameEl2 = document.querySelector('#paper-ui .pu-name');
+      if (cardEl) cardEl.style.display = 'none';
+      if (nameEl2) nameEl2.style.display = 'none';
+    }
     bindTask(panel,data);
   }
 
@@ -1793,8 +1808,10 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       if (staleReply) { staleReply.innerHTML = ''; staleReply.dataset.reply = ''; staleReply.style.display = 'none'; }
       panel.style.display = 'none';
       setChatMode(false);
-      if (card) card.style.display = '';
-      if (nameEl) nameEl.style.display = state.name ? 'inline-block' : 'none';
+      var endingOpen = document.getElementById('paper-task') && document.getElementById('paper-task').classList.contains('pt-ending');
+      if (card) card.style.display = endingOpen ? 'none' : '';
+      setChatMode(false);
+      if (nameEl) nameEl.style.display = endingOpen ? 'none' : (state.name ? 'inline-block' : 'none');
       return;
     }
 
@@ -2056,7 +2073,9 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       '  <div class="pt-name">今天吃什么？</div>' +
       '  <div class="pt-sub">校园膳食调查簿</div>' +
       '  <div class="pt-rule"></div>' +
+      '  <div class="pt-desc">一张“免疫满分”的套餐宣传图，四个学生决定把它查清楚。<br>截屏、圈重点、配一顿十二块的午饭，再写一版能真正照着用的指南。</div>' +
       '</div>' +
+      '<div class="pt-foot"><span>四川大学华西临床医学院 · 合理膳食宣传作品</span><span>点击菜单开始</span></div>' +
       '<div class="pt-menu">' +
       MENU_LABELS.map(function (l) { return '<button data-label="' + l + '">' + l + '</button>'; }).join('') +
       '</div>';
