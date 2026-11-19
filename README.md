@@ -69,9 +69,8 @@ python tools\sync-dist.py <新版本号>
 ## 发布前必做
 
 1. `.github/inject_theme.py` 与 `tools/patch-dist.py` 的 `theme-inject.js?v=` 改新版本号（不改等于没发布）。
-2. 确认 `git commit` 成功（本机 `.git/index.lock` 偶发占用致静默失败）。
+2. 确认 `git commit` 成功（`git log -1` 能看到提交）。
 3. 触发 `构建并发布 WebGAL 版` 工作流，等 CI 绿。
-4. 本机 github.com:443 常被阻断：可用 GitHub Git Data API 推送（见交接文档），`gh`/api.github.com 可用。
 
 ## 回归与验收
 
