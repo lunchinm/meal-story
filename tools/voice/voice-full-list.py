@@ -13,9 +13,9 @@ import os
 import subprocess
 from collections import Counter
 
-MS = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
+MS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ART = os.path.join(MS, ".artifacts", "voice-cleanup")
-FFPROBE = r"C:\Users\MIC lunchinm\Tools\ffmpeg\bin\ffprobe.exe"
+FFPROBE = 'ffprobe'
 NO_VOICE = {"你", "旁白"}
 
 

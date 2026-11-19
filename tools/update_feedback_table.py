@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """按当前 WebGAL 版内容重建《今天吃什么》审核反馈表。"""
+import os
 import io
 import json
 import re
@@ -12,8 +13,8 @@ from openpyxl.drawing.image import Image as XLImage
 from openpyxl.utils import get_column_letter
 from PIL import Image as PILImage
 
-ROOT = Path(r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story")
-XLSX = Path(r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\文档\今天吃什么_审核反馈表.xlsx")
+ROOT = Path(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+XLSX = Path(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), '文档', '今天吃什么_审核反馈表.xlsx'))
 VERSION = "20261119af"
 
 wb = load_workbook(XLSX, data_only=False)

@@ -8,10 +8,10 @@ import urllib.error
 import urllib.request
 import wave
 
-MS = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
+MS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REF_DIR = os.path.join(MS, "assets", "voice", "reference")
 OUT = os.path.join(MS, ".artifacts", "voice-review")
-FFMPEG = r"C:\Users\MIC lunchinm\Tools\ffmpeg\bin\ffmpeg.exe"
+FFMPEG = 'ffmpeg'
 FFPROBE = FFMPEG.replace("ffmpeg.exe", "ffprobe.exe")
 API = "http://127.0.0.1:7860/v1/audio/speech"
 

@@ -6,8 +6,8 @@ import os
 import shutil
 import sys
 
-ROOT = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
-DIST = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\WebGAL-src\packages\webgal\dist"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DIST = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'WebGAL-src', 'packages', 'webgal', 'dist')
 VER = sys.argv[1] if len(sys.argv) > 1 else "20261118j"
 
 GAME = os.path.join(DIST, "game")

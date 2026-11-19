@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """把「哪些台词属于群聊场景」导出进主题脚本（按台词文本判定，比看背景图可靠）。
    同时导出「群聊里玩家自己说的话」，用于右侧绿色气泡。"""
+import os
 import io
 import json
 
-ROOT = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TP = ROOT + r"\webgal-game\theme-inject.js"
 
 chat = {}

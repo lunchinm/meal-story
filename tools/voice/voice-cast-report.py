@@ -13,8 +13,8 @@ from collections import Counter, defaultdict
 
 import openpyxl
 
-MS = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
-XLSX = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\文档\今天吃什么_审核反馈表.xlsx"
+MS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+XLSX = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), '文档', '今天吃什么_审核反馈表.xlsx')
 OUT_MD = os.path.join(MS, "docs", "配音角色统计-2026-11-18.md")
 
 # ---------- 剧本口径 ----------
