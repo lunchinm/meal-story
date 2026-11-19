@@ -7,7 +7,7 @@ import io
 import json
 import os
 
-MS = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
+MS = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(MS, "webgal-game", "flowchart.json")
 
 chapters = [

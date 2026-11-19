@@ -27,7 +27,7 @@ import urllib.request
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FINAL = os.path.join(ROOT, ".artifacts", "voice-final")
 OUT = os.path.join(ROOT, ".artifacts", "voice-cloud")
-FFPROBE = r"C:\Users\MIC lunchinm\Tools\ffmpeg\bin\ffprobe.exe"
+FFPROBE = 'ffprobe'
 API = "https://openspeech.bytedance.com/api/v3/tts/voice_clone"
 
 # 角色 -> (样音文件, 样音对应的台词, 试听台词)

@@ -3,7 +3,7 @@
 import http.server
 import os
 
-os.chdir(r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\WebGAL-src\packages\webgal\dist")
+os.chdir(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'WebGAL-src', 'packages', 'webgal', 'dist'))
 
 PORT = int(os.environ.get("PORT", "8081"))
 

@@ -17,7 +17,7 @@ import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, ".artifacts", "voice-cloud")
-FFMPEG = r"C:\Users\MIC lunchinm\Tools\ffmpeg\bin\ffmpeg.exe"
+FFMPEG = 'ffmpeg'
 FFPROBE = FFMPEG.replace("ffmpeg.exe", "ffprobe.exe")
 API = "https://openspeech.bytedance.com/api/v3/tts/unidirectional"
 

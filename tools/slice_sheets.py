@@ -4,8 +4,8 @@ import os
 import json
 from PIL import Image
 
-SRC_DIR = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\galgame"
-OUT_DIR = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story\assets\props"
+SRC_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'galgame')
+OUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'assets', 'props')
 
 SHEETS = [
     "大学视觉小说空白纸张道具精灵图-11.png",

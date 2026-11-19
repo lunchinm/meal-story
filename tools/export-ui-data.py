@@ -10,10 +10,11 @@
   notebook   : title, entries[{label, text}]
   ending     : title, body[], action, unlocks[], cards[]
 """
+import os
 import io
 import json
 
-ROOT = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TP = ROOT + r"\\webgal-game\\theme-inject.js"
 
 ui = {}
