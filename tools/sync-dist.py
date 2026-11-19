@@ -24,7 +24,7 @@ for sub, src in (
         if f.endswith((".webp", ".mp3", ".txt")):
             shutil.copy2(os.path.join(src, f), os.path.join(dst, f))
 
-for f, dst in (("config.txt", "config.txt"), ("flowchart.json", "flowchart.json")):
+for f, dst in (("config.txt", "config.txt"), ("flowchart.json", "flowchart.json"), ("jump.json", "jump.json")):
     src = os.path.join(ROOT, "webgal-game", f)
     if os.path.exists(src):
         shutil.copy2(src, os.path.join(GAME, dst))

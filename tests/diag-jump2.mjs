@@ -1,0 +1,15 @@
+import { chromium } from '@playwright/test';
+const b = await chromium.launch();
+const ctx = await b.newContext({ serviceWorkers: 'block', viewport: { width: 1600, height: 1000 } });
+const p = await ctx.newPage();
+p.on('pageerror', (e) => console.log('ERR', e.message.slice(0, 120)));
+await p.goto('http://127.0.0.1:8123/?t=' + Date.now());
+await p.waitForTimeout(5000);
+console.log('出口:', JSON.stringify(await p.evaluate(() => ({ next: typeof window.__wgNext, jump: typeof window.__wgJump, stop: typeof window.__wgStopVocal, btn: !!document.getElementById('paper-jump-btn'), title: !!document.getElementById('paper-title') }))));
+await p.evaluate(() => document.querySelector('#paper-title .pt-menu button[data-label="开始游戏"]').click());
+await p.waitForTimeout(6500);
+const before = await p.evaluate(() => window.__paperLine || '');
+await p.evaluate(() => window.__wgJump && window.__wgJump('seg2_1'));
+await p.waitForTimeout(2500);
+console.log('跳转:', before.slice(0,12), '→', (await p.evaluate(() => window.__paperLine || '')).slice(0,18));
+await b.close();

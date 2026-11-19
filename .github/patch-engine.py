@@ -66,4 +66,42 @@ if (typeof window !== 'undefined') {
 }
 """, "__wgBackToTitle")
 
+
+# 3) 调试与交互出口
+append("Core/controller/gamePlay/backToTitle.ts", """
+// 自绘 UI：主动推进 / 跳 label / 停配音
+import { nextSentence as __wgNextSentence } from '@/Core/controller/gamePlay/nextSentence';
+import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';
+import { changeScene as __wgChangeScene } from '@/Core/controller/scene/changeScene';
+
+if (typeof window !== 'undefined') {
+  (window as any).__wgNext = () => {
+    try { __wgNextSentence(); } catch (e) { /* ignore */ }
+  };
+  (window as any).__wgJump = (label: string, sceneUrl?: string) => {
+    try {
+      if (sceneUrl) {
+        __wgChangeScene(sceneUrl, '');
+        let tries = 0;
+        const tryJump = () => {
+          tries += 1;
+          let ok = false;
+          try { ok = __wgJumpToLabel(label); } catch (e) { ok = false; }
+          if (!ok && tries < 14) { setTimeout(tryJump, 300); }
+        };
+        setTimeout(tryJump, 300);
+        return true;
+      }
+      return __wgJumpToLabel(label);
+    } catch (e) { return false; }
+  };
+  (window as any).__wgStopVocal = () => {
+    try {
+      const v = document.getElementById('currentVocal') as HTMLAudioElement | null;
+      if (v) { v.pause(); v.currentTime = 0; }
+    } catch (e) { /* ignore */ }
+  };
+}
+""", "__wgNext")
+
 print("引擎补丁完成")

@@ -1,0 +1,142 @@
+[
+ {
+  "label": "seg1_1",
+  "act": 1,
+  "seg": 1,
+  "text": "食堂二楼，谁来？",
+  "scene": "chat"
+ },
+ {
+  "label": "seg1_2",
+  "act": 1,
+  "seg": 2,
+  "text": "菜基本一样，就是西兰花没有照片里站得那么整齐。",
+  "scene": "class"
+ },
+ {
+  "label": "seg1_3",
+  "act": 1,
+  "seg": 3,
+  "text": "下面只写了“网友分享”。",
+  "scene": "chat"
+ },
+ {
+  "label": "seg1_4",
+  "act": 1,
+  "seg": 4,
+  "text": "不过，你们总说合理膳食和免疫有关。",
+  "scene": "class"
+ },
+ {
+  "label": "seg1_5",
+  "act": 1,
+  "seg": 5,
+  "text": "那我有个更实际的问题。",
+  "scene": "canteen"
+ },
+ {
+  "label": "seg3_6",
+  "act": 3,
+  "seg": 6,
+  "text": "你在给它找角度？",
+  "scene": "class"
+ },
+ {
+  "label": "seg3_7",
+  "act": 3,
+  "seg": 7,
+  "text": "今天早餐安排得怎么样？",
+  "scene": "store"
+ },
+ {
+  "label": "seg3_8",
+  "act": 3,
+  "seg": 8,
+  "text": "今天给它们拍合照。",
+  "scene": "canteen"
+ },
+ {
+  "label": "seg3_9",
+  "act": 3,
+  "seg": 9,
+  "text": "我来买下午开会的饮料。陆燃在外面等。",
+  "scene": "store"
+ },
+ {
+  "label": "seg3_10",
+  "act": 3,
+  "seg": 10,
+  "text": "这个能不能放进下午的零食清单？",
+  "scene": "store"
+ },
+ {
+  "label": "seg3_11",
+  "act": 3,
+  "seg": 11,
+  "text": "先确认一下，哪些是个人买的，哪些是下午一起吃的。",
+  "scene": "store"
+ },
+ {
+  "label": "seg3_12",
+  "act": 3,
+  "seg": 12,
+  "text": "我提前来了，这次大家都看见了。",
+  "scene": "store"
+ },
+ {
+  "label": "seg3_13",
+  "act": 3,
+  "seg": 13,
+  "text": "还要拍标签吗？",
+  "scene": "store"
+ },
+ {
+  "label": "seg4_14",
+  "act": 4,
+  "seg": 14,
+  "text": "我的早八已经成为公共资料了？",
+  "scene": "class"
+ },
+ {
+  "label": "seg4_15",
+  "act": 4,
+  "seg": 15,
+  "text": "这句话没问题。但如果明早我又只有十八分钟呢？",
+  "scene": "class"
+ },
+ {
+  "label": "seg4_16",
+  "act": 4,
+  "seg": 16,
+  "text": "补充一下，明天鸡肉那道暂停一天，有鱼和豆腐。青菜",
+  "scene": "store"
+ },
+ {
+  "label": "seg4_17",
+  "act": 4,
+  "seg": 17,
+  "text": "上午又拍到两盒。想把它们放进指南里，让大家试着看",
+  "scene": "canteen"
+ },
+ {
+  "label": "seg4_18",
+  "act": 4,
+  "seg": 18,
+  "text": "这里还放得下一张小卡。写什么？",
+  "scene": "canteen"
+ },
+ {
+  "label": "seg4_19",
+  "act": 4,
+  "seg": 19,
+  "text": "内容已经核对完了。接下来怎么用？",
+  "scene": "canteen"
+ },
+ {
+  "label": "seg4_20",
+  "act": 4,
+  "seg": 20,
+  "text": "今天早餐吃上了，不过临时遇到一点情况。",
+  "scene": "chat"
+ }
+]

@@ -671,6 +671,61 @@
 #paper-task .pt-body { font-size: 15px; line-height: 1.9; }
 #paper-task .pt-action { margin-top: 12px; font-size: 14px; color: #2f4a34; }
 
+
+/* ---------- 调试跳关 ---------- */
+#paper-jump-btn {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 70;
+  padding: 6px 12px;
+  font-family: 'Songti SC', 'SimSun', serif;
+  font-size: 12px;
+  letter-spacing: .12em;
+  color: #6b6146;
+  background: rgba(252, 249, 240, .8);
+  border: 1px solid rgba(150, 130, 96, .5);
+  border-radius: 3px;
+  cursor: pointer;
+  opacity: .45;
+}
+#paper-jump-btn:hover { opacity: 1; }
+
+#paper-jump {
+  position: fixed;
+  left: 12px;
+  bottom: 48px;
+  z-index: 71;
+  width: 420px;
+  max-height: 62vh;
+  overflow-y: auto;
+  padding: 14px 16px;
+  background: rgba(252, 249, 240, .985);
+  border: 1px solid rgba(120, 104, 74, .5);
+  border-radius: 4px;
+  box-shadow: 0 14px 30px rgba(84, 70, 44, .3);
+  font-family: 'Songti SC', 'SimSun', serif;
+  color: #33402f;
+  display: none;
+}
+#paper-jump .pj-h { font-size: 13px; letter-spacing: .16em; color: #6f7b63; margin-bottom: 8px; }
+#paper-jump .pj-act { font-size: 12px; color: #8a8064; margin: 10px 0 4px; letter-spacing: .1em; }
+#paper-jump button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 4px;
+  padding: 6px 10px;
+  background-image: linear-gradient(180deg, #fdfaf1, #f2e9d6);
+  border: 1px solid #c3b493;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #33402f;
+  cursor: pointer;
+}
+#paper-jump button:hover { background-image: linear-gradient(180deg, #fffdf7, #e9dfc8); }
+
 /* ---------- 自绘叠层 ---------- */
 #paper-ui {
   position: fixed;
@@ -1131,6 +1186,7 @@
   var gameStarted = false;
   var stateSeenText = false;
   var lastPushedKey = '';
+  var sentKeys = {};
 
   // 按剧本清单判定：channel=chat 才进聊天；旁白/章节/场景描写走文本框
   function lineMetaOf(name, text) {
@@ -1192,6 +1248,73 @@
   function esc(str) {
     return String(str == null ? '' : str)
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+
+  // ---------------- 调试跳关 ----------------
+  var jumpList = null;
+
+  function loadJumpList(cb) {
+    if (jumpList) { cb(jumpList); return; }
+    fetch('game/jump.json?v=1')
+      .then(function (r) { return r.json(); })
+      .then(function (d) { jumpList = d; cb(d); })
+      .catch(function () { cb([]); });
+  }
+
+  function jumpTo(label) {
+    var doJump = function () {
+      if (window.__wgJump) window.__wgJump(label);
+      var p = document.getElementById('paper-jump');
+      if (p) p.style.display = 'none';
+    };
+    if (!gameStarted) {
+      nativeAction('开始游戏');
+      setTimeout(doJump, 1500);
+    } else {
+      doJump();
+    }
+  }
+
+  function buildJumpPanel() {
+    var btn = document.getElementById('paper-jump-btn');
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.id = 'paper-jump-btn';
+      btn.textContent = '跳关';
+      document.body.appendChild(btn);
+      stopOwnEvents(btn);
+      btn.addEventListener('click', function () {
+        var p = document.getElementById('paper-jump');
+        if (!p) return;
+        if (p.style.display === 'block') { p.style.display = 'none'; return; }
+        loadJumpList(function (list) {
+          p.innerHTML = '<div class="pj-h">跳转（调试用）</div>';
+          var act = null;
+          list.forEach(function (it) {
+            if (it.act !== act) {
+              act = it.act;
+              var h = document.createElement('div');
+              h.className = 'pj-act';
+              h.textContent = '第 ' + act + ' 章';
+              p.appendChild(h);
+            }
+            var b = document.createElement('button');
+            b.textContent = it.label + ' · ' + (it.text || '');
+            b.addEventListener('click', function () { jumpTo(it.label); });
+            p.appendChild(b);
+          });
+          p.style.display = 'block';
+        });
+      });
+    }
+    var panel = document.getElementById('paper-jump');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'paper-jump';
+      document.body.appendChild(panel);
+      stopOwnEvents(panel);
+    }
   }
 
   function buildTaskPanel() {
@@ -1282,7 +1405,10 @@
       var key = (state.name || '') + '|' + state.text;
       var mineNow = state.name === '你';
       if (mineNow) {
-        if (!pendingReply || pendingReply.text !== state.text) {
+        var sk = '你|' + state.text;
+        if (sentKeys[sk]) {
+          pendingReply = null;                 // 已经发过，不再挂起
+        } else if (!pendingReply || pendingReply.text !== state.text) {
           if (pendingReply) { pushBubble(pendingReply.who, pendingReply.text); }
           pendingReply = { who: '你', text: state.text, me: true };
         }
@@ -1304,12 +1430,15 @@
         sendBtn.textContent = pendingReply.text;
         sendBtn.addEventListener('click', function () {
           if (!pendingReply) return;
+          var key = pendingReply.who + '|' + pendingReply.text;
+          sentKeys[key] = 1;              // 这句已经发过，别再挂起
           pushBubble(pendingReply.who, pendingReply.text);
           pendingReply = null;
           replyBox.dataset.reply = '';
           replyBox.innerHTML = '';
           replyBox.style.display = 'none';
           renderChat(panel);
+          if (window.__wgNext) setTimeout(function () { window.__wgNext(); }, 60);  // 发送后自动推进
         });
         replyBox.appendChild(sendBtn);
       }
@@ -1331,6 +1460,20 @@
     } catch (e) { /* 单次失败不影响游戏 */ }
   }
 
+  var lastVocalLine = '';
+
+  // 换到没有配音的句子（群聊 / 玩家自己的话）时，停掉上一句
+  function guardVocal(name, text) {
+    var lineKey = (name || '') + '|' + (text || '');
+    if (lineKey === lastVocalLine) return;
+    lastVocalLine = lineKey;
+    var meta = lineMetaOf(name, text);
+    var hasVocal = meta ? meta.c === 0 : true;
+    if (!hasVocal || name === '你') {
+      if (window.__wgStopVocal) window.__wgStopVocal();
+    }
+  }
+
   function syncInner() {
     buildUi();
     var ui = document.getElementById('paper-ui');
@@ -1349,6 +1492,7 @@
 
     syncChoices();
     renderTask(state.text || '');
+    guardVocal(state.name, state.text|| '');
     if (state.text) { stateSeenText = true; window.__paperLine = state.text; }
     if (state.name) window.__paperName = state.name;
     if (state.text) textEl.textContent = state.text;
@@ -1628,6 +1772,7 @@
   }
 
   function syncTitle() {
+    buildJumpPanel();
     var t = document.getElementById('paper-title') || buildTitle();
     if (window.__paperBootDone) window.__paperBootDone();
 

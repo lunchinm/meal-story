@@ -84,6 +84,9 @@ def say_line(speaker: str | None, text: str, voice_id: str | None = None) -> str
     return f"{speaker or ''}:{body}{vocal};"
 
 
+JUMP_TABLE = []
+
+
 def convert_act(act: int) -> list[str]:
     data = json.load(io.open(os.path.join(MS, "content", f"act{act}.json"), encoding="utf-8"))
     lines: list[str] = []
@@ -91,11 +94,13 @@ def convert_act(act: int) -> list[str]:
     last_speaker = None
     last_actor = None
     label_seq = 0
+    last_seg = None
 
     for node in data:
         kind = node["type"]
 
         if kind == "chapter":
+            lines.append(f"label:act{act};")
             lines.append(f"; ==== {node.get('title', '')} ====")
             # 第一句必须是 say：否则 changeBg / changeFigure 会卡住整个脚本
             lines.append(f":{esc(node.get('title', '') or '第一章')};")
@@ -105,6 +110,17 @@ def convert_act(act: int) -> list[str]:
             continue
 
         if kind == "say":
+            seg = node.get("seg")
+            if seg and seg != last_seg:
+                last_seg = seg
+                lines.append(f"label:seg{act}_{seg};")
+                JUMP_TABLE.append({
+                    "label": f"seg{act}_{seg}",
+                    "act": act,
+                    "seg": seg,
+                    "text": (node.get("text") or "")[:24],
+                    "scene": node.get("scene") or "",
+                })
             prop = node.get("prop")
             if prop and prop in PROP_FIG:
                 lines.append("changeFigure:none -center -next;")
@@ -143,8 +159,10 @@ def convert_act(act: int) -> list[str]:
             if not options:
                 continue
             if len(options) == 1:
-                # 只有一个选项时 WebGAL 的选项面板不出，直接当一句自白播
+                # 单选项：引擎不渲染单选项面板，这里让「玩家说这句」成为独立一句，
+                # 由自绘 UI 做成底部回复条（点击发送后再推进）
                 only = options[0]
+                lines.append(say_line("你", only.get("text", "")))
                 reply = only.get("reply")
                 if reply:
                     seq = reply if isinstance(reply, list) else [reply]
@@ -153,7 +171,6 @@ def convert_act(act: int) -> list[str]:
                             lines.append(say_line(None, entry))
                         else:
                             lines.append(say_line(entry.get("speaker"), entry.get("text", "")))
-                lines.append(say_line(None, only.get("text", "")))
                 continue
             parts = []
             for index, option in enumerate(options):
@@ -163,6 +180,7 @@ def convert_act(act: int) -> list[str]:
             for index, option in enumerate(options):
                 label = f"c{act}_{node['id']}_{index}".replace("-", "_")
                 lines.append(f"label:{label};")
+                lines.append(say_line("你", option.get("text", "")))
                 reply = option.get("reply")
                 if reply:
                     seq = reply if isinstance(reply, list) else [reply]
@@ -316,6 +334,9 @@ def main() -> int:
     ]
     io.open(os.path.join(OUT, "start.txt"), "w", encoding="utf-8").write("\n".join(start) + "\n")
     print("start.txt: 3 行（开场白 + 跳第一章）")
+    json.dump(JUMP_TABLE, io.open(os.path.join(MS, "webgal-game", "jump.json"), "w", encoding="utf-8"),
+              ensure_ascii=False, indent=1)
+    print("跳转表：", len(JUMP_TABLE), "个节点")
     return 0
 
 

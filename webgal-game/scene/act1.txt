@@ -1,7 +1,9 @@
+label:act1;
 ; ==== 第一章《套餐的秘密》 ====
 :第一章《套餐的秘密》;
 bgm:bgm_loop.mp3 -volume=45;
 changeBg:bg_canteen_sun.webp -next -duration=350;
+label:seg1_1;
 changeBg:bg_dorm_night.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhoujian_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -47,12 +49,12 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:隔壁群的隔壁群。;
 你:帮我也看看，我今天也不想纠结吃什么。;
+你:帮我也看看，我今天也不想纠结吃什么。;
 米粒:终于找到同道中人！;
 许知夏:那先看它到底能帮你省哪件事。;
 米粒:选午饭？;
 许知夏:这个可以讨论。“承包全天营养”得另外核实。;
 米粒:行，先让它承包午饭，其他岗位等会儿面试。;
-:帮我也看看，我今天也不想纠结吃什么。;
 你:我想知道，它怎么知道免疫力已经满了？;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_sutao_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -115,6 +117,7 @@ changeFigure:none -center -next -duration=350;
 changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 许知夏:来了。;
 你:马上到。;
+label:seg1_2;
 changeBg:bg_club.webp -next -duration=350;
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -169,6 +172,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:看来我们今天省下了选菜时间，花在研究广告上了。 -vocal=a1-48.mp3;
 你:至少终于知道自己在忙什么。;
+label:seg1_3;
 changeBg:bg_dorm_night.webp -next -duration=350;
 你:下面只写了“网友分享”。;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -253,6 +257,7 @@ changeFigure:ch_zhixia_normal.webp -center -transform={"scale":{"x":0.62,"y":0.6
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:好，先把它按一顿午饭看。 -vocal=a1-84.mp3;
+label:seg1_4;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:不过，你们总说合理膳食和免疫有关。 -vocal=a1-85.mp3;
 changeFigure:ch_mili_worried.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
@@ -289,6 +294,7 @@ changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62}
 choose:先说已经查到的，再说还不能确定的。:c1_a1_98_0|先问苏桃，她们是想省事，还是想达到什么效果？:c1_a1_98_1;
 label:c1_a1_98_0;
 你:先说已经查到的，再说还不能确定的。;
+你:先说已经查到的，再说还不能确定的。;
 你:菜品是真的，能提供什么食物也看得见。全天营养和七天效果，目前都不能靠这张图确认。;
 许知夏:这样很清楚。;
 米粒:我补一句，“正常吃饭可以，买七天之前先别替它把效果想好了”。;
@@ -296,6 +302,7 @@ label:c1_a1_98_0;
 米粒:好，你负责准确，我负责让人愿意看。;
 jumpLabel:after_a1_98;
 label:c1_a1_98_1;
+你:先问苏桃，她们是想省事，还是想达到什么效果？;
 你:先问苏桃，她们是想省事，还是想达到什么效果？;
 jumpLabel:after_a1_98;
 label:after_a1_98;
@@ -340,6 +347,7 @@ changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:你先出现，我们再讨论够不够。;
+label:seg1_5;
 changeBg:bg_canteen_sun.webp -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:那我有个更实际的问题。 -vocal=a1-118.mp3;
@@ -373,8 +381,8 @@ changeFigure:ch_luran_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62
 changeFigure:none -center -next -duration=350;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:这句先存档。;
+你:先看看米粒这种赶时间的日子。;
 你:先看看米粒这种赶时间的日子。吃饭到底卡在哪一步？;
-:先看看米粒这种赶时间的日子。;
 changeFigure:ch_mili_normal.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":150}} -next;
 米粒:对，你已经看过我的课表了。明天早上比今天还赶。;
 你:那从早餐开始，把买饭的时间也记上。;
