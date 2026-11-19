@@ -45,6 +45,11 @@ def ensure_imports():
         add.append("import { setMenuPanelTag } from '@/store/GUIReducer';")
     if "__wgNextSentence" not in head:
         add.append("import { nextSentence as __wgNextSentence, continueSentence as __wgContinueSentence } from '@/Core/controller/gamePlay/nextSentence';")
+    if "__wgJumpFromBacklog" not in head:
+        add.append("import { jumpFromBacklog as __wgJumpFromBacklog } from '@/Core/controller/storage/jumpFromBacklog';")
+    if "__wgStopAuto" not in head:
+        add.append("import { stopAuto as __wgStopAuto } from '@/Core/controller/gamePlay/autoPlay';")
+        add.append("import { stopFast as __wgStopFast } from '@/Core/controller/gamePlay/fastSkip';")
     if "__wgJumpToLabel" not in head:
         add.append("import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';")
     if "__wgChangeScene" not in head:
@@ -88,18 +93,23 @@ if (typeof window !== 'undefined') {
   (window as any).__wgQuickBar = (show: boolean) => {
     try { webgalStore.dispatch(setVisibility({ component: 'showControls' as any, visibility: !!show })); } catch (e) { /* ignore */ }
   };
+  (window as any).__wgStopAllPlay = () => {
+    try { __wgStopAuto(); } catch (e) { /* ignore */ }
+    try { __wgStopFast(); } catch (e) { /* ignore */ }
+  };
   (window as any).__wgOpenMenu = (tag: string) => {
     try {
+      (window as any).__wgStopAllPlay();
       webgalStore.dispatch(setMenuPanelTag(tag as any));
       webgalStore.dispatch(setVisibility({ component: 'showMenuPanel' as any, visibility: true }));
       return true;
     } catch (e) { return false; }
   };
   (window as any).__wgOpenBacklog = () => {
-    try { webgalStore.dispatch(setVisibility({ component: 'showBacklog' as any, visibility: true })); return true; } catch (e) { return false; }
+    try { (window as any).__wgStopAllPlay(); webgalStore.dispatch(setVisibility({ component: 'showBacklog' as any, visibility: true })); return true; } catch (e) { return false; }
   };
   (window as any).__wgOpenFlowchart = () => {
-    try { webgalStore.dispatch(setVisibility({ component: 'showFlowchart' as any, visibility: true })); return true; } catch (e) { return false; }
+    try { (window as any).__wgStopAllPlay(); webgalStore.dispatch(setVisibility({ component: 'showFlowchart' as any, visibility: true })); return true; } catch (e) { return false; }
   };
   (window as any).__wgStopVocal = () => {
     try {
@@ -122,18 +132,10 @@ if (typeof window !== 'undefined') {
   };
   (window as any).__wgRewind = (steps = 1) => {
     try {
-      const sm = WebGAL.sceneManager.sceneData;
-      const list = sm.currentScene.sentenceList as any[];
-      let need = Math.max(1, steps);
-      let i = sm.currentSentenceId - 1;
-      while (i >= 0 && need > 0) {
-        if (list[i] && list[i].command === 'say') need -= 1;
-        if (need === 0) break;
-        i -= 1;
-      }
-      if (i < 0) return false;
-      sm.currentSentenceId = i;
-      __wgContinueSentence();
+      const list = WebGAL.backlogManager.getBacklog();
+      const index = list.length - 1 - Math.max(1, steps);
+      if (index < 0) return false;
+      __wgJumpFromBacklog(index);
       return true;
     } catch (e) { return false; }
   };

@@ -13,6 +13,7 @@ data = json.load(io.open(META, encoding="utf-8")) if os.path.exists(META) else {
 s = io.open(TP, encoding="utf-8").read()
 START, END = "/* STORYMETA_START */", "/* STORYMETA_END */"
 block = (START + "\n  var REC_MAP = " + json.dumps(data.get("rec", {}), ensure_ascii=False)
+         + ";\n  var CHOICE_FLAGS = " + json.dumps(data.get("choiceFlags", []), ensure_ascii=False)
          + ";\n  var BRANCH_MAP = " + json.dumps(data.get("branch", {}), ensure_ascii=False)
          + ";\n  " + END)
 

@@ -1,398 +1,120 @@
 # -*- coding: utf-8 -*-
-"""把 content/act*.json 转成 WebGAL 脚本（game/scene/*.txt）。
-
-第一版覆盖：章节卡、对白、选项（含分支回复）、记录（写成注释）、结局。
-分支/记录暂按线性处理，后续再换成 setVar + jumpLabel。
-"""
-import io
-import json
-import os
-import re
-
-MS = r"C:\Users\MIC lunchinm\Desktop\学习资料\Vibe-Coding\合理膳食\meal-story"
-OUT = os.path.join(MS, "webgal-game", "scene")
-
-# 配音清单：assets/voice/<节点id>.mp3
-VOICE_DIR = os.path.join(MS, "assets", "voice")
-VOICE_IDS = set()
-if os.path.isdir(VOICE_DIR):
-    VOICE_IDS = {os.path.splitext(f)[0] for f in os.listdir(VOICE_DIR) if f.endswith(".mp3")}
-# 场景 → 背景图（全部来自 galgame 素材，按章节换氛围）
-PROP_FIG = {
-    "poster": "ui_poster.webp",
-    "menu": "ui_menu.webp",
-    "tray": "ui_tray.webp",
-    "note": "ui_note.webp",
-    "product_front": "ui_product_front.webp",
-    "product_back": "ui_product_back.webp",
-    "nutrition": "ui_nutrition.webp",
-}
-
-SCENE_BG = {
-    "class": "bg_club.webp",
-    "canteen": "bg_canteen_sun.webp",
-    "store": "bg_store_afternoon.webp",
-    "chat": "bg_dorm_night.webp",
-}
-
-SCENE_BG_BY_ACT = {
-    1: {"chat": "bg_dorm_night.webp", "canteen": "bg_canteen_sun.webp",
-        "store": "bg_store_afternoon.webp", "class": "bg_club.webp"},
-    2: {"chat": "bg_desk_warm.webp", "canteen": "bg_canteen_night.webp",
-        "store": "bg_store_sun.webp", "class": "bg_club.webp"},
-    3: {"chat": "bg_dorm_night.webp", "canteen": "bg_canteen_noon.webp",
-        "store": "bg_store_blue.webp", "class": "bg_club.webp"},
-    4: {"chat": "bg_desk_warm.webp", "canteen": "bg_canteen_sun.webp",
-        "store": "bg_store_outside.webp", "class": "bg_club.webp"},
-}
-
-# 章节封面 / 结局插画也来自 galgame
-IMAGE_BG = {
-    "ch_banner_1": "bg_canteen_sun.webp",
-    "ch_banner_2": "bg_canteen_night.webp",
-    "ch_banner_3": "bg_store_blue.webp",
-    "ch_banner_4": "bg_gingko.webp",
-    "poster_meal": "bg_notebook.webp",
-    "ending_normal": "bg_canteen_sun.webp",
-    "ending_advanced": "bg_gingko.webp",
-    "ending_hidden": "bg_notebook.webp",
-}
-
-# 结局背景（兜底也用 galgame 素材）
-ENDBG = {
-    "ending_normal": "bg_canteen_sun.webp",
-    "ending_advanced": "bg_gingko.webp",
-    "ending_hidden": "bg_notebook.webp",
-}
-
-
-def esc(text: str) -> str:
-    """WebGAL 用英文冒号、分号、竖线做语法，正文里的要按官方规则转义。"""
-    return (text.replace("\\", "\\\\")
-                .replace(";", "\\;")
-                .replace(":", "\\:")
-                .replace("|", "\\|")
-                .replace(",", "\\,"))
-
-
-def say_line(speaker: str | None, text: str, voice_id: str | None = None) -> str:
-    body = esc(text)
-    vocal = ""
-    if voice_id and voice_id in VOICE_IDS:
-        if os.path.exists(os.path.join(VOICE_DIR, voice_id + ".mp3")):
-            vocal = f" -vocal={voice_id}.mp3"
-    return f"{speaker or ''}:{body}{vocal};"
-
-
-JUMP_TABLE = []
-REC_MAP = {}
-BRANCH_MAP = {}
-import random as _random
-
-
-def _san(node_id: str) -> str:
-    return str(node_id).replace('-', '_')
-
-
-def convert_act(act: int) -> list[str]:
-    data = json.load(io.open(os.path.join(MS, "content", f"act{act}.json"), encoding="utf-8"))
-
-    # 预扫：所有 branch / random 的落点节点，需要在它们前面打 label
-    targets = set()
+"""结构化剧本 → WebGAL 场景。场景为生成物；流程条件全部编译进引擎。"""
+import io, json, os
+from pathlib import Path
+MS = Path(__file__).resolve().parents[1]
+OUT = MS / 'webgal-game' / 'scene'
+VOICE_IDS = {p.stem for p in (MS/'assets/voice').glob('*.mp3')}
+PROP_FIG = dict(poster='ui_poster.webp', menu='ui_menu.webp', tray='ui_tray.webp', note='ui_note.webp', product_front='ui_product_front.webp', product_back='ui_product_back.webp', nutrition='ui_nutrition.webp')
+SCENE_BG = {'class':'bg_club.webp','canteen':'bg_canteen_sun.webp','store':'bg_store_afternoon.webp','chat':'bg_dorm_night.webp'}
+SCENE_BY_ACT = {1:{'chat':'bg_dorm_night.webp','canteen':'bg_canteen_sun.webp','store':'bg_store_afternoon.webp','class':'bg_club.webp'},2:{'chat':'bg_desk_warm.webp','canteen':'bg_canteen_night.webp','store':'bg_store_sun.webp','class':'bg_club.webp'},3:{'chat':'bg_dorm_night.webp','canteen':'bg_canteen_noon.webp','store':'bg_store_blue.webp','class':'bg_club.webp'},4:{'chat':'bg_desk_warm.webp','canteen':'bg_canteen_sun.webp','store':'bg_store_outside.webp','class':'bg_club.webp'}}
+IMAGE_BG = {'ch_banner_1':'bg_canteen_sun.webp','ch_banner_2':'bg_canteen_night.webp','ch_banner_3':'bg_store_blue.webp','ch_banner_4':'bg_gingko.webp','ending_normal':'bg_canteen_sun.webp','ending_advanced':'bg_gingko.webp','ending_hidden':'bg_notebook.webp'}
+JUMP_TABLE=[]; REC_MAP={}; BRANCH_MAP={}
+def san(s): return str(s or '').replace('-','_').replace(':','_').replace('：','_')
+def esc(s): return str(s or '').replace('\\','\\\\').replace(';','\\;').replace(':','\\:').replace('|','\\|').replace(',','\\,')
+def say(sp, text, voice=None, chat=False):
+    if not text: return None
+    marker='\u200b' if chat else '\u200c'
+    v=f' -vocal={voice}.mp3' if voice and voice in VOICE_IDS and not chat else ''
+    return f"{'' if sp in (None,'旁白') else sp}:{esc(marker+text)}{v};"
+def target(n, when=''): return f"jumpLabel:t_{san(n)}{' -when=' + when if when else ''};"
+def flagvar(f): return 'flag_'+san(f)
+def condition(flags, all_=True):
+    if isinstance(flags,dict):
+        if flags.get('notFlag'): return f'{flagvar(flags["notFlag"])}!=1'
+        if flags.get('flag')=='done:all': return f'{flagvar("done:mili")}==1&&{flagvar("done:lu")}==1&&{flagvar("done:zhou")}==1'
+        if flags.get('flag'): return f'{flagvar(flags["flag"])}==1'
+    ex=[f'{flagvar(f)}==1' for f in flags]
+    return ('&&' if all_ else '||').join(ex) or 'false'
+def replies(entries, chat):
+    out=[]
+    for e in entries or []:
+        if isinstance(e,str): out.append(say(None,e,chat=chat))
+        else: out.append(say(e.get('speaker'),e.get('text'),chat=chat))
+    return [x for x in out if x]
+def convert(act, data):
+    targets=set(); for_next=[]
     for n in data:
-        if n["type"] == "branch":
-            if n.get("fallback"):
-                targets.add(n["fallback"])
-            for r in (n.get("rules") or []):
-                if r.get("next"):
-                    targets.add(r["next"])
-        elif n["type"] == "random":
-            for it in (n.get("pool") or []):
-                if it.get("next"):
-                    targets.add(it["next"])
-            if n.get("next"):
-                targets.add(n["next"])
-    lines: list[str] = []
-    last_scene = None
-    last_speaker = None
-    last_actor = None
-    label_seq = 0
-    last_seg = None
-
-    for node in data:
-        kind = node["type"]
-        if node.get("id") in targets:
-            lines.append(f"label:t_{_san(node['id'])};")
-
-        if kind == "chapter":
-            lines.append(f"label:act{act};")
-            JUMP_TABLE.append({
-                "label": f"act{act}",
-                "act": act,
-                "seg": 0,
-                "text": node.get("title", "")[:20],
-                "scene": "chapter",
-            })
-            lines.append(f"; ==== {node.get('title', '')} ====")
-            # 第一句必须是 say：否则 changeBg / changeFigure 会卡住整个脚本
-            lines.append(f":{esc(node.get('title', '') or '第一章')};")
-            lines.append("bgm:bgm_loop.mp3 -volume=45;")
-            if node.get("image"):
-                lines.append(f"changeBg:{IMAGE_BG.get(node['image'], 'bg_canteen_sun.webp')} -next -duration=350;")
-            continue
-
-        if kind == "say":
-            seg = node.get("seg")
-            if seg and seg != last_seg:
-                last_seg = seg
-                lines.append(f"label:seg{act}_{seg};")
-                JUMP_TABLE.append({
-                    "label": f"seg{act}_{seg}",
-                    "act": act,
-                    "seg": seg,
-                    "text": (node.get("text") or "")[:24],
-                    "scene": node.get("scene") or "",
-                })
-            prop = node.get("prop")
-            if prop and prop in PROP_FIG:
-                lines.append("changeFigure:none -center -next;")
-                lines.append(
-                    f'changeFigure:{PROP_FIG[prop]} -center '
-                    f'-transform={{"scale":{{"x":0.3,"y":0.3}},"position":{{"x":260,"y":300}}}} -next;'
-                )
-
-            scene = node.get("scene")
-            if scene and scene != last_scene:
-                table = SCENE_BG_BY_ACT.get(act, {})
-                bg = table.get(scene) or SCENE_BG.get(scene, "bg_class.webp")
-                lines.append(f"changeBg:{bg} -next -duration=350;")
-                last_scene = scene
-            if node.get("actor"):
-                actor = node["actor"]
-                if actor != last_actor:
-                    # 换人：先清场，避免立绘叠在一起
-                    lines.append("changeFigure:none -center -next -duration=350;")
-                    last_actor = actor
-                lines.append(
-                    f"changeFigure:ch_{actor}_{node.get('expr', 'normal')}.webp -center "
-                    f'-transform={{"scale":{{"x":0.62,"y":0.62}},"position":{{"x":0,"y":150}}}} -next;'
-                )
-            speaker = node.get("speaker")
-            text = node.get("text", "")
-            if node.get("prop"):
-                lines.append(f"; 道具：{node['prop']}")
-            lines.append(f"setVar:line={node.get('id')};")
-            marker = "\u200b" if node.get("channel") == "chat" else "\u200c"
-            text = marker + text
-            voice = None if node.get("channel") == "chat" else node.get("id")  # 群聊不配音
-            lines.append(say_line(None if speaker in (None, "旁白") else speaker, text, voice))
-            last_speaker = speaker
-            continue
-
-        if kind == "choice":
-            options = node.get("options", [])
-            if not options:
-                continue
-            if len(options) == 1:
-                # 单选项：引擎不渲染单选项面板，这里让「玩家说这句」成为独立一句，
-                # 由自绘 UI 做成底部回复条（点击发送后再推进）
-                only = options[0]
-                lines.append(f"setVar:line={node.get('id')}-pick;")
-                lines.append(say_line("你", only.get("text", "")))
-                reply = only.get("reply")
-                if reply:
-                    seq = reply if isinstance(reply, list) else [reply]
-                    for entry in seq:
-                        if isinstance(entry, str):
-                            lines.append(say_line(None, entry))
-                        else:
-                            lines.append(say_line(entry.get("speaker"), entry.get("text", "")))
-                continue
-            parts = []
-            for index, option in enumerate(options):
-                label = f"c{act}_{node['id']}_{index}".replace("-", "_")
-                parts.append(f"{esc(option.get('text', '继续'))}:{label}")
-            lines.append("choose:" + "|".join(parts) + ";")
-            for index, option in enumerate(options):
-                label = f"c{act}_{node['id']}_{index}".replace("-", "_")
-                lines.append(f"label:{label};")
-                lines.append(f"setVar:line={node.get('id')}-c{index};")
-                lines.append(say_line("你", option.get("text", "")))
-                reply = option.get("reply")
-                if reply:
-                    seq = reply if isinstance(reply, list) else [reply]
-                    for entry in seq:
-                        if isinstance(entry, str):
-                            lines.append(say_line(None, entry))
-                        else:
-                            lines.append(say_line(entry.get("speaker"), entry.get("text", "")))
-                lines.append(f"jumpLabel:after_{node['id']}".replace("-", "_") + ";")
-            lines.append(f"label:after_{node['id']}".replace("-", "_") + ";")
-            continue
-
-        if kind == "ending":
-            bg = ENDBG.get(node.get("image", ""), "ending_normal.webp")
-            lines.append(f"changeBg:{bg} -next -duration=350;")
-            lines.append("changeFigure:none -center -next -duration=350;")
-            lines.append(f"intro:{esc(node.get('title', '结局'))}|{esc(' '.join(node.get('body', [])))};")
-            lines.append("end;")
-            continue
-
-        if kind == "record":
-            idx = len(REC_MAP) + 1
-            REC_MAP[str(idx)] = {"flag": node.get("flag", ""), "label": node.get("label", "")}
-            lines.append(f"; 记录：{node.get('label', '')}")
-            lines.append(f"setVar:rec={idx};")
-            continue
-
-        if kind == "plate":
-            lines.append("changeFigure:none -center -next -duration=350;")
-            lines.append('changeFigure:ui_tray.webp -center -transform={"scale":{"x":0.74,"y":0.74},"position":{"x":0,"y":-30}} -next;')
-            tip = node.get("tip", "")
-            text = node.get("text", "")
-            if tip:
-                lines.append(say_line(None, tip))
-            if text:
-                lines.append(say_line(node.get("speaker"), text))
-            base = f"plate_{node['id']}".replace("-", "_")
-            lines.append(
-                "choose:"
-                "米饭 + 青菜 + 番茄炒蛋（12 元）:" + base + "_a|"
-                "两份米饭 + 土豆丝（12 元）:" + base + "_b|"
-                "红烧肉 + 米饭（14 元）:" + base + "_c;"
-            )
-            lines.append(f"label:{base}_a;")
-            lines.append(say_line(None, "主食、蔬菜、蛋白都齐了，也没超预算。"))
-            lines.append(f"jumpLabel:{base}_end;")
-            lines.append(f"label:{base}_b;")
-            lines.append(say_line(None, "两份主食叠在一起，蛋白和蔬菜都缺。"))
-            lines.append(f"jumpLabel:{base}_end;")
-            lines.append(f"label:{base}_c;")
-            lines.append(say_line(None, "超了预算，蔬菜还是没有。"))
-            lines.append(f"label:{base}_end;")
-            lines.append("changeFigure:none -center -next -duration=350;")
-            continue
-
-        if kind == "compare":
-            lines.append("changeFigure:none -center -next -duration=350;")
-            lines.append('changeFigure:ui_product_front.webp -center -transform={"scale":{"x":0.72,"y":0.72},"position":{"x":0,"y":-20}} -next;')
-            prompt = node.get("prompt", "")
-            if prompt:
-                lines.append(say_line(None, prompt))
-            for offer in node.get("offers", []):
-                lines.append(f"; 货架：{offer.get('name', '')}")
-                for row in offer.get("back", []):
-                    lines.append(say_line(None, row))
-            base = f"cmp_{node['id']}".replace("-", "_")
-            worse = node.get("worse", "")
-            names = [o.get("name", "") for o in node.get("offers", [])] or ["左边", "右边"]
-            opts = "|".join(f"{n} 更甜:{base}_{i}" for i, n in enumerate(names))
-            lines.append(f"choose:{opts};")
-            for i, offer in enumerate(node.get("offers", [])):
-                lines.append(f"label:{base}_{i};")
-                if offer.get("id") == worse:
-                    lines.append(say_line(None, offer.get("note", "")))
-                else:
-                    lines.append(say_line(None, "这瓶糖少一些，但主要还是喝水。"))
-                lines.append(f"jumpLabel:{base}_end;")
-            lines.append(f"label:{base}_end;")
-            lines.append("changeFigure:none -center -next -duration=350;")
-            continue
-
-        if kind == "explore":
-            lines.append("changeFigure:none -center -next -duration=350;")
-            lines.append('changeFigure:ui_note.webp -center -transform={"scale":{"x":0.66,"y":0.66},"position":{"x":0,"y":-10}} -next;')
-            lines.append("changeFigure:none -center -next -duration=350;")
-            lines.append('changeFigure:ui_poster.webp -center -transform={"scale":{"x":0.62,"y":0.62},"position":{"x":0,"y":0}} -next;')
-            title = node.get("title", "")
-            if title:
-                lines.append(say_line(None, title))
-            base = f"exp_{node['id']}".replace("-", "_")
-            items = node.get("items", [])
-            for idx, item in enumerate(items):
-                lines.append(f"label:{base}_{idx};")
-                for ln in item.get("lines", []):
-                    lines.append(say_line(ln.get("speaker"), ln.get("text", "")))
-                lines.append(f"jumpLabel:{base}_out;")
-            lines.append(f"label:{base}_menu;")
-            opts = "|".join(f"{it.get('label', '')}:{base}_{i}" for i, it in enumerate(items))
-            opts += "|先看到这里:" + base + "_out"
-            lines.append(f"choose:{opts};")
-            lines.append(f"label:{base}_out;")
-            lines.append("changeFigure:none -center -next -duration=350;")
-            continue
-
-        if kind == "notebook":
-            title = node.get("title", "")
-            if title:
-                lines.append(say_line(None, title))
-            for entry in node.get("entries", []):
-                lines.append(say_line(None, entry.get("label", "")))
-                lines.append(say_line(None, entry.get("text", "")))
-                src = entry.get("source", "")
-                if src:
-                    lines.append(say_line(None, f"（出处：{src}）"))
-            continue
-
-        if kind == "random":
-            pool = node.get("pool", [])
-            BRANCH_MAP["random:" + node["id"]] = {"pool": [p.get("next") for p in pool]}
-            if pool:
-                pick = pool[_random.randrange(len(pool))]
-                lines.append(f"; 随机事件：{pick.get('id', '')}")
-                lines.append(f"setVar:rnd={node['id']};")
-                lines.append(f"jumpLabel:t_{_san(pick.get('next'))};")
-                continue
-            if pool:
-                base = f"rnd_{node['id']}".replace("-", "_")
-                opts = "|".join(f"遇到第 {i + 1} 种情况:{base}_{i}" for i, _ in enumerate(pool))
-                lines.append(f"choose:{opts};")
-                for i, item in enumerate(pool):
-                    lines.append(f"label:{base}_{i};")
-                    lines.append(f"jumpLabel:{item.get('next', '').replace('-', '_')};")
-            continue
-
-        if kind == "branch":
-            BRANCH_MAP[node["id"]] = {"rules": node.get("rules") or [], "fallback": node.get("fallback", "")}
-            lines.append(f"setVar:branch={node['id']};")
-            if node.get("fallback"):
-                lines.append(f"jumpLabel:t_{_san(node['fallback'])};")
-            continue
-
-        # plate / evidence / compare / explore / notebook / random 暂略
-        lines.append(f"; 互动节点（待迁移）：{node['id']} [{kind}]")
-
-    return lines
-
-
-def main() -> int:
-    os.makedirs(OUT, exist_ok=True)
-    for act in (1, 2, 3, 4):
-        body = convert_act(act)
-        if act < 4:
-            body.append(f"changeScene:act{act + 1}.txt;")
-        else:
-            body.append("end;")
-        io.open(os.path.join(OUT, f"act{act}.txt"), "w", encoding="utf-8").write("\n".join(body) + "\n")
-        print(f"act{act}.txt: {len(body)} 行")
-
-    # 注意：WebGAL 的第一条语句必须是 say，否则 changeScene 会卡死
-    start = [
-        "; 《今天吃什么？》WebGAL 版（自动生成，勿手改）",
-        ":今天吃什么？——校园膳食调查簿;",
-        "changeBg:bg_gingko.webp -next -duration=350;",
-        "changeScene:act1.txt;",
-    ]
-    io.open(os.path.join(OUT, "start.txt"), "w", encoding="utf-8").write("\n".join(start) + "\n")
-    print("start.txt: 3 行（开场白 + 跳第一章）")
-    json.dump(JUMP_TABLE, io.open(os.path.join(MS, "webgal-game", "jump.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=1)
-    json.dump({"rec": REC_MAP, "branch": BRANCH_MAP},
-              io.open(os.path.join(MS, "webgal-game", "story-meta.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=1)
-    print("跳转表：", len(JUMP_TABLE), "个节点")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+        refs=[]
+        if n.get('next'): refs.append(n['next'])
+        if n.get('fallback'): refs.append(n['fallback'])
+        refs += [r.get('next') for r in n.get('rules',[])]
+        refs += [r.get('next') for r in n.get('options',[])]
+        refs += [r.get('next') for r in n.get('pool',[])]
+        targets.update(x for x in refs if x)
+    out=[]; scene=None; actor=None; last_seg=None
+    for n in data:
+        k=n['type']; nid=n['id']; is_chat=bool(scene=='chat' or n.get('channel')=='chat')
+        if nid in targets: out.append(f'label:t_{san(nid)};')
+        if k=='chapter':
+            out += [f'label:act{act};', f'; ==== {n.get("title","")} ====', say(None,n.get('title')), 'bgm:bgm_loop.mp3 -volume=45;', f'changeBg:{IMAGE_BG.get(n.get("image"),"bg_gingko.webp")} -next -duration=700;']
+            JUMP_TABLE.append({'label':f'act{act}','act':act,'seg':0,'text':n.get('title','')[:24]}); continue
+        if k=='say':
+            seg=n.get('seg')
+            if seg and seg!=last_seg:
+                last_seg=seg; out.append(f'label:seg{act}_{seg};'); JUMP_TABLE.append({'label':f'seg{act}_{seg}','act':act,'seg':seg,'text':n.get('text','')[:24]})
+            sc=n.get('scene')
+            if sc and sc!=scene:
+                scene=sc; actor=None; out.append(f'changeBg:{SCENE_BY_ACT[act].get(sc,SCENE_BG.get(sc,"bg_club.webp"))} -next -duration=500;')
+            if n.get('actor') and n['actor']!=actor:
+                actor=n['actor']; out += ['changeFigure:none -center -next -duration=250;',f'changeFigure:ch_{actor}_{n.get("expr","normal")}.webp -center -transform={{"scale":{{"x":0.62,"y":0.62}},"position":{{"x":0,"y":150}}}} -next;']
+            elif n.get('expr') and actor: out.append(f'changeFigure:ch_{actor}_{n["expr"]}.webp -center -transform={{"scale":{{"x":0.62,"y":0.62}},"position":{{"x":0,"y":150}}}} -next;')
+            if n.get('prop') in PROP_FIG: out.append(f'changeFigure:{PROP_FIG[n["prop"]]} -center -transform={{"scale":{{"x":0.3,"y":0.3}},"position":{{"x":260,"y":300}}}} -next;')
+            out.append(f'setVar:line={nid};'); out.append(say(n.get('speaker'),n.get('text'),nid,n.get('channel')=='chat'))
+            if n.get('next'): out.append(target(n['next']))
+        elif k=='choice':
+            opts=n.get('options',[])
+            if len(opts)==1:
+                o=opts[0]
+                if o.get('flag'): out.append(f'setVar:{flagvar(o["flag"])}=1;')
+                out.append(f'setVar:line={nid}-pick;'); out.append(say('你',o.get('text'),chat=is_chat))
+                out += replies(o.get('reply'),is_chat)
+                if o.get('next'): out.append(target(o['next']))
+            else:
+                branches=[]
+                for i,o in enumerate(opts):
+                    cond=condition([o['showIf']]) if isinstance(o.get('showIf'),str) else condition(o.get('showIf',[])) if o.get('showIf') else ''
+                    prefix=f'({cond})->' if cond else ''
+                    label=f'c{act}_{san(nid)}_{i}'
+                    branches.append(prefix+esc(o.get('text','继续'))+':'+label)
+                out.append('choose:'+'|'.join(branches)+';')
+                for i,o in enumerate(opts):
+                    out.append(f'label:c{act}_{san(nid)}_{i};')
+                    if o.get('flag'): out.append(f'setVar:{flagvar(o["flag"])}=1;')
+                    out.append(f'setVar:line={nid}-c{i};'); out.append(say('你',o.get('text'),chat=is_chat)); out += replies(o.get('reply'),is_chat)
+                    out.append(target(o.get('next',nid+'_after')))
+                out.append(f'label:t_{san(nid+"_after")};')
+        elif k=='record':
+            idx=len(REC_MAP)+1; REC_MAP[str(idx)]={'flag':n.get('flag',''),'label':n.get('label','')}
+            out += [f'setVar:rec={idx};',f'setVar:{flagvar(n.get("flag"))}=1;']
+            if n.get('next'): out.append(target(n['next']))
+        elif k=='branch':
+            for i,r in enumerate(n.get('rules',[])):
+                out.append(target(r['next'], condition(r.get('flags',[]),r.get('all',True))))
+            if n.get('fallback'): out.append(target(n['fallback']))
+            BRANCH_MAP[nid]={'rules':n.get('rules',[]),'fallback':n.get('fallback','')}
+        elif k=='random':
+            pool=n.get('pool',[]); rv='rnd_'+san(nid)
+            out.append(f'setVar:{rv}=random(0,{max(0,len(pool)-1)});')
+            for i,r in enumerate(pool): out.append(target(r['next'], f'{rv}=={i}'))
+        elif k in ('evidence','plate','compare','explore','notebook'):
+            key=n.get('prompt') or n.get('text') or n.get('title')
+            out.append(say(n.get('speaker'),key))
+            if n.get('next'): out.append(target(n['next']))
+        elif k=='ending':
+            out += [f'setVar:ending={nid};',f'changeBg:{IMAGE_BG.get(n.get("image"),"bg_gingko.webp")} -next -duration=700;','changeFigure:none -center -next -duration=350;',say(None,n.get('title')),'end;']
+    return [x for x in out if x]
+def main():
+    OUT.mkdir(parents=True,exist_ok=True); choice_flags=[]; all_data={}
+    for a in (1,2,3,4):
+        data=json.loads((MS/f'content/act{a}.json').read_text(encoding='utf-8')); all_data[a]=data
+        body=convert(a,data)
+        if a<4: body.append(f'changeScene:act{a+1}.txt;')
+        else: body.append('end;')
+        (OUT/f'act{a}.txt').write_text('\n'.join(body)+'\n',encoding='utf-8')
+        choice_flags += [o['flag'] for n in data if n['type']=='choice' for o in n.get('options',[]) if o.get('flag')]
+    (OUT/'start.txt').write_text(':今天吃什么？——校园膳食调查簿;\nchangeBg:bg_gingko.webp -next -duration=500;\nchangeScene:act1.txt;\n',encoding='utf-8')
+    (MS/'webgal-game/jump.json').write_text(json.dumps(JUMP_TABLE,ensure_ascii=False,indent=1),encoding='utf-8')
+    (MS/'webgal-game/story-meta.json').write_text(json.dumps({'rec':REC_MAP,'branch':BRANCH_MAP,'choiceFlags':sorted(set(choice_flags))},ensure_ascii=False,indent=1),encoding='utf-8')
+    print('生成 4 章，跳转',len(JUMP_TABLE),'条，记录',len(REC_MAP),'条')
+if __name__=='__main__': main()

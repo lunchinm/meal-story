@@ -813,13 +813,13 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 
 
 /* ---------- 原生快捷栏保留；我们只在它左侧补两个同风格图标 ---------- */
-#paper-esc { display: none !important; }
+
 #paper-nav {
   position: fixed;
   display: flex;
   align-items: center;
   gap: 10px;
-  z-index: 40;
+  z-index: 61;
   opacity: .55;
   transition: opacity .2s;
 }
@@ -921,12 +921,34 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 }
 `;
 
+  var CSS_V2 = `
+#paper-ui .pu-card{cursor:pointer;animation:paperIn .24s ease}
+#paper-task{width:min(650px,calc(100vw - 112px));max-height:68vh;padding:24px 28px;pointer-events:auto}
+#paper-task .pt-title{font-size:24px;border-bottom:1px solid #b9a986;padding-bottom:12px}
+#paper-task .pt-chip{cursor:pointer;transition:.15s;background:#fdfaf1}
+#paper-task .pt-chip:hover,#paper-task .pt-chip.selected{border-color:#2f4a34;background:#dfe9d8;transform:translateY(-1px)}
+#paper-task .pt-chip.wrong{border-color:#a8442f;color:#a8442f}
+#paper-task .pt-tray{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+#paper-task .pt-slot{min-height:74px;border:1px dashed #a89b7d;display:grid;place-items:center;padding:10px;background:#f7f1e3;color:#766b52}
+#paper-task .pt-status{padding:10px 12px;border-left:3px solid #6e8a60;margin:12px 0;line-height:1.8}
+#paper-task .pt-done,#paper-notebook button,#paper-task .pt-close{padding:8px 16px;background:#2f4a34;color:#fcf9f0;border:0;border-radius:3px;font-family:inherit;cursor:pointer;margin-top:10px}
+#paper-task .pt-close{background:transparent;color:#33402f;border:1px solid #b9a986;margin-left:8px}
+#paper-notebook{width:min(580px,calc(100vw - 80px));padding:28px 34px;pointer-events:auto}
+#paper-notebook .pn-h{font-size:20px;color:#33402f;border-bottom:1px solid #b9a986;padding-bottom:14px}
+#paper-notebook li{margin:14px 0;padding-left:8px;border-bottom:1px dashed #c8bda5;padding-bottom:12px}
+#paper-notebook .pn-empty{color:#8a8064;line-height:2;padding:22px 0}
+#paper-title .pt-name{font-size:58px}
+#paper-task button:focus-visible,#paper-notebook button:focus-visible{outline:2px solid #2f4a34;outline-offset:3px}
+@keyframes paperIn{from{opacity:.6;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){#paper-chat{right:20px;top:20px;width:calc(100vw - 40px);height:55vh}#paper-ui .pu-card{left:20px;right:20px;bottom:30px;padding:20px}#paper-ui .pu-text{font-size:18px;line-height:1.8}#paper-task{left:20px;top:24px;width:calc(100vw - 96px)}#paper-title .pt-lockup{left:40px;top:80px}#paper-title .pt-name{font-size:40px}#paper-title .pt-menu{left:40px;bottom:48px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+`;
   function addCss() {
     // 只注入一次：早先每次删除重建 <style>，会强制整页重排，推进一次要好几秒
     if (document.getElementById('paper-ui-style')) return;
     var tag = document.createElement('style');
     tag.id = 'paper-ui-style';
-    tag.textContent = CSS;
+    tag.textContent = CSS + CSS_V2;
     document.head.appendChild(tag);
   }
 
@@ -1054,10 +1076,10 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     ['第一章 · 套餐的秘密', false],
     ['第二章 · 三种晚饭', false],
     ['第三章 · 便利店的标签', false],
-    ['第四章 · 你写的那一版', false],
-    ['结局 · 照着吃', true],
-    ['结局 · 会挑着吃', true],
-    ['结局 · 把问题问回去', true],
+    ['第四章 · 你的方案，能坚持吗', false],
+    ['结局 · 我会选了', true],
+    ['结局 · 换一家食堂，也会选', true],
+    ['结局 · 先问清楚，再给建议', true],
   ];
 
   function openFlow() {
@@ -1457,7 +1479,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     var box = document.getElementById('paper-notebook');
     if (!box) return;
     box.innerHTML = '<div class="pn-h">调查簿 · 已记 ' + notebookItems.length + ' 条</div><ul>'
-      + notebookItems.map(function (x) { return '<li>· ' + x + '</li>'; }).join('') + '</ul>';
+      + (notebookItems.length ? notebookItems.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') : '<div class="pn-empty">还没有记录。继续调查，重要发现会记在这里。</div>') + '</ul><button type="button">合上调查簿</button>';
+    var close=box.querySelector('button');if(close)close.onclick=function(){box.style.display='none';};
   }
 
   function buildNotebook() {
@@ -1474,21 +1497,40 @@ body.paper-chat-mode [class*="TextBox_Container"] {
   // 每 tick 读引擎变量：记录入账、分支改跳
   function syncStoryVars() {
     if (!window.__wgGetVar) return;
+    var endId = window.__wgGetVar('ending');
+    if (endId) {
+      var endings = (typeof UI_DATA !== 'undefined') ? Object.keys(UI_DATA).map(function(k){return UI_DATA[k];}).filter(function(x){return x.id===endId;}) : [];
+      if (endings.length) renderTask(endings[0].title);
+    }
+    // 选择/记录都写入引擎变量，存档与回想恢复后仍保留真实状态。
+    var metaValues = (typeof REC_MAP !== 'undefined') ? Object.keys(REC_MAP).map(function (k) { return REC_MAP[k]; }) : [];
+    notebookItems = [];
+    metaValues.forEach(function (m) {
+      if (m.flag && window.__wgGetVar('flag_' + sanitizeId(m.flag))) {
+        storyFlags[m.flag] = 1;
+        notebookItems.push(m.label || m.flag);
+      } else if (m.flag) delete storyFlags[m.flag];
+    });
+    renderNotebook();
     var rec = window.__wgGetVar('rec');
     if (rec !== undefined && rec !== null && String(rec) !== knownRec) {
       knownRec = String(rec);
       var meta = (typeof REC_MAP !== 'undefined') ? REC_MAP[knownRec] : null;
       if (meta) {
         if (meta.flag) storyFlags[meta.flag] = 1;
-        notebookItems.push(meta.label || meta.flag || '');
+        if (notebookItems.indexOf(meta.label || meta.flag || '') < 0) notebookItems.push(meta.label || meta.flag || '');
         renderNotebook();
         showToast('已记入调查簿：' + (meta.label || meta.flag));
       }
     }
+    // 选择节点也可能带 flag，遍历其映射（由导出器补充）以支持结局分歧。
+    if (typeof CHOICE_FLAGS !== 'undefined') Object.keys(CHOICE_FLAGS).forEach(function (f) {
+      if (window.__wgGetVar('flag_' + sanitizeId(f))) storyFlags[f] = 1;
+    });
     var br = window.__wgGetVar('branch');
     if (br !== undefined && br !== null && String(br) !== knownBranch) {
       knownBranch = String(br);
-      var info = (typeof BRANCH_MAP !== 'undefined') ? BRANCH_MAP[String(br)] : null;
+        var info = (typeof BRANCH_MAP !== 'undefined') ? BRANCH_MAP[String(br)] : null;
       if (info && info.rules && info.rules.length) {
         for (var i = 0; i < info.rules.length; i += 1) {
           var rule = info.rules[i];
@@ -1665,6 +1707,27 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     return el;
   }
 
+  var FOOD_NAMES={rice:'米饭 2 元',noodle:'面条 5 元',potato:'土豆丝 3 元',greens:'青菜 3 元',tomato_egg:'番茄炒蛋 4 元',pork:'红烧肉 6 元',tofu:'豆腐 3 元',egg:'鸡蛋 2 元'};
+  var FOOD_PRICE={rice:2,noodle:5,potato:3,greens:3,tomato_egg:4,pork:6,tofu:3,egg:2};
+  var taskStates={};
+  function bindTask(panel,data){
+    if(!data||panel.dataset.bound===data.id)return;
+    panel.dataset.bound=data.id;
+    var st=taskStates[data.id]||(taskStates[data.id]={picked:[],selected:[],read:[]});
+    if(data.kind==='plate'){
+      function redraw(){
+        panel.querySelectorAll('.pt-slot').forEach(function(el,i){el.textContent=FOOD_NAMES[st.picked[i]]||('空格 '+(i+1));});
+        var price=st.picked.reduce(function(a,x){return a+(FOOD_PRICE[x]||0);},0);
+        var status=panel.querySelector('.pt-status'); if(status)status.textContent='已选 '+st.picked.length+' 格 · 合计 '+price+' 元 / '+data.budget+' 元';
+      }
+      panel.querySelectorAll('[data-food]').forEach(function(b){b.onclick=function(){if(st.picked.length<(Number(data.slots)||4))st.picked.push(b.dataset.food);redraw();};});
+      panel.querySelectorAll('[data-slot]').forEach(function(b){b.onclick=function(){st.picked.splice(Number(b.dataset.slot),1);redraw();};});
+      var done=panel.querySelector('.pt-done'); if(done)done.onclick=function(){var price=st.picked.reduce(function(a,x){return a+(FOOD_PRICE[x]||0);},0);var good=st.picked.some(function(x){return ['rice','noodle'].includes(x);})&&st.picked.some(function(x){return ['greens','potato'].includes(x);})&&st.picked.some(function(x){return ['tomato_egg','pork','tofu','egg'].includes(x);});panel.querySelector('.pt-status').textContent=!st.picked.length?'餐盘还是空的，先选几样。':price>data.budget?'超出预算了，点格子撤下一样再调整。':good?'主食、蔬菜、蛋白都有了，这份搭配可以落地。':'再看看：主食、蔬菜和蛋白是否都留了一格？';};
+    }
+    if(data.kind==='evidence')panel.querySelectorAll('.pl').forEach(function(b,i){b.style.cursor='pointer';b.onclick=function(){b.classList.toggle('hi');var s=panel.querySelector('.pt-evidence-status');if(s)s.textContent='已标记 '+panel.querySelectorAll('.pl.hi').length+' 处 · 再想想哪些说法需要依据';};});
+    if(data.kind==='explore')panel.querySelectorAll('li').forEach(function(li){li.style.cursor='pointer';li.onclick=function(){li.style.color='#2f4a34';li.style.fontWeight='bold';};});
+  }
+
   function renderTask(text) {
     var panel = buildTaskPanel();
     var data = (typeof UI_DATA !== 'undefined' && UI_DATA) ? UI_DATA[text] : null;
@@ -1676,10 +1739,11 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     if (data.hint) html += '<div class="pt-hint">' + esc(data.hint) + '</div>';
 
     if (data.kind === 'plate') {
-      html += '<div class="pt-sec">预算 ' + esc(data.budget) + ' 元 · ' + esc(data.slots) + ' 个格子</div>';
+      html += '<div class="pt-sec">预算 ' + esc(data.budget) + ' 元 · ' + esc(data.slots) + ' 个格子 · 点菜品放入餐盘</div>';
+      html += '<div class="pt-tray">' + Array.from({length:Number(data.slots)||4},function(_,i){return '<button class="pt-slot" data-slot="'+i+'">空格 '+(i+1)+'</button>';}).join('') + '</div>';
       html += '<div class="pt-chips">' + (data.cards || []).map(function (c) {
-        return '<span class="pt-chip">' + esc(c) + '</span>';
-      }).join('') + '</div>';
+        return '<button class="pt-chip" data-food="'+esc(c)+'">'+esc(FOOD_NAMES[c]||c)+'</button>';
+      }).join('') + '</div><div class="pt-status">先选主食，再搭配蔬菜和蛋白。</div><button class="pt-done">就这样搭配</button>';
     } else if (data.kind === 'compare') {
       html += '<div class="pt-sec">货架上的两瓶</div>';
       html += (data.offers || []).map(function (o) {
@@ -1696,7 +1760,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
         + (data.posterText || []).map(function (l, i) {
           return '<div class="pl' + (i >= 1 ? ' hi' : '') + '">' + esc(l) + '</div>';
         }).join('') + '</div>';
-      if (data.need) html += '<div class="pt-sec">需要圈出 ' + esc(data.need) + ' 处</div>';
+      if (data.need) html += '<div class="pt-sec">需要圈出 ' + esc(data.need) + ' 处</div><div class="pt-evidence-status">点击文字做标记；再次点击取消。</div>';
     } else if (data.kind === 'notebook') {
       html += (data.entries || []).map(function (e) {
         return '<div class="pt-sec">' + esc(e.label) + '</div><div class="pt-body">' + esc(e.text) + '</div>';
@@ -1710,6 +1774,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 
     panel.innerHTML = html;
     panel.style.display = 'block';
+    bindTask(panel,data);
   }
 
   function syncChat(state) {
@@ -1724,6 +1789,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     if (!isChat) {
       // 离开聊天：把还没发的回复落地，但**保留历史**（换章才清）
       if (pendingReply) { pushBubble(pendingReply.who, pendingReply.text, pendingReply.id); pendingReply = null; }
+      var staleReply = panel.querySelector('.pc-choices');
+      if (staleReply) { staleReply.innerHTML = ''; staleReply.dataset.reply = ''; staleReply.style.display = 'none'; }
       panel.style.display = 'none';
       setChatMode(false);
       if (card) card.style.display = '';
@@ -1953,7 +2020,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 
 /* STORYMETA_START */
   var REC_MAP = {"1": {"flag": "rec:看过原图", "label": "看过原图"}, "2": {"flag": "rec:问过需求", "label": "问过需求"}, "3": {"flag": "rec:米粒方案：顺路购买", "label": "米粒方案：顺路购买"}, "4": {"flag": "rec:米粒方案：提前准备", "label": "米粒方案：提前准备"}, "5": {"flag": "rec:米粒方案：食堂＋备用", "label": "米粒方案：食堂＋备用"}, "6": {"flag": "done:mili", "label": "这一段看完了"}, "7": {"flag": "done:lu", "label": "这一段看完了"}, "8": {"flag": "done:zhou", "label": "这一段看完了"}, "9": {"flag": "ch2:done", "label": "给明天留了一张便签"}, "10": {"flag": "rec:按实际份量采购", "label": "按实际份量采购"}, "11": {"flag": "rec:共同确认清单", "label": "共同确认清单"}, "12": {"flag": "rec:再次核对完整信息", "label": "再次核对完整信息"}, "13": {"flag": "rec:看过贮存条件", "label": "看过贮存条件"}, "14": {"flag": "rec:看过苏桃的照片变化", "label": "看过苏桃的照片变化"}, "15": {"flag": "rec:偶遇:R1", "label": "偶遇记录：第二件半价"}, "16": {"flag": "rec:偶遇:R2", "label": "偶遇记录：一袋分三份"}, "17": {"flag": "rec:偶遇:R3", "label": "偶遇记录：瓶身只拍到一半"}, "18": {"flag": "rec:购买理由照片", "label": "调查簿增加“购买理由”照片"}, "19": {"flag": "rec:个人条件便签完成", "label": "个人条件便签完成"}, "20": {"flag": "rec:完成个人修订", "label": "根据反馈完成修订"}, "21": {"flag": "rec:已有使用说明", "label": "已有使用说明"}, "22": {"flag": "rec:完成指南", "label": "完成指南"}, "23": {"flag": "rec:完成通用试行总结", "label": "完成通用试行总结"}};
-  var BRANCH_MAP = {"e1_end": {"rules": [], "fallback": "a2-00"}, "a2-hub1": {"rules": [{"flags": ["done:mili", "done:lu", "done:zhou"], "all": true, "next": "a2-c01"}], "fallback": "a2-hub2"}, "e2_end": {"rules": [], "fallback": "a3-00"}, "random:a3-random": {"pool": ["a3-r1-1", "a3-r2-1", "a3-r3-1"]}, "a3-hidden-gate": {"rules": [{"flags": ["rec:采购前询问需求"], "next": "a3-photo1"}], "fallback": "a3-meets"}, "e3_end": {"rules": [], "fallback": "a4-00"}, "e4_end": {"rules": [{"flags": ["rec:选择试行及试行对象", "rec:个人条件便签完成", "rec:根据反馈完成修订"], "all": true, "next": "e_hidden"}, {"flags": ["rec:选择试行及试行对象"], "next": "e_advanced"}], "fallback": "e_normal"}};
+  var CHOICE_FLAGS = ["rec:回访周简", "rec:回访米粒", "rec:回访陆燃", "rec:当前午餐方案：双方案", "rec:当前午餐方案：清蒸鱼", "rec:当前午餐方案：豆腐鸡蛋", "rec:想省心", "rec:核对无蔗糖配料", "rec:根据反馈完成修订", "rec:苏桃购买目的：喜欢口味", "rec:苏桃购买目的：尚未细问", "rec:苏桃购买目的：补充奶类", "rec:选择发布通用版", "rec:选择试行及试行对象", "rec:采购前询问需求", "trial:lu", "trial:mili", "trial:zhou"];
+  var BRANCH_MAP = {"e1_end": {"rules": [], "fallback": "a2-00"}, "a2-hub1": {"rules": [{"flags": ["done:mili", "done:lu", "done:zhou"], "all": true, "next": "a2-c01"}], "fallback": "a2-hub2"}, "e2_end": {"rules": [], "fallback": "a3-00"}, "a3-hidden-gate": {"rules": [{"flags": ["rec:采购前询问需求"], "next": "a3-photo1"}], "fallback": "a3-meets"}, "e3_end": {"rules": [], "fallback": "a4-00"}, "e4_end": {"rules": [{"flags": ["rec:选择试行及试行对象", "rec:个人条件便签完成", "rec:根据反馈完成修订"], "all": true, "next": "e_hidden"}, {"flags": ["rec:选择试行及试行对象"], "next": "e_advanced"}], "fallback": "e_normal"}};
   /* STORYMETA_END */
 
   var MENU_LABELS = ['开始游戏', '继续游戏', '游戏选项', '读取存档', '鉴赏模式', '退出游戏'];
@@ -1999,6 +2067,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       var btn = ev.target.closest('button');
       if (!btn) return;
       var want = btn.getAttribute('data-label');
+
+      if (want === '开始游戏' || want === '继续游戏' || want === '读取存档') gameStarted = true;
       var spans = document.querySelectorAll('span,div');
       for (var i = 0; i < spans.length; i += 1) {
         if (spans[i].children.length === 0 && (spans[i].textContent || '').trim() === want) {
@@ -2013,7 +2083,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 
   // 原生的全屏菜单是否打开（选项 / 存档 / 读档 / 流程图 / 回想）
   function nativePanelOpen() {
-    var probes = ['[class*="Config"]', '[class*="Save"]', '[class*="Load"]',
+    var probes = ['[class*="Config"]', '[class*="Options"]', '[class*="Save"]', '[class*="Load"]',
                   '[class*="Backlog"]', '[class*="Flowchart"]', '[class*="_Menu"]'];
     var vw = window.innerWidth, vh = window.innerHeight;
     for (var p = 0; p < probes.length; p += 1) {
@@ -2036,6 +2106,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
   var BAR_LABELS = ['隐藏', '回想', '重播', '自动', '快进', '快速存档', '快速读档', '存档', '读档', '选项', '标题', '全屏'];
 
   function nativeAction(label) {
+
     if (label === '开始游戏' || label === '继续游戏' || label === '读取存档') gameStarted = true;
     if (label === '标题') gameStarted = false;
     if (label === '标题' && window.__wgBackToTitle) {
@@ -2086,22 +2157,14 @@ body.paper-chat-mode [class*="TextBox_Container"] {
         if (window.__wgTextBox) window.__wgTextBox(!document.body.classList.contains('paper-chat-mode'));
         return;
       }
-      if (!nativeAction('返回')) {
-        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
-      }
+      nativeAction('返回');
     });
     var title = document.createElement('button');
     title.textContent = '标题';
     title.addEventListener('click', function () {
-      // 原生底栏在菜单里不挂载：先 Esc 关菜单，再走工具栏的「标题」
-      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
-      setTimeout(function () {
-        var ui = document.getElementById('paper-ui');
-        if (ui) ui.style.display = '';
-        var btn = document.querySelector('#paper-ui .pu-tools button[data-label="标题"]');
-        if (btn) btn.click();
-        else nativeAction('标题');
-      }, 800);
+      // 关原生面板后直接走引擎出口回标题（Escape 会打开 PanicOverlay，不能用）
+      if (window.__wgClosePanels) window.__wgClosePanels();
+      setTimeout(function () { nativeAction('标题'); }, 250);
     });
     bar.appendChild(back);
     bar.appendChild(title);
@@ -2182,7 +2245,9 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     }
 
     if (stateSeenText) gameStarted = true;
-    var atTitle = !gameStarted || nativeTitleVisible();
+    var hasGameDom = stateSeenText || !!document.querySelector('[class*="chooseContainer"], [class*="TextBox_Container"]');
+    var atTitle = !gameStarted || (!hasGameDom && nativeTitleVisible());
+
     var inGame = gameStarted && !atTitle;
     t.style.display = inGame ? 'none' : 'block';
 
