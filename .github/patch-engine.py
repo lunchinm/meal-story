@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""CI 里对 WebGAL 源码打的三处补丁（必须和本地保持一致）：
-   1) 打字机尾巴归零 + 默认文字速度 120（点一下就能推进）
-   2) 暴露 window.__wgBackToTitle（自绘 UI 回标题）
-   3) 暴露 window.__wgClosePanels（关掉原生各面板）
-"""
+"""CI 里对 WebGAL 源码打补丁（与本地保持一致，幂等可重复运行）。"""
 import io
 import os
 import sys
@@ -11,8 +7,12 @@ import sys
 SRC = sys.argv[1] if len(sys.argv) > 1 else "packages/webgal/src"
 
 
+def _p(path):
+    return os.path.join(SRC, path)
+
+
 def patch(path, pairs):
-    p = os.path.join(SRC, path)
+    p = _p(path)
     if not os.path.exists(p):
         print("跳过（不存在）：", p)
         return
@@ -24,46 +24,63 @@ def patch(path, pairs):
             changed = True
     if changed:
         io.open(p, "w", encoding="utf-8").write(s)
-        print("已改：", path)
+        print("已修改：", path)
     else:
         print("无变化：", path)
 
 
-def append(path, text, marker):
-    p = os.path.join(SRC, path)
+def ensure_imports():
+    """backToTitle.ts 里缺的 import 补上（按 import 语句判断，幂等）"""
+    p = _p("Core/controller/gamePlay/backToTitle.ts")
     if not os.path.exists(p):
-        print("跳过（不存在）：", p)
         return
-    s = io.open(p, encoding="utf-8").read()
-    if marker in s:
-        print("已存在：", path)
-        return
-    s += text
-    io.open(p, "w", encoding="utf-8").write(s)
-    print("已追加：", path)
+    src = io.open(p, encoding="utf-8").read()
+    head = src.split("export const")[0]
+    add = []
+    if "import { stageStateManager }" not in head:
+        add.append("import { stageStateManager } from '@/Core/Modules/stage/stageStateManager';")
+    if "import { WebGAL }" not in head:
+        add.append("import { WebGAL } from '@/Core/WebGAL';")
+    if "setMenuPanelTag" not in head:
+        add.append("import { setMenuPanelTag } from '@/store/GUIReducer';")
+    if "__wgNextSentence" not in head:
+        add.append("import { nextSentence as __wgNextSentence, continueSentence as __wgContinueSentence } from '@/Core/controller/gamePlay/nextSentence';")
+    if "__wgJumpToLabel" not in head:
+        add.append("import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';")
+    if "__wgChangeScene" not in head:
+        add.append("import { changeScene as __wgChangeScene } from '@/Core/controller/scene/changeScene';")
+    if add:
+        io.open(p, "w", encoding="utf-8").write("\n".join(add) + "\n" + src)
+        print("补齐 import：", len(add), "行")
 
 
-# 1) 打字机
-patch("hooks/useTextOptions.ts", [
-    ("return startRange + (100 - data) * step;", "return Math.max(0, startRange + (100 - data) * step);"),
-])
-patch("store/userDataReducer.ts", [
-    ("textSpeed: 50,", "textSpeed: 120,"),
-    ("textSpeed: 100,", "textSpeed: 120,"),
-])
-
-# 2)(3) 暴露给自绘 UI
-append("Core/controller/gamePlay/backToTitle.ts", """
-// 自绘 UI：回标题
+EXPORTS = """
+// ===== 自绘 UI 出口（由 patch-engine 注入）=====
 if (typeof window !== 'undefined') {
   (window as any).__wgBackToTitle = backToTitle;
+  (window as any).__wgNext = () => { try { __wgNextSentence(); } catch (e) { /* ignore */ } };
+  (window as any).__wgJump = (label: string, sceneUrl?: string) => {
+    try {
+      if (sceneUrl) {
+        __wgChangeScene(sceneUrl, '');
+        let tries = 0;
+        const tryJump = () => {
+          tries += 1;
+          let ok = false;
+          try { ok = __wgJumpToLabel(label); } catch (e) { ok = false; }
+          if (!ok && tries < 14) { setTimeout(tryJump, 300); }
+        };
+        setTimeout(tryJump, 300);
+        return true;
+      }
+      return __wgJumpToLabel(label);
+    } catch (e) { return false; }
+  };
   (window as any).__wgClosePanels = () => {
     const dispatch = webgalStore.dispatch;
-    // 真实存在的组件名：showMenuPanel(含选项/存档/读档) / showBacklog / showFlowchart
     (['showMenuPanel', 'showBacklog', 'showFlowchart'] as string[]).forEach((c) => {
       try { dispatch(setVisibility({ component: c as any, visibility: false })); } catch (e) { /* ignore */ }
     });
-    (window as any).__isMenuOpen = false;
   };
   (window as any).__wgTextBox = (show: boolean) => {
     try { webgalStore.dispatch(setVisibility({ component: 'showTextBox' as any, visibility: !!show })); } catch (e) { /* ignore */ }
@@ -84,11 +101,24 @@ if (typeof window !== 'undefined') {
   (window as any).__wgOpenFlowchart = () => {
     try { webgalStore.dispatch(setVisibility({ component: 'showFlowchart' as any, visibility: true })); return true; } catch (e) { return false; }
   };
+  (window as any).__wgStopVocal = () => {
+    try {
+      const v = document.getElementById('currentVocal') as HTMLAudioElement | null;
+      if (v) { v.pause(); v.currentTime = 0; }
+    } catch (e) { /* ignore */ }
+  };
   (window as any).__wgVocalSrc = () => {
     try {
       const st: any = stageStateManager.getViewStageState();
       return st && st.playVocal ? st.playVocal : '';
     } catch (e) { return ''; }
+  };
+  (window as any).__wgGetVar = (key: string) => {
+    try {
+      const vars = (stageStateManager.getViewStageState() as any).GameVar || {};
+      const v = vars[key];
+      return v && typeof v === 'object' ? (v as any).value : v;
+    } catch (e) { return undefined; }
   };
   (window as any).__wgRewind = (steps = 1) => {
     try {
@@ -108,149 +138,60 @@ if (typeof window !== 'undefined') {
     } catch (e) { return false; }
   };
 }
-""", "__wgBackToTitle")
+"""
 
 
-# 3) 调试与交互出口
-append("Core/controller/gamePlay/backToTitle.ts", """
-// 自绘 UI：主动推进 / 跳 label / 停配音
-import { nextSentence as __wgNextSentence, continueSentence as __wgContinueSentence } from '@/Core/controller/gamePlay/nextSentence';
-import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';
-import { changeScene as __wgChangeScene } from '@/Core/controller/scene/changeScene';
+def main():
+    # 1) 打字机 + 文字速度
+    patch("hooks/useTextOptions.ts", [
+        ("return startRange + (100 - data) * step;", "return Math.max(0, startRange + (100 - data) * step);"),
+    ])
+    patch("store/userDataReducer.ts", [
+        ("textSpeed: 50,", "textSpeed: 120,"),
+        ("textSpeed: 100,", "textSpeed: 120,"),
+    ])
 
-if (typeof window !== 'undefined') {
-  (window as any).__wgNext = () => {
-    try { __wgNextSentence(); } catch (e) { /* ignore */ }
-  };
-  (window as any).__wgJump = (label: string, sceneUrl?: string) => {
-    try {
-      if (sceneUrl) {
-        __wgChangeScene(sceneUrl, '');
-        let tries = 0;
-        const tryJump = () => {
-          tries += 1;
-          let ok = false;
-          try { ok = __wgJumpToLabel(label); } catch (e) { ok = false; }
-          if (!ok && tries < 14) { setTimeout(tryJump, 300); }
-        };
-        setTimeout(tryJump, 300);
-        return true;
-      }
-      return __wgJumpToLabel(label);
-    } catch (e) { return false; }
-  };
-  (window as any).__wgStopVocal = () => {
-    try {
-      const v = document.getElementById('currentVocal') as HTMLAudioElement | null;
-      if (v) { v.pause(); v.currentTime = 0; }
-    } catch (e) { /* ignore */ }
-  };
-  (window as any).__wgGetVar = (key: string) => {
-    try {
-      const vars = (stageStateManager.getViewStageState() as any).GameVar || {};
-      const v = vars[key];
-      return v && typeof v === 'object' ? (v as any).value : v;
-    } catch (e) { return undefined; }
-  };
-}
-""", "__wgNext")
+    # 2) 出口
+    ensure_imports()
+    p = _p("Core/controller/gamePlay/backToTitle.ts")
+    if os.path.exists(p):
+        s = io.open(p, encoding="utf-8").read()
+        if "__wgBackToTitle" not in s:
+            io.open(p, "w", encoding="utf-8").write(s + "\n" + EXPORTS)
+            print("已追加自绘出口")
 
+    # 3) startGame：默认背景 + 调试跳关
+    patch("Core/controller/gamePlay/startContinueGame.ts", [
+        (
+            "export const startGame = () => {\n  resetStage(true);",
+            "export const startGame = () => {\n  resetStage(true);\n"
+            "  try { stageStateManager.setStageAndCommit('bgName', assetSetter('bg_gingko.webp', fileType.background)); } catch (e) { /* ignore */ }",
+        ),
+        (
+            "  const sceneUrl: string = assetSetter('start.txt', fileType.scene);\n"
+            "  // 场景写入到运行时\n"
+            "  sceneFetcher(sceneUrl).then((rawScene) => {\n"
+            "    WebGAL.sceneManager.sceneData.currentScene = sceneParser(rawScene, 'start.txt', sceneUrl);",
+            "  const dbg = (window as any).__wgDebugStart as { scene?: string; label?: string } | undefined;\n"
+            "  const targetFile = dbg && dbg.scene ? dbg.scene : 'start.txt';\n"
+            "  const sceneUrl: string = assetSetter(targetFile, fileType.scene);\n"
+            "  sceneFetcher(sceneUrl).then((rawScene) => {\n"
+            "    WebGAL.sceneManager.sceneData.currentScene = sceneParser(rawScene, targetFile, sceneUrl);\n"
+            "    if (dbg && dbg.label) {\n"
+            "      const list = WebGAL.sceneManager.sceneData.currentScene.sentenceList;\n"
+            "      for (let i = 0; i < list.length; i += 1) {\n"
+            "        if (String((list[i] as any).content) === String(dbg.label)) {\n"
+            "          WebGAL.sceneManager.sceneData.currentSentenceId = i;\n"
+            "          break;\n"
+            "        }\n"
+            "      }\n"
+            "      (window as any).__wgDebugStart = undefined;\n"
+            "    }",
+        ),
+    ])
 
-
-# 4) 调试跳关：startGame 支持 __wgDebugStart
-patch("Core/controller/gamePlay/startContinueGame.ts", [
-    ("""  const sceneUrl: string = assetSetter('start.txt', fileType.scene);
-  // 场景写入到运行时
-  sceneFetcher(sceneUrl).then((rawScene) => {
-    WebGAL.sceneManager.sceneData.currentScene = sceneParser(rawScene, 'start.txt', sceneUrl);
-    WebGAL.flowchartManager.waitForCurrentSceneDialog();
-    // 开始第一条语句
-    continueSentence();
-  });""", """  const dbg = (window as any).__wgDebugStart as { scene?: string; label?: string } | undefined;
-  const targetFile = dbg && dbg.scene ? dbg.scene : 'start.txt';
-  const sceneUrl: string = assetSetter(targetFile, fileType.scene);
-  sceneFetcher(sceneUrl).then((rawScene) => {
-    WebGAL.sceneManager.sceneData.currentScene = sceneParser(rawScene, targetFile, sceneUrl);
-    if (dbg && dbg.label) {
-      const list = WebGAL.sceneManager.sceneData.currentScene.sentenceList;
-      for (let i = 0; i < list.length; i += 1) {
-        const sn = list[i] as any;
-        if (String(sn.content) === String(dbg.label)) {
-          WebGAL.sceneManager.sceneData.currentSentenceId = i;
-          break;
-        }
-      }
-      (window as any).__wgDebugStart = undefined;
-    }
-    WebGAL.flowchartManager.waitForCurrentSceneDialog();
-    continueSentence();
-  });"""),
-])
+    print("引擎补丁完成")
 
 
-
-# 5) 开场默认背景（避免第一句整屏黑）
-patch("Core/controller/gamePlay/startContinueGame.ts", [
-    ("export const startGame = () => {\n  resetStage(true);",
-     "export const startGame = () => {\n  resetStage(true);\n  try { stageStateManager.setStageAndCommit('bgName', assetSetter('bg_gingko.webp', fileType.background)); } catch (e) { /* ignore */ }  // __wgDefaultBg"),
-])
-
-
-# 6) 确保 backToTitle.ts 里 import 齐全（幂等：缺什么补什么）
-def ensure_imports():
-    p = os.path.join(SRC, "Core/controller/gamePlay/backToTitle.ts")
-    if not os.path.exists(p):
-        return
-    src = io.open(p, encoding="utf-8").read()
-    lines_to_add = []
-    # 用「import 语句」判断，而不是标识符
-    if "import { stageStateManager }" not in src and "stageStateManager } from '@/Core/Modules/stage/stageStateManager'" not in src:
-        lines_to_add.append("import { stageStateManager } from '@/Core/Modules/stage/stageStateManager';")
-    if "import { WebGAL }" not in src:
-        lines_to_add.append("import { WebGAL } from '@/Core/WebGAL';")
-    if "setMenuPanelTag }" not in src and "import { setMenuPanelTag }" not in src:
-        lines_to_add.append("import { setMenuPanelTag } from '@/store/GUIReducer';")
-    if "nextSentence as __wgNextSentence" not in src.split("export const")[0]:
-        lines_to_add.append("import { nextSentence as __wgNextSentence, continueSentence as __wgContinueSentence } from '@/Core/controller/gamePlay/nextSentence';")
-    if "jumpToLabel as __wgJumpToLabel" not in src.split("export const")[0]:
-        lines_to_add.append("import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';")
-    if "changeScene as __wgChangeScene" not in src.split("export const")[0]:
-        lines_to_add.append("import { changeScene as __wgChangeScene } from '@/Core/controller/scene/changeScene';")
-    if lines_to_add:
-        src = "\n".join(lines_to_add) + "\n" + src
-        io.open(p, "w", encoding="utf-8").write(src)
-        print("已补齐 import:", len(lines_to_add), "行")
-
-
-ensure_imports():
-    p = os.path.join(SRC, "Core/controller/gamePlay/backToTitle.ts")
-    if not os.path.exists(p):
-        return
-    src = io.open(p, encoding="utf-8").read()
-    need = {
-        "stageStateManager": "import { stageStateManager } from '@/Core/Modules/stage/stageStateManager';",
-        "WebGAL": "import { WebGAL } from '@/Core/WebGAL';",
-        "nextSentence": "import { nextSentence as __wgNextSentence, continueSentence as __wgContinueSentence } from '@/Core/controller/gamePlay/nextSentence';",
-        "jumpToLabel": "import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';",
-        "changeScene": "import { changeScene as __wgChangeScene } from '@/Core/controller/scene/changeScene';",
-    }
-    changed = False
-    for key, line in need.items():
-        if ("as " + key) in src or ("{ " + key + " }") in src or ("{ " + key + ",") in src:
-            continue
-        if line in src:
-            continue
-        src = line + "\n" + src
-        changed = True
-    # setMenuPanelTag 合并到 GUIReducer 的 import
-    if "setMenuPanelTag" not in src:
-        src = "import { setMenuPanelTag } from '@/store/GUIReducer';\n" + src
-        changed = True
-    if changed:
-        io.open(p, "w", encoding="utf-8").write(src)
-        print("已补齐 import：Core/controller/gamePlay/backToTitle.ts")
-
-
-ensure_imports()
-
-print("引擎补丁完成")
+if __name__ == "__main__":
+    main()
