@@ -196,14 +196,37 @@ patch("Core/controller/gamePlay/startContinueGame.ts", [
 ])
 
 
-# 6) 给 backToTitle.ts 补 import（自绘层出口需要 stageStateManager / WebGAL / setMenuPanelTag）
-patch("Core/controller/gamePlay/backToTitle.ts", [
-    ("import { webgalStore } from '@/store/store';",
-     "import { webgalStore } from '@/store/store';\n"
-     "import { stageStateManager } from '@/Core/Modules/stage/stageStateManager';\n"
-     "import { WebGAL } from '@/Core/WebGAL';"),
-    ("import { setVisibility } from '@/store/GUIReducer';",
-     "import { setVisibility, setMenuPanelTag } from '@/store/GUIReducer';"),
-])
+# 6) 确保 backToTitle.ts 里 import 齐全（幂等：缺什么补什么）
+def ensure_imports():
+    p = os.path.join(SRC, "Core/controller/gamePlay/backToTitle.ts")
+    if not os.path.exists(p):
+        return
+    src = io.open(p, encoding="utf-8").read()
+    need = {
+        "stageStateManager": "import { stageStateManager } from '@/Core/Modules/stage/stageStateManager';",
+        "WebGAL": "import { WebGAL } from '@/Core/WebGAL';",
+        "nextSentence": "import { nextSentence as __wgNextSentence, continueSentence as __wgContinueSentence } from '@/Core/controller/gamePlay/nextSentence';",
+        "jumpToLabel": "import { jumpToLabel as __wgJumpToLabel } from '@/Core/gameScripts/label/jumpToLabel';",
+        "changeScene": "import { changeScene as __wgChangeScene } from '@/Core/controller/scene/changeScene';",
+    }
+    changed = False
+    for key, line in need.items():
+        if ("as " + key) in src or ("{ " + key + " }") in src or ("{ " + key + ",") in src:
+            continue
+        if line in src:
+            continue
+        src = line + "\n" + src
+        changed = True
+    # setMenuPanelTag 合并到 GUIReducer 的 import
+    if "setMenuPanelTag" not in src:
+        src = src.replace("import { setVisibility } from '@/store/GUIReducer';",
+                          "import { setVisibility, setMenuPanelTag } from '@/store/GUIReducer';", 1)
+        changed = True
+    if changed:
+        io.open(p, "w", encoding="utf-8").write(src)
+        print("已补齐 import：Core/controller/gamePlay/backToTitle.ts")
+
+
+ensure_imports()
 
 print("引擎补丁完成")
