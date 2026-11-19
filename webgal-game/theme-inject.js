@@ -2290,12 +2290,8 @@ body.paper-chat-mode [class*="TextBox_Container"] {
     var atTitle = !gameStarted || (!hasGameDom && nativeTitleVisible());
     var inGame = gameStarted && !atTitle;
 
-    // 只有真正进入游戏后，原生菜单/回想/流程图才优先；标题页不参与这个判定
-    if (inGame && nativePanelOpen()) {
-      hideOwnChrome();
-      if (window.__paperBootDone) window.__paperBootDone();
-      return;
-    }
+    // 原生面板打开时不再整体收起自绘层：面板本身会盖在上面，
+    // 收起反而会在某些窗口尺寸下把游戏画面变成空白。
 
     if (Date.now() < titleForcedUntil) {
       hideOwnChrome();
