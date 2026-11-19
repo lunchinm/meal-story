@@ -19,10 +19,11 @@ s = s.replace("const shouldBypassServiceWorker = isIOS || isLocalPreview || isEl
               "const shouldBypassServiceWorker = true; // 本作不使用离线缓存，始终注销旧 Service Worker")
 
 if "theme-inject.js" not in s:
-    s = s.replace("</body>", '  <script src="theme-inject.js?v=20261119x"></script>\n</body>')
+    s = s.replace("</body>", '  <script src="theme-inject.js?v=20261119y"></script>\n</body>')
 
 io.open(p, "w", encoding="utf-8").write(s)
 print("注入完成；live2d 调用剩余:", s.count("loadIifePlugin('lib/live2d"))
+
 
 
 

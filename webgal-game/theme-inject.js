@@ -2098,6 +2098,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
       var want = btn.getAttribute('data-label');
 
       if (want === '开始游戏' || want === '继续游戏' || want === '读取存档') gameStarted = true;
+      if (want === '开始游戏' && window.__wgStart) { window.__wgStart(); return; }
       var spans = document.querySelectorAll('span,div');
       for (var i = 0; i < spans.length; i += 1) {
         if (spans[i].children.length === 0 && (spans[i].textContent || '').trim() === want) {
