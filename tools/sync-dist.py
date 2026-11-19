@@ -43,6 +43,8 @@ s = s.replace("background: black;", "background: #f6efe0;")
 s = s.replace("background-color: black;", "background-color: #f6efe0;")
 s = s.replace("loadIifePlugin('lib/live2d.min.js')", "Promise.resolve(null)")
 s = s.replace("loadIifePlugin('lib/live2dcubismcore.min.js')", "Promise.resolve(null)")
+s = s.replace("const shouldBypassServiceWorker = isIOS || isLocalPreview || isElectron;",
+              "const shouldBypassServiceWorker = true; // 本作不使用离线缓存，始终注销旧 Service Worker")
 if "theme-inject.js" not in s:
     s = s.replace("</body>", f'  <script src="theme-inject.js?v={VER}"></script>\n</body>')
 else:
