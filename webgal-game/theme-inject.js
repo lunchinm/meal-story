@@ -1911,7 +1911,7 @@ body.paper-chat-mode [class*="TextBox_Container"] {
 
   function sync() {
     try {
-      if (nativePanelOpen()) { hideOwnChrome(); return; }
+      // 不再因为检测到原生面板就收起自绘层：原生面板自己会盖在上面。
       syncInner();
     } catch (e) { /* 单次失败不影响游戏 */ }
   }
