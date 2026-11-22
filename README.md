@@ -24,7 +24,7 @@ meal-story/
 │   └─ dev/                工作文件：调试/复现/截图/面板遍历（不影响构建）
 ├─ tests/                  回归与路线验收（qa-v4 / acceptance-*）
 ├─ docs/                   ★ 纯文档（交接/说明/交付/问题/设计/改动 + archive/）
-├─ release/                交付物：可玩压缩包 / 二维码 / 分享说明
+├─ release/                交付物：可玩压缩包 / 二维码 / 使用说明
 └─ .github/                CI：patch-engine.py / inject_theme.py / workflows
 ```
 
@@ -90,4 +90,13 @@ python tools\sync-dist.py <版本号>     # 确保 dist 最新
 # 将 ../WebGAL-src/packages/webgal/dist 内容 + 启动bat + 说明 压缩到 release/
 ```
 
-`release/` 已含一份可玩压缩包与二维码、分享说明。
+`release/` 已含一份可玩压缩包与二维码、使用说明。
+
+## 线上两处部署
+
+| 地址 | 承载 | 更新方式 |
+|---|---|---|
+| https://lunchinm.surge.sh | Surge.sh | `node tools\deploy-surge.mjs` |
+| https://lunchinm.github.io/meal-story/ | GitHub Pages（`gh-pages` 分支） | 把成品内容提交到 `gh-pages` 分支推送 |
+
+`gh-pages` 分支里**不要**放 `CNAME` 文件，否则 Pages 会把站点域名改成它。细节见 [release/使用说明.md](release/使用说明.md) 第六节。
